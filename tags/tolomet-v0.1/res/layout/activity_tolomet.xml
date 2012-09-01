@@ -1,0 +1,60 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/button1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/button1"
+        android:entries="@array/station_array"
+        android:prompt="@string/station_prompt" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:text="@string/summary"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/button1"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/Refresh" />
+
+    <LinearLayout
+ 		xmlns:android="http://schemas.android.com/apk/res/android"
+ 		android:layout_height="match_parent"
+ 		android:layout_width="match_parent"
+ 		android:orientation="vertical"
+ 		android:layout_below="@id/spinner1"
+ 		android:layout_above="@id/textView1"
+ 		android:weightSum="1.0">
+ 		
+    <com.androidplot.xy.XYPlot
+        android:id="@+id/chartDirection"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".5"
+        title="Dirección" />
+    
+    <com.androidplot.xy.XYPlot
+        android:id="@+id/chartSpeed"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".5"
+        title="Velocidad"/>
+    
+    </LinearLayout>
+        
+</RelativeLayout>
