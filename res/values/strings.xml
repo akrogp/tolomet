@@ -6,12 +6,13 @@
     <string name="Refresh">Actualizar</string>
     <string name="station_prompt">Estación</string>
     <string name="summary"></string>
-    <string name="direction">Dirección</string>
-    <string name="speed">Velocidad</string>
-    <string name="grades">Grados</string>
+    <string name="Direction">Dirección</string>
+    <string name="Speed">Velocidad</string>
     <string name="Downloading">Descargando</string>
     <string name="Progress">Progreso</string>
-    <string name="About">Acerca de ...</string>
+    <string name="About">Acerca de &#8230;</string>
+    <string name="Time">Hora</string>
+    <string name="Degrees">Grados</string>
  
     <string-array name="station_array">
 <item>C072 - Orduña</item>
