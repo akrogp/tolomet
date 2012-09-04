@@ -13,16 +13,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Color;
+import android.graphics.PointF;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.StrictMode;
+import android.util.FloatMath;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
@@ -32,16 +37,16 @@ import android.widget.TextView;
 import com.androidplot.series.XYSeries;
 import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.LineAndPointFormatter;
-import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYStepMode;
 
-public class Tolomet extends Activity implements OnItemSelectedListener, View.OnClickListener {
+public class Tolomet extends Activity
+	implements OnItemSelectedListener, View.OnClickListener, OnTouchListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+        /*StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);*/
         
         setContentView(R.layout.activity_tolomet);
         
@@ -79,16 +84,18 @@ public class Tolomet extends Activity implements OnItemSelectedListener, View.On
         
     	mChartDirection = (XYPlot)findViewById(R.id.chartDirection);
         mChartDirection.disableAllMarkup();
-        mChartDirection.setRangeLabel("Grados");                
+        mChartDirection.setTitle(getString(R.string.Direction));
+        mChartDirection.setRangeLabel(getString(R.string.Degrees));                
         mChartDirection.setRangeValueFormat(new DecimalFormat("#"));        
         mChartDirection.setRangeBoundaries(0, 360, BoundaryMode.FIXED);
         mChartDirection.setRangeStep(XYStepMode.SUBDIVIDE, 9);
         //mChartDirection.setTicksPerRangeLabel(3);
-        mChartDirection.setDomainLabel("Hora");
+        mChartDirection.setDomainLabel(getString(R.string.Time));
         mChartDirection.setDomainValueFormat(new SimpleDateFormat("HH:mm"));
         mChartDirection.setDomainBoundaries(date1.getTime(), date2.getTime(), BoundaryMode.FIXED);
         mChartDirection.setDomainStep(XYStepMode.SUBDIVIDE, 25);
         mChartDirection.setTicksPerDomainLabel(6);
+        adjustFonts(mChartDirection);
         
         XYSeries series = new DynamicXYSeries( mListDirection, "Dir. Med." );
         LineAndPointFormatter format = new LineAndPointFormatter(
@@ -99,16 +106,18 @@ public class Tolomet extends Activity implements OnItemSelectedListener, View.On
         
         mChartSpeed = (XYPlot)findViewById(R.id.chartSpeed);
         mChartSpeed.disableAllMarkup();
+        mChartSpeed.setTitle(getString(R.string.Speed));
         mChartSpeed.setRangeLabel("km/h");        
         mChartSpeed.setRangeValueFormat(new DecimalFormat("#"));
         mChartSpeed.setRangeBoundaries(0, 50, BoundaryMode.FIXED);
         mChartSpeed.setRangeStep(XYStepMode.SUBDIVIDE, 11);
         //mChartSpeed.setTicksPerRangeLabel(2);
-        mChartSpeed.setDomainLabel("Hora");
+        mChartSpeed.setDomainLabel(getString(R.string.Time));
         mChartSpeed.setDomainValueFormat(new SimpleDateFormat("HH:mm"));
         mChartSpeed.setDomainBoundaries(date1.getTime(), date2.getTime(), BoundaryMode.FIXED);
         mChartSpeed.setDomainStep(XYStepMode.SUBDIVIDE, 25);
         mChartSpeed.setTicksPerDomainLabel(6);
+        adjustFonts(mChartSpeed);
         
         series = new DynamicXYSeries( mListSpeedMed, "Vel. Med." );
         format = new LineAndPointFormatter(
@@ -122,6 +131,23 @@ public class Tolomet extends Activity implements OnItemSelectedListener, View.On
                 Color.rgb(100, 0, 0),                   // point color
                 null);                                  // fill color (none)
         mChartSpeed.addSeries(series, format);
+        
+        /*mChartSpeed.calculateMinMaxVals();
+		mMinXY = new PointF(mChartSpeed.getCalculatedMinX().floatValue(),mChartSpeed.getCalculatedMinY().floatValue());
+		mMaxXY = new PointF(mChartSpeed.getCalculatedMaxX().floatValue(),mChartSpeed.getCalculatedMaxY().floatValue());
+		mChartSpeed.setOnTouchListener(this);*/
+    }
+    
+    private void adjustFonts( XYPlot plot ) {
+    	plot.getGraphWidget().setMarginBottom(mFontSize);
+    	plot.getGraphWidget().setMarginTop(mFontSize);
+    	plot.getGraphWidget().setMarginRight(2*mFontSize);
+    	//plot.getTitleWidget().getLabelPaint().setTextSize(mFontSize);
+    	//plot.getLegendWidget().getTextPaint().setTextSize(mFontSize);
+        plot.getGraphWidget().getDomainLabelPaint().setTextSize(mFontSize);
+        plot.getGraphWidget().getDomainOriginLabelPaint().setTextSize(mFontSize);
+        plot.getGraphWidget().getRangeLabelPaint().setTextSize(mFontSize);
+        plot.getGraphWidget().getRangeOriginLabelPaint().setTextSize(mFontSize);
     }
     
     /*protected void onResume() {
@@ -318,6 +344,91 @@ public class Tolomet extends Activity implements OnItemSelectedListener, View.On
 		}
 	}
 	
+	public boolean onTouch( View arg0, MotionEvent event ) {
+		/*switch( event.getAction() & MotionEvent.ACTION_MASK ) {
+			case MotionEvent.ACTION_DOWN: // Start gesture
+				mFirstFinger = new PointF(event.getX(), event.getY());
+				mTouchMode = ONE_FINGER_DRAG;
+				break;
+			case MotionEvent.ACTION_UP: 
+			case MotionEvent.ACTION_POINTER_UP:
+				//When the gesture ends, a thread is created to give inertia to the scrolling and zoom 
+				Timer t = new Timer();
+				t.schedule(new TimerTask() {
+					@Override
+					public void run() {
+						while( Math.abs(mLastScrolling)>1f || Math.abs(mLastZooming-1)<1.01 ) { 
+							mLastScrolling *= .8;
+							scroll(mLastScrolling);
+							mLastZooming += (1-mLastZooming)*.2;
+							zoom(mLastZooming);
+							mChartSpeed.setDomainBoundaries( mMinXY.x, mMaxXY.x, BoundaryMode.AUTO);
+							try {
+								mChartSpeed.postRedraw();
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						// the thread lives until the scrolling and zooming are imperceptible
+						}
+					}
+				}, 0);
+			case MotionEvent.ACTION_POINTER_DOWN: // second finger
+				mDistBetweenFingers = spacing(event);
+				// the distance check is done to avoid false alarms
+				if( mDistBetweenFingers > 5f ) {
+					mTouchMode = TWO_FINGERS_DRAG;
+				}
+				break;
+			case MotionEvent.ACTION_MOVE:
+				if( mTouchMode == ONE_FINGER_DRAG ) {
+					PointF oldFirstFinger = mFirstFinger;
+					mFirstFinger = new PointF(event.getX(), event.getY());
+					mLastScrolling = oldFirstFinger.x-mFirstFinger.x;
+					scroll(mLastScrolling);
+					mLastZooming = (mFirstFinger.y-oldFirstFinger.y)/mChartSpeed.getHeight();
+					if( mLastZooming<0 )
+						mLastZooming = 1/(1-mLastZooming);
+					else
+						mLastZooming++;
+					zoom(mLastZooming);
+					mChartSpeed.setDomainBoundaries(mMinXY.x, mMaxXY.x, BoundaryMode.AUTO);
+					mChartSpeed.redraw();
+	 
+				} else if( mTouchMode == TWO_FINGERS_DRAG ) {
+					float oldDist = mDistBetweenFingers; 
+					mDistBetweenFingers = spacing(event);
+					mLastZooming = oldDist/mDistBetweenFingers;
+					zoom(mLastZooming);
+					mChartSpeed.setDomainBoundaries(mMinXY.x, mMaxXY.x, BoundaryMode.AUTO);
+					mChartSpeed.redraw();
+				}
+				break;
+		}*/
+		return true;
+	}
+	
+	/*private void zoom( float scale ) {
+		float domainSpan = mMaxXY.x	 - mMinXY.x;
+		float domainMidPoint = mMaxXY.x	 - domainSpan / 2.0f;
+		float offset = domainSpan * scale / 2.0f;
+		mMinXY.x = domainMidPoint - offset;
+		mMaxXY.x = domainMidPoint + offset;
+	}
+ 
+	private void scroll( float pan ) {
+		float domainSpan = mMaxXY.x	- mMinXY.x;
+		float step = domainSpan / mChartSpeed.getWidth();
+		float offset = pan * step;
+		mMinXY.x += offset;
+		mMaxXY.x += offset;
+	}
+ 
+	private float spacing( MotionEvent event ) {
+		float x = event.getX(0) - event.getX(1);
+		float y = event.getY(0) - event.getY(1);
+		return FloatMath.sqrt(x * x + y * y);
+	}*/
+	
 	private XYPlot mChartSpeed, mChartDirection;
 	private String mStation, mStationCode, mStationName;
 	private Spinner mSpinner;
@@ -325,4 +436,17 @@ public class Tolomet extends Activity implements OnItemSelectedListener, View.On
 	private ProgressDialog mProgress;
 	private List<Number> mListDirection, mListSpeedMed, mListSpeedMax;
 	private Map<String,List<Number>> mMapDirection, mMapSpeedMed, mMapSpeedMax;
+	static final float mFontSize = 16;
+	
+	// Touch	
+	/*static final int NONE = 0;
+	static final int ONE_FINGER_DRAG = 1;
+	static final int TWO_FINGERS_DRAG = 2;
+	int mTouchMode = NONE;	 
+	PointF mFirstFinger;
+	float mLastScrolling;
+	float mDistBetweenFingers;
+	float mLastZooming;
+	private PointF mMinXY;
+	private PointF mMaxXY;*/
 }
