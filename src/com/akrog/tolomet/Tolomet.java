@@ -17,6 +17,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.graphics.PointF;
@@ -70,7 +71,7 @@ public class Tolomet extends Activity
         
         mProgress = new ProgressDialog(this);
         mProgress.setMessage( getString(R.string.Downloading)+"..." );
-        mProgress.setTitle( getString(R.string.Progress) );
+        mProgress.setTitle( "" );//getString(R.string.Progress) );
         mProgress.setIndeterminate(true);
         mProgress.setCancelable(true);
     }
@@ -141,7 +142,7 @@ public class Tolomet extends Activity
     private void adjustFonts( XYPlot plot ) {
     	plot.getGraphWidget().setMarginBottom(mFontSize);
     	plot.getGraphWidget().setMarginTop(mFontSize);
-    	plot.getGraphWidget().setMarginRight(2*mFontSize);
+    	plot.getGraphWidget().setMarginRight(1.5f*mFontSize);
     	//plot.getTitleWidget().getLabelPaint().setTextSize(mFontSize);
     	//plot.getLegendWidget().getTextPaint().setTextSize(mFontSize);
         plot.getGraphWidget().getDomainLabelPaint().setTextSize(mFontSize);
@@ -166,14 +167,35 @@ public class Tolomet extends Activity
     }    
     
     private void loadData() {
-    	Calendar cal = Calendar.getInstance();
+    	loadStored();
+    	Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+    	String time1 = "00:00";
+    	String time2 = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
+    	if( mListDirection.size() > 2 ) {
+    		Calendar last = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+    		last.setTimeInMillis((Long)mListDirection.get(mListDirection.size()-2));
+    		long t1 = cal.getTimeInMillis();
+    		long t2 = last.getTimeInMillis();
+    		long d = t1-t2;
+    		d = d/1000/60;
+    		if( last.get(Calendar.DAY_OF_MONTH) == cal.get(Calendar.DAY_OF_MONTH) ) {
+    			if( (cal.getTimeInMillis()-last.getTimeInMillis()) <= 10*60*1000 ) {
+    				AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+    				alertDialog.setMessage( getString(R.string.Impatient) );
+    				alertDialog.show();
+    				return;
+    			}
+    			last.setTimeInMillis(last.getTimeInMillis()+10*60*1000);
+    			time1 = last.get(Calendar.HOUR_OF_DAY) + ":" + last.get(Calendar.MINUTE);
+    		}
+    	}   	
     	String uri = String.format(
-    			"%s&anyo=%d&mes=%d&dia=%d&hora=%s&CodigoEstacion=%s&pagina=1&R01HNoPortal=true", new Object[]{
+    			"%s&anyo=%d&mes=%d&dia=%d&hora=%s%%20%s&CodigoEstacion=%s&pagina=1&R01HNoPortal=true", new Object[]{
     			"http://www.euskalmet.euskadi.net/s07-5853x/es/meteorologia/lectur_fr.apl?e=5",
     			cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH),
-    			"00:00%2023:50", mStationCode
+    			time1, time2, mStationCode
     	} );
-    	//System.out.println(uri);
+    	System.out.println(uri);
     	AsyncTask<String, Void, String> task = new Downloader();
     	task.execute(uri);
     }   
@@ -181,11 +203,17 @@ public class Tolomet extends Activity
     private void loadStored() {
     	List<Number> list;
     	list = mMapDirection.get(mStationCode);
-    	mListDirection.clear(); mListDirection.addAll(list);
+    	mListDirection.clear();
+    	if( list != null )
+    		mListDirection.addAll(list);
     	list = mMapSpeedMed.get(mStationCode);
-    	mListSpeedMed.clear(); mListSpeedMed.addAll(list);
+    	mListSpeedMed.clear();
+    	if( list != null )
+    		mListSpeedMed.addAll(list);
     	list = mMapSpeedMax.get(mStationCode);
-    	mListSpeedMax.clear(); mListSpeedMax.addAll(list);
+    	mListSpeedMax.clear();
+    	if( list != null )
+    		mListSpeedMax.addAll(list);
     }
     
     public void refresh() {
@@ -225,6 +253,8 @@ public class Tolomet extends Activity
 	}
 	
 	private void updateSummary() {
+		if( mListDirection == null || mListDirection.size() < 2 )
+			return;
 		int i = mListDirection.size()-1;
         int dir = (Integer)mListDirection.get(i);
         float med = (Float)mListSpeedMed.get(i);
@@ -277,12 +307,12 @@ public class Tolomet extends Activity
 	        try {		        
 		        String[] lines = result.split("<tr>");
 		        Number date, val;
-		        mListDirection.clear();
+		        /*mListDirection.clear();
 		        mListSpeedMed.clear();
-		        mListSpeedMax.clear();		        
+		        mListSpeedMax.clear();*/		        
 		        for( int i = 1; i < lines.length; i++ ) {
 		        	String[] cells = lines[i].split("<td");
-		        	if( getContent(cells[2]).equals("-") )
+		        	if( getContent(cells[1]).equals("Med") || getContent(cells[2]).equals("-") )
 		        		break;
 		        	date = toEpoch(getContent(cells[1]));
 		        	val = Integer.parseInt(getContent(cells[3]));
@@ -301,6 +331,7 @@ public class Tolomet extends Activity
 		        updateSummary();	        
 	        } catch (Exception e) {
 				System.out.println( e.getMessage() );
+				loadStored();
 			}
 	    }
 		

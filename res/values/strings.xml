@@ -13,6 +13,7 @@
     <string name="About">Acerca de &#8230;</string>
     <string name="Time">Hora</string>
     <string name="Degrees">Grados</string>
+    <string name="Impatient">¡Impaciente!, las lecturas son cada 10 minutos</string>
  
     <string-array name="station_array">
 <item>C072 - Orduña</item>
