@@ -14,6 +14,8 @@ import android.text.Html;
 import android.text.util.Linkify;
 import android.graphics.Color;
 import android.widget.TextView;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 
 public class AboutDialog extends Dialog {
 	private static Context mContext = null;
@@ -29,7 +31,13 @@ public class AboutDialog extends Dialog {
 		TextView tv = (TextView)findViewById(R.id.legal_text);
 		tv.setText(readRawTextFile(R.raw.legal));
 		tv = (TextView)findViewById(R.id.info_text);
-		tv.setText(Html.fromHtml(readRawTextFile(R.raw.info)));
+		String versionName = "??";
+		try {
+			versionName = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionName;
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		tv.setText(Html.fromHtml(readRawTextFile(R.raw.info).replaceAll("\\$VER\\$", versionName)));
 		tv.setLinkTextColor(Color.WHITE);
 		Linkify.addLinks(tv, Linkify.ALL);
 	}
