@@ -76,13 +76,17 @@ public class Tolomet extends Activity
         mProgress.setCancelable(true);
     }
     
-    private void createCharts() {
+    private void updateDomainBoundaries() {
     	Calendar cal = Calendar.getInstance();
         cal.set(Calendar.MINUTE, (cal.get(Calendar.MINUTE)+9)/10*10 );
         Date date2 = cal.getTime();
         Date date1 = new Date();
         date1.setTime(date2.getTime()-4*60*60*1000);
-        
+        mChartDirection.setDomainBoundaries(date1.getTime(), date2.getTime(), BoundaryMode.FIXED);
+        mChartSpeed.setDomainBoundaries(date1.getTime(), date2.getTime(), BoundaryMode.FIXED);
+    }
+    
+    private void createCharts() {    	       
     	mChartDirection = (XYPlot)findViewById(R.id.chartDirection);
         mChartDirection.disableAllMarkup();
         mChartDirection.setTitle(getString(R.string.Direction));
@@ -92,8 +96,7 @@ public class Tolomet extends Activity
         mChartDirection.setRangeStep(XYStepMode.SUBDIVIDE, 9);
         //mChartDirection.setTicksPerRangeLabel(3);
         mChartDirection.setDomainLabel(getString(R.string.Time));
-        mChartDirection.setDomainValueFormat(new SimpleDateFormat("HH:mm"));
-        mChartDirection.setDomainBoundaries(date1.getTime(), date2.getTime(), BoundaryMode.FIXED);
+        mChartDirection.setDomainValueFormat(new SimpleDateFormat("HH:mm"));        
         mChartDirection.setDomainStep(XYStepMode.SUBDIVIDE, 25);
         mChartDirection.setTicksPerDomainLabel(6);
         adjustFonts(mChartDirection);
@@ -114,8 +117,7 @@ public class Tolomet extends Activity
         mChartSpeed.setRangeStep(XYStepMode.SUBDIVIDE, 11);
         //mChartSpeed.setTicksPerRangeLabel(2);
         mChartSpeed.setDomainLabel(getString(R.string.Time));
-        mChartSpeed.setDomainValueFormat(new SimpleDateFormat("HH:mm"));
-        mChartSpeed.setDomainBoundaries(date1.getTime(), date2.getTime(), BoundaryMode.FIXED);
+        mChartSpeed.setDomainValueFormat(new SimpleDateFormat("HH:mm"));        
         mChartSpeed.setDomainStep(XYStepMode.SUBDIVIDE, 25);
         mChartSpeed.setTicksPerDomainLabel(6);
         adjustFonts(mChartSpeed);
@@ -132,6 +134,8 @@ public class Tolomet extends Activity
                 Color.rgb(100, 0, 0),                   // point color
                 null);                                  // fill color (none)
         mChartSpeed.addSeries(series, format);
+        
+        updateDomainBoundaries();
         
         /*mChartSpeed.calculateMinMaxVals();
 		mMinXY = new PointF(mChartSpeed.getCalculatedMinX().floatValue(),mChartSpeed.getCalculatedMinY().floatValue());
@@ -246,7 +250,7 @@ public class Tolomet extends Activity
 	        mChartSpeed.redraw();
 	        updateSummary();
 		} else
-			loadData();
+			loadData();		
 	}
 
 	public void onNothingSelected(AdapterView<?> parent) {
@@ -328,7 +332,8 @@ public class Tolomet extends Activity
 		        updateLists();
 		        mChartDirection.postRedraw(false);
 		        mChartSpeed.postRedraw(false);
-		        updateSummary();	        
+		        updateSummary();
+		        updateDomainBoundaries();
 	        } catch (Exception e) {
 				System.out.println( e.getMessage() );
 				loadStored();
