@@ -9,13 +9,12 @@ import java.io.InputStreamReader;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.util.Linkify;
-import android.graphics.Color;
 import android.widget.TextView;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager.NameNotFoundException;
 
 public class AboutDialog extends Dialog {
 	private static Context mContext = null;
