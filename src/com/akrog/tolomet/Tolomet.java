@@ -42,7 +42,7 @@ import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYStepMode;
 
 public class Tolomet extends Activity
-	implements OnItemSelectedListener, View.OnClickListener, OnTouchListener {
+	implements OnItemSelectedListener, View.OnClickListener {//, OnTouchListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -174,7 +174,7 @@ public class Tolomet extends Activity
     	loadStored();
     	Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
     	String time1 = "00:00";
-    	String time2 = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
+    	String time2 = String.format("%02d:%02d", cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE) );
     	if( mListDirection.size() > 2 ) {
     		Calendar last = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
     		last.setTimeInMillis((Long)mListDirection.get(mListDirection.size()-2));
@@ -190,16 +190,16 @@ public class Tolomet extends Activity
     				return;
     			}
     			last.setTimeInMillis(last.getTimeInMillis()+10*60*1000);
-    			time1 = last.get(Calendar.HOUR_OF_DAY) + ":" + last.get(Calendar.MINUTE);
+    			time1 = String.format("%02d:%02d", last.get(Calendar.HOUR_OF_DAY), last.get(Calendar.MINUTE) );
     		}
     	}   	
     	String uri = String.format(
-    			"%s&anyo=%d&mes=%d&dia=%d&hora=%s%%20%s&CodigoEstacion=%s&pagina=1&R01HNoPortal=true", new Object[]{
+    			"%s&anyo=%d&mes=%02d&dia=%02d&hora=%s%%20%s&CodigoEstacion=%s&pagina=1&R01HNoPortal=true", new Object[]{
     			"http://www.euskalmet.euskadi.net/s07-5853x/es/meteorologia/lectur_fr.apl?e=5",
     			cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH),
     			time1, time2, mStationCode
     	} );
-    	System.out.println(uri);
+    	//System.out.println(uri);
     	AsyncTask<String, Void, String> task = new Downloader();
     	task.execute(uri);
     }   
