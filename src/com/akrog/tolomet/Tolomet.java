@@ -13,22 +13,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.graphics.Color;
-import android.graphics.PointF;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.FloatMath;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
@@ -273,11 +268,11 @@ public class Tolomet extends Activity
 	}
 	
 	private String getDir( int degrees ) {
-		String[] vals = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW"};
-		degrees += 12;
-		if( degrees > 360 )
-			degrees -= 360;
-		return vals[degrees/24];
+		String[] vals = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
+        double deg = degrees + 11.25;
+		if( deg >= 360.0 )
+			degrees -= 360.0;
+		return vals[(int)(deg/22.5)];
 	}
 	
 	private class Downloader extends AsyncTask<String, Void, String> {
