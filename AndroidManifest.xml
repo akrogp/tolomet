@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.akrog.tolomet"
-    android:versionCode="5"
-    android:versionName="0.5" >
+    android:versionCode="6"
+    android:versionName="0.6" >
 
     <uses-sdk
         android:minSdkVersion="7"
@@ -16,6 +16,7 @@
         android:hardwareAccelerated="false">
         <activity
             android:name=".Tolomet"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_tolomet" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
