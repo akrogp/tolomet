@@ -17,6 +17,9 @@ import java.util.TimeZone;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -63,12 +66,17 @@ public class Tolomet extends Activity
     	mMapSpeedMax = new HashMap<String, List<Number>>();
         
         createCharts();                                                                   
-        
+                        
         mProgress = new ProgressDialog(this);
         mProgress.setMessage( getString(R.string.Downloading)+"..." );
         mProgress.setTitle( "" );//getString(R.string.Progress) );
         mProgress.setIndeterminate(true);
         mProgress.setCancelable(true);
+        mProgress.setOnCancelListener(new OnCancelListener(){
+        	public void onCancel(DialogInterface dialog) {
+        		mDownloader.cancel(true);
+        	}
+        });
     }
     
     private void updateDomainBoundaries() {
@@ -148,6 +156,7 @@ public class Tolomet extends Activity
         plot.getGraphWidget().getDomainOriginLabelPaint().setTextSize(mFontSize);
         plot.getGraphWidget().getRangeLabelPaint().setTextSize(mFontSize);
         plot.getGraphWidget().getRangeOriginLabelPaint().setTextSize(mFontSize);
+        plot.getGraphWidget().getGridBackgroundPaint().setColor(Color.WHITE);
     }
     
     /*protected void onResume() {
@@ -159,7 +168,10 @@ public class Tolomet extends Activity
 	}
     
     private void getStation() {
-    	mStation = ((TextView)mSpinner.getSelectedView()).getText().toString();
+    	TextView view = (TextView)mSpinner.getSelectedView();
+    	if( view == null )
+    		view = (TextView)mSpinner.getItemAtPosition(0);
+    	mStation = view.getText().toString();
     	String[] fields = mStation.split(" - ");
     	mStationCode = fields[0];
     	mStationName = fields[1];
@@ -195,8 +207,8 @@ public class Tolomet extends Activity
     			time1, time2, mStationCode
     	} );
     	//System.out.println(uri);
-    	AsyncTask<String, Void, String> task = new Downloader();
-    	task.execute(uri);
+    	mDownloader = new Downloader();
+    	mDownloader.execute(uri);
     }   
     
     private void loadStored() {
@@ -270,17 +282,33 @@ public class Tolomet extends Activity
 	private String getDir( int degrees ) {
 		String[] vals = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
         double deg = degrees + 11.25;
-		if( deg >= 360.0 )
+		while( deg >= 360.0 )
 			degrees -= 360.0;
-		return vals[(int)(deg/22.5)];
+		int index = (int)(deg/22.5);
+		if( index < 0 )
+			index = 0;
+		else if( index >= 16 )
+			index = 15;
+		return vals[index];
 	}
 	
 	private class Downloader extends AsyncTask<String, Void, String> {
+		private int mOrientation;
+		
 		@Override
 	    protected void onPreExecute() {
-	        super.onPreExecute();	        
+	        super.onPreExecute();
+	        mOrientation = getRequestedOrientation();
+	        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 	        mProgress.show();
 	    }
+		
+		@Override
+		protected void onCancelled() {
+			super.onCancelled();
+			setRequestedOrientation(mOrientation);
+			//mProgress.dismiss();
+		}
 		
 		@Override
 		protected String doInBackground(String... urls) {
@@ -290,7 +318,7 @@ public class Tolomet extends Activity
 	    		URLConnection con = url.openConnection();
 	    		BufferedReader rd = new BufferedReader(new InputStreamReader(con.getInputStream()));
 	    		String line;
-	    		while( (line=rd.readLine()) != null )
+	    		while( (line=rd.readLine()) != null && !isCancelled() )
 	    			builder.append(line);
 	    		rd.close();
 	    	} catch( Exception e ) {
@@ -332,6 +360,8 @@ public class Tolomet extends Activity
 	        } catch (Exception e) {
 				System.out.println( e.getMessage() );
 				loadStored();
+			} finally {
+				setRequestedOrientation(mOrientation);
 			}
 	    }
 		
@@ -465,6 +495,7 @@ public class Tolomet extends Activity
 	private Spinner mSpinner;
 	private TextView mSummary;
 	private ProgressDialog mProgress;
+	Downloader mDownloader;
 	private List<Number> mListDirection, mListSpeedMed, mListSpeedMax;
 	private Map<String,List<Number>> mMapDirection, mMapSpeedMed, mMapSpeedMax;
 	static final float mFontSize = 16;
