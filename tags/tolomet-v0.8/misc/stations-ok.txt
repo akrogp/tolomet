@@ -1,0 +1,53 @@
+<item>C072 - Orduña</item>
+<item>C042 - Punta Galea</item>
+<item>C056 - Alegría</item>
+<item>C069 - Almike (Bermeo)</item>
+<item>C035 - Altube</item>
+<item>C061 - Arboleda</item>
+<item>C001 - Arkaute I</item>
+<item>C023 - Arrasate</item>
+<item>C002 - Arteaga</item>
+<item>C025 - Beluntza</item>
+<item>C026 - Berastegi</item>
+<item>C058 - Bidania</item>
+<item>C065 - Cerroja</item>
+<item>C003 - Derio</item>
+<item>C039 - Deusto</item>
+<item>C075 - Eitzaga</item>
+<item>C034 - Espejo</item>
+<item>C0AA - Etura</item>
+<item>C067 - Gardea</item>
+<item>C040 - Gasteiz</item>
+<item>C048 - Herrera</item>
+<item>C018 - Higer</item>
+<item>C033 - Igorre</item>
+<item>C024 - Iturrieta</item>
+<item>C036 - Iurreta</item>
+<item>C071 - Jaizkibel</item>
+<item>C047 - Kapildui</item>
+<item>C045 - La Garbea</item>
+<item>C0EC - Lasarte</item>
+<item>C027 - Llodio</item>
+<item>C019 - Matxitxako</item>
+<item>C017 - Miramon</item>
+<item>C057 - Mungia</item>
+<item>C041 - Navarrete</item>
+<item>C046 - Oiz</item>
+<item>C043 - Ordizia</item>
+<item>C059 - Ordunte</item>
+<item>C072 - Orduña</item>
+<item>C0B4 - Orozko</item>
+<item>C054 - Otxandio</item>
+<item>C042 - Punta Galea</item>
+<item>C060 - Páganos</item>
+<item>C021 - Roitegi</item>
+<item>C030 - Salvatierra</item>
+<item>C007 - Santa Clara</item>
+<item>C051 - Saratxo</item>
+<item>C020 - Trebiño</item>
+<item>C022 - Urkiola</item>
+<item>C070 - Zaldiaran</item>
+<item>C050 - Zambrana</item>
+<item>C064 - Zarautz</item>
+<item>C028 - Zegama</item>
+<item>C029 - Zizurkil</item>
