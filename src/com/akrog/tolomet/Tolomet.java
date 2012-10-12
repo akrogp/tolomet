@@ -19,7 +19,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
-import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -41,29 +40,38 @@ import com.androidplot.xy.XYStepMode;
 
 public class Tolomet extends Activity
 	implements OnItemSelectedListener, View.OnClickListener {//, OnTouchListener {
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);*/
         
         setContentView(R.layout.activity_tolomet);
+        
+        @SuppressWarnings({ "deprecation" })
+		Map<String,Object> data = (Map<String, Object>)getLastNonConfigurationInstance();
+        int sel = 0;
+        if( data == null ) {
+        	mMapDirection = new HashMap<String, List<Number>>();
+        	mMapSpeedMed = new HashMap<String, List<Number>>();
+        	mMapSpeedMax = new HashMap<String, List<Number>>();
+        } else {
+        	sel = (Integer)data.get("station");
+        	mMapDirection = (Map<String, List<Number>>)data.get("direction");
+        	mMapSpeedMax = (Map<String, List<Number>>)data.get("speedmax");
+        	mMapSpeedMed =(Map<String, List<Number>>)data.get("speedmed");        	
+        }
+        mListDirection = new ArrayList<Number>();
+    	mListSpeedMed = new ArrayList<Number>();
+    	mListSpeedMax = new ArrayList<Number>();
         
         mSummary = (TextView)findViewById(R.id.textView1);
         
         mSpinner = (Spinner)findViewById(R.id.spinner1);
-        mSpinner.setSelection(0);
+        mSpinner.setSelection(sel);
         mSpinner.setOnItemSelectedListener(this);        
         
         Button button = (Button)findViewById(R.id.button1);
-        button.setOnClickListener(this);
-        
-        mListDirection = new ArrayList<Number>();
-    	mListSpeedMed = new ArrayList<Number>();
-    	mListSpeedMax = new ArrayList<Number>();
-    	mMapDirection = new HashMap<String, List<Number>>();
-    	mMapSpeedMed = new HashMap<String, List<Number>>();
-    	mMapSpeedMax = new HashMap<String, List<Number>>();
+        button.setOnClickListener(this);                    	
         
         createCharts();                                                                   
                         
@@ -77,6 +85,16 @@ public class Tolomet extends Activity
         		mDownloader.cancel(true);
         	}
         });
+    }    
+    
+    @Override
+    public Object onRetainNonConfigurationInstance() {
+    	Map<String,Object> data = new HashMap<String, Object>();
+    	data.put("station", mSpinner.getSelectedItemPosition());
+    	data.put("direction", mMapDirection);
+    	data.put("speedmax", mMapSpeedMax);
+    	data.put("speedmed", mMapSpeedMed);    	
+    	return data;
     }
     
     private void updateDomainBoundaries() {
@@ -168,10 +186,9 @@ public class Tolomet extends Activity
 	}
     
     private void getStation() {
-    	TextView view = (TextView)mSpinner.getSelectedView();
-    	if( view == null )
-    		view = (TextView)mSpinner.getItemAtPosition(0);
-    	mStation = view.getText().toString();
+    	mStation = (String)mSpinner.getSelectedItem();
+    	if( mStation == null )
+    		mStation = (String)mSpinner.getItemAtPosition(0);
     	String[] fields = mStation.split(" - ");
     	mStationCode = fields[0];
     	mStationName = fields[1];
@@ -230,7 +247,22 @@ public class Tolomet extends Activity
     public void refresh() {
     	getStation();
     	loadData();
-    }    
+    }
+    
+    public void redraw() {
+    	mChartDirection.redraw();
+        mChartSpeed.redraw();
+        updateSummary();
+        updateDomainBoundaries();
+    }
+    
+    /*public void postRedraw() {
+    	runOnUiThread(new Runnable() {
+            public void run() {
+            	redraw();
+            }
+        });
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu( Menu menu ) {
@@ -253,15 +285,10 @@ public class Tolomet extends Activity
 		getStation();
 		if( mMapDirection.containsKey(mStationCode) ) {
 			loadStored();
-			mChartDirection.redraw();
-	        mChartSpeed.redraw();
-	        updateSummary();
+			redraw();
 		} else
 			loadData();		
-	}
-
-	public void onNothingSelected(AdapterView<?> parent) {
-	}
+	}	
 	
 	private void updateSummary() {
 		if( mListDirection == null || mListDirection.size() < 2 )
@@ -275,15 +302,14 @@ public class Tolomet extends Activity
         SimpleDateFormat df = new SimpleDateFormat();
         df.applyPattern("HH:mm");
         String date = df.format(cal.getTime());
-		mSummary.setText( String.format("%s> %dº (%s), %.1f~%.1f km/h",
-				date, dir, getDir(dir), med, max ));
+		mSummary.setText( String.format("%s> %dº (%s), %.1f~%.1f km/h", date, dir, getDir(dir), med, max ));		
 	}
 	
 	private String getDir( int degrees ) {
 		String[] vals = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
         double deg = degrees + 11.25;
 		while( deg >= 360.0 )
-			degrees -= 360.0;
+			deg -= 360.0;
 		int index = (int)(deg/22.5);
 		if( index < 0 )
 			index = 0;
@@ -292,21 +318,16 @@ public class Tolomet extends Activity
 		return vals[index];
 	}
 	
-	private class Downloader extends AsyncTask<String, Void, String> {
-		private int mOrientation;
-		
+	private class Downloader extends AsyncTask<String, Void, String> {		
 		@Override
 	    protected void onPreExecute() {
-	        super.onPreExecute();
-	        mOrientation = getRequestedOrientation();
-	        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+	        super.onPreExecute();	        
 	        mProgress.show();
 	    }
 		
 		@Override
 		protected void onCancelled() {
 			super.onCancelled();
-			setRequestedOrientation(mOrientation);
 			//mProgress.dismiss();
 		}
 		
@@ -353,15 +374,10 @@ public class Tolomet extends Activity
 		        	mListSpeedMax.add(val);
 		        }
 		        updateLists();
-		        mChartDirection.postRedraw(false);
-		        mChartSpeed.postRedraw(false);
-		        updateSummary();
-		        updateDomainBoundaries();
+		        redraw();
 	        } catch (Exception e) {
 				System.out.println( e.getMessage() );
 				loadStored();
-			} finally {
-				setRequestedOrientation(mOrientation);
 			}
 	    }
 		
@@ -499,6 +515,10 @@ public class Tolomet extends Activity
 	private List<Number> mListDirection, mListSpeedMed, mListSpeedMax;
 	private Map<String,List<Number>> mMapDirection, mMapSpeedMed, mMapSpeedMax;
 	static final float mFontSize = 16;
+	public void onNothingSelected(AdapterView<?> arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	// Touch	
 	/*static final int NONE = 0;
