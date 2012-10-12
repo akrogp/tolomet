@@ -20,6 +20,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.graphics.Color;
+import android.graphics.Paint.Style;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -37,6 +38,7 @@ import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYStepMode;
+import com.androidplot.xy.YValueMarker;
 
 public class Tolomet extends Activity
 	implements OnItemSelectedListener, View.OnClickListener {//, OnTouchListener {
@@ -127,7 +129,7 @@ public class Tolomet extends Activity
                 Color.rgb(0, 0, 200),                   // line color
                 Color.rgb(0, 0, 100),                   // point color
                 null);                                  // fill color (none)
-        mChartDirection.addSeries(series, format);
+        mChartDirection.addSeries(series, format);        
         
         mChartSpeed = (XYPlot)findViewById(R.id.chartSpeed);
         mChartSpeed.disableAllMarkup();
@@ -156,6 +158,9 @@ public class Tolomet extends Activity
                 null);                                  // fill color (none)
         mChartSpeed.addSeries(series, format);
         
+        mChartSpeed.addMarker(getYMarker(10));        
+        mChartSpeed.addMarker(getYMarker(30));
+        
         updateDomainBoundaries();
         
         /*mChartSpeed.calculateMinMaxVals();
@@ -175,6 +180,14 @@ public class Tolomet extends Activity
         plot.getGraphWidget().getRangeLabelPaint().setTextSize(mFontSize);
         plot.getGraphWidget().getRangeOriginLabelPaint().setTextSize(mFontSize);
         plot.getGraphWidget().getGridBackgroundPaint().setColor(Color.WHITE);
+    }
+    
+    private YValueMarker getYMarker( float y ) {
+    	YValueMarker m = new YValueMarker(y, null);
+    	m.getLinePaint().setColor(Color.BLACK);
+        m.getLinePaint().setStrokeWidth(0.0f);
+        m.getTextPaint().setColor(Color.BLACK);
+        return m;
     }
     
     /*protected void onResume() {
@@ -302,7 +315,7 @@ public class Tolomet extends Activity
         SimpleDateFormat df = new SimpleDateFormat();
         df.applyPattern("HH:mm");
         String date = df.format(cal.getTime());
-		mSummary.setText( String.format("%s> %dº (%s), %.1f~%.1f km/h", date, dir, getDir(dir), med, max ));		
+		mSummary.setText( String.format("%s | %dº (%s) | %.1f~%.1f km/h", date, dir, getDir(dir), med, max ));		
 	}
 	
 	private String getDir( int degrees ) {
