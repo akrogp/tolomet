@@ -29,6 +29,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -40,7 +43,7 @@ import com.androidplot.xy.XYStepMode;
 import com.androidplot.xy.YValueMarker;
 
 public class Tolomet extends Activity
-	implements OnItemSelectedListener, View.OnClickListener {//, OnTouchListener {
+	implements OnItemSelectedListener, View.OnClickListener, OnCheckedChangeListener {//, OnTouchListener {
 	
     @SuppressWarnings("unchecked")
 	@Override
@@ -70,7 +73,11 @@ public class Tolomet extends Activity
         mSpinner.setOnItemSelectedListener(this);
         
         Button button = (Button)findViewById(R.id.button1);
-        button.setOnClickListener(this);                    	
+        button.setOnClickListener(this);
+        
+        mFavorite = (CheckBox)findViewById(R.id.favorite_button);
+        mFavorite.setChecked(false);
+        mFavorite.setOnCheckedChangeListener(this);
         
         createCharts();                                                                   
                         
@@ -255,6 +262,17 @@ public class Tolomet extends Activity
     	refresh();
 	}
     
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+    	SharedPreferences settings = getPreferences(0);
+    	SharedPreferences.Editor editor = settings.edit();
+    	if( isChecked ) {
+    		editor.putBoolean(mStation.Code, true);
+    	} else {
+    		editor.remove(mStation.Code);
+    	}
+    	editor.commit();
+	}
+    
     private void getStation() {
     	mSelection = (String)mSpinner.getSelectedItem();
     	if( mSelection == null )
@@ -262,7 +280,9 @@ public class Tolomet extends Activity
     	String[] fields = mSelection.split(" - ");
     	mStation.Code = fields[0];
     	mStation.Name = fields[1];
-    	mStation.Provider = mStation.Code.charAt(0) == 'N' ? WindProviderType.MeteoNavarra : WindProviderType.Euskalmet; 
+    	mStation.Provider = mStation.Code.charAt(0) == 'N' ? WindProviderType.MeteoNavarra : WindProviderType.Euskalmet;
+    	SharedPreferences settings = getPreferences(0);
+    	mStation.Favorite = settings.getBoolean(mStation.Code, false);
     }    
     
     private void loadData() {
@@ -293,6 +313,7 @@ public class Tolomet extends Activity
         mChartSpeed.redraw();
         updateSummary();
         updateDomainBoundaries();
+        mFavorite.setChecked(mStation.Favorite);
     }
     
     /*public void postRedraw() {
@@ -515,12 +536,13 @@ public class Tolomet extends Activity
 	private String mSelection;
 	private Spinner mSpinner;
 	private TextView mSummary;
+	private CheckBox mFavorite;
 	private ProgressDialog mProgress;
 	Downloader mDownloader;
 	private Station mStation;
 	private Map<String,Station> mStations;
 	private WindProviderManager mProvider;
-	static final float mFontSize = 16;
+	static final float mFontSize = 16;		
 		
 	// Touch	
 	/*static final int NONE = 0;

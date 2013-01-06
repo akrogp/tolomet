@@ -16,6 +16,7 @@
     <string name="Degrees">Grados</string>
     <string name="Impatient">¡Impaciente!, las lecturas son cada</string>
     <string name="minutes">minutos</string>
+    <string name="star">favorito</string>
  
     <string-array name="station_array">
 <item>C072 - Orduña</item>
