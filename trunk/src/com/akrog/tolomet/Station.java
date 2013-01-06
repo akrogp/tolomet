@@ -9,17 +9,26 @@ public class Station {
 	public List<Number> ListDirection, ListHumidity, ListSpeedMed, ListSpeedMax;
 	public String Name, Code;
 	public WindProviderType Provider;
-	public boolean Favorite;
+	public boolean Favorite, Clone;
 		
 	public Station() {
 		this("none","none",false,WindProviderType.Euskalmet);
+	}
+	
+	public Station( String str ) {
+		this();
+		String[] fields = str.split(" - ");
+    	Code = fields[0];
+    	Name = fields[1];
+    	Provider = Code.startsWith("GN") ? WindProviderType.MeteoNavarra : WindProviderType.Euskalmet;
 	}
 	
 	public Station( String name, String code, boolean favorite, WindProviderType provider ) {
 		Name = name;
 		Code = code;
 		Favorite = favorite;
-		Provider = provider;		
+		Provider = provider;
+		Clone = false;
 		ListDirection = new ArrayList<Number>();
 		ListHumidity = new ArrayList<Number>();
 		ListSpeedMed = new ArrayList<Number>();
@@ -34,6 +43,25 @@ public class Station {
 	public Station( Bundle bundle, String code ) {
 		this();
 		loadState(bundle, code);
+	}
+	
+	public Station getLinkedClone() {
+		Station station = new Station();
+		station.Name = Name;
+		station.Code = Code;
+		station.Favorite = Favorite;
+		station.Provider = Provider;
+		station.Clone = true;
+		station.ListDirection = ListDirection;
+		station.ListHumidity = ListHumidity;
+		station.ListSpeedMed = ListSpeedMed;
+		station.ListSpeedMax = ListSpeedMax;
+		return station;
+	}
+	
+	@Override
+	public String toString() {
+		return Code + " - " + Name;
 	}
 	
 	public void clear() {
@@ -55,9 +83,10 @@ public class Station {
 	public void replace( Station station ) {
 		clear();
 		add(station);
-		/*Name = station.Name;
+		Name = station.Name;
 		Code = station.Code;
-		Provider = station.Provider;*/
+		Provider = station.Provider;
+		Favorite = station.Favorite;
 	}
 	
 	public boolean isEmpty() {
