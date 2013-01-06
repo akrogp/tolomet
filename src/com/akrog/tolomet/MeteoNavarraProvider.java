@@ -18,7 +18,7 @@ public class MeteoNavarraProvider implements WindProvider {
 			"%s?IDEstacion=%s&p_10=7&p_10=2&p_10=9&p_10=6&fecha_desde=%s&fecha_hasta=%s&dl=csv",
 			new Object[]{
 			"http://meteo.navarra.es/download/estacion_datos.cfm",
-			station.Code.substring(1), time1, time2
+			station.Code.substring(2), time1, time2
 			} );
 	}
 
@@ -26,7 +26,7 @@ public class MeteoNavarraProvider implements WindProvider {
 		String[] cells = data.split(",");
 		Number date, num;
 		if( cells.length < 23 )
-			return;
+			return;	
 		station.clear();
 		for( int i = 16; i < cells.length; i+=7 ) {
 			if( cells[i].equals("\"\"") || cells[i+1].equals("\"- -\"") )

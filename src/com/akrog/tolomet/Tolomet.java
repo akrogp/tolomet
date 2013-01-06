@@ -280,7 +280,7 @@ public class Tolomet extends Activity
     	String[] fields = mSelection.split(" - ");
     	mStation.Code = fields[0];
     	mStation.Name = fields[1];
-    	mStation.Provider = mStation.Code.charAt(0) == 'N' ? WindProviderType.MeteoNavarra : WindProviderType.Euskalmet;
+    	mStation.Provider = mStation.Code.startsWith("GN") ? WindProviderType.MeteoNavarra : WindProviderType.Euskalmet;
     	SharedPreferences settings = getPreferences(0);
     	mStation.Favorite = settings.getBoolean(mStation.Code, false);
     }    
@@ -356,8 +356,10 @@ public class Tolomet extends Activity
 	
 	@SuppressLint("SimpleDateFormat")
 	private void updateSummary() {
-		if( mStation.isEmpty() )
+		if( mStation.isEmpty() ) {
+			mSummary.setText(getString(R.string.NoData));
 			return;
+		}
 		int i = mStation.ListDirection.size()-1;
         int dir = (Integer)mStation.ListDirection.get(i);
         int hum = -1;
@@ -427,13 +429,13 @@ public class Tolomet extends Activity
 	        super.onPostExecute(result);	        
 	        mProgress.dismiss();
 	        try {
-	        	mProvider.updateStation(mStation, result);
-		        updateLists();
-		        redraw();
+	        	mProvider.updateStation(mStation, result);		        
 	        } catch (Exception e) {
 				System.out.println( e.getMessage() );
 				loadStored();
 			}
+	        updateLists();
+	        redraw();
 	    }
 		
 		private void updateLists() {
