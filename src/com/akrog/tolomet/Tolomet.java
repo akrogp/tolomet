@@ -6,21 +6,20 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
-import android.graphics.Paint.Style;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -42,6 +41,7 @@ import com.androidplot.xy.YValueMarker;
 
 public class Tolomet extends Activity
 	implements OnItemSelectedListener, View.OnClickListener {//, OnTouchListener {
+	
     @SuppressWarnings("unchecked")
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,28 +49,25 @@ public class Tolomet extends Activity
         
         setContentView(R.layout.activity_tolomet);
         
+        mProvider = new WindProviderManager();
+        
         @SuppressWarnings({ "deprecation" })
-		Map<String,Object> data = (Map<String, Object>)getLastNonConfigurationInstance();
+        Map<String,Object> data = (Map<String, Object>)getLastNonConfigurationInstance();
         int sel = 0;
-        if( data == null ) {
-        	mMapDirection = new HashMap<String, List<Number>>();
-        	mMapSpeedMed = new HashMap<String, List<Number>>();
-        	mMapSpeedMax = new HashMap<String, List<Number>>();
+        if( data != null ) {	// just for efficiency ...
+        	mStations = (Map<String,Station>)data.get("stations");
+        	sel = (Integer)data.get("selection");        	
         } else {
-        	sel = (Integer)data.get("station");
-        	mMapDirection = (Map<String, List<Number>>)data.get("direction");
-        	mMapSpeedMax = (Map<String, List<Number>>)data.get("speedmax");
-        	mMapSpeedMed =(Map<String, List<Number>>)data.get("speedmed");        	
+        	mStations = new HashMap<String, Station>();
+        	sel = loadState( savedInstanceState );
         }
-        mListDirection = new ArrayList<Number>();
-    	mListSpeedMed = new ArrayList<Number>();
-    	mListSpeedMax = new ArrayList<Number>();
+        mStation = new Station();
         
         mSummary = (TextView)findViewById(R.id.textView1);
         
-        mSpinner = (Spinner)findViewById(R.id.spinner1);
+        mSpinner = (Spinner)findViewById(R.id.spinner1);        
         mSpinner.setSelection(sel);
-        mSpinner.setOnItemSelectedListener(this);        
+        mSpinner.setOnItemSelectedListener(this);
         
         Button button = (Button)findViewById(R.id.button1);
         button.setOnClickListener(this);                    	
@@ -87,16 +84,58 @@ public class Tolomet extends Activity
         		mDownloader.cancel(true);
         	}
         });
+    }
+    
+    @Override
+    @Deprecated
+    public Object onRetainNonConfigurationInstance() {    	
+    	Map<String,Object> data = new HashMap<String, Object>();
+    	data.put("selection", mSpinner.getSelectedItemPosition());
+    	data.put("stations", mStations);
+    	return data;
+    }
+    
+    private int loadState( Bundle bundle ) {
+    	if( bundle != null ) {
+	    	String code;
+	    	Station station;
+	    	for( int i = 0; i < mSpinner.getCount(); i++ ) {
+	    		code = ((String)mSpinner.getItemAtPosition(i)).split(" - ")[0];
+	    		station = new Station( bundle, code );
+	    		if( !station.isEmpty() )
+	    			mStations.put(code, station);
+	    	}
+    	}
+    	SharedPreferences settings = getPreferences(0);
+		return settings.getInt("selection", 0);
+	}
+
+	@Override
+    protected void onPause() {
+    	SharedPreferences settings = getPreferences(0);
+    	SharedPreferences.Editor editor = settings.edit();
+    	editor.putInt("selection", mSpinner.getSelectedItemPosition());
+    	editor.commit();
+    	super.onPause();
+    }
+    
+    public static float convertHumidity( int hum ) {
+    	return 45.0F+hum*2.7F;
+    	//return hum*3.6F;
+    	//return hum*3.15F;
+    }
+    
+    public static int convertHumidity( float hum ) {
+    	return (int)((hum-45.0)/2.7+0.05);
+    	//return (int)(hum/3.6+0.05);
+    	//return (int)(hum/3.15+0.05);
     }    
     
     @Override
-    public Object onRetainNonConfigurationInstance() {
-    	Map<String,Object> data = new HashMap<String, Object>();
-    	data.put("station", mSpinner.getSelectedItemPosition());
-    	data.put("direction", mMapDirection);
-    	data.put("speedmax", mMapSpeedMax);
-    	data.put("speedmed", mMapSpeedMed);    	
-    	return data;
+    protected void onSaveInstanceState(Bundle outState) {
+    	super.onSaveInstanceState(outState);
+    	for( Station station : mStations.values() )
+    		station.saveState(outState);
     }
     
     private void updateDomainBoundaries() {
@@ -109,10 +148,12 @@ public class Tolomet extends Activity
         mChartSpeed.setDomainBoundaries(date1.getTime(), date2.getTime(), BoundaryMode.FIXED);
     }
     
-    private void createCharts() {    	       
+    @SuppressLint("SimpleDateFormat")
+	private void createCharts() {    	       
     	mChartDirection = (XYPlot)findViewById(R.id.chartDirection);
         mChartDirection.disableAllMarkup();
-        mChartDirection.setTitle(getString(R.string.Direction));
+        //mChartDirection.setTitle(getString(R.string.Direction));
+        mChartDirection.setTitle(getString(R.string.DirectionHumidity));
         mChartDirection.setRangeLabel(getString(R.string.Degrees));                
         mChartDirection.setRangeValueFormat(new DecimalFormat("#"));        
         mChartDirection.setRangeBoundaries(0, 360, BoundaryMode.FIXED);
@@ -124,12 +165,24 @@ public class Tolomet extends Activity
         mChartDirection.setTicksPerDomainLabel(6);
         adjustFonts(mChartDirection);
         
-        XYSeries series = new DynamicXYSeries( mListDirection, "Dir. Med." );
+        XYSeries series = new DynamicXYSeries( mStation.ListDirection, "Dir. Med." );
         LineAndPointFormatter format = new LineAndPointFormatter(
                 Color.rgb(0, 0, 200),                   // line color
                 Color.rgb(0, 0, 100),                   // point color
                 null);                                  // fill color (none)
-        mChartDirection.addSeries(series, format);        
+        mChartDirection.addSeries(series, format);
+        series = new DynamicXYSeries( mStation.ListHumidity, "% Hum." );
+        format = new LineAndPointFormatter(
+                Color.rgb(200, 200, 200),                   // line color
+                Color.rgb(100, 100, 100),                   // point color
+                null);                                  // fill color (none)
+        mChartDirection.addSeries(series, format);
+        
+        /*for( int i = 0; i <= 100; i += 25 )
+        	mChartDirection.addMarker(getYMarker(convertHumidity(i),i+"%"));*/
+        mChartDirection.addMarker(getYMarker(convertHumidity(0),0+"%"));
+        mChartDirection.addMarker(getYMarker(convertHumidity(50),50+"%"));
+        mChartDirection.addMarker(getYMarker(convertHumidity(100),100+"%"));
         
         mChartSpeed = (XYPlot)findViewById(R.id.chartSpeed);
         mChartSpeed.disableAllMarkup();
@@ -145,13 +198,13 @@ public class Tolomet extends Activity
         mChartSpeed.setTicksPerDomainLabel(6);
         adjustFonts(mChartSpeed);
         
-        series = new DynamicXYSeries( mListSpeedMed, "Vel. Med." );
+        series = new DynamicXYSeries( mStation.ListSpeedMed, "Vel. Med." );
         format = new LineAndPointFormatter(
                 Color.rgb(0, 200, 0),                   // line color
                 Color.rgb(0, 100, 0),                   // point color
                 null);                                  // fill color (none)
         mChartSpeed.addSeries(series, format);
-        series = new DynamicXYSeries( mListSpeedMax, "Vel. Máx." );
+        series = new DynamicXYSeries( mStation.ListSpeedMax, "Vel. Máx." );
         format = new LineAndPointFormatter(
                 Color.rgb(200, 0, 0),                   // line color
                 Color.rgb(100, 0, 0),                   // point color
@@ -183,7 +236,11 @@ public class Tolomet extends Activity
     }
     
     private YValueMarker getYMarker( float y ) {
-    	YValueMarker m = new YValueMarker(y, null);
+        return getYMarker(y, null);
+    }
+    
+    private YValueMarker getYMarker( float y, String text ) {
+    	YValueMarker m = new YValueMarker(y, text);
     	m.getLinePaint().setColor(Color.BLACK);
         m.getLinePaint().setStrokeWidth(0.0f);
         m.getTextPaint().setColor(Color.BLACK);
@@ -199,62 +256,31 @@ public class Tolomet extends Activity
 	}
     
     private void getStation() {
-    	mStation = (String)mSpinner.getSelectedItem();
-    	if( mStation == null )
-    		mStation = (String)mSpinner.getItemAtPosition(0);
-    	String[] fields = mStation.split(" - ");
-    	mStationCode = fields[0];
-    	mStationName = fields[1];
+    	mSelection = (String)mSpinner.getSelectedItem();
+    	if( mSelection == null )
+    		mSelection = (String)mSpinner.getItemAtPosition(0);
+    	String[] fields = mSelection.split(" - ");
+    	mStation.Code = fields[0];
+    	mStation.Name = fields[1];
+    	mStation.Provider = mStation.Code.charAt(0) == 'N' ? WindProviderType.MeteoNavarra : WindProviderType.Euskalmet; 
     }    
     
     private void loadData() {
     	loadStored();
-    	Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-    	String time1 = "00:00";
-    	String time2 = String.format("%02d:%02d", cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE) );
-    	if( mListDirection.size() > 2 ) {
-    		Calendar last = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-    		last.setTimeInMillis((Long)mListDirection.get(mListDirection.size()-2));
-    		long t1 = cal.getTimeInMillis();
-    		long t2 = last.getTimeInMillis();
-    		long d = t1-t2;
-    		d = d/1000/60;
-    		if( last.get(Calendar.DAY_OF_MONTH) == cal.get(Calendar.DAY_OF_MONTH) ) {
-    			if( (cal.getTimeInMillis()-last.getTimeInMillis()) <= 10*60*1000 ) {
-    				AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-    				alertDialog.setMessage( getString(R.string.Impatient) );
-    				alertDialog.show();
-    				return;
-    			}
-    			last.setTimeInMillis(last.getTimeInMillis()+10*60*1000);
-    			time1 = String.format("%02d:%02d", last.get(Calendar.HOUR_OF_DAY), last.get(Calendar.MINUTE) );
-    		}
-    	}   	
-    	String uri = String.format(
-    			"%s&anyo=%d&mes=%02d&dia=%02d&hora=%s%%20%s&CodigoEstacion=%s&pagina=1&R01HNoPortal=true", new Object[]{
-    			"http://www.euskalmet.euskadi.net/s07-5853x/es/meteorologia/lectur_fr.apl?e=5",
-    			cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH),
-    			time1, time2, mStationCode
-    	} );
+    	if( !mProvider.updateTimes(mStation) ) {
+    		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+			alertDialog.setMessage( getString(R.string.Impatient) + " " + mProvider.getRefresh(mStation) + " " + getString(R.string.minutes) );
+			alertDialog.show();
+			return;
+    	}    	   	
+    	String uri = mProvider.getUrl(mStation); 
     	//System.out.println(uri);
     	mDownloader = new Downloader();
     	mDownloader.execute(uri);
     }   
     
     private void loadStored() {
-    	List<Number> list;
-    	list = mMapDirection.get(mStationCode);
-    	mListDirection.clear();
-    	if( list != null )
-    		mListDirection.addAll(list);
-    	list = mMapSpeedMed.get(mStationCode);
-    	mListSpeedMed.clear();
-    	if( list != null )
-    		mListSpeedMed.addAll(list);
-    	list = mMapSpeedMax.get(mStationCode);
-    	mListSpeedMax.clear();
-    	if( list != null )
-    		mListSpeedMax.addAll(list);
+    	mStation.replace(mStations.get(mStation.Code));
     }
     
     public void refresh() {
@@ -296,26 +322,40 @@ public class Tolomet extends Activity
 
 	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 		getStation();
-		if( mMapDirection.containsKey(mStationCode) ) {
+		if( mStations.containsKey(mStation.Code) ) {
 			loadStored();
 			redraw();
 		} else
 			loadData();		
-	}	
+	}
 	
+	public void onNothingSelected(AdapterView<?> arg0) {
+		// TODO Auto-generated method stub	
+	}
+	
+	@SuppressLint("SimpleDateFormat")
 	private void updateSummary() {
-		if( mListDirection == null || mListDirection.size() < 2 )
+		if( mStation.isEmpty() )
 			return;
-		int i = mListDirection.size()-1;
-        int dir = (Integer)mListDirection.get(i);
-        float med = (Float)mListSpeedMed.get(i);
-        float max = (Float)mListSpeedMax.get(i);
+		int i = mStation.ListDirection.size()-1;
+        int dir = (Integer)mStation.ListDirection.get(i);
+        int hum = -1;
+        if( mStation.ListHumidity.size() > i )
+        	hum = convertHumidity((Float)mStation.ListHumidity.get(i));
+        float med = (Float)mStation.ListSpeedMed.get(i);
+        float max = (Float)mStation.ListSpeedMax.get(i);
         Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis((Long)mListDirection.get(i-1));
+        cal.setTimeInMillis((Long)mStation.ListDirection.get(i-1));
         SimpleDateFormat df = new SimpleDateFormat();
         df.applyPattern("HH:mm");
         String date = df.format(cal.getTime());
-		mSummary.setText( String.format("%s | %dº (%s) | %.1f~%.1f km/h", date, dir, getDir(dir), med, max ));		
+        if( hum < 0 )
+        	mSummary.setText( String.format("%s | %dº (%s) | %.1f~%.1f km/h", date, dir, getDir(dir), med, max ));
+        else
+        	if( getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE )
+        		mSummary.setText( String.format("%s | %dº (%s) | %d %% | %.1f~%.1f km/h", date, dir, getDir(dir), hum, med, max ));
+        	else
+        		mSummary.setText( String.format("%s|%dº(%s)|%d%%|%.1f~%.1f", date, dir, getDir(dir), hum, med, max ));
 	}
 	
 	private String getDir( int degrees ) {
@@ -365,27 +405,8 @@ public class Tolomet extends Activity
 	    protected void onPostExecute(String result) {
 	        super.onPostExecute(result);	        
 	        mProgress.dismiss();
-	        try {		        
-		        String[] lines = result.split("<tr>");
-		        Number date, val;
-		        /*mListDirection.clear();
-		        mListSpeedMed.clear();
-		        mListSpeedMax.clear();*/		        
-		        for( int i = 1; i < lines.length; i++ ) {
-		        	String[] cells = lines[i].split("<td");
-		        	if( getContent(cells[1]).equals("Med") || getContent(cells[2]).equals("-") )
-		        		break;
-		        	date = toEpoch(getContent(cells[1]));
-		        	val = Integer.parseInt(getContent(cells[3]));
-		        	mListDirection.add(date);
-		        	mListDirection.add(val);
-		        	val = Float.parseFloat(getContent(cells[2]));
-		        	mListSpeedMed.add(date);
-		        	mListSpeedMed.add(val);
-		        	val = Float.parseFloat(getContent(cells[4]));
-		        	mListSpeedMax.add(date);
-		        	mListSpeedMax.add(val);
-		        }
+	        try {
+	        	mProvider.updateStation(mStation, result);
 		        updateLists();
 		        redraw();
 	        } catch (Exception e) {
@@ -395,43 +416,14 @@ public class Tolomet extends Activity
 	    }
 		
 		private void updateLists() {
-			List<Number> list;
-	        if( mMapDirection.containsKey(mStationCode) ) {	        	
-	        	list = mMapDirection.get(mStationCode);
-	        	list.clear(); list.addAll(mListDirection);
-	        	list = mMapSpeedMed.get(mStationCode);
-	        	list.clear(); list.addAll(mListSpeedMed);
-	        	list = mMapSpeedMax.get(mStationCode);
-	        	list.clear(); list.addAll(mListSpeedMax);
-	        } else {
-	        	list = new ArrayList<Number>();
-	        	list.addAll(mListDirection);
-	        	mMapDirection.put(mStationCode, list);
-	        	list = new ArrayList<Number>();
-	        	list.addAll(mListSpeedMed);
-	        	mMapSpeedMed.put(mStationCode, list);
-	        	list = new ArrayList<Number>();
-	        	list.addAll(mListSpeedMax);
-	        	mMapSpeedMax.put(mStationCode, list);
+			Station station = mStations.get(mStation.Code);
+	        if( station != null )
+	        	station.replace(mStation);
+	        else {
+	        	station = new Station(mStation);
+	        	mStations.put(mStation.Code, station);
 	        }
-		}								
-		
-		private String getContent( String cell ) {
-			cell = cell.replaceAll("\n", "").replaceAll("\r", "").replaceAll("\t", "").replaceAll(" ", "");
-			int i = cell.indexOf('>')+1;
-			if( cell.charAt(i) == '<' )
-				i = cell.indexOf('>', i)+1;
-			int i2 = cell.indexOf('<', i);
-			return cell.substring(i, i2).replace(',', '.');
-		}
-		
-		private long toEpoch( String str ) {
-			Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-			String[] fields = str.split(":");
-			cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(fields[0]) );
-		    cal.set(Calendar.MINUTE, Integer.parseInt(fields[1]) );
-		    return cal.getTimeInMillis();
-		}
+		}										
 	}
 	
 	public boolean onTouch( View arg0, MotionEvent event ) {
@@ -520,19 +512,16 @@ public class Tolomet extends Activity
 	}*/
 	
 	private XYPlot mChartSpeed, mChartDirection;
-	private String mStation, mStationCode, mStationName;
+	private String mSelection;
 	private Spinner mSpinner;
 	private TextView mSummary;
 	private ProgressDialog mProgress;
 	Downloader mDownloader;
-	private List<Number> mListDirection, mListSpeedMed, mListSpeedMax;
-	private Map<String,List<Number>> mMapDirection, mMapSpeedMed, mMapSpeedMax;
+	private Station mStation;
+	private Map<String,Station> mStations;
+	private WindProviderManager mProvider;
 	static final float mFontSize = 16;
-	public void onNothingSelected(AdapterView<?> arg0) {
-		// TODO Auto-generated method stub
 		
-	}
-	
 	// Touch	
 	/*static final int NONE = 0;
 	static final int ONE_FINGER_DRAG = 1;

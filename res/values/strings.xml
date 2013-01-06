@@ -7,64 +7,124 @@
     <string name="station_prompt">Estación</string>
     <string name="summary"></string>
     <string name="Direction">Dirección</string>
+    <string name="DirectionHumidity">Dirección y Humedad</string>
     <string name="Speed">Velocidad</string>
     <string name="Downloading">Descargando</string>
     <string name="Progress">Progreso</string>
     <string name="About">Acerca de &#8230;</string>
     <string name="Time">Hora</string>
     <string name="Degrees">Grados</string>
-    <string name="Impatient">¡Impaciente!, las lecturas son cada 10 minutos</string>
+    <string name="Impatient">¡Impaciente!, las lecturas son cada</string>
+    <string name="minutes">minutos</string>
  
     <string-array name="station_array">
 <item>C072 - Orduña</item>
 <item>C042 - Punta Galea</item>
 <item>C0B4 - Orozko</item>
+<item>N274 - Ablitas MAGRAMA</item>
+<item>N263 - Adiós MAGRAMA</item>
+<item>N33 - Aguilar de Codés GN</item>
+<item>N262 - Aibar MAGRAMA</item>
 <item>C056 - Alegría</item>
 <item>C069 - Almike (Bermeo)</item>
 <item>C035 - Altube</item>
+<item>N251 - Ancín INTIA</item>
+<item>N34 - Aoiz GN</item>
+<item>N22 - Aralar GN</item>
+<item>N23 - Arangoiti GN</item>
+<item>N243 - Arazuri INTIA</item>
 <item>C061 - Arboleda</item>
 <item>C001 - Arkaute I</item>
 <item>C023 - Arrasate</item>
+<item>N264 - Artajona MAGRAMA</item>
 <item>C002 - Arteaga</item>
+<item>N6 - Bardenas (Barranco) INTIA</item>
+<item>N275 - Bardenas (El Plano) MAGRAMA</item>
+<item>N31 - Bardenas (El Yugo) GN</item>
+<item>N26 - Bardenas (Loma Negra) GN</item>
+<item>N268 - Bargota MAGRAMA</item>
 <item>C025 - Beluntza</item>
+<item>N12 - Beortegi GN</item>
 <item>C026 - Berastegi</item>
 <item>C058 - Bidania</item>
+<item>N4 - Cadreita INTIA</item>
+<item>N35 - Carcastillo (La Oliva) GN</item>
+<item>N24 - Carrascal GN</item>
+<item>N276 - Cascante MAGRAMA</item>
 <item>C065 - Cerroja</item>
+<item>N258 - Corella INTIA</item>
 <item>C003 - Derio</item>
 <item>C039 - Deusto</item>
+<item>N42 - Doneztebe-Santesteban GN</item>
 <item>C075 - Eitzaga</item>
+<item>N28 - El Perdón GN</item>
+<item>N249 - Erremendia (Salazar) GN</item>
 <item>C034 - Espejo</item>
+<item>N7 - Estella GN</item>
 <item>C0AA - Etura</item>
+<item>N8 - Etxarri-Aranatz GN</item>
+<item>N269 - Falces MAGRAMA</item>
+<item>N273 - Fitero MAGRAMA</item>
+<item>N259 - Funes INTIA</item>
 <item>C067 - Gardea</item>
 <item>C040 - Gasteiz</item>
+<item>N246 - Getadar GN</item>
+<item>N25 - Gorramendi GN</item>
 <item>C048 - Herrera</item>
 <item>C018 - Higer</item>
 <item>C033 - Igorre</item>
+<item>N32 - Irabia GN</item>
 <item>C024 - Iturrieta</item>
 <item>C036 - Iurreta</item>
 <item>C071 - Jaizkibel</item>
 <item>C047 - Kapildui</item>
 <item>C045 - La Garbea</item>
 <item>C0EC - Lasarte</item>
+<item>N267 - Lerín INTIA</item>
 <item>C027 - Llodio</item>
+<item>N424 - Los Arcos MAGRAMA</item>
+<item>N247 - Lumbier INTIA</item>
 <item>C019 - Matxitxako</item>
 <item>C017 - Miramon</item>
+<item>N266 - Miranda de Arga MAGRAMA</item>
 <item>C057 - Mungia</item>
+<item>N270 - Murillo el Fruto MAGRAMA</item>
 <item>C041 - Navarrete</item>
 <item>C046 - Oiz</item>
+<item>N257 - Olite INTIA</item>
 <item>C043 - Ordizia</item>
 <item>C059 - Ordunte</item>
 <item>C072 - Orduña</item>
+<item>C072 - Orduña</item>
 <item>C0B4 - Orozko</item>
+<item>C0B4 - Orozko</item>
+<item>N37 - Oskotz GN</item>
 <item>C054 - Otxandio</item>
-<item>C042 - Punta Galea</item>
 <item>C060 - Páganos</item>
+<item>N405 - Pamplona (ETSIA) UPNA</item>
+<item>N455 - Pamplona GN</item>
+<item>C042 - Punta Galea</item>
+<item>C042 - Punta Galea</item>
 <item>C021 - Roitegi</item>
 <item>C030 - Salvatierra</item>
+<item>N271 - San Adrián MAGRAMA</item>
+<item>N265 - San Martín de Unx MAGRAMA</item>
 <item>C007 - Santa Clara</item>
 <item>C051 - Saratxo</item>
+<item>N5 - Sartaguda  INTIA</item>
+<item>N21 - Sartaguda GN</item>
+<item>N423 - Sesma MAGRAMA</item>
+<item>N9 - Tafalla GN</item>
+<item>N242 - Traibuenas INTIA</item>
 <item>C020 - Trebiño</item>
+<item>N29 - Trinidad de Iturgoien GN</item>
+<item>N36 - Tudela (Montes del Cierzo) GN</item>
+<item>N272 - Tudela (Valdetellas) MAGRAMA</item>
+<item>N30 - Ujué GN</item>
+<item>N250 - Urbasa GN</item>
 <item>C022 - Urkiola</item>
+<item>N11 - Villanueva de Yerri GN</item>
+<item>N10 - Yesa GN</item>
 <item>C070 - Zaldiaran</item>
 <item>C050 - Zambrana</item>
 <item>C064 - Zarautz</item>
