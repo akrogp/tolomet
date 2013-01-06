@@ -9,15 +9,17 @@ public class Station {
 	public List<Number> ListDirection, ListHumidity, ListSpeedMed, ListSpeedMax;
 	public String Name, Code;
 	public WindProviderType Provider;
+	public boolean Favorite;
 		
 	public Station() {
-		this("none","none",WindProviderType.Euskalmet);
+		this("none","none",false,WindProviderType.Euskalmet);
 	}
 	
-	public Station( String name, String code, WindProviderType provider ) {
+	public Station( String name, String code, boolean favorite, WindProviderType provider ) {
 		Name = name;
 		Code = code;
-		Provider = provider;
+		Favorite = favorite;
+		Provider = provider;		
 		ListDirection = new ArrayList<Number>();
 		ListHumidity = new ArrayList<Number>();
 		ListSpeedMed = new ArrayList<Number>();
@@ -25,7 +27,7 @@ public class Station {
 	}
 	
 	public Station( Station station ) {
-		this( station.Name, station.Code, station.Provider );
+		this( station.Name, station.Code, station.Favorite, station.Provider );
 		replace(station);
 	}
 	
@@ -65,6 +67,7 @@ public class Station {
 	public void saveState( Bundle outState ) {
 		outState.putString(Code+"-"+"name", Name);
 		outState.putInt(Code+"-"+"type", Provider.getValue());
+		outState.putBoolean(Code+"-"+"star", Favorite);
 		saveLongArray(outState, "dirx", ListDirection, 0);
 		saveIntArray(outState, "diry", ListDirection, 1);
 		saveLongArray(outState, "humx", ListHumidity, 0);
@@ -82,6 +85,7 @@ public class Station {
 		Name = bundle.getString(Code+"-"+"name");
 		if( Name == null )
 			return;
+		Favorite = bundle.getBoolean(Code+"-"+"star");
 		Provider = WindProviderType.values()[bundle.getInt(Code+"-"+"type")];
 		loadLongInt( bundle, "dirx", "diry", ListDirection );
 		loadLongFloat( bundle, "humx", "humy", ListHumidity );

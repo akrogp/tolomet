@@ -10,9 +10,18 @@
         android:layout_alignBottom="@+id/button1"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/button1"
+        android:layout_toLeftOf="@+id/favorite_button"
         android:entries="@array/station_array"
         android:prompt="@string/station_prompt" />
+    
+    <CheckBox
+    	android:id="@+id/favorite_button"
+    	android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+    	style="?android:attr/starStyle"
+    	android:layout_alignParentTop="true"    	
+    	android:layout_toLeftOf="@+id/button1"
+    	android:contentDescription="@string/star"/>
 
     <TextView
         android:id="@+id/textView1"
