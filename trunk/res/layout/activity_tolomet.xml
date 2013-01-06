@@ -46,7 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight=".5"
-        title="Dirección" />
+        title="Dirección y Humedad" />
     
     <com.androidplot.xy.XYPlot
         android:id="@+id/chartSpeed"
