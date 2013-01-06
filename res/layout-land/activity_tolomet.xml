@@ -11,7 +11,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/favorite_button"
-        android:entries="@array/station_array"
         android:prompt="@string/station_prompt" />
     
     <CheckBox

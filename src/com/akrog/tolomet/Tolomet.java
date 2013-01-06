@@ -6,10 +6,10 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -28,6 +28,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -45,7 +46,6 @@ import com.androidplot.xy.YValueMarker;
 public class Tolomet extends Activity
 	implements OnItemSelectedListener, View.OnClickListener, OnCheckedChangeListener {//, OnTouchListener {
 	
-    @SuppressWarnings("unchecked")
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,25 +53,15 @@ public class Tolomet extends Activity
         setContentView(R.layout.activity_tolomet);
         
         mProvider = new WindProviderManager();
-        
-        @SuppressWarnings({ "deprecation" })
-        Map<String,Object> data = (Map<String, Object>)getLastNonConfigurationInstance();
-        int sel = 0;
-        if( data != null ) {	// just for efficiency ...
-        	mStations = (Map<String,Station>)data.get("stations");
-        	sel = (Integer)data.get("selection");        	
-        } else {
-        	mStations = new HashMap<String, Station>();
-        	sel = loadState( savedInstanceState );
-        }
+                
+        mStations = new ArrayList<Station>();
+        String code = loadState( savedInstanceState );
         mStation = new Station();
         
         mSummary = (TextView)findViewById(R.id.textView1);
         
-        mSpinner = (Spinner)findViewById(R.id.spinner1);        
-        mSpinner.setSelection(sel);
-        mSpinner.setOnItemSelectedListener(this);
-        
+        createSpinner(code);
+                
         Button button = (Button)findViewById(R.id.button1);
         button.setOnClickListener(this);
         
@@ -93,35 +83,73 @@ public class Tolomet extends Activity
         });
     }
     
-    @Override
-    @Deprecated
-    public Object onRetainNonConfigurationInstance() {    	
-    	Map<String,Object> data = new HashMap<String, Object>();
-    	data.put("selection", mSpinner.getSelectedItemPosition());
-    	data.put("stations", mStations);
-    	return data;
+    private void createSpinner( String code ) {
+    	mSpinner = (Spinner)findViewById(R.id.spinner1);
+    	
+    	// Initial population
+    	if( mStations.isEmpty() ) {
+    		Station station;
+    		for( String str : getResources().getStringArray(R.array.station_array) ) {
+    			station = new Station(str);
+    			mStations.add(station);
+    		}    		
+    	}
+    	
+    	// AddFavorites
+    	SharedPreferences settings = getPreferences(0);
+    	int favs = 0;
+    	for( int i = mStations.size()-1; i >= favs; i-- )
+    		if( settings.contains(mStations.get(i).Code) ) {
+    			mStations.get(i).Favorite = true;
+    			mStations.add(0, mStations.get(i).getLinkedClone());
+    			i++;
+    			favs++;
+    		}
+    	if( favs == 0 ) {
+    		mAdapter = null;
+    		addFavorite("C072");	// Orduña
+    		addFavorite("C042");	// Punta Galea
+    	}
+    	
+    	// Adapter
+    	mAdapter = new ArrayAdapter<Station>(this,android.R.layout.simple_spinner_item,mStations);
+    	mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    	mSpinner.setAdapter(mAdapter);
+    	
+    	// Selection
+    	int sel = 0;
+    	if( code != null ) {
+	    	for( Station station : mStations )
+	    		if( station.Code.equals(code) )
+	    			break;
+	    		else
+	    			sel++;
+	    	if( sel >= mStations.size() )
+	    		sel = 0;
+    	}
+    	mSpinner.setSelection(sel);
+        mSpinner.setOnItemSelectedListener(this);
     }
     
-    private int loadState( Bundle bundle ) {
+    private String loadState( Bundle bundle ) {
     	if( bundle != null ) {
 	    	String code;
 	    	Station station;
-	    	for( int i = 0; i < mSpinner.getCount(); i++ ) {
-	    		code = ((String)mSpinner.getItemAtPosition(i)).split(" - ")[0];
+	    	for( String str : getResources().getStringArray(R.array.station_array) ) {
+	    		code = str.split(" - ")[0];
 	    		station = new Station( bundle, code );
-	    		if( !station.isEmpty() )
-	    			mStations.put(code, station);
+	    		mStations.add(station);
 	    	}
     	}
     	SharedPreferences settings = getPreferences(0);
-		return settings.getInt("selection", 0);
+		return settings.getString("selection", null);
 	}
 
 	@Override
     protected void onPause() {
     	SharedPreferences settings = getPreferences(0);
     	SharedPreferences.Editor editor = settings.edit();
-    	editor.putInt("selection", mSpinner.getSelectedItemPosition());
+    	editor.putString("selection", mStation.Code);
     	editor.commit();
     	super.onPause();
     }
@@ -141,8 +169,9 @@ public class Tolomet extends Activity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
     	super.onSaveInstanceState(outState);
-    	for( Station station : mStations.values() )
-    		station.saveState(outState);
+    	for( Station station : mStations )
+    		if( !station.Clone )
+    			station.saveState(outState);
     }
     
     private void updateDomainBoundaries() {
@@ -259,34 +288,87 @@ public class Tolomet extends Activity
     }*/
     
     public void onClick(View v) {    	
-    	refresh();
+    	loadData();
 	}
     
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-    	SharedPreferences settings = getPreferences(0);
-    	SharedPreferences.Editor editor = settings.edit();
-    	if( isChecked ) {
-    		editor.putBoolean(mStation.Code, true);
-    	} else {
-    		editor.remove(mStation.Code);
-    	}
-    	editor.commit();
+    	if( isChecked )
+    		addFavorite();
+    	else
+    		removeFavorite();    	
 	}
     
-    private void getStation() {
-    	mSelection = (String)mSpinner.getSelectedItem();
-    	if( mSelection == null )
-    		mSelection = (String)mSpinner.getItemAtPosition(0);
-    	String[] fields = mSelection.split(" - ");
-    	mStation.Code = fields[0];
-    	mStation.Name = fields[1];
-    	mStation.Provider = mStation.Code.startsWith("GN") ? WindProviderType.MeteoNavarra : WindProviderType.Euskalmet;
-    	SharedPreferences settings = getPreferences(0);
-    	mStation.Favorite = settings.getBoolean(mStation.Code, false);
-    }    
+    private void addFavorite() {
+    	addFavorite( mStation.Code );
+    }
     
-    private void loadData() {
-    	loadStored();
+    private void addFavorite( String code ) {
+    	// Redundancy check
+    	if( code.equals("none") )
+    		return;
+    	SharedPreferences settings = getPreferences(0);
+    	if( settings.contains(code) )
+    		return;
+    	
+    	// Spinner
+    	Station fav = null;
+    	for( Station station : mStations )
+    		if( station.Code.equals(code) ) {
+    			station.Favorite = true;
+    			fav = station.getLinkedClone();
+    			break;
+    		}
+    	int i = 0;
+    	for( Station station : mStations )
+    		if( !station.Favorite || station.Name.compareTo(fav.Name) >= 0 )
+    			break;
+    		else
+    			i++;
+    	mStations.add(i, fav);
+    	if( mAdapter != null ) {
+    		mAdapter.notifyDataSetChanged();
+    		mSpinner.setSelection(i);
+    	}    	
+    	
+    	// State
+    	SharedPreferences.Editor editor = settings.edit();
+    	editor.putBoolean(code, true);
+    	editor.commit();
+	}
+
+	private void removeFavorite() {
+		// Redundancy check
+		SharedPreferences settings = getPreferences(0);
+		if( !settings.contains(mStation.Code) )
+    		return;
+		
+		// Spinner
+    	int i = 0;
+    	for( Station station : mStations )
+    		if( station.Code.equals(mStation.Code) )
+    			break;
+    		else
+    			i++;
+    	if( i >= mStations.size() )
+    		return;
+    	mStations.remove(i);
+    	i = 0;
+    	for( Station station : mStations )
+    		if( station.Code.equals(mStation.Code) ) {
+    			station.Favorite = false;
+    			break;
+    		} else
+    			i++;
+    	mAdapter.notifyDataSetChanged();
+    	mSpinner.setSelection(i);
+    	
+    	// State
+    	SharedPreferences.Editor editor = settings.edit();
+    	editor.remove(mStation.Code);
+    	editor.commit();
+	}
+
+	private void loadData() {
     	if( !mProvider.updateTimes(mStation) ) {
     		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 			alertDialog.setMessage( getString(R.string.Impatient) + " " + mProvider.getRefresh(mStation) + " " + getString(R.string.minutes) );
@@ -297,16 +379,7 @@ public class Tolomet extends Activity
     	//System.out.println(uri);
     	mDownloader = new Downloader();
     	mDownloader.execute(uri);
-    }   
-    
-    private void loadStored() {
-    	mStation.replace(mStations.get(mStation.Code));
-    }
-    
-    public void refresh() {
-    	getStation();
-    	loadData();
-    }
+    }           
     
     public void redraw() {
     	mChartDirection.redraw();
@@ -342,12 +415,13 @@ public class Tolomet extends Activity
     }
 
 	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-		getStation();
-		if( mStations.containsKey(mStation.Code) ) {
-			loadStored();
-			redraw();
-		} else
-			loadData();		
+		Station station = (Station)mSpinner.getSelectedItem();
+		mStation.replace(station);
+		mFavorite.setChecked(station.Favorite);
+		if( mStation.isEmpty() )
+			loadData();
+		else
+			redraw();	
 	}
 	
 	public void onNothingSelected(AdapterView<?> arg0) {
@@ -428,25 +502,16 @@ public class Tolomet extends Activity
 	    protected void onPostExecute(String result) {
 	        super.onPostExecute(result);	        
 	        mProgress.dismiss();
+	        Station sel = (Station)mSpinner.getSelectedItem();
 	        try {
-	        	mProvider.updateStation(mStation, result);		        
+	        	mProvider.updateStation(mStation, result);
+	        	sel.replace(mStation);
 	        } catch (Exception e) {
 				System.out.println( e.getMessage() );
-				loadStored();
+				mStation.replace(sel);
 			}
-	        updateLists();
 	        redraw();
 	    }
-		
-		private void updateLists() {
-			Station station = mStations.get(mStation.Code);
-	        if( station != null )
-	        	station.replace(mStation);
-	        else {
-	        	station = new Station(mStation);
-	        	mStations.put(mStation.Code, station);
-	        }
-		}										
 	}
 	
 	public boolean onTouch( View arg0, MotionEvent event ) {
@@ -535,14 +600,14 @@ public class Tolomet extends Activity
 	}*/
 	
 	private XYPlot mChartSpeed, mChartDirection;
-	private String mSelection;
 	private Spinner mSpinner;
 	private TextView mSummary;
 	private CheckBox mFavorite;
 	private ProgressDialog mProgress;
 	Downloader mDownloader;
 	private Station mStation;
-	private Map<String,Station> mStations;
+	private List<Station> mStations;
+	private ArrayAdapter<Station> mAdapter;
 	private WindProviderManager mProvider;
 	static final float mFontSize = 16;		
 		
