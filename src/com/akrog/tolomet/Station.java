@@ -15,13 +15,13 @@ public class Station {
 		this("none","none",false,WindProviderType.Euskalmet);
 	}
 	
-	public Station( String str ) {
-		this();
-		String[] fields = str.split(" - ");
+	public Station( String str ) {		
+		String[] fields = str.split(",");
     	Code = fields[0];
     	Name = fields[1];
-    	Provider = Code.startsWith("GN") ? WindProviderType.MeteoNavarra : WindProviderType.Euskalmet;
-	}
+    	Provider = WindProviderType.values()[Integer.parseInt(fields[2])];
+    	createArrays();
+	}	
 	
 	public Station( String name, String code, boolean favorite, WindProviderType provider ) {
 		Name = name;
@@ -29,10 +29,7 @@ public class Station {
 		Favorite = favorite;
 		Provider = provider;
 		Clone = false;
-		ListDirection = new ArrayList<Number>();
-		ListHumidity = new ArrayList<Number>();
-		ListSpeedMed = new ArrayList<Number>();
-		ListSpeedMax = new ArrayList<Number>();
+		createArrays();
 	}
 	
 	public Station( Station station ) {
@@ -43,6 +40,13 @@ public class Station {
 	public Station( Bundle bundle, String code ) {
 		this();
 		loadState(bundle, code);
+	}
+	
+	private void createArrays() {
+		ListDirection = new ArrayList<Number>();
+		ListHumidity = new ArrayList<Number>();
+		ListSpeedMed = new ArrayList<Number>();
+		ListSpeedMax = new ArrayList<Number>();
 	}
 	
 	public Station getLinkedClone() {
@@ -107,19 +111,26 @@ public class Station {
 		saveFloatArray(outState, "maxy", ListSpeedMax, 1);
 	}
 	
-	public void loadState( Bundle bundle, String code ) {
+	public boolean loadState( Bundle bundle, String code ) {
 		if( bundle == null )
-			return;
+			return false;
 		Code = code;
+		return loadState(bundle);
+	}
+	
+	public boolean loadState( Bundle bundle ) {
+		if( bundle == null )
+			return false;
 		Name = bundle.getString(Code+"-"+"name");
 		if( Name == null )
-			return;
+			return false;
 		Favorite = bundle.getBoolean(Code+"-"+"star");
 		Provider = WindProviderType.values()[bundle.getInt(Code+"-"+"type")];
 		loadLongInt( bundle, "dirx", "diry", ListDirection );
 		loadLongFloat( bundle, "humx", "humy", ListHumidity );
 		loadLongFloat( bundle, "medx", "medy", ListSpeedMed );
 		loadLongFloat( bundle, "maxx", "maxy", ListSpeedMax );
+		return true;
 	}
 	
 	private void loadLongInt( Bundle bundle, String name1, String name2, List<Number> list ) {
