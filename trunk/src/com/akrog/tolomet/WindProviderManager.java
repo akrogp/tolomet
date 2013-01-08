@@ -3,10 +3,12 @@ package com.akrog.tolomet;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import android.content.Context;
+
 public class WindProviderManager {
-	public WindProviderManager() {
+	public WindProviderManager( Context context ) {
 		mProviders = new WindProvider[WindProviderType.values().length];
-		mProviders[0] = new EuskalmetProvider();
+		mProviders[0] = new EuskalmetProvider( context );
 		mProviders[1] = new MeteoNavarraProvider(); 
 	}
 	
@@ -25,15 +27,27 @@ public class WindProviderManager {
 	public boolean updateTimes( Station station ) {
 		mNow = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 		mPast = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-		if( station.ListDirection.size() < 2 ) {
+		
+		// First execution
+		if( station.isEmpty() ) {
 			mPast.set(Calendar.HOUR_OF_DAY,0);
 			mPast.set(Calendar.MINUTE,0);
 			return true;
-		}		
+		}
+		
+		// Check update interval
 		mPast.setTimeInMillis((Long)station.ListDirection.get(station.ListDirection.size()-2));
-		if( mPast.get(Calendar.DAY_OF_MONTH) == mNow.get(Calendar.DAY_OF_MONTH) )
-			if( (mNow.getTimeInMillis()-mPast.getTimeInMillis()) <= 10*60*1000 )
-				return false;
+		if( (mNow.getTimeInMillis()-mPast.getTimeInMillis()) <= 10*60*1000 )
+			return false;
+		
+		// Clear cache
+		if( mPast.get(Calendar.YEAR) == mNow.get(Calendar.YEAR) && mPast.get(Calendar.DAY_OF_YEAR) == mNow.get(Calendar.DAY_OF_YEAR) )
+			return true;
+		mPast.setTimeInMillis(mNow.getTimeInMillis());
+		mPast.set(Calendar.HOUR_OF_DAY,0);
+		mPast.set(Calendar.MINUTE, 0);
+		mPast.set(Calendar.SECOND, 0);
+		station.clear();			
 		return true;
 	}		
 		

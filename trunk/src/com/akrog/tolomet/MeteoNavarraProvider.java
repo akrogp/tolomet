@@ -12,8 +12,8 @@ public class MeteoNavarraProvider implements WindProvider {
 	
 	@SuppressLint("DefaultLocale")
 	public String getUrl(Station station, Calendar past, Calendar now) {
-		String time1 = String.format("%d/%d/%d", now.get(Calendar.DAY_OF_MONTH), now.get(Calendar.MONTH+1), now.get(Calendar.YEAR) );
-		String time2 = String.format("%d/%d/%d", now.get(Calendar.DAY_OF_MONTH)+1, now.get(Calendar.MONTH+1), now.get(Calendar.YEAR) );
+		String time1 = String.format("%d/%d/%d", now.get(Calendar.DAY_OF_MONTH), now.get(Calendar.MONTH)+1, now.get(Calendar.YEAR) );
+		String time2 = String.format("%d/%d/%d", now.get(Calendar.DAY_OF_MONTH)+1, now.get(Calendar.MONTH)+1, now.get(Calendar.YEAR) );
 		return String.format(
 			"%s?IDEstacion=%s&p_10=7&p_10=2&p_10=9&p_10=6&fecha_desde=%s&fecha_hasta=%s&dl=csv",
 			new Object[]{
@@ -49,7 +49,7 @@ public class MeteoNavarraProvider implements WindProvider {
 
 	public int getRefresh() {
 		return 10;
-	}
+	}	
 
 	private long toEpoch( String str ) {
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
@@ -63,5 +63,5 @@ public class MeteoNavarraProvider implements WindProvider {
 		return cell.replaceAll("\"","").replace('.',mSeparator);
 	}
 	
-	private char mSeparator;
+	private char mSeparator;	
 }

@@ -1,6 +1,7 @@
 package com.akrog.tolomet;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
@@ -52,7 +53,7 @@ public class Tolomet extends Activity
         
         setContentView(R.layout.activity_tolomet);
         
-        mProvider = new WindProviderManager();
+        mProvider = new WindProviderManager(this);
                 
         mStations = new ArrayList<Station>();
         String code = loadState( savedInstanceState );
@@ -87,13 +88,8 @@ public class Tolomet extends Activity
     	mSpinner = (Spinner)findViewById(R.id.spinner1);
     	
     	// Initial population
-    	if( mStations.isEmpty() ) {
-    		Station station;
-    		for( String str : getResources().getStringArray(R.array.station_array) ) {
-    			station = new Station(str);
-    			mStations.add(station);
-    		}    		
-    	}
+    	if( mStations.isEmpty() )
+    		loadStations();
     	
     	// AddFavorites
     	SharedPreferences settings = getPreferences(0);
@@ -131,15 +127,27 @@ public class Tolomet extends Activity
         mSpinner.setOnItemSelectedListener(this);
     }
     
+    private void loadStations() {
+    	InputStream inputStream = getResources().openRawResource(R.raw.stations);
+		InputStreamReader in = new InputStreamReader(inputStream);
+		BufferedReader rd = new BufferedReader(in);
+		String line;
+		Station station;
+		try {
+			while( (line=rd.readLine()) != null ) {
+				station = new Station(line);
+				mStations.add(station);
+			}
+			rd.close();
+		} catch( Exception e ) {			
+		}		
+    }
+    
     private String loadState( Bundle bundle ) {
     	if( bundle != null ) {
-	    	String code;
-	    	Station station;
-	    	for( String str : getResources().getStringArray(R.array.station_array) ) {
-	    		code = str.split(" - ")[0];
-	    		station = new Station( bundle, code );
-	    		mStations.add(station);
-	    	}
+    		loadStations();    		
+	    	for( Station station : mStations )
+	    		station.loadState(bundle);
     	}
     	SharedPreferences settings = getPreferences(0);
 		return settings.getString("selection", null);

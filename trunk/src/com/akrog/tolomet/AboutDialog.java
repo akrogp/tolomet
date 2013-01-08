@@ -49,9 +49,10 @@ public class AboutDialog extends Dialog {
 		StringBuilder text = new StringBuilder();
 		try {
 			while (( line = buf.readLine()) != null) text.append(line);
+			buf.close();
 		} catch (IOException e) {
 			return null;
-		}
+		}		
 		return text.toString();
 	}
 }
