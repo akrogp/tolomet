@@ -3,8 +3,6 @@ package com.akrog.tolomet;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,13 +13,12 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.os.AsyncTask;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,6 +51,7 @@ public class Tolomet extends Activity
         setContentView(R.layout.activity_tolomet);
         
         mProvider = new WindProviderManager(this);
+        mDownloader = new Downloader(this);
                 
         mStations = new ArrayList<Station>();
         String code = loadState( savedInstanceState );
@@ -70,18 +68,7 @@ public class Tolomet extends Activity
         mFavorite.setChecked(false);
         mFavorite.setOnCheckedChangeListener(this);
         
-        createCharts();                                                                   
-                        
-        mProgress = new ProgressDialog(this);
-        mProgress.setMessage( getString(R.string.Downloading)+"..." );
-        mProgress.setTitle( "" );//getString(R.string.Progress) );
-        mProgress.setIndeterminate(true);
-        mProgress.setCancelable(true);
-        mProgress.setOnCancelListener(new OnCancelListener(){
-        	public void onCancel(DialogInterface dialog) {
-        		mDownloader.cancel(true);
-        	}
-        });
+        createCharts();                                
     }
     
     private void createSpinner( String code ) {
@@ -291,10 +278,6 @@ public class Tolomet extends Activity
         return m;
     }
     
-    /*protected void onResume() {
-        super.onResume();
-    }*/
-    
     public void onClick(View v) {    	
     	loadData();
 	}
@@ -382,12 +365,25 @@ public class Tolomet extends Activity
 			alertDialog.setMessage( getString(R.string.Impatient) + " " + mProvider.getRefresh(mStation) + " " + getString(R.string.minutes) );
 			alertDialog.show();
 			return;
-    	}    	   	
+    	}
+    	if( !isNetworkAvailable() ) {
+    		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+			alertDialog.setMessage( getString(R.string.NoNetwork) );
+			alertDialog.show();
+			return;
+    	}
     	String uri = mProvider.getUrl(mStation); 
     	//System.out.println(uri);
-    	mDownloader = new Downloader();
+    	mDownloader = new Downloader(this);
     	mDownloader.execute(uri);
-    }           
+    }
+	
+	private boolean isNetworkAvailable() {
+	    ConnectivityManager connectivityManager 
+	          = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+	}
     
     public void redraw() {
     	mChartDirection.redraw();
@@ -426,6 +422,7 @@ public class Tolomet extends Activity
 		Station station = (Station)mSpinner.getSelectedItem();
 		mStation.replace(station);
 		mFavorite.setChecked(station.Favorite);
+		
 		if( mStation.isEmpty() )
 			loadData();
 		else
@@ -476,50 +473,20 @@ public class Tolomet extends Activity
 		return vals[index];
 	}
 	
-	private class Downloader extends AsyncTask<String, Void, String> {		
-		@Override
-	    protected void onPreExecute() {
-	        super.onPreExecute();	        
-	        mProgress.show();
-	    }
-		
-		@Override
-		protected void onCancelled() {
-			super.onCancelled();
-			//mProgress.dismiss();
+	public void onDownloaded(String result) {
+        Station sel = (Station)mSpinner.getSelectedItem();
+        try {
+        	mProvider.updateStation(mStation, result);
+        	sel.replace(mStation);
+        } catch (Exception e) {
+			System.out.println( e.getMessage() );
+			mStation.replace(sel);
 		}
-		
-		@Override
-		protected String doInBackground(String... urls) {
-			StringBuilder builder = new StringBuilder();
-	    	try {
-	    		URL url = new URL(urls[0]);
-	    		URLConnection con = url.openConnection();
-	    		BufferedReader rd = new BufferedReader(new InputStreamReader(con.getInputStream()));
-	    		String line;
-	    		while( (line=rd.readLine()) != null && !isCancelled() )
-	    			builder.append(line);
-	    		rd.close();
-	    	} catch( Exception e ) {
-	    		System.out.println(e.getMessage());
-			}
-	    	return builder.toString();
-		}		
-		
-		@Override
-	    protected void onPostExecute(String result) {
-	        super.onPostExecute(result);	        
-	        mProgress.dismiss();
-	        Station sel = (Station)mSpinner.getSelectedItem();
-	        try {
-	        	mProvider.updateStation(mStation, result);
-	        	sel.replace(mStation);
-	        } catch (Exception e) {
-				System.out.println( e.getMessage() );
-				mStation.replace(sel);
-			}
-	        redraw();
-	    }
+        redraw();
+    }
+	
+	public void OnCancelled() {
+		redraw();
 	}
 	
 	public boolean onTouch( View arg0, MotionEvent event ) {
@@ -611,7 +578,6 @@ public class Tolomet extends Activity
 	private Spinner mSpinner;
 	private TextView mSummary;
 	private CheckBox mFavorite;
-	private ProgressDialog mProgress;
 	Downloader mDownloader;
 	private Station mStation;
 	private List<Station> mStations;

@@ -17,4 +17,6 @@
     <string name="minutes">minutos</string>
     <string name="star">favorito</string>
     <string name="NoData">No hay datos</string>
+    <string name="NoNetwork">No tienes conexión a internet</string>
+    <string name="DownloadCancelled">Descarga cancelada</string>
 </resources>
