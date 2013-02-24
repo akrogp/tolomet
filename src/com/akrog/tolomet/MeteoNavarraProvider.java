@@ -1,9 +1,9 @@
 package com.akrog.tolomet;
 
-import android.annotation.SuppressLint;
-
 import java.util.Calendar;
 import java.util.TimeZone;
+
+import android.annotation.SuppressLint;
 
 public class MeteoNavarraProvider implements WindProvider {
 	public MeteoNavarraProvider() {
@@ -35,9 +35,11 @@ public class MeteoNavarraProvider implements WindProvider {
 			num = Integer.parseInt(getContent(cells[i+1]));
 			station.ListDirection.add(date);
 			station.ListDirection.add(num);
-			num = Tolomet.convertHumidity(Integer.parseInt(getContent(cells[i+2])));
-			station.ListHumidity.add(date);
-			station.ListHumidity.add(num);
+			try {	// We can go on without humidity data
+				num = Tolomet.convertHumidity(Integer.parseInt(getContent(cells[i+2])));
+				station.ListHumidity.add(date);
+				station.ListHumidity.add(num);
+			} catch( Exception e ) {}
 			num = Float.parseFloat(getContent(cells[i+6]));
 			station.ListSpeedMed.add(date);
 			station.ListSpeedMed.add(num);

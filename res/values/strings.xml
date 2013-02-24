@@ -19,4 +19,9 @@
     <string name="NoData">No hay datos</string>
     <string name="NoNetwork">No tienes conexión a internet</string>
     <string name="DownloadCancelled">Descarga cancelada</string>
+    <string name="motd">Mensaje del día</string>
+    <string name="tomorrow">Mañana</string>
+    <string name="update">Actualizar</string>
+    <string name="improvements">Mejoras</string>
+    <string name="newversion">¡Nueva versión disponible!</string>
 </resources>

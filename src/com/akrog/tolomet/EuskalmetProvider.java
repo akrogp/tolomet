@@ -1,8 +1,5 @@
 package com.akrog.tolomet;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -10,6 +7,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
 
 public class EuskalmetProvider implements WindProvider {
 	public EuskalmetProvider( Context context ) {
@@ -43,11 +43,12 @@ public class EuskalmetProvider implements WindProvider {
 	        val = Integer.parseInt(getContent(cells[3]));
 	        station.ListDirection.add(date);
 	        station.ListDirection.add(val);
-	        if( col >= 0 ) {
-	        	station.ListHumidity.add(date);
-	        	val = Tolomet.convertHumidity(Integer.parseInt(getContent(cells[col])));
-	        	station.ListHumidity.add(val);
-	        }
+	        if( col >= 0 )
+	        	try {	// We can go on without humidity data		        	
+		        	val = Tolomet.convertHumidity(Integer.parseInt(getContent(cells[col])));
+		        	station.ListHumidity.add(date);
+		        	station.ListHumidity.add(val);
+	        	} catch( Exception e ) {}
 	        val = Float.parseFloat(getContent(cells[2]));
 	        station.ListSpeedMed.add(date);
 	        station.ListSpeedMed.add(val);
