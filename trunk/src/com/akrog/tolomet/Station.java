@@ -1,6 +1,7 @@
 package com.akrog.tolomet;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import android.os.Bundle;
@@ -95,6 +96,15 @@ public class Station {
 	
 	public boolean isEmpty() {
 		return ListDirection == null || ListDirection.size() < 2;
+	}
+	
+	public boolean isOutdated() {
+		if( isEmpty() )
+			return true;
+		long stamp = (Long)ListDirection.get(ListDirection.size()-2);
+		if( Calendar.getInstance().getTimeInMillis()-stamp > 220*60*1000)
+			return true;
+		return false;
 	}
 	
 	public void saveState( Bundle outState ) {

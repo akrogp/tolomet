@@ -3,6 +3,8 @@ package com.akrog.tolomet;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,11 +16,15 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,6 +40,8 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.akrog.tolomet.gae.GaeClient;
+import com.akrog.tolomet.gae.Motd;
 import com.androidplot.series.XYSeries;
 import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.LineAndPointFormatter;
@@ -52,6 +60,7 @@ public class Tolomet extends Activity
         
         mProvider = new WindProviderManager(this);
         mDownloader = new Downloader(this);
+        mGaeClient = new GaeClient(this);
                 
         mStations = new ArrayList<Station>();
         String code = loadState( savedInstanceState );
@@ -68,10 +77,33 @@ public class Tolomet extends Activity
         mFavorite.setChecked(false);
         mFavorite.setOnCheckedChangeListener(this);
         
-        createCharts();                                
+        createCharts();                
     }
     
-    private void createSpinner( String code ) {
+    private void checkMotd() {
+    	if( mGaeClient.getStatus() == Status.RUNNING || !isNetworkAvailable() )
+    		return;
+    	
+    	// Once a day
+    	SharedPreferences settings = getPreferences(0);
+		Calendar cal1 = Calendar.getInstance();
+		cal1.setTimeInMillis(settings.getLong("gae:last", 0));
+		Calendar cal2 = Calendar.getInstance();
+		if( cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+			cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) )
+			return;
+		
+		long stamp = settings.getLong("gae:stamp", 0);
+		int version = 0;
+		try {
+			version = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+		} catch( Exception e ) {}				
+    	
+    	mGaeClient = new GaeClient(this);
+    	mGaeClient.execute("http://tolomet-gae.appspot.com/rest/motd?version="+version+"&stamp="+stamp);
+	}
+
+	private void createSpinner( String code ) {
     	mSpinner = (Spinner)findViewById(R.id.spinner1);
     	
     	// Initial population
@@ -423,7 +455,7 @@ public class Tolomet extends Activity
 		mStation.replace(station);
 		mFavorite.setChecked(station.Favorite);
 		
-		if( mStation.isEmpty() )
+		if( mStation.isOutdated() )
 			loadData();
 		else
 			redraw();	
@@ -433,21 +465,44 @@ public class Tolomet extends Activity
 		// TODO Auto-generated method stub	
 	}
 	
+	private boolean getLast( List<Number> list, Number[] vals ) {
+		int len =  list.size();
+		if( len < 2 || vals.length < 2 )
+			return false;
+		vals[0] = list.get(len-2);
+		vals[1] = list.get(len-1);
+		return true;
+	}
+
 	@SuppressLint("SimpleDateFormat")
 	private void updateSummary() {
 		if( mStation.isEmpty() ) {
 			mSummary.setText(getString(R.string.NoData));
 			return;
 		}
-		int i = mStation.ListDirection.size()-1;
-        int dir = (Integer)mStation.ListDirection.get(i);
+		
+        Number[] last = new Number[2];        
+        long d, d2;
+        int dir;
+        float med, max, h;
         int hum = -1;
-        if( mStation.ListHumidity.size() > i )
-        	hum = convertHumidity((Float)mStation.ListHumidity.get(i));
-        float med = (Float)mStation.ListSpeedMed.get(i);
-        float max = (Float)mStation.ListSpeedMax.get(i);
+        
+        getLast(mStation.ListDirection, last);
+        d = (Long)last[0];
+        dir = (Integer)last[1];
+        getLast(mStation.ListSpeedMed, last);
+        med = (Float)last[1];
+        getLast(mStation.ListSpeedMax, last);
+        max = (Float)last[1];
+        if( getLast(mStation.ListHumidity, last) ) {
+        	d2 = (Long)last[0];
+            h = (Float)last[1];
+        	if( d2 == d )
+        		hum = convertHumidity(h);
+        }
+        
         Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis((Long)mStation.ListDirection.get(i-1));
+        cal.setTimeInMillis(d);
         SimpleDateFormat df = new SimpleDateFormat();
         df.applyPattern("HH:mm");
         String date = df.format(cal.getTime());
@@ -483,8 +538,57 @@ public class Tolomet extends Activity
 			mStation.replace(sel);
 		}
         redraw();
+        checkMotd();
     }
 	
+	private String getChanges( Motd motd  ) {
+		StringWriter string = new StringWriter();
+		PrintWriter writer = new PrintWriter(string);
+		if( motd.getChanges() != null ) {
+			writer.println(getString(R.string.improvements)+" v"+motd.getVersion()+":");
+			for( String str : motd.getChanges() )
+				writer.println("* "+str);
+		}
+		writer.close();
+		return string.toString();
+	}
+	
+	public void onMotd(Motd motd) {		
+		if( motd.getVersion() != null ) {		
+			new AlertDialog.Builder(this)
+		    .setTitle(R.string.newversion)
+		    .setMessage(getChanges(motd))
+		    .setPositiveButton(R.string.update,
+		    new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int which) {
+		        	dialog.dismiss();
+		            Intent marketIntent = new Intent(
+		            Intent.ACTION_VIEW,
+		            Uri.parse("http://market.android.com/details?id=com.akrog.tolomet"));
+		            startActivity(marketIntent);
+		        }
+		    })
+		    .setNegativeButton(R.string.tomorrow,
+		    new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int which) {
+		            dialog.dismiss();
+		        }
+		    }).create().show();
+		} else if( motd.getMotd() != null) {
+			new AlertDialog.Builder(this)
+		    .setTitle(R.string.motd)
+		    .setMessage(motd.getMotd())
+		    .create().show();
+		} else
+			return;
+		
+		SharedPreferences settings = getPreferences(0);
+		SharedPreferences.Editor editor = settings.edit();
+    	editor.putLong("gae:stamp", motd.getStamp());
+    	editor.putLong("gae:last", Calendar.getInstance().getTimeInMillis());
+    	editor.commit();
+	}
+
 	public void OnCancelled() {
 		redraw();
 	}
@@ -579,6 +683,7 @@ public class Tolomet extends Activity
 	private TextView mSummary;
 	private CheckBox mFavorite;
 	Downloader mDownloader;
+	GaeClient mGaeClient;
 	private Station mStation;
 	private List<Station> mStations;
 	private ArrayAdapter<Station> mAdapter;
