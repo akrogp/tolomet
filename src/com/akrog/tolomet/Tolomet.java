@@ -553,7 +553,11 @@ public class Tolomet extends Activity
 		return string.toString();
 	}
 	
-	public void onMotd(Motd motd) {		
+	public void onMotd(Motd motd) {
+		SharedPreferences settings = getPreferences(0);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putLong("gae:last", Calendar.getInstance().getTimeInMillis());
+		
 		if( motd.getVersion() != null ) {		
 			new AlertDialog.Builder(this)
 		    .setTitle(R.string.newversion)
@@ -578,15 +582,11 @@ public class Tolomet extends Activity
 			new AlertDialog.Builder(this)
 		    .setTitle(R.string.motd)
 		    .setMessage(motd.getMotd())
-		    .create().show();
-		} else
-			return;
+		    .create().show();			
+			editor.putLong("gae:stamp", motd.getStamp());				    	
+		}
 		
-		SharedPreferences settings = getPreferences(0);
-		SharedPreferences.Editor editor = settings.edit();
-    	editor.putLong("gae:stamp", motd.getStamp());
-    	editor.putLong("gae:last", Calendar.getInstance().getTimeInMillis());
-    	editor.commit();
+		editor.commit();
 	}
 
 	public void OnCancelled() {
