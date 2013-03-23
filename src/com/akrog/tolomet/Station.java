@@ -8,33 +8,40 @@ import android.os.Bundle;
 
 public class Station {		
 	public List<Number> ListDirection, ListHumidity, ListSpeedMed, ListSpeedMax;
-	public String Name, Code;
+	public String Name, Code, Region;
+	double Latitude, Longitude;
 	public WindProviderType Provider;
 	public boolean Favorite, Clone;
 		
 	public Station() {
-		this("none","none",false,WindProviderType.Euskalmet);
+		this("none","none","none",false,WindProviderType.Euskalmet,0,0);
 	}
 	
 	public Station( String str ) {		
-		String[] fields = str.split(",");
+		String[] fields = str.split(":");
     	Code = fields[0];
     	Name = fields[1];
     	Provider = WindProviderType.values()[Integer.parseInt(fields[2])];
+    	Region = fields[3];
+    	Longitude = Double.parseDouble(fields[4]);
+    	Latitude = Double.parseDouble(fields[5]);
     	createArrays();
 	}	
 	
-	public Station( String name, String code, boolean favorite, WindProviderType provider ) {
+	public Station( String name, String code, String region, boolean favorite, WindProviderType provider, double lat, double lon ) {
 		Name = name;
 		Code = code;
+		Region = region;
 		Favorite = favorite;
 		Provider = provider;
+		Latitude = lat;
+		Longitude = lon;
 		Clone = false;
 		createArrays();
 	}
 	
 	public Station( Station station ) {
-		this( station.Name, station.Code, station.Favorite, station.Provider );
+		this( station.Name, station.Code, station.Region, station.Favorite, station.Provider, station.Latitude, station.Longitude );
 		replace(station);
 	}
 	
@@ -54,8 +61,11 @@ public class Station {
 		Station station = new Station();
 		station.Name = Name;
 		station.Code = Code;
+		station.Region = Region;
 		station.Favorite = Favorite;
 		station.Provider = Provider;
+		station.Latitude = Latitude;
+		station.Longitude = Longitude;
 		station.Clone = true;
 		station.ListDirection = ListDirection;
 		station.ListHumidity = ListHumidity;
@@ -90,8 +100,11 @@ public class Station {
 		add(station);
 		Name = station.Name;
 		Code = station.Code;
+		Region = station.Region;
 		Provider = station.Provider;
 		Favorite = station.Favorite;
+		Latitude = station.Latitude;
+		Longitude = station.Longitude;
 	}
 	
 	public boolean isEmpty() {
@@ -108,9 +121,12 @@ public class Station {
 	}
 	
 	public void saveState( Bundle outState ) {
-		outState.putString(Code+"-"+"name", Name);
-		outState.putInt(Code+"-"+"type", Provider.getValue());
-		outState.putBoolean(Code+"-"+"star", Favorite);
+		outState.putString(Code+"-name", Name);
+		outState.putString(Code+"-region", Name);
+		outState.putInt(Code+"-type", Provider.getValue());
+		outState.putBoolean(Code+"-star", Favorite);
+		outState.putDouble(Code+"-lat", Latitude);
+		outState.putDouble(Code+"-lon", Longitude);
 		saveLongArray(outState, "dirx", ListDirection, 0);
 		saveIntArray(outState, "diry", ListDirection, 1);
 		saveLongArray(outState, "humx", ListHumidity, 0);
@@ -131,11 +147,16 @@ public class Station {
 	public boolean loadState( Bundle bundle ) {
 		if( bundle == null )
 			return false;
-		Name = bundle.getString(Code+"-"+"name");
+		Name = bundle.getString(Code+"-name");
 		if( Name == null )
 			return false;
-		Favorite = bundle.getBoolean(Code+"-"+"star");
-		Provider = WindProviderType.values()[bundle.getInt(Code+"-"+"type")];
+		Region = bundle.getString(Code+"-region");
+		if( Region == null )
+			return false;
+		Favorite = bundle.getBoolean(Code+"-star");
+		Provider = WindProviderType.values()[bundle.getInt(Code+"-type")];
+		Latitude = bundle.getDouble(Code+"-lat");
+		Longitude = bundle.getDouble(Code+"-lon");
 		loadLongInt( bundle, "dirx", "diry", ListDirection );
 		loadLongFloat( bundle, "humx", "humy", ListHumidity );
 		loadLongFloat( bundle, "medx", "medy", ListSpeedMed );

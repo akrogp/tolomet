@@ -9,7 +9,8 @@ public class WindProviderManager {
 	public WindProviderManager( Context context ) {
 		mProviders = new WindProvider[WindProviderType.values().length];
 		mProviders[0] = new EuskalmetProvider( context );
-		mProviders[1] = new MeteoNavarraProvider(); 
+		mProviders[1] = new MeteoNavarraProvider();
+		mProviders[2] = new AemetProvider(); 
 	}
 	
 	public String getUrl( Station station ) {
