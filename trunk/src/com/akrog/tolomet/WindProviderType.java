@@ -1,7 +1,7 @@
 package com.akrog.tolomet;
 
 public enum WindProviderType {
-	Euskalmet(0), MeteoNavarra(1);
+	Euskalmet(0), MeteoNavarra(1), Aemet(2);
 	
 	private final int value;
 	
