@@ -1,7 +1,8 @@
-package com.akrog.tolomet;
+package com.akrog.tolomet.data;
 
 import java.util.Calendar;
 import java.util.TimeZone;
+
 
 import android.content.Context;
 

@@ -24,4 +24,11 @@
     <string name="update">Actualizar</string>
     <string name="improvements">Mejoras</string>
     <string name="newversion">¡Nueva versión disponible!</string>
+    <string name="menu_all">Todas las estaciones</string>
+    <string name="menu_reg">Comunidades autónomas</string>
+    <string name="menu_close">Estaciones cercanas</string>
+    <string name="menu_fav">Estaciones favoritas</string>
+    <string name="menu_index">Índice de estaciones</string>
+    <string name="menu_start">Menú inicio</string>
+    <string name="select">Selecciona</string>
 </resources>

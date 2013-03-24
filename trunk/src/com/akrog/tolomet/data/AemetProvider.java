@@ -1,14 +1,12 @@
-package com.akrog.tolomet;
+package com.akrog.tolomet.data;
 
 import java.util.Calendar;
 
 import android.annotation.SuppressLint;
 
-public class AemetProvider implements WindProvider {
-	public AemetProvider() {
-		mSeparator = '.';//(new DecimalFormatSymbols()).getDecimalSeparator();
-	}
-	
+import com.akrog.tolomet.Tolomet;
+
+public class AemetProvider implements WindProvider {	
 	@SuppressLint("DefaultLocale")
 	public String getUrl(Station station, Calendar past, Calendar now) {
 		return String.format(
@@ -28,8 +26,8 @@ public class AemetProvider implements WindProvider {
 		for( int i = cells.length-19; i >= 23; i-=20 ) {
 			if( cells[i].equals("\"\"") )
 				break;
-			date = toEpoch(getContent(cells[i]));
-			dir = getContent(cells[i+6]);
+			date = toEpoch(cells[i]);
+			dir = cells[i+6];
 			if( dir.equalsIgnoreCase("Norte") )									
 				num = 0;
 			else if( dir.equalsIgnoreCase("Noreste") )
@@ -51,14 +49,14 @@ public class AemetProvider implements WindProvider {
 			station.ListDirection.add(date);				
 			station.ListDirection.add(num);
 			try {	// We can go on without humidity data
-				num = Tolomet.convertHumidity(Integer.parseInt(getContent(cells[i+18])));
+				num = Tolomet.convertHumidity(Integer.parseInt(cells[i+18]));
 				station.ListHumidity.add(date);
 				station.ListHumidity.add(num);
 			} catch( Exception e ) {}
-			num = Float.parseFloat(getContent(cells[i+4]));
+			num = Float.parseFloat(cells[i+4]);
 			station.ListSpeedMed.add(date);
 			station.ListSpeedMed.add(num);
-			num = Float.parseFloat(getContent(cells[i+8]));
+			num = Float.parseFloat(cells[i+8]);
 			station.ListSpeedMax.add(date);
 			station.ListSpeedMax.add(num);
 		}				
@@ -77,11 +75,5 @@ public class AemetProvider implements WindProvider {
 		cal.set(Calendar.MINUTE, Integer.parseInt(str.substring(14)));
 		cal.set(Calendar.SECOND, 0);
 	    return cal.getTimeInMillis();
-	}
-	
-	private String getContent( String cell ) {
-		return cell.replaceAll("\"","").replace('.',mSeparator);
-	}
-	
-	private char mSeparator;	
+	}	
 }
