@@ -72,7 +72,8 @@ public class Station {
 	public String toString() {
 		if( isSpecial() )
 			return Name;
-		String str = Code + " - " + Name;
+		//String str = Code + " - " + Name;
+		String str = Provider.getCode() + " - " + Name;
 		if( Distance > 0.0F )
 			str += " (" + String.format("%.1f",Distance/1000.0F) + " km)";
 		return str;
