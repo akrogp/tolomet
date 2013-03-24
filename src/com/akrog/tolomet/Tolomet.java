@@ -437,6 +437,8 @@ public class Tolomet extends Activity
     			loadData();
     			break;
     		case R.id.button2:
+    			if( alertNetwork() )
+    				return;
     			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(mProvider.getInfoUrl(mStation))));
     			break;
     	}
@@ -511,12 +513,8 @@ public class Tolomet extends Activity
 			alertDialog.show();
 			return;
     	}
-    	if( !isNetworkAvailable() ) {
-    		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-			alertDialog.setMessage( getString(R.string.NoNetwork) );
-			alertDialog.show();
+    	if( alertNetwork() )
 			return;
-    	}
     	String uri = mProvider.getUrl(mStation); 
     	//System.out.println(uri);
     	mDownloader = new Downloader(this);
@@ -528,6 +526,16 @@ public class Tolomet extends Activity
 	          = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
 	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 	    return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+	}
+	
+	private boolean alertNetwork() {
+		if( !isNetworkAvailable() ) {
+    		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+			alertDialog.setMessage( getString(R.string.NoNetwork) );
+			alertDialog.show();
+			return true;
+    	}
+		return false;
 	}
     
     public void redraw() {
