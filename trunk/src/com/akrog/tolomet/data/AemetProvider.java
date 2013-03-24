@@ -75,5 +75,9 @@ public class AemetProvider implements WindProvider {
 		cal.set(Calendar.MINUTE, Integer.parseInt(str.substring(14)));
 		cal.set(Calendar.SECOND, 0);
 	    return cal.getTimeInMillis();
+	}
+
+	public String getInfoUrl(String code) {
+		return "http://www.aemet.es/es/eltiempo/observacion/ultimosdatos?l="+code+"&datos=det";
 	}	
 }

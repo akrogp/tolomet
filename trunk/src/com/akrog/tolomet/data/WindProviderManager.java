@@ -3,7 +3,6 @@ package com.akrog.tolomet.data;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-
 import android.content.Context;
 
 public class WindProviderManager {
@@ -16,6 +15,10 @@ public class WindProviderManager {
 	
 	public String getUrl( Station station ) {
 		return mProviders[station.Provider.getValue()].getUrl(station, mPast, mNow);
+	}
+	
+	public String getInfoUrl( Station station ) {
+		return mProviders[station.Provider.getValue()].getInfoUrl(station.Code);
 	}
 	
 	public void updateStation( Station station, String data ) {
