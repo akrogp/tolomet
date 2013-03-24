@@ -1,4 +1,4 @@
-package com.akrog.tolomet;
+package com.akrog.tolomet.data;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -10,6 +10,9 @@ import java.util.TimeZone;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+
+import com.akrog.tolomet.R;
+import com.akrog.tolomet.Tolomet;
 
 public class EuskalmetProvider implements WindProvider {
 	public EuskalmetProvider( Context context ) {

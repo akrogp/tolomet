@@ -1,7 +1,9 @@
-package com.akrog.tolomet;
+package com.akrog.tolomet.data;
 
 import java.util.Calendar;
 import java.util.TimeZone;
+
+import com.akrog.tolomet.Tolomet;
 
 import android.annotation.SuppressLint;
 

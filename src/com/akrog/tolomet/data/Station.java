@@ -1,4 +1,4 @@
-package com.akrog.tolomet;
+package com.akrog.tolomet.data;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -8,13 +8,21 @@ import android.os.Bundle;
 
 public class Station {		
 	public List<Number> ListDirection, ListHumidity, ListSpeedMed, ListSpeedMax;
-	public String Name, Code, Region;
-	double Latitude, Longitude;
+	public String Name, Code;
+	public int Region;
+	public double Latitude, Longitude;
 	public WindProviderType Provider;
-	public boolean Favorite, Clone;
+	public boolean Favorite;
+	public int Special;
+	public float Distance;
 		
 	public Station() {
-		this("none","none","none",false,WindProviderType.Euskalmet,0,0);
+		this("none","none",1,false,WindProviderType.Aemet,0,0);
+	}
+	
+	public Station( String name, int special ) {
+		this(name,"none",1,false,WindProviderType.Aemet,0,0);
+		Special = special;		
 	}
 	
 	public Station( String str ) {		
@@ -22,13 +30,15 @@ public class Station {
     	Code = fields[0];
     	Name = fields[1];
     	Provider = WindProviderType.values()[Integer.parseInt(fields[2])];
-    	Region = fields[3];
-    	Longitude = Double.parseDouble(fields[4]);
-    	Latitude = Double.parseDouble(fields[5]);
-    	createArrays();
+    	Region = Integer.parseInt(fields[3]);    	
+    	Latitude = Double.parseDouble(fields[4]);
+    	Longitude = Double.parseDouble(fields[5]);
+    	Special = -1;
+    	Distance = -1.0F;
+    	createArrays();    	
 	}	
 	
-	public Station( String name, String code, String region, boolean favorite, WindProviderType provider, double lat, double lon ) {
+	public Station( String name, String code, int region, boolean favorite, WindProviderType provider, double lat, double lon ) {
 		Name = name;
 		Code = code;
 		Region = region;
@@ -36,7 +46,8 @@ public class Station {
 		Provider = provider;
 		Latitude = lat;
 		Longitude = lon;
-		Clone = false;
+		Special = -1;
+		Distance = -1.0F;
 		createArrays();
 	}
 	
@@ -45,9 +56,9 @@ public class Station {
 		replace(station);
 	}
 	
-	public Station( Bundle bundle, String code ) {
+	public Station( Bundle bundle, String code, boolean fav ) {
 		this();
-		loadState(bundle, code);
+		loadState(bundle, code, fav);
 	}
 	
 	private void createArrays() {
@@ -55,27 +66,12 @@ public class Station {
 		ListHumidity = new ArrayList<Number>();
 		ListSpeedMed = new ArrayList<Number>();
 		ListSpeedMax = new ArrayList<Number>();
-	}
-	
-	public Station getLinkedClone() {
-		Station station = new Station();
-		station.Name = Name;
-		station.Code = Code;
-		station.Region = Region;
-		station.Favorite = Favorite;
-		station.Provider = Provider;
-		station.Latitude = Latitude;
-		station.Longitude = Longitude;
-		station.Clone = true;
-		station.ListDirection = ListDirection;
-		station.ListHumidity = ListHumidity;
-		station.ListSpeedMed = ListSpeedMed;
-		station.ListSpeedMax = ListSpeedMax;
-		return station;
-	}
+	}	
 	
 	@Override
 	public String toString() {
+		if( isSpecial() )
+			return Name;
 		return Code + " - " + Name;
 	}
 	
@@ -105,10 +101,15 @@ public class Station {
 		Favorite = station.Favorite;
 		Latitude = station.Latitude;
 		Longitude = station.Longitude;
+		Special = station.Special;
 	}
 	
 	public boolean isEmpty() {
 		return ListDirection == null || ListDirection.size() < 2;
+	}
+	
+	public boolean isSpecial() {
+		return Special != -1;
 	}
 	
 	public boolean isOutdated() {
@@ -121,12 +122,12 @@ public class Station {
 	}
 	
 	public void saveState( Bundle outState ) {
-		outState.putString(Code+"-name", Name);
-		outState.putString(Code+"-region", Name);
-		outState.putInt(Code+"-type", Provider.getValue());
+		//outState.putString(Code+"-name", Name);
+		//outState.putInt(Code+"-region", Region);
+		//outState.putInt(Code+"-type", Provider.getValue());
 		outState.putBoolean(Code+"-star", Favorite);
-		outState.putDouble(Code+"-lat", Latitude);
-		outState.putDouble(Code+"-lon", Longitude);
+		//outState.putDouble(Code+"-lat", Latitude);
+		//outState.putDouble(Code+"-lon", Longitude);
 		saveLongArray(outState, "dirx", ListDirection, 0);
 		saveIntArray(outState, "diry", ListDirection, 1);
 		saveLongArray(outState, "humx", ListHumidity, 0);
@@ -137,26 +138,23 @@ public class Station {
 		saveFloatArray(outState, "maxy", ListSpeedMax, 1);
 	}
 	
-	public boolean loadState( Bundle bundle, String code ) {
+	public boolean loadState( Bundle bundle, String code, boolean fav ) {
 		if( bundle == null )
 			return false;
 		Code = code;
-		return loadState(bundle);
+		return loadState(bundle, fav);
 	}
 	
-	public boolean loadState( Bundle bundle ) {
+	public boolean loadState( Bundle bundle, boolean fav ) {
 		if( bundle == null )
 			return false;
-		Name = bundle.getString(Code+"-name");
-		if( Name == null )
-			return false;
-		Region = bundle.getString(Code+"-region");
-		if( Region == null )
-			return false;
-		Favorite = bundle.getBoolean(Code+"-star");
-		Provider = WindProviderType.values()[bundle.getInt(Code+"-type")];
-		Latitude = bundle.getDouble(Code+"-lat");
-		Longitude = bundle.getDouble(Code+"-lon");
+		//Name = bundle.getString(Code+"-name");
+		//Region = bundle.getInt(Code+"-region");
+		//Favorite = bundle.getBoolean(Code+"-star");
+		//Provider = WindProviderType.values()[bundle.getInt(Code+"-type")];
+		//Latitude = bundle.getDouble(Code+"-lat");
+		//Longitude = bundle.getDouble(Code+"-lon");
+		Favorite = fav;
 		loadLongInt( bundle, "dirx", "diry", ListDirection );
 		loadLongFloat( bundle, "humx", "humy", ListHumidity );
 		loadLongFloat( bundle, "medx", "medy", ListSpeedMed );

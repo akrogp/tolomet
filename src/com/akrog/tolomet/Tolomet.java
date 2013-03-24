@@ -1,6 +1,7 @@
 package com.akrog.tolomet;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -9,6 +10,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +23,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -40,6 +44,9 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.akrog.tolomet.data.Station;
+import com.akrog.tolomet.data.StationComparator;
+import com.akrog.tolomet.data.WindProviderManager;
 import com.akrog.tolomet.gae.GaeClient;
 import com.akrog.tolomet.gae.Motd;
 import com.androidplot.series.XYSeries;
@@ -61,17 +68,26 @@ public class Tolomet extends Activity
         mProvider = new WindProviderManager(this);
         mDownloader = new Downloader(this);
         mGaeClient = new GaeClient(this);
-                
+        mSummary = (TextView)findViewById(R.id.textView1);
+        mItems = new ArrayList<Station>();
         mStations = new ArrayList<Station>();
-        String code = loadState( savedInstanceState );
+        mFavStations = new ArrayList<Station>();
+        mCloseStations = new ArrayList<Station>();
+        mRegions = new ArrayList<Station>();
+        mOptions  = new ArrayList<Station>();
+        mVowels  = new ArrayList<Station>();
         mStation = new Station();
         
-        mSummary = (TextView)findViewById(R.id.textView1);
-        
-        createSpinner(code);
+        SpinnerState spinnerState = loadState( savedInstanceState );                       
+        mSpinner = (Spinner)findViewById(R.id.spinner1);        
+        mAdapter = new ArrayAdapter<Station>(this,android.R.layout.simple_spinner_item,mItems);
+        mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    	mSpinner.setAdapter(mAdapter);
+    	changeSpinnerType(spinnerState.Type, spinnerState.Selection);
+        mSpinner.setOnItemSelectedListener(this);
                 
-        Button button = (Button)findViewById(R.id.button1);
-        button.setOnClickListener(this);
+        mButton = (Button)findViewById(R.id.button1);
+        mButton.setOnClickListener(this);
         
         mFavorite = (CheckBox)findViewById(R.id.favorite_button);
         mFavorite.setChecked(false);
@@ -102,75 +118,167 @@ public class Tolomet extends Activity
     	mGaeClient = new GaeClient(this);
     	mGaeClient.execute("http://tolomet-gae.appspot.com/rest/motd?version="+version+"&stamp="+stamp);
 	}
-
-	private void createSpinner( String code ) {
-    	mSpinner = (Spinner)findViewById(R.id.spinner1);
-    	
-    	// Initial population
-    	if( mStations.isEmpty() )
-    		loadStations();
-    	
-    	// AddFavorites
-    	SharedPreferences settings = getPreferences(0);
-    	int favs = 0;
-    	for( int i = mStations.size()-1; i >= favs; i-- )
-    		if( settings.contains(mStations.get(i).Code) ) {
-    			mStations.get(i).Favorite = true;
-    			mStations.add(0, mStations.get(i).getLinkedClone());
-    			i++;
-    			favs++;
-    		}
-    	if( favs == 0 ) {
-    		mAdapter = null;
-    		addFavorite("C072");	// Orduña
-    		addFavorite("C042");	// Punta Galea
-    	}
-    	
-    	// Adapter
-    	mAdapter = new ArrayAdapter<Station>(this,android.R.layout.simple_spinner_item,mStations);
-    	mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    	mSpinner.setAdapter(mAdapter);
-    	
-    	// Selection
-    	int sel = 0;
-    	if( code != null ) {
-	    	for( Station station : mStations )
-	    		if( station.Code.equals(code) )
-	    			break;
-	    		else
-	    			sel++;
-	    	if( sel >= mStations.size() )
-	    		sel = 0;
-    	}
+	
+	private void changeSpinnerType( SpinnerType type, int sel ) {
+		mItems.clear();
+		switch( type ) {
+			case AllStations:
+				mItems.addAll(mStations);
+				break;
+			case CloseStations:
+				loadCloseStations();
+				mItems.addAll(mCloseStations);
+				break;
+			case FavoriteStations:
+				mItems.addAll(mFavStations);
+				break;
+			case Regions:
+				mItems.addAll(mRegions);
+				break;
+			case StartMenu:
+				mItems.addAll(mOptions);
+				break;
+			case Index:
+				mItems.addAll(mVowels);
+				break;
+		}		
+    	mSpinnerType = type;
+    	mAdapter.notifyDataSetChanged();
     	mSpinner.setSelection(sel);
-        mSpinner.setOnItemSelectedListener(this);
-    }
+	}
+	
+	private void changeSpinnerType( Station station ) {
+		mButton.setEnabled(false);
+		mFavorite.setEnabled(false);
+		if( station.Special == 0 )
+			return;
+		if( station.Special == SpinnerType.StartMenu.getValue() ) {
+			if( mSpinnerType != SpinnerType.StartMenu )
+				changeSpinnerType( SpinnerType.StartMenu, 0 );
+			return;
+		}
+		if( station.Special < SpinnerType.StartMenu.getValue() || station.Special > 200 ) {
+			mCloseStations.clear();			
+			mCloseStations.add(mStations.get(0));
+			mCloseStations.add(mStations.get(1));
+			if( station.Special > 200 ) {
+				for( Station s : mStations )
+					if( s.Name.startsWith(""+(char)(station.Special-200)) )
+						mCloseStations.add(s);
+			} else {
+				for( Station s : mStations )
+					if( s.Region == station.Special )
+						mCloseStations.add(s);
+			}
+			changeSpinnerType( SpinnerType.CloseStations, 0 );
+			return;
+		}
+		changeSpinnerType( SpinnerType.values()[station.Special-SpinnerType.StartMenu.getValue()], 0 );
+	}
     
     private void loadStations() {
+    	SharedPreferences settings = getPreferences(0);
     	InputStream inputStream = getResources().openRawResource(R.raw.stations);
 		InputStreamReader in = new InputStreamReader(inputStream);
 		BufferedReader rd = new BufferedReader(in);
 		String line;
 		Station station;
+		int favs = 0;
 		try {
 			while( (line=rd.readLine()) != null ) {
 				station = new Station(line);
 				mStations.add(station);
+				if( settings.contains(station.Code) ) {
+					station.Favorite = true;
+					mFavStations.add(station);
+					favs++;
+				}
 			}
 			rd.close();
+			if( favs == 0 ) {
+	    		addFavorite("C072");	// Orduña
+	    		addFavorite("C042");	// Punta Galea
+	    	}
 		} catch( Exception e ) {			
-		}		
+		}    	
     }
     
-    private String loadState( Bundle bundle ) {
-    	if( bundle != null ) {
-    		loadStations();    		
-	    	for( Station station : mStations )
-	    		station.loadState(bundle);
-    	}
-    	SharedPreferences settings = getPreferences(0);
-		return settings.getString("selection", null);
+    private void loadRegions() {
+    	InputStream inputStream = getResources().openRawResource(R.raw.regions);
+		InputStreamReader in = new InputStreamReader(inputStream);
+		BufferedReader rd = new BufferedReader(in);
+		String line;
+		String[] fields;
+		Station station;
+		try {
+			while( (line=rd.readLine()) != null ) {
+				fields = line.split(",");
+				station = new Station(fields[0],Integer.parseInt(fields[1]));
+				mRegions.add(station);
+			}
+		} catch (IOException e) {}
 	}
+    
+    private void loadOptions() {
+    	mOptions.add(new Station(getString(R.string.menu_fav),SpinnerType.FavoriteStations.getValue()));
+    	mOptions.add(new Station(getString(R.string.menu_reg),SpinnerType.Regions.getValue()));    	    	   
+    	mOptions.add(new Station(getString(R.string.menu_close),SpinnerType.CloseStations.getValue()));
+    	mOptions.add(new Station(getString(R.string.menu_index),SpinnerType.Index.getValue()));
+    	mOptions.add(new Station(getString(R.string.menu_all),SpinnerType.AllStations.getValue()));
+	}
+    
+    private void loadVowels() {
+    	for( char c='A'; c <= 'Z'; c++ )
+    		mVowels.add(new Station(""+c,200+c));
+	}
+    
+    private void loadCloseStations() {
+    	mCloseStations.clear();    	
+    	LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+    	Location ll = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+    	float[] dist = new float[1];
+    	for( Station station : mStations ) {    		
+    		Location.distanceBetween(ll.getLatitude(), ll.getLongitude(), station.Latitude, station.Longitude, dist);
+    		station.Distance = dist[0];
+    		if( station.Distance < 50000.0F )
+    			mCloseStations.add(station);
+    	}
+    	Collections.sort(mCloseStations, new StationComparator());
+    	mCloseStations.add(0,mStations.get(0));
+    	mCloseStations.add(1,mStations.get(1));
+    }
+    
+    private SpinnerState loadState( Bundle bundle ) {
+    	SharedPreferences settings = getPreferences(0);
+    	SpinnerState spinner = new SpinnerState();
+    	if( mStations.isEmpty() ) {
+        	Station start = new Station("--- " + getString(R.string.select) + " ---", 0);
+        	mOptions.add(start);
+        	mStations.add(start);
+        	mFavStations.add(start);
+        	mCloseStations.add(start);
+        	mRegions.add(start);
+        	mVowels.add(start);
+        	start = new Station("["+getString(R.string.menu_start)+"]", SpinnerType.StartMenu.getValue());
+        	mStations.add(start);
+        	mFavStations.add(start);
+        	mCloseStations.add(start);
+        	mRegions.add(start);
+        	mVowels.add(start);
+    		loadStations();
+    		loadRegions();
+    		loadOptions();
+    		loadVowels();
+    	}
+
+    	if( bundle != null )
+	    	for( Station station : mStations )
+	    		if( !station.isSpecial() )
+	    			station.loadState(bundle, settings.contains(station.Code));
+    	spinner.Type = SpinnerType.values()[settings.getInt("spinner-type", SpinnerType.StartMenu.getValue())-SpinnerType.StartMenu.getValue()];
+    	spinner.Selection = settings.getInt("spinner-sel", 0);
+		return spinner;
+	}		
 
 	@Override
     protected void onPause() {
@@ -197,7 +305,7 @@ public class Tolomet extends Activity
     protected void onSaveInstanceState(Bundle outState) {
     	super.onSaveInstanceState(outState);
     	for( Station station : mStations )
-    		if( !station.Clone )
+    		if( !station.isSpecial() && !station.isEmpty() )
     			station.saveState(outState);
     }
     
@@ -310,7 +418,9 @@ public class Tolomet extends Activity
         return m;
     }
     
-    public void onClick(View v) {    	
+    public void onClick(View v) {
+    	if( mStation.isSpecial() )
+    		return;
     	loadData();
 	}
     
@@ -333,25 +443,16 @@ public class Tolomet extends Activity
     	if( settings.contains(code) )
     		return;
     	
-    	// Spinner
-    	Station fav = null;
-    	for( Station station : mStations )
-    		if( station.Code.equals(code) ) {
+    	// List
+    	mFavStations.clear();
+    	mFavStations.add(mStations.get(0));
+    	mFavStations.add(mStations.get(1));
+    	for( Station station : mStations ) {
+    		if( station.Code.equals(code) )
     			station.Favorite = true;
-    			fav = station.getLinkedClone();
-    			break;
-    		}
-    	int i = 0;
-    	for( Station station : mStations )
-    		if( !station.Favorite || station.Name.compareTo(fav.Name) >= 0 )
-    			break;
-    		else
-    			i++;
-    	mStations.add(i, fav);
-    	if( mAdapter != null ) {
-    		mAdapter.notifyDataSetChanged();
-    		mSpinner.setSelection(i);
-    	}    	
+    		if( station.Favorite )
+    			mFavStations.add(station);
+    	}
     	
     	// State
     	SharedPreferences.Editor editor = settings.edit();
@@ -365,25 +466,19 @@ public class Tolomet extends Activity
 		if( !settings.contains(mStation.Code) )
     		return;
 		
-		// Spinner
-    	int i = 0;
-    	for( Station station : mStations )
-    		if( station.Code.equals(mStation.Code) )
-    			break;
-    		else
-    			i++;
-    	if( i >= mStations.size() )
-    		return;
-    	mStations.remove(i);
-    	i = 0;
-    	for( Station station : mStations )
+		// List
+    	for( Station station : mFavStations )
     		if( station.Code.equals(mStation.Code) ) {
     			station.Favorite = false;
+    			mFavStations.remove(station);
     			break;
-    		} else
-    			i++;
-    	mAdapter.notifyDataSetChanged();
-    	mSpinner.setSelection(i);
+    		}
+    	
+    	// Spinner
+    	if( mSpinnerType == SpinnerType.FavoriteStations ) {
+    		mAdapter.notifyDataSetChanged();
+    		//mSpinner.setSelection(0);
+    	}
     	
     	// State
     	SharedPreferences.Editor editor = settings.edit();
@@ -455,6 +550,12 @@ public class Tolomet extends Activity
 		mStation.replace(station);
 		mFavorite.setChecked(station.Favorite);
 		
+		if( station.isSpecial() ) {
+			changeSpinnerType(station);
+			return;
+		}
+		mButton.setEnabled(true);
+		mFavorite.setEnabled(true);
 		if( mStation.isOutdated() )
 			loadData();
 		else
@@ -468,9 +569,9 @@ public class Tolomet extends Activity
 	private boolean getLast( List<Number> list, Number[] vals ) {
 		int len =  list.size();
 		if( len < 2 || vals.length < 2 )
-			return false;
+			return false;		
 		vals[0] = list.get(len-2);
-		vals[1] = list.get(len-1);
+		vals[1] = list.get(len-1);		
 		return true;
 	}
 
@@ -677,16 +778,18 @@ public class Tolomet extends Activity
 		float y = event.getY(0) - event.getY(1);
 		return FloatMath.sqrt(x * x + y * y);
 	}*/
-	
+
+	private Button mButton;
 	private XYPlot mChartSpeed, mChartDirection;
 	private Spinner mSpinner;
+	private ArrayAdapter<Station> mAdapter;
+	private SpinnerType mSpinnerType;
 	private TextView mSummary;
 	private CheckBox mFavorite;
 	Downloader mDownloader;
 	GaeClient mGaeClient;
 	private Station mStation;
-	private List<Station> mStations;
-	private ArrayAdapter<Station> mAdapter;
+	private List<Station> mItems, mStations, mFavStations, mCloseStations, mRegions, mOptions, mVowels;	
 	private WindProviderManager mProvider;
 	static final float mFontSize = 16;		
 		
