@@ -132,18 +132,24 @@ public class Tolomet extends Activity
 			case FavoriteStations:
 				mItems.addAll(mFavStations);
 				break;
+			case RegionStations:
+				mItems.addAll(mCloseStations);
+				break;
+			case VowelSations:
+				mItems.addAll(mCloseStations);
+				break;
 			case Regions:
 				mItems.addAll(mRegions);
 				break;
 			case StartMenu:
 				mItems.addAll(mOptions);
 				break;
-			case Index:
+			case Vowels:
 				mItems.addAll(mVowels);
 				break;
 		}		
     	mSpinnerType = type;
-    	mAdapter.notifyDataSetChanged();
+    	mAdapter.notifyDataSetChanged();    	
     	mSpinner.setSelection(sel);
 	}
 	
@@ -165,12 +171,13 @@ public class Tolomet extends Activity
 				for( Station s : mStations )
 					if( s.Name.startsWith(""+(char)(station.Special-200)) )
 						mCloseStations.add(s);
+				changeSpinnerType( SpinnerType.VowelSations, 0 );
 			} else {
 				for( Station s : mStations )
 					if( s.Region == station.Special )
 						mCloseStations.add(s);
-			}
-			changeSpinnerType( SpinnerType.CloseStations, 0 );
+				changeSpinnerType( SpinnerType.RegionStations, 0 );
+			}			
 			return;
 		}
 		changeSpinnerType( SpinnerType.values()[station.Special-SpinnerType.StartMenu.getValue()], 0 );
@@ -223,7 +230,7 @@ public class Tolomet extends Activity
     	mOptions.add(new Station(getString(R.string.menu_fav),SpinnerType.FavoriteStations.getValue()));
     	mOptions.add(new Station(getString(R.string.menu_reg),SpinnerType.Regions.getValue()));    	    	   
     	mOptions.add(new Station(getString(R.string.menu_close),SpinnerType.CloseStations.getValue()));
-    	mOptions.add(new Station(getString(R.string.menu_index),SpinnerType.Index.getValue()));
+    	mOptions.add(new Station(getString(R.string.menu_index),SpinnerType.Vowels.getValue()));
     	mOptions.add(new Station(getString(R.string.menu_all),SpinnerType.AllStations.getValue()));
 	}
     

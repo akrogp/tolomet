@@ -72,7 +72,10 @@ public class Station {
 	public String toString() {
 		if( isSpecial() )
 			return Name;
-		return Code + " - " + Name;
+		String str = Code + " - " + Name;
+		if( Distance > 0.0F )
+			str += " (" + String.format("%.1f",Distance/1000.0F) + " km)";
+		return str;
 	}
 	
 	public void clear() {
