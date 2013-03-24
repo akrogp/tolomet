@@ -101,7 +101,11 @@ public class EuskalmetProvider implements WindProvider {
 		}
     }
 	
+	public String getInfoUrl(String code) {
+		return "http://www.euskalmet.euskadi.net/s07-5853x/es/meteorologia/estacion.apl?e=5&campo="+code;
+	}
+	
 	private Map<String,Integer> mHumidityCol;
 	private char mSeparator;
-	private Context mContext;
+	private Context mContext;	
 }

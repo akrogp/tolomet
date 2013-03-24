@@ -122,7 +122,7 @@ public class Station {
 		if( Calendar.getInstance().getTimeInMillis()-stamp > 220*60*1000)
 			return true;
 		return false;
-	}
+	}	
 	
 	public void saveState( Bundle outState ) {
 		//outState.putString(Code+"-name", Name);

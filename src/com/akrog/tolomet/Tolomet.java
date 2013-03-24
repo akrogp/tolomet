@@ -37,10 +37,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -86,8 +86,10 @@ public class Tolomet extends Activity
     	changeSpinnerType(spinnerState.Type, spinnerState.Selection);
         mSpinner.setOnItemSelectedListener(this);
                 
-        mButton = (Button)findViewById(R.id.button1);
-        mButton.setOnClickListener(this);
+        mButtonRefresh = (ImageButton)findViewById(R.id.button1);
+        mButtonRefresh.setOnClickListener(this);
+        mButtonInfo = (ImageButton)findViewById(R.id.button2);
+        mButtonInfo.setOnClickListener(this);
         
         mFavorite = (CheckBox)findViewById(R.id.favorite_button);
         mFavorite.setChecked(false);
@@ -151,10 +153,12 @@ public class Tolomet extends Activity
     	mSpinnerType = type;
     	mAdapter.notifyDataSetChanged();    	
     	mSpinner.setSelection(sel);
+    	mSpinner.performClick();
 	}
 	
 	private void changeSpinnerType( Station station ) {
-		mButton.setEnabled(false);
+		mButtonRefresh.setEnabled(false);
+		mButtonInfo.setEnabled(false);
 		mFavorite.setEnabled(false);
 		if( station.Special == 0 )
 			return;
@@ -428,7 +432,14 @@ public class Tolomet extends Activity
     public void onClick(View v) {
     	if( mStation.isSpecial() )
     		return;
-    	loadData();
+    	switch( v.getId() ) {
+    		case R.id.button1:
+    			loadData();
+    			break;
+    		case R.id.button2:
+    			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(mProvider.getInfoUrl(mStation))));
+    			break;
+    	}
 	}
     
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -561,7 +572,8 @@ public class Tolomet extends Activity
 			changeSpinnerType(station);
 			return;
 		}
-		mButton.setEnabled(true);
+		mButtonRefresh.setEnabled(true);
+		mButtonInfo.setEnabled(true);
 		mFavorite.setEnabled(true);
 		if( mStation.isOutdated() )
 			loadData();
@@ -786,7 +798,7 @@ public class Tolomet extends Activity
 		return FloatMath.sqrt(x * x + y * y);
 	}*/
 
-	private Button mButton;
+	private ImageButton mButtonRefresh, mButtonInfo;
 	private XYPlot mChartSpeed, mChartDirection;
 	private Spinner mSpinner;
 	private ArrayAdapter<Station> mAdapter;

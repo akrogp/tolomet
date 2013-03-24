@@ -3,9 +3,9 @@ package com.akrog.tolomet.data;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-import com.akrog.tolomet.Tolomet;
-
 import android.annotation.SuppressLint;
+
+import com.akrog.tolomet.Tolomet;
 
 public class MeteoNavarraProvider implements WindProvider {
 	public MeteoNavarraProvider() {
@@ -53,6 +53,10 @@ public class MeteoNavarraProvider implements WindProvider {
 
 	public int getRefresh() {
 		return 10;
+	}
+	
+	public String getInfoUrl(String code) {
+		return "http://meteo.navarra.es/estaciones/estacion_detalle.cfm?idestacion="+code.substring(2);
 	}	
 
 	private long toEpoch( String str ) {

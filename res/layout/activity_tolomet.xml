@@ -19,17 +19,26 @@
         android:layout_height="wrap_content"
     	style="?android:attr/starStyle"
     	android:layout_alignParentTop="true"
-    	android:layout_toLeftOf="@+id/button1"
+    	android:layout_toLeftOf="@+id/button2"
     	android:contentDescription="@string/star"/>
     
-    <Button
+    <ImageButton
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/button1"
+        android:src="@android:drawable/ic_dialog_info"
+        android:contentDescription="@string/Refresh" />
+    
+    <ImageButton
         android:id="@+id/button1"
-        style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:text="@string/Refresh" />
+        android:src="@android:drawable/ic_popup_sync"
+        android:contentDescription="@string/Refresh" />
 
     <TextView
         android:id="@+id/textView1"
