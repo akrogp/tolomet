@@ -83,7 +83,8 @@ public class Tolomet extends Activity
         mAdapter = new ArrayAdapter<Station>(this,android.R.layout.simple_spinner_item,mItems);
         mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     	mSpinner.setAdapter(mAdapter);
-    	changeSpinnerType(spinnerState.Type, spinnerState.Selection, savedInstanceState == null ? true : false);
+    	//changeSpinnerType(spinnerState.Type, spinnerState.Selection, savedInstanceState == null ? true : false);
+    	changeSpinnerType(spinnerState.Type, spinnerState.Selection, false);
         mSpinner.setOnItemSelectedListener(this);
                 
         mButtonRefresh = (ImageButton)findViewById(R.id.button1);

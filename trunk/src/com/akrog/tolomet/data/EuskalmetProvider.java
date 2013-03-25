@@ -40,8 +40,10 @@ public class EuskalmetProvider implements WindProvider {
 	    Number date, val;		        
 	    for( int i = 1; i < lines.length; i++ ) {
 	        String[] cells = lines[i].split("<td");
-	        if( getContent(cells[1]).equals("Med") || getContent(cells[2]).equals("-") )
+	        if( getContent(cells[1]).equals("Med") )
 	        	break;
+	        if( getContent(cells[2]).equals("-") )
+	        	continue;
 	        date = toEpoch(getContent(cells[1]));
 	        val = Integer.parseInt(getContent(cells[3]));
 	        station.ListDirection.add(date);

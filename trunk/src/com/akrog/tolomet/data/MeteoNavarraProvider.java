@@ -32,7 +32,7 @@ public class MeteoNavarraProvider implements WindProvider {
 		station.clear();
 		for( int i = 16; i < cells.length; i+=7 ) {
 			if( cells[i].equals("\"\"") || cells[i+1].equals("\"- -\"") )
-				break;
+				continue;
 			date = toEpoch(getContent(cells[i]));
 			num = Integer.parseInt(getContent(cells[i+1]));
 			station.ListDirection.add(date);
