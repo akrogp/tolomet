@@ -1,4 +1,4 @@
-package com.akrog.tolomet;
+package com.akrog.tolomet.view;
 
 public enum SpinnerType {
 	StartMenu(100),

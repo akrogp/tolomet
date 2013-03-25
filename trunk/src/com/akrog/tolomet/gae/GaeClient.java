@@ -10,10 +10,10 @@ import android.os.AsyncTask;
 import com.akrog.tolomet.Tolomet;
 
 public class GaeClient extends AsyncTask<String, Void, String> {
-	private Tolomet mTolomet;
+	private Tolomet tolomet;
 
 	public GaeClient( Tolomet tolomet ) {
-		mTolomet = tolomet;		
+		this.tolomet = tolomet;		
 	}
 	
 	@Override
@@ -47,6 +47,6 @@ public class GaeClient extends AsyncTask<String, Void, String> {
 	@Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
-        mTolomet.onMotd(Motd.getInstance(result));
+        this.tolomet.onMotd(Motd.getInstance(result));
     }
 }

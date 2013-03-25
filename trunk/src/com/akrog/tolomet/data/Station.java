@@ -7,14 +7,14 @@ import java.util.List;
 import android.os.Bundle;
 
 public class Station {		
-	public List<Number> ListDirection, ListHumidity, ListSpeedMed, ListSpeedMax;
-	public String Name, Code;
-	public int Region;
-	public double Latitude, Longitude;
-	public WindProviderType Provider;
-	public boolean Favorite;
-	public int Special;
-	public float Distance;
+	public List<Number> listDirection, listHumidity, listSpeedMed, listSpeedMax;
+	public String name, code;
+	public int region;
+	public double latitude, longitude;
+	public WindProviderType provider;
+	public boolean favorite;
+	public int special;
+	public float distance;
 		
 	public Station() {
 		this("none","none",1,false,WindProviderType.Aemet,0,0);
@@ -22,37 +22,37 @@ public class Station {
 	
 	public Station( String name, int special ) {
 		this(name,"none",1,false,WindProviderType.Aemet,0,0);
-		Special = special;		
+		this.special = special;		
 	}
 	
 	public Station( String str ) {		
 		String[] fields = str.split(":");
-    	Code = fields[0];
-    	Name = fields[1];
-    	Provider = WindProviderType.values()[Integer.parseInt(fields[2])];
-    	Region = Integer.parseInt(fields[3]);    	
-    	Latitude = Double.parseDouble(fields[4]);
-    	Longitude = Double.parseDouble(fields[5]);
-    	Special = -1;
-    	Distance = -1.0F;
+    	this.code = fields[0];
+    	this.name = fields[1];
+    	this.provider = WindProviderType.values()[Integer.parseInt(fields[2])];
+    	this.region = Integer.parseInt(fields[3]);    	
+    	this.latitude = Double.parseDouble(fields[4]);
+    	this.longitude = Double.parseDouble(fields[5]);
+    	this.special = -1;
+    	this.distance = -1.0F;
     	createArrays();    	
 	}	
 	
 	public Station( String name, String code, int region, boolean favorite, WindProviderType provider, double lat, double lon ) {
-		Name = name;
-		Code = code;
-		Region = region;
-		Favorite = favorite;
-		Provider = provider;
-		Latitude = lat;
-		Longitude = lon;
-		Special = -1;
-		Distance = -1.0F;
+		this.name = name;
+		this.code = code;
+		this.region = region;
+		this.favorite = favorite;
+		this.provider = provider;
+		this.latitude = lat;
+		this.longitude = lon;
+		this.special = -1;
+		this.distance = -1.0F;
 		createArrays();
 	}
 	
 	public Station( Station station ) {
-		this( station.Name, station.Code, station.Region, station.Favorite, station.Provider, station.Latitude, station.Longitude );
+		this( station.name, station.code, station.region, station.favorite, station.provider, station.latitude, station.longitude );
 		replace(station);
 	}
 	
@@ -62,113 +62,113 @@ public class Station {
 	}
 	
 	private void createArrays() {
-		ListDirection = new ArrayList<Number>();
-		ListHumidity = new ArrayList<Number>();
-		ListSpeedMed = new ArrayList<Number>();
-		ListSpeedMax = new ArrayList<Number>();
+		this.listDirection = new ArrayList<Number>();
+		this.listHumidity = new ArrayList<Number>();
+		this.listSpeedMed = new ArrayList<Number>();
+		this.listSpeedMax = new ArrayList<Number>();
 	}	
 	
 	@Override
 	public String toString() {
 		if( isSpecial() )
-			return Name;
-		//String str = Code + " - " + Name;
-		String str = Provider.getCode() + " - " + Name;
-		if( Distance > 0.0F )
-			str += " (" + String.format("%.1f",Distance/1000.0F) + " km)";
+			return this.name;
+		//String str = this.code + " - " + this.name;
+		String str = this.provider.getCode() + " - " + this.name;
+		if( this.distance > 0.0F )
+			str += " (" + String.format("%.1f",this.distance/1000.0F) + " km)";
 		return str;
 	}
 	
 	public void clear() {
-		ListDirection.clear();
-		ListHumidity.clear();
-		ListSpeedMed.clear();
-		ListSpeedMax.clear();
+		this.listDirection.clear();
+		this.listHumidity.clear();
+		this.listSpeedMed.clear();
+		this.listSpeedMax.clear();
 	}
 	
 	public void add( Station station ) {
 		if( station == null )
 			return;
-		ListDirection.addAll(station.ListDirection);
-		ListHumidity.addAll(station.ListHumidity);
-		ListSpeedMed.addAll(station.ListSpeedMed);
-		ListSpeedMax.addAll(station.ListSpeedMax);
+		this.listDirection.addAll(station.listDirection);
+		this.listHumidity.addAll(station.listHumidity);
+		this.listSpeedMed.addAll(station.listSpeedMed);
+		this.listSpeedMax.addAll(station.listSpeedMax);
 	}
 	
 	public void replace( Station station ) {
 		clear();
 		add(station);
-		Name = station.Name;
-		Code = station.Code;
-		Region = station.Region;
-		Provider = station.Provider;
-		Favorite = station.Favorite;
-		Latitude = station.Latitude;
-		Longitude = station.Longitude;
-		Special = station.Special;
+		this.name = station.name;
+		this.code = station.code;
+		this.region = station.region;
+		this.provider = station.provider;
+		this.favorite = station.favorite;
+		this.latitude = station.latitude;
+		this.longitude = station.longitude;
+		this.special = station.special;
 	}
 	
 	public boolean isEmpty() {
-		return ListDirection == null || ListDirection.size() < 2;
+		return this.listDirection == null || this.listDirection.size() < 2;
 	}
 	
 	public boolean isSpecial() {
-		return Special != -1;
+		return this.special != -1;
 	}
 	
 	public boolean isOutdated() {
 		if( isEmpty() )
 			return true;
-		long stamp = (Long)ListDirection.get(ListDirection.size()-2);
+		long stamp = (Long)this.listDirection.get(this.listDirection.size()-2);
 		if( Calendar.getInstance().getTimeInMillis()-stamp > 220*60*1000)
 			return true;
 		return false;
 	}	
 	
 	public void saveState( Bundle outState ) {
-		//outState.putString(Code+"-name", Name);
-		//outState.putInt(Code+"-region", Region);
-		//outState.putInt(Code+"-type", Provider.getValue());
-		outState.putBoolean(Code+"-star", Favorite);
-		//outState.putDouble(Code+"-lat", Latitude);
-		//outState.putDouble(Code+"-lon", Longitude);
-		saveLongArray(outState, "dirx", ListDirection, 0);
-		saveIntArray(outState, "diry", ListDirection, 1);
-		saveLongArray(outState, "humx", ListHumidity, 0);
-		saveFloatArray(outState, "humy", ListHumidity, 1);
-		saveLongArray(outState, "medx", ListSpeedMed, 0);
-		saveFloatArray(outState, "medy", ListSpeedMed, 1);
-		saveLongArray(outState, "maxx", ListSpeedMax, 0);
-		saveFloatArray(outState, "maxy", ListSpeedMax, 1);
+		//outState.putString(this.code+"-name", this.name);
+		//outState.putInt(this.code+"-region", this.region);
+		//outState.putInt(this.code+"-type", this.provider.getValue());
+		outState.putBoolean(this.code+"-star", this.favorite);
+		//outState.putDouble(this.code+"-lat", this.latitude);
+		//outState.putDouble(this.code+"-lon", this.longitude);
+		saveLongArray(outState, "dirx", this.listDirection, 0);
+		saveIntArray(outState, "diry", this.listDirection, 1);
+		saveLongArray(outState, "humx", this.listHumidity, 0);
+		saveFloatArray(outState, "humy", this.listHumidity, 1);
+		saveLongArray(outState, "medx", this.listSpeedMed, 0);
+		saveFloatArray(outState, "medy", this.listSpeedMed, 1);
+		saveLongArray(outState, "maxx", this.listSpeedMax, 0);
+		saveFloatArray(outState, "maxy", this.listSpeedMax, 1);
 	}
 	
 	public boolean loadState( Bundle bundle, String code, boolean fav ) {
 		if( bundle == null )
 			return false;
-		Code = code;
+		this.code = code;
 		return loadState(bundle, fav);
 	}
 	
 	public boolean loadState( Bundle bundle, boolean fav ) {
 		if( bundle == null )
 			return false;
-		//Name = bundle.getString(Code+"-name");
-		//Region = bundle.getInt(Code+"-region");
-		//Favorite = bundle.getBoolean(Code+"-star");
-		//Provider = WindProviderType.values()[bundle.getInt(Code+"-type")];
-		//Latitude = bundle.getDouble(Code+"-lat");
-		//Longitude = bundle.getDouble(Code+"-lon");
-		Favorite = fav;
-		loadLongInt( bundle, "dirx", "diry", ListDirection );
-		loadLongFloat( bundle, "humx", "humy", ListHumidity );
-		loadLongFloat( bundle, "medx", "medy", ListSpeedMed );
-		loadLongFloat( bundle, "maxx", "maxy", ListSpeedMax );
+		//this.name = bundle.getString(this.code+"-name");
+		//this.region = bundle.getInt(this.code+"-region");
+		//this.favorite = bundle.getBoolean(this.code+"-star");
+		//this.provider = WindProviderType.values()[bundle.getInt(this.code+"-type")];
+		//this.latitude = bundle.getDouble(this.code+"-lat");
+		//this.longitude = bundle.getDouble(this.code+"-lon");
+		this.favorite = fav;
+		loadLongInt( bundle, "dirx", "diry", this.listDirection );
+		loadLongFloat( bundle, "humx", "humy", this.listHumidity );
+		loadLongFloat( bundle, "medx", "medy", this.listSpeedMed );
+		loadLongFloat( bundle, "maxx", "maxy", this.listSpeedMax );
 		return true;
 	}
 	
 	private void loadLongInt( Bundle bundle, String name1, String name2, List<Number> list ) {
-		long[] x = bundle.getLongArray(Code+"-"+name1);
-		int[] y = bundle.getIntArray(Code+"-"+name2);
+		long[] x = bundle.getLongArray(this.code+"-"+name1);
+		int[] y = bundle.getIntArray(this.code+"-"+name2);
 		list.clear();
 		if( x == null || y == null )
 			return;
@@ -179,8 +179,8 @@ public class Station {
 	}
 
 	private void loadLongFloat( Bundle bundle, String name1, String name2, List<Number> list ) {
-		long[] x = bundle.getLongArray(Code+"-"+name1);
-		float[] y = bundle.getFloatArray(Code+"-"+name2);
+		long[] x = bundle.getLongArray(this.code+"-"+name1);
+		float[] y = bundle.getFloatArray(this.code+"-"+name2);
 		list.clear();
 		if( x == null || y == null )
 			return;
@@ -198,7 +198,7 @@ public class Station {
 		for( int i = off; i < list.size(); i+= 2 )
 			data[j++] = (Long)list.get(i);
 		
-		outState.putLongArray(Code+"-"+name, data);
+		outState.putLongArray(this.code+"-"+name, data);
 	}
 	
 	private void saveFloatArray( Bundle outState, String name, List<Number> list, int off ) {
@@ -209,7 +209,7 @@ public class Station {
 		for( int i = off; i < list.size(); i+= 2 )
 			data[j++] = (Float)list.get(i);
 		
-		outState.putFloatArray(Code+"-"+name, data);
+		outState.putFloatArray(this.code+"-"+name, data);
 	}
 	
 	private void saveIntArray( Bundle outState, String name, List<Number> list, int off ) {
@@ -220,6 +220,6 @@ public class Station {
 		for( int i = off; i < list.size(); i+= 2 )
 			data[j++] = (Integer)list.get(i);
 		
-		outState.putIntArray(Code+"-"+name, data);
+		outState.putIntArray(this.code+"-"+name, data);
 	}
 }

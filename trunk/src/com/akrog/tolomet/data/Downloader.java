@@ -1,4 +1,4 @@
-package com.akrog.tolomet;
+package com.akrog.tolomet.data;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -11,18 +11,21 @@ import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import com.akrog.tolomet.R;
+import com.akrog.tolomet.Tolomet;
+
 public class Downloader extends AsyncTask<String, Void, String> {
-	private Tolomet mTolomet;
-	private ProgressDialog mProgress;
+	private Tolomet tolomet;
+	private ProgressDialog progress;
 
 	public Downloader( Tolomet tolomet ) {
-		mTolomet = tolomet;
-		mProgress = new ProgressDialog(mTolomet);
-        mProgress.setMessage( mTolomet.getString(R.string.Downloading)+"..." );
-        mProgress.setTitle( "" );//getString(R.string.Progress) );
-        mProgress.setIndeterminate(true);
-        mProgress.setCancelable(true);
-        mProgress.setOnCancelListener(new OnCancelListener(){
+		this.tolomet = tolomet;
+		this.progress = new ProgressDialog(this.tolomet);
+        this.progress.setMessage( this.tolomet.getString(R.string.Downloading)+"..." );
+        this.progress.setTitle( "" );//getString(R.string.Progress) );
+        this.progress.setIndeterminate(true);
+        this.progress.setCancelable(true);
+        this.progress.setOnCancelListener(new OnCancelListener(){
         	public void onCancel(DialogInterface dialog) {
         		cancel(true);
         	}
@@ -32,15 +35,15 @@ public class Downloader extends AsyncTask<String, Void, String> {
 	@Override
     protected void onPreExecute() {
         super.onPreExecute();	        
-        mProgress.show();
+        this.progress.show();
     }
 	
 	@Override
 	protected void onCancelled() {
 		super.onCancelled();
-		//mProgress.dismiss();
-		Toast.makeText(mTolomet,R.string.DownloadCancelled,Toast.LENGTH_SHORT).show();
-		mTolomet.OnCancelled();
+		//this.progress.dismiss();
+		Toast.makeText(this.tolomet,R.string.DownloadCancelled,Toast.LENGTH_SHORT).show();
+		this.tolomet.OnCancelled();
 	}
 	
 	@Override
@@ -49,6 +52,7 @@ public class Downloader extends AsyncTask<String, Void, String> {
     	try {
     		URL url = new URL(urls[0]);
     		URLConnection con = url.openConnection();
+    		//con.setRequestProperty("User-Agent","Mozilla/5.0 (Linux)");
     		BufferedReader rd = new BufferedReader(new InputStreamReader(con.getInputStream()));
     		String line;
     		while( (line=rd.readLine()) != null && !isCancelled() )
@@ -64,7 +68,7 @@ public class Downloader extends AsyncTask<String, Void, String> {
 	@Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);	        
-        mProgress.dismiss();
-        mTolomet.onDownloaded(result);
+        this.progress.dismiss();
+        this.tolomet.onDownloaded(result);
     }
 }

@@ -1,6 +1,6 @@
 // http://www.techrepublic.com/blog/app-builder/a-reusable-about-dialog-for-your-android-apps/504
 
-package com.akrog.tolomet;
+package com.akrog.tolomet.view;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,12 +16,14 @@ import android.text.Html;
 import android.text.util.Linkify;
 import android.widget.TextView;
 
+import com.akrog.tolomet.R;
+
 public class AboutDialog extends Dialog {
-	private static Context mContext = null;
+	private static Context context = null;
 	
 	public AboutDialog(Context context) {
 		super(context);
-		mContext = context;
+		AboutDialog.context = context;
 	}
 
 	@Override
@@ -32,7 +34,7 @@ public class AboutDialog extends Dialog {
 		tv = (TextView)findViewById(R.id.info_text);
 		String versionName = "??";
 		try {
-			versionName = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionName;
+			versionName = AboutDialog.context.getPackageManager().getPackageInfo(AboutDialog.context.getPackageName(), 0).versionName;
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -42,7 +44,7 @@ public class AboutDialog extends Dialog {
 	}
 	
 	public static String readRawTextFile(int id) {
-		InputStream inputStream = mContext.getResources().openRawResource(id);
+		InputStream inputStream = AboutDialog.context.getResources().openRawResource(id);
 		InputStreamReader in = new InputStreamReader(inputStream);
 		BufferedReader buf = new BufferedReader(in);
 		String line;

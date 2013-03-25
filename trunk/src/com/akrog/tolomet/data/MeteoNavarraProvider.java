@@ -5,11 +5,11 @@ import java.util.TimeZone;
 
 import android.annotation.SuppressLint;
 
-import com.akrog.tolomet.Tolomet;
+import com.akrog.tolomet.view.MyCharts;
 
 public class MeteoNavarraProvider implements WindProvider {
 	public MeteoNavarraProvider() {
-		mSeparator = '.';//(new DecimalFormatSymbols()).getDecimalSeparator();
+		this.separator = '.';//(new DecimalFormatSymbols()).getDecimalSeparator();
 	}
 	
 	@SuppressLint("DefaultLocale")
@@ -20,7 +20,7 @@ public class MeteoNavarraProvider implements WindProvider {
 			"%s?IDEstacion=%s&p_10=7&p_10=2&p_10=9&p_10=6&fecha_desde=%s&fecha_hasta=%s&dl=csv",
 			new Object[]{
 			"http://meteo.navarra.es/download/estacion_datos.cfm",
-			station.Code.substring(2), time1, time2
+			station.code.substring(2), time1, time2
 			} );
 	}
 
@@ -35,19 +35,19 @@ public class MeteoNavarraProvider implements WindProvider {
 				continue;
 			date = toEpoch(getContent(cells[i]));
 			num = Integer.parseInt(getContent(cells[i+1]));
-			station.ListDirection.add(date);
-			station.ListDirection.add(num);
+			station.listDirection.add(date);
+			station.listDirection.add(num);
 			try {	// We can go on without humidity data
-				num = Tolomet.convertHumidity(Integer.parseInt(getContent(cells[i+2])));
-				station.ListHumidity.add(date);
-				station.ListHumidity.add(num);
+				num = MyCharts.convertHumidity(Integer.parseInt(getContent(cells[i+2])));
+				station.listHumidity.add(date);
+				station.listHumidity.add(num);
 			} catch( Exception e ) {}
 			num = Float.parseFloat(getContent(cells[i+6]));
-			station.ListSpeedMed.add(date);
-			station.ListSpeedMed.add(num);
+			station.listSpeedMed.add(date);
+			station.listSpeedMed.add(num);
 			num = Float.parseFloat(getContent(cells[i+4]));
-			station.ListSpeedMax.add(date);
-			station.ListSpeedMax.add(num);
+			station.listSpeedMax.add(date);
+			station.listSpeedMax.add(num);
 		}		
 	}
 
@@ -68,8 +68,8 @@ public class MeteoNavarraProvider implements WindProvider {
 	}
 	
 	private String getContent( String cell ) {
-		return cell.replaceAll("\"","").replace('.',mSeparator);
+		return cell.replaceAll("\"","").replace('.',this.separator);
 	}
 	
-	private char mSeparator;	
+	private char separator;	
 }
