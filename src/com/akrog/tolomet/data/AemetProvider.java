@@ -19,13 +19,13 @@ public class AemetProvider implements WindProvider {
 	public void updateStation(Station station, String data) {			
 		String[] cells = data.split("\"");
 		String dir;
-		Number date, num;
+		Number date, num, last = 0;
 		if( cells.length < 42 )
 			return;	
 		station.clear();
 		for( int i = cells.length-19; i >= 23; i-=20 ) {
-			if( cells[i].equals("\"\"") )
-				break;
+			if( cells[i].length() == 0 || cells[i+6].length() == 0 )
+				continue;
 			date = toEpoch(cells[i]);
 			dir = cells[i+6];
 			if( dir.equalsIgnoreCase("Norte") )									
@@ -44,12 +44,13 @@ public class AemetProvider implements WindProvider {
 				num = 270;
 			else if( dir.equalsIgnoreCase("Noroeste") )
 				num = 315;
-			else
-				num = 0;
+			else	// Calma
+				num = last;
+			last = num;
 			station.ListDirection.add(date);				
 			station.ListDirection.add(num);
 			try {	// We can go on without humidity data
-				num = Tolomet.convertHumidity(Integer.parseInt(cells[i+18]));
+				num = Tolomet.convertHumidity((int)(Float.parseFloat(cells[i+18])+0.5F));				
 				station.ListHumidity.add(date);
 				station.ListHumidity.add(num);
 			} catch( Exception e ) {}
