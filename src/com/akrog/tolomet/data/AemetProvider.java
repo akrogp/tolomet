@@ -4,7 +4,7 @@ import java.util.Calendar;
 
 import android.annotation.SuppressLint;
 
-import com.akrog.tolomet.Tolomet;
+import com.akrog.tolomet.view.MyCharts;
 
 public class AemetProvider implements WindProvider {	
 	@SuppressLint("DefaultLocale")
@@ -12,7 +12,7 @@ public class AemetProvider implements WindProvider {
 		return String.format(
 			"http://www.aemet.es/es/eltiempo/observacion/ultimosdatos.csv?l=%s&datos=det&x=h24",
 			new Object[]{
-					station.Code
+					station.code
 			} );
 	}
 
@@ -47,19 +47,19 @@ public class AemetProvider implements WindProvider {
 			else	// Calma
 				num = last;
 			last = num;
-			station.ListDirection.add(date);				
-			station.ListDirection.add(num);
+			station.listDirection.add(date);				
+			station.listDirection.add(num);
 			try {	// We can go on without humidity data
-				num = Tolomet.convertHumidity((int)(Float.parseFloat(cells[i+18])+0.5F));				
-				station.ListHumidity.add(date);
-				station.ListHumidity.add(num);
+				num = MyCharts.convertHumidity((int)(Float.parseFloat(cells[i+18])+0.5F));				
+				station.listHumidity.add(date);
+				station.listHumidity.add(num);
 			} catch( Exception e ) {}
 			num = Float.parseFloat(cells[i+4]);
-			station.ListSpeedMed.add(date);
-			station.ListSpeedMed.add(num);
+			station.listSpeedMed.add(date);
+			station.listSpeedMed.add(num);
 			num = Float.parseFloat(cells[i+8]);
-			station.ListSpeedMax.add(date);
-			station.ListSpeedMax.add(num);
+			station.listSpeedMax.add(date);
+			station.listSpeedMax.add(num);
 		}				
 	}
 

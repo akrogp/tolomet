@@ -7,55 +7,55 @@ import android.content.Context;
 
 public class WindProviderManager {
 	public WindProviderManager( Context context ) {
-		mProviders = new WindProvider[WindProviderType.values().length];
-		mProviders[0] = new EuskalmetProvider( context );
-		mProviders[1] = new MeteoNavarraProvider();
-		mProviders[2] = new AemetProvider(); 
+		this.providers = new WindProvider[WindProviderType.values().length];
+		this.providers[0] = new EuskalmetProvider( context );
+		this.providers[1] = new MeteoNavarraProvider();
+		this.providers[2] = new AemetProvider(); 
 	}
 	
 	public String getUrl( Station station ) {
-		return mProviders[station.Provider.getValue()].getUrl(station, mPast, mNow);
+		return this.providers[station.provider.getValue()].getUrl(station, this.past, this.now);
 	}
 	
 	public String getInfoUrl( Station station ) {
-		return mProviders[station.Provider.getValue()].getInfoUrl(station.Code);
+		return this.providers[station.provider.getValue()].getInfoUrl(station.code);
 	}
 	
 	public void updateStation( Station station, String data ) {
-		mProviders[station.Provider.getValue()].updateStation(station, data);
+		this.providers[station.provider.getValue()].updateStation(station, data);
 	}
 	
 	public int getRefresh( Station station ) {
-		return mProviders[station.Provider.getValue()].getRefresh();
+		return this.providers[station.provider.getValue()].getRefresh();
 	}
 
 	public boolean updateTimes( Station station ) {
-		mNow = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-		mPast = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+		this.now = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+		this.past = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 		
 		// First execution
 		if( station.isEmpty() ) {
-			mPast.set(Calendar.HOUR_OF_DAY,0);
-			mPast.set(Calendar.MINUTE,0);
+			this.past.set(Calendar.HOUR_OF_DAY,0);
+			this.past.set(Calendar.MINUTE,0);
 			return true;
 		}
 		
 		// Check update interval
-		mPast.setTimeInMillis((Long)station.ListDirection.get(station.ListDirection.size()-2));
-		if( (mNow.getTimeInMillis()-mPast.getTimeInMillis()) <= 10*60*1000 )
+		this.past.setTimeInMillis((Long)station.listDirection.get(station.listDirection.size()-2));
+		if( (this.now.getTimeInMillis()-this.past.getTimeInMillis()) <= 10*60*1000 )
 			return false;
 		
 		// Clear cache
-		if( mPast.get(Calendar.YEAR) == mNow.get(Calendar.YEAR) && mPast.get(Calendar.DAY_OF_YEAR) == mNow.get(Calendar.DAY_OF_YEAR) )
+		if( this.past.get(Calendar.YEAR) == this.now.get(Calendar.YEAR) && this.past.get(Calendar.DAY_OF_YEAR) == this.now.get(Calendar.DAY_OF_YEAR) )
 			return true;
-		mPast.setTimeInMillis(mNow.getTimeInMillis());
-		mPast.set(Calendar.HOUR_OF_DAY,0);
-		mPast.set(Calendar.MINUTE, 0);
-		mPast.set(Calendar.SECOND, 0);
+		this.past.setTimeInMillis(this.now.getTimeInMillis());
+		this.past.set(Calendar.HOUR_OF_DAY,0);
+		this.past.set(Calendar.MINUTE, 0);
+		this.past.set(Calendar.SECOND, 0);
 		station.clear();			
 		return true;
 	}		
 		
-	private Calendar mNow, mPast;
-	private WindProvider[] mProviders;
+	private Calendar now, past;
+	private WindProvider[] providers;
 }
