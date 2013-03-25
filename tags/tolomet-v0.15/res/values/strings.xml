@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Tolomet</string>
+    <string name="menu_settings">Ajustes</string>
+    <string name="title_activity_tolomet">Tolomet</string>
+    <string name="Refresh">Actualizar</string>
+    <string name="station_prompt">Estación</string>
+    <string name="summary"></string>
+    <string name="Direction">Dirección</string>
+    <string name="DirectionHumidity">Dirección y Humedad</string>
+    <string name="Speed">Velocidad</string>
+    <string name="Downloading">Descargando</string>
+    <string name="Progress">Progreso</string>
+    <string name="About">Acerca de &#8230;</string>
+    <string name="Time">Hora</string>
+    <string name="Degrees">Grados</string>
+    <string name="Impatient">¡Impaciente!, las lecturas son cada</string>
+    <string name="minutes">minutos</string>
+    <string name="star">favorito</string>
+    <string name="NoData">No hay datos</string>
+    <string name="NoNetwork">No tienes conexión a internet</string>
+    <string name="DownloadCancelled">Descarga cancelada</string>
+    <string name="motd">Mensaje del día</string>
+    <string name="tomorrow">Mañana</string>
+    <string name="update">Actualizar</string>
+    <string name="improvements">Mejoras</string>
+    <string name="newversion">¡Nueva versión disponible!</string>
+    <string name="menu_all">Todas las estaciones</string>
+    <string name="menu_reg">Comunidades autónomas</string>
+    <string name="menu_close">Estaciones cercanas</string>
+    <string name="menu_fav">Estaciones favoritas</string>
+    <string name="menu_index">Índice de estaciones</string>
+    <string name="menu_start">Menú inicio</string>
+    <string name="select">Selecciona</string>
+</resources>
