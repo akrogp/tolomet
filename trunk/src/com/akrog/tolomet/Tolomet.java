@@ -83,7 +83,7 @@ public class Tolomet extends Activity
         mAdapter = new ArrayAdapter<Station>(this,android.R.layout.simple_spinner_item,mItems);
         mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     	mSpinner.setAdapter(mAdapter);
-    	changeSpinnerType(spinnerState.Type, spinnerState.Selection);
+    	changeSpinnerType(spinnerState.Type, spinnerState.Selection, savedInstanceState == null ? true : false);
         mSpinner.setOnItemSelectedListener(this);
                 
         mButtonRefresh = (ImageButton)findViewById(R.id.button1);
@@ -120,8 +120,12 @@ public class Tolomet extends Activity
     	mGaeClient = new GaeClient(this);
     	mGaeClient.execute("http://tolomet-gae.appspot.com/rest/motd?version="+version+"&stamp="+stamp);
 	}
+    
+    private void changeSpinnerType( SpinnerType type, int sel ) {
+    	changeSpinnerType(type, sel, true);
+    }
 	
-	private void changeSpinnerType( SpinnerType type, int sel ) {
+	private void changeSpinnerType( SpinnerType type, int sel, boolean popup ) {
 		mItems.clear();
 		switch( type ) {
 			case AllStations:
@@ -153,7 +157,8 @@ public class Tolomet extends Activity
     	mSpinnerType = type;
     	mAdapter.notifyDataSetChanged();    	
     	mSpinner.setSelection(sel);
-    	mSpinner.performClick();
+    	if( popup )
+    		mSpinner.performClick();
 	}
 	
 	private void changeSpinnerType( Station station ) {
@@ -162,6 +167,8 @@ public class Tolomet extends Activity
 		mFavorite.setEnabled(false);
 		if( station.Special == 0 )
 			return;
+		if( station.Special != SpinnerType.CloseStations.getValue() && mSpinnerType == SpinnerType.CloseStations ) 
+			clearDistance();
 		if( station.Special == SpinnerType.StartMenu.getValue() ) {
 			if( mSpinnerType != SpinnerType.StartMenu )
 				changeSpinnerType( SpinnerType.StartMenu, 0 );
@@ -259,6 +266,11 @@ public class Tolomet extends Activity
     	mCloseStations.add(1,mStations.get(1));
     }
     
+    private void clearDistance() {
+    	for( Station station : mStations )
+    		station.Distance = -1.0F;
+    }
+    
     private SpinnerState loadState( Bundle bundle ) {
     	SharedPreferences settings = getPreferences(0);
     	SpinnerState spinner = new SpinnerState();
@@ -285,9 +297,9 @@ public class Tolomet extends Activity
     	if( bundle != null )
 	    	for( Station station : mStations )
 	    		if( !station.isSpecial() )
-	    			station.loadState(bundle, settings.contains(station.Code));
+	    			station.loadState(bundle, settings.contains(station.Code));	    	
     	spinner.Type = SpinnerType.values()[settings.getInt("spinner-type", SpinnerType.StartMenu.getValue())-SpinnerType.StartMenu.getValue()];
-    	spinner.Selection = settings.getInt("spinner-sel", 0);
+    	spinner.Selection = settings.getInt("spinner-sel", 0);    	
 		return spinner;
 	}		
 
@@ -295,7 +307,9 @@ public class Tolomet extends Activity
     protected void onPause() {
     	SharedPreferences settings = getPreferences(0);
     	SharedPreferences.Editor editor = settings.edit();
-    	editor.putString("selection", mStation.Code);
+    	//editor.putString("selection", mStation.Code);
+    	editor.putInt("spinner-type", mSpinnerType.getValue());
+    	editor.putInt("spinner-sel", mSpinner.getSelectedItemPosition());
     	editor.commit();
     	super.onPause();
     }
@@ -577,7 +591,9 @@ public class Tolomet extends Activity
 		mFavorite.setChecked(station.Favorite);
 		
 		if( station.isSpecial() ) {
+			mStation.clear();
 			changeSpinnerType(station);
+			redraw();
 			return;
 		}
 		mButtonRefresh.setEnabled(true);
@@ -590,7 +606,7 @@ public class Tolomet extends Activity
 	}
 	
 	public void onNothingSelected(AdapterView<?> arg0) {
-		// TODO Auto-generated method stub	
+		mStation.clear();
 	}
 	
 	private boolean getLast( List<Number> list, Number[] vals ) {
