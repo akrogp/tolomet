@@ -2,18 +2,21 @@ package com.akrog.tolomet.data;
 
 import java.util.Calendar;
 
-import android.annotation.SuppressLint;
-
+import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.view.MyCharts;
 
-public class AemetProvider implements WindProvider {	
-	@SuppressLint("DefaultLocale")
-	public String getUrl(Station station, Calendar past, Calendar now) {
-		return String.format(
-			"http://www.aemet.es/es/eltiempo/observacion/ultimosdatos.csv?l=%s&datos=det&x=h24",
-			new Object[]{
-					station.code
-			} );
+public class AemetProvider implements WindProvider {
+	public AemetProvider( Tolomet tolomet ) {
+		this.tolomet = tolomet;
+	}
+	
+	public void download(Station station, Calendar past, Calendar now) {
+		Downloader d = new Downloader(this.tolomet);
+		d.setUrl("http://www.aemet.es/es/eltiempo/observacion/ultimosdatos.csv");
+		d.addParam("l",station.code);
+		d.addParam("datos","det");
+		d.addParam("x","h24");
+		d.execute();
 	}
 
 	public void updateStation(Station station, String data) {			
@@ -80,5 +83,7 @@ public class AemetProvider implements WindProvider {
 
 	public String getInfoUrl(String code) {
 		return "http://www.aemet.es/es/eltiempo/observacion/ultimosdatos?l="+code+"&datos=det";
-	}	
+	}
+	
+	private Tolomet tolomet;	
 }

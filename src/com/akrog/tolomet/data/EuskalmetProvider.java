@@ -9,29 +9,33 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 
 import com.akrog.tolomet.R;
+import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.view.MyCharts;
 
 public class EuskalmetProvider implements WindProvider {
-	public EuskalmetProvider( Context context ) {
-		this.context = context;
+	public EuskalmetProvider( Tolomet tolomet ) {
+		this.tolomet = tolomet;
 		loadCols();
 		this.separator = '.';//(new DecimalFormatSymbols()).getDecimalSeparator();
 	}
 	
 	@SuppressLint("DefaultLocale")
-	public String getUrl(Station station, Calendar past, Calendar now) {		
+	public void download(Station station, Calendar past, Calendar now) {
 		String time1 = String.format("%02d:%02d", past.get(Calendar.HOUR_OF_DAY), past.get(Calendar.MINUTE) );
 		String time2 = String.format("%02d:%02d", now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE) );
-		return String.format(
-	    		"%s&anyo=%d&mes=%02d&dia=%02d&hora=%s%%20%s&CodigoEstacion=%s&pagina=1&R01HNoPortal=true",
-	    		new Object[]{
-	    		"http://www.euskalmet.euskadi.net/s07-5853x/es/meteorologia/lectur_fr.apl?e=5",
-	    		now.get(Calendar.YEAR), now.get(Calendar.MONTH)+1, now.get(Calendar.DAY_OF_MONTH),
-	    		time1, time2, station.code
-	    		} );
+		Downloader d = new Downloader(this.tolomet);
+		d.setUrl("http://www.euskalmet.euskadi.net/s07-5853x/es/meteorologia/lectur_fr.apl");
+		d.addParam("e", "5");
+		d.addParam("anyo", now.get(Calendar.YEAR));
+		d.addParam("mes", now.get(Calendar.MONTH)+1);
+		d.addParam("dia", now.get(Calendar.DAY_OF_MONTH));
+		d.addParam("hora", "%s %s", time1, time2);
+		d.addParam("CodigoEstacion", station.code);
+		d.addParam("pagina", "1");
+		d.addParam("R01HNoPortal", "true");
+		d.execute();
 	}
 
 	public void updateStation(Station station, String data) {
@@ -88,7 +92,7 @@ public class EuskalmetProvider implements WindProvider {
 	private void loadCols() {
 		this.humidityCol = new HashMap<String, Integer>();
 		
-		InputStream inputStream = this.context.getResources().openRawResource(R.raw.euskalmet);
+		InputStream inputStream = this.tolomet.getResources().openRawResource(R.raw.euskalmet);
 		InputStreamReader in = new InputStreamReader(inputStream);
 		BufferedReader rd = new BufferedReader(in);
 		String line;
@@ -109,5 +113,5 @@ public class EuskalmetProvider implements WindProvider {
 	
 	private Map<String,Integer> humidityCol;
 	private char separator;
-	private Context context;	
+	private Tolomet tolomet;
 }

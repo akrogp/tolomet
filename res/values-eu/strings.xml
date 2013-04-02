@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Tolomet</string>
+    <string name="menu_settings">Ezarpenak</string>
+    <string name="title_activity_tolomet">Tolomet</string>
+    <string name="Refresh">Eguneratu</string>
+    <string name="station_prompt">Estazioa </string>
+    <string name="summary"></string>
+    <string name="Direction">Norabidea</string>
+    <string name="DirectionHumidity">Norabidea eta hezetasuna</string>
+    <string name="Speed">Abiadura</string>
+    <string name="Downloading">Deskargatzen</string>
+    <string name="Progress">Aurrerapena</string>
+    <string name="About">Tolomet-i buruz &#8230;</string>
+    <string name="Time">Ordua</string>
+    <string name="Degrees">Graduak</string>
+    <string name="Impatient">Zazpiki! Irakurketak</string>
+    <string name="minutes">minuturo dira</string>
+    <string name="star">Laster-marka</string>
+    <string name="NoData">Daturik ez</string>
+    <string name="NoNetwork">Internetik ez</string>
+    <string name="DownloadCancelled">Deskarga ezeztatua</string>
+    <string name="motd">Eguneko mezua</string>
+    <string name="tomorrow">Bihar</string>
+    <string name="update">Eguneratu</string>
+    <string name="improvements">Hobekuntzak</string>
+    <string name="newversion">Bertsio berria eskuragarri duzu!</string>
+    <string name="menu_all">Estazio guztiak</string>
+    <string name="menu_reg">Autonomia erkidegoak</string>
+    <string name="menu_close">Gertuko estazioak</string>
+    <string name="menu_fav">Laster-markak</string>
+    <string name="menu_index">Estazioen aurkibidea</string>
+    <string name="menu_start">Hasierako menua</string>
+    <string name="select">Hautatu</string>
+</resources>

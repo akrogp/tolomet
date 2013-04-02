@@ -3,18 +3,22 @@ package com.akrog.tolomet.data;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-import android.content.Context;
+import com.akrog.tolomet.Tolomet;
 
 public class WindProviderManager {
-	public WindProviderManager( Context context ) {
+	public WindProviderManager( Tolomet tolomet ) {
 		this.providers = new WindProvider[WindProviderType.values().length];
-		this.providers[0] = new EuskalmetProvider( context );
-		this.providers[1] = new MeteoNavarraProvider();
-		this.providers[2] = new AemetProvider(); 
+		this.providers[0] = new EuskalmetProvider( tolomet );
+		this.providers[1] = new MeteoNavarraProvider( tolomet );
+		this.providers[2] = new AemetProvider( tolomet ); 
 	}
 	
-	public String getUrl( Station station ) {
+	/*public String getUrl( Station station ) {	
 		return this.providers[station.provider.getValue()].getUrl(station, this.past, this.now);
+	}*/
+	
+	public void download( Station station ) {
+		this.providers[station.provider.getValue()].download(station, this.past, this.now);
 	}
 	
 	public String getInfoUrl( Station station ) {

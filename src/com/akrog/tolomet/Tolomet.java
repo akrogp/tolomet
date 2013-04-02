@@ -25,7 +25,6 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
 
-import com.akrog.tolomet.data.Downloader;
 import com.akrog.tolomet.data.Station;
 import com.akrog.tolomet.data.StationManager;
 import com.akrog.tolomet.data.WindProviderManager;
@@ -49,7 +48,6 @@ public class Tolomet extends Activity
 
         this.stations = new StationManager(this, savedInstanceState);
         this.provider = new WindProviderManager(this);
-        this.downloader = new Downloader(this);
         this.gaeClient = new GaeClient(this);
         this.summary = new Summary(this, this.stations);
         
@@ -90,10 +88,7 @@ public class Tolomet extends Activity
     	}
     	if( alertNetwork() )
 			return;
-    	String uri = this.provider.getUrl(this.stations.current); 
-    	//System.out.println(uri);
-    	this.downloader = new Downloader(this);
-    	this.downloader.execute(uri);
+    	this.provider.download(this.stations.current); 
     }
 	
 	private boolean isNetworkAvailable() {
@@ -298,7 +293,6 @@ public class Tolomet extends Activity
 	private MySpinner spinner;
 	private Summary summary;
 	private CheckBox favorite;
-	private Downloader downloader;
 	private GaeClient gaeClient;
 	private StationManager stations;	
 	private WindProviderManager provider;
