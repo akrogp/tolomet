@@ -5,23 +5,30 @@ import java.util.TimeZone;
 
 import android.annotation.SuppressLint;
 
+import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.view.MyCharts;
 
 public class MeteoNavarraProvider implements WindProvider {
-	public MeteoNavarraProvider() {
+	public MeteoNavarraProvider( Tolomet tolomet ) {
 		this.separator = '.';//(new DecimalFormatSymbols()).getDecimalSeparator();
-	}
+		this.tolomet = tolomet;
+	}	
 	
 	@SuppressLint("DefaultLocale")
-	public String getUrl(Station station, Calendar past, Calendar now) {
+	public void download(Station station, Calendar past, Calendar now) {
 		String time1 = String.format("%d/%d/%d", now.get(Calendar.DAY_OF_MONTH), now.get(Calendar.MONTH)+1, now.get(Calendar.YEAR) );
 		String time2 = String.format("%d/%d/%d", now.get(Calendar.DAY_OF_MONTH)+1, now.get(Calendar.MONTH)+1, now.get(Calendar.YEAR) );
-		return String.format(
-			"%s?IDEstacion=%s&p_10=7&p_10=2&p_10=9&p_10=6&fecha_desde=%s&fecha_hasta=%s&dl=csv",
-			new Object[]{
-			"http://meteo.navarra.es/download/estacion_datos.cfm",
-			station.code.substring(2), time1, time2
-			} );
+		Downloader d = new Downloader(this.tolomet);
+		d.setUrl("http://meteo.navarra.es/download/estacion_datos.cfm");
+		d.addParam("IDEstacion",station.code.substring(2));
+		d.addParam("p_10","7");
+		d.addParam("p_10","2");
+		d.addParam("p_10","9");
+		d.addParam("p_10","6");
+		d.addParam("fecha_desde",time1);
+		d.addParam("fecha_hasta",time2);
+		d.addParam("dl","csv");
+		d.execute();
 	}
 
 	public void updateStation(Station station, String data) {		
@@ -71,5 +78,6 @@ public class MeteoNavarraProvider implements WindProvider {
 		return cell.replaceAll("\"","").replace('.',this.separator);
 	}
 	
-	private char separator;	
+	private char separator;
+	private Tolomet tolomet;	
 }

@@ -1,6 +1,9 @@
 Euskalmet:
 http://www.euskalmet.euskadi.net/s07-5853x/es/meteorologia/lectur_fr.apl?e=5&anyo=2012&mes=8&dia=22&hora=00:00%2023:50&CodigoEstacion=C072&pagina=1&R01HNoPortal=true
 
+Meteo Navarra:
+http://meteo.navarra.es/download/estacion_datos.cfm?IDEstacion=22&p_10=7&p_10=2&p_10=9&p_10=6&fecha_desde=2%2F4%2F2013&fecha_hasta=3%2F4%2F2013&dl=csv
+
 AEMET:
 http://www.aemet.es/es/eltiempo/observacion/ultimosdatos_bilbao-aeropuerto_20130225213202.csv?k=pva&l=1082&datos=det&w=0&f=temperatura&x=h24
 http://www.aemet.es/es/eltiempo/observacion/ultimosdatos.csv?l=1082&datos=det&x=h24
