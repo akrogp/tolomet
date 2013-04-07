@@ -3,6 +3,7 @@ package com.akrog.tolomet.data;
 import java.util.Calendar;
 
 
+
 public interface WindProvider {
 	//public String getUrl( Station station, Calendar past, Calendar now );
 	public void download( Station station, Calendar past, Calendar now );

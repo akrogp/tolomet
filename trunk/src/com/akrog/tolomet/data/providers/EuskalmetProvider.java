@@ -1,4 +1,4 @@
-package com.akrog.tolomet.data;
+package com.akrog.tolomet.data.providers;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -12,6 +12,9 @@ import android.annotation.SuppressLint;
 
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Tolomet;
+import com.akrog.tolomet.data.Downloader;
+import com.akrog.tolomet.data.Station;
+import com.akrog.tolomet.data.WindProvider;
 import com.akrog.tolomet.view.MyCharts;
 
 public class EuskalmetProvider implements WindProvider {

@@ -1,8 +1,11 @@
-package com.akrog.tolomet.data;
+package com.akrog.tolomet.data.providers;
 
 import java.util.Calendar;
 
 import com.akrog.tolomet.Tolomet;
+import com.akrog.tolomet.data.Downloader;
+import com.akrog.tolomet.data.Station;
+import com.akrog.tolomet.data.WindProvider;
 import com.akrog.tolomet.view.MyCharts;
 
 public class AemetProvider implements WindProvider {
