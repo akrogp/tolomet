@@ -4,6 +4,9 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 import com.akrog.tolomet.Tolomet;
+import com.akrog.tolomet.data.providers.AemetProvider;
+import com.akrog.tolomet.data.providers.EuskalmetProvider;
+import com.akrog.tolomet.data.providers.MeteoNavarraProvider;
 
 public class WindProviderManager {
 	public WindProviderManager( Tolomet tolomet ) {

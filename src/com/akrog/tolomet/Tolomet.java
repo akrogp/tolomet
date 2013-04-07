@@ -184,6 +184,7 @@ public class Tolomet extends Activity
 		this.buttonRefresh.setEnabled(true);
 		this.buttonInfo.setEnabled(true);
 		this.favorite.setEnabled(true);
+		charts.setZoom(this.provider.getRefresh(this.stations.current)<60);
 		if( this.stations.current.isOutdated() )
 			loadData();
 		else
@@ -231,6 +232,7 @@ public class Tolomet extends Activity
 		SharedPreferences settings = getPreferences(0);
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putLong("gae:last", Calendar.getInstance().getTimeInMillis());
+		editor.commit();
 		
 		if( motd.getVersion() != null ) {		
 			new AlertDialog.Builder(this)
@@ -253,14 +255,13 @@ public class Tolomet extends Activity
 		        }
 		    }).create().show();
 		} else if( motd.getMotd() != null) {
+			editor.putLong("gae:stamp", motd.getStamp());
+			editor.commit();
 			new AlertDialog.Builder(this)
 		    .setTitle(R.string.motd)
 		    .setMessage(motd.getMotd())
 		    .create().show();			
-			editor.putLong("gae:stamp", motd.getStamp());				    	
-		}
-		
-		editor.commit();
+		}				
 	}
 	
 	private void checkMotd() {

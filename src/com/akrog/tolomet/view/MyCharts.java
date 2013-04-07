@@ -23,7 +23,8 @@ public class MyCharts {
 	private StationManager stations;
 	private XYPlot chartSpeed, chartDirection;
 	static final float fontSize = 16;
-	
+	private boolean zoom;		
+
 	public MyCharts( Tolomet tolomet, StationManager data ) {
 		this.tolomet = tolomet;
 		this.stations = data;
@@ -96,7 +97,8 @@ public class MyCharts {
         this.chartSpeed.addMarker(getYMarker(10));
         this.chartSpeed.addMarker(getYMarker(30));
         
-        updateDomainBoundaries();        
+        //updateDomainBoundaries();
+        setZoom(true);
     }
 	
 	public static float convertHumidity( int hum ) {
@@ -138,11 +140,23 @@ public class MyCharts {
     
     private void updateDomainBoundaries() {
     	Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.MINUTE, (cal.get(Calendar.MINUTE)+9)/10*10 );
-        Date date2 = cal.getTime();
-        Date date1 = new Date();
-        date1.setTime(date2.getTime()-4*60*60*1000);
-        this.chartDirection.setDomainBoundaries(date1.getTime(), date2.getTime(), BoundaryMode.FIXED);
+    	Date date2;
+        Date date1;
+    	cal.set(Calendar.SECOND, 0);
+    	cal.set(Calendar.MILLISECOND, 0);
+    	if( zoom ) {    		
+	        cal.set(Calendar.MINUTE, (cal.get(Calendar.MINUTE)+9)/10*10 );
+	        date2 = cal.getTime();
+	        date1 = new Date();
+	        date1.setTime(date2.getTime()-4*60*60*1000);	        
+    	} else {
+    		cal.set(Calendar.HOUR_OF_DAY, 0 );
+    		cal.set(Calendar.MINUTE, 0 );
+    		date1 = cal.getTime();
+	        date2 = new Date();
+	        date2.setTime(date1.getTime()+24*60*60*1000);
+    	}
+    	this.chartDirection.setDomainBoundaries(date1.getTime(), date2.getTime(), BoundaryMode.FIXED);
         this.chartSpeed.setDomainBoundaries(date1.getTime(), date2.getTime(), BoundaryMode.FIXED);
     }
     
@@ -150,4 +164,13 @@ public class MyCharts {
     	this.chartDirection.redraw();
         this.chartSpeed.redraw();
     }
+    
+    public boolean isZoom() {
+		return zoom;
+	}
+
+	public void setZoom(boolean zoom) {
+		this.zoom = zoom;		
+        updateDomainBoundaries();
+	}
 }

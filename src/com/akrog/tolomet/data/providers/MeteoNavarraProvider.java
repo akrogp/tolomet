@@ -1,4 +1,4 @@
-package com.akrog.tolomet.data;
+package com.akrog.tolomet.data.providers;
 
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -6,6 +6,9 @@ import java.util.TimeZone;
 import android.annotation.SuppressLint;
 
 import com.akrog.tolomet.Tolomet;
+import com.akrog.tolomet.data.Downloader;
+import com.akrog.tolomet.data.Station;
+import com.akrog.tolomet.data.WindProvider;
 import com.akrog.tolomet.view.MyCharts;
 
 public class MeteoNavarraProvider implements WindProvider {
