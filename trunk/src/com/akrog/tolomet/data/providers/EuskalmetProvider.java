@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import android.annotation.SuppressLint;
+import android.os.AsyncTask;
 
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Tolomet;
@@ -28,17 +29,22 @@ public class EuskalmetProvider implements WindProvider {
 	public void download(Station station, Calendar past, Calendar now) {
 		String time1 = String.format("%02d:%02d", past.get(Calendar.HOUR_OF_DAY), past.get(Calendar.MINUTE) );
 		String time2 = String.format("%02d:%02d", now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE) );
-		Downloader d = new Downloader(this.tolomet);
-		d.setUrl("http://www.euskalmet.euskadi.net/s07-5853x/es/meteorologia/lectur_fr.apl");
-		d.addParam("e", "5");
-		d.addParam("anyo", now.get(Calendar.YEAR));
-		d.addParam("mes", now.get(Calendar.MONTH)+1);
-		d.addParam("dia", now.get(Calendar.DAY_OF_MONTH));
-		d.addParam("hora", "%s %s", time1, time2);
-		d.addParam("CodigoEstacion", station.code);
-		d.addParam("pagina", "1");
-		d.addParam("R01HNoPortal", "true");
-		d.execute();
+		this.downloader = new Downloader(this.tolomet);
+		this.downloader.setUrl("http://www.euskalmet.euskadi.net/s07-5853x/es/meteorologia/lectur_fr.apl");
+		this.downloader.addParam("e", "5");
+		this.downloader.addParam("anyo", now.get(Calendar.YEAR));
+		this.downloader.addParam("mes", now.get(Calendar.MONTH)+1);
+		this.downloader.addParam("dia", now.get(Calendar.DAY_OF_MONTH));
+		this.downloader.addParam("hora", "%s %s", time1, time2);
+		this.downloader.addParam("CodigoEstacion", station.code);
+		this.downloader.addParam("pagina", "1");
+		this.downloader.addParam("R01HNoPortal", "true");
+		this.downloader.execute();
+	}
+	
+	public void cancelDownload() {
+		if( this.downloader != null && this.downloader.getStatus() != AsyncTask.Status.FINISHED )
+			this.downloader.cancel(true);
 	}
 
 	public void updateStation(Station station, String data) {
@@ -117,4 +123,5 @@ public class EuskalmetProvider implements WindProvider {
 	private Map<String,Integer> humidityCol;
 	private char separator;
 	private Tolomet tolomet;
+	private Downloader downloader;	
 }

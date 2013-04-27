@@ -11,8 +11,8 @@ http://www.aemet.es/es/eltiempo/observacion/ultimosdatos.csv?l=1082&datos=det&x=
 La Rioja:
 http://ias1.larioja.org/estaciones/estaciones/mapa/informes/ExportarDatosServlet?direccion=/opt/tomcat/webapps/estaciones/estaciones&codOrg=1&codigo=12&codigoP=7&Seleccion=D&Ano=2013&Mes=4&DiaD=6&DiaH=6&Informe=Y&extension=csv
 - Sólo devuelve en Excel (aunque le pidas CSV)
-- Hay que hacer 3 peticiones
+- Hay que hacer 3 peticiones -> Velocidad (codigoP=7), Dirección (codigoP=8), Humedad (codigoP=2)
 
 Galicia:
-http://www2.meteogalicia.es/NovoXeollador/accesograficas/graficashoxe.asp?est=10143&Nest=%20Cari%F1o
-- Sólo como gráfica
+Gráfica -> http://www2.meteogalicia.es/NovoXeollador/accesograficas/graficashoxe.asp?est=10143&Nest=%20Cari%F1o
+XML -> http://www2.meteogalicia.es/servizos/MComunicacion/xml/observacion/estacions/estado_actual_p.asp?idEst=10064

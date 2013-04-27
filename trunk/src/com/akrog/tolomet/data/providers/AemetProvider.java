@@ -2,6 +2,8 @@ package com.akrog.tolomet.data.providers;
 
 import java.util.Calendar;
 
+import android.os.AsyncTask;
+
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.Downloader;
 import com.akrog.tolomet.data.Station;
@@ -14,12 +16,17 @@ public class AemetProvider implements WindProvider {
 	}
 	
 	public void download(Station station, Calendar past, Calendar now) {
-		Downloader d = new Downloader(this.tolomet);
-		d.setUrl("http://www.aemet.es/es/eltiempo/observacion/ultimosdatos.csv");
-		d.addParam("l",station.code);
-		d.addParam("datos","det");
-		d.addParam("x","h24");
-		d.execute();
+		this.downloader = new Downloader(this.tolomet);
+		this.downloader.setUrl("http://www.aemet.es/es/eltiempo/observacion/ultimosdatos.csv");
+		this.downloader.addParam("l",station.code);
+		this.downloader.addParam("datos","det");
+		this.downloader.addParam("x","h24");
+		this.downloader.execute();
+	}
+	
+	public void cancelDownload() {
+		if( this.downloader != null && this.downloader.getStatus() != AsyncTask.Status.FINISHED )
+			this.downloader.cancel(true);
 	}
 
 	public void updateStation(Station station, String data) {			
@@ -88,5 +95,6 @@ public class AemetProvider implements WindProvider {
 		return "http://www.aemet.es/es/eltiempo/observacion/ultimosdatos?l="+code+"&datos=det";
 	}
 	
-	private Tolomet tolomet;	
+	private Tolomet tolomet;
+	private Downloader downloader;
 }

@@ -75,11 +75,12 @@ public class Tolomet extends Activity
     protected void onSaveInstanceState(Bundle outState) {
     	super.onSaveInstanceState(outState);
     	this.stations.saveState(outState);
+    	this.provider.cancelDownload(this.stations.current);
     }
     
     // Actions
 
-	private void loadData() {
+	private void downloadData() {
     	if( !this.provider.updateTimes(this.stations.current) ) {
     		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 			alertDialog.setMessage( getString(R.string.Impatient) + " " + this.provider.getRefresh(this.stations.current) + " " + getString(R.string.minutes) );
@@ -129,7 +130,7 @@ public class Tolomet extends Activity
     		return;
     	switch( v.getId() ) {
     		case R.id.button1:
-    			loadData();
+    			downloadData();
     			break;
     		case R.id.button2:
     			if( alertNetwork() )
@@ -186,7 +187,7 @@ public class Tolomet extends Activity
 		this.favorite.setEnabled(true);
 		charts.setZoom(this.provider.getRefresh(this.stations.current)<60);
 		if( this.stations.current.isOutdated() )
-			loadData();
+			downloadData();
 		else
 			redraw();	
 	}
