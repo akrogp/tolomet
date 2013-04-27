@@ -150,17 +150,18 @@ public class MyCharts {
 	        date1 = new Date();
 	        date1.setTime(date2.getTime()-4*60*60*1000);	        
     	} else {
-    		cal.set(Calendar.HOUR_OF_DAY, 0 );
+    		cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY)+1 );
     		cal.set(Calendar.MINUTE, 0 );
-    		date1 = cal.getTime();
-	        date2 = new Date();
-	        date2.setTime(date1.getTime()+24*60*60*1000);
+    		date2 = cal.getTime();
+	        date1 = new Date();
+	        date1.setTime(date2.getTime()-24*60*60*1000);
     	}
     	this.chartDirection.setDomainBoundaries(date1.getTime(), date2.getTime(), BoundaryMode.FIXED);
         this.chartSpeed.setDomainBoundaries(date1.getTime(), date2.getTime(), BoundaryMode.FIXED);
     }
     
     public void redraw() {
+    	updateDomainBoundaries();
     	this.chartDirection.redraw();
         this.chartSpeed.redraw();
     }

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.akrog.tolomet"
-    android:versionCode="18"
-    android:versionName="0.18" >
+    android:versionCode="20"
+    android:versionName="0.20" >
 
     <uses-sdk
         android:minSdkVersion="7"

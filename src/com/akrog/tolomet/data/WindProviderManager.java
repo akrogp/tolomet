@@ -24,6 +24,10 @@ public class WindProviderManager {
 		this.providers[station.provider.getValue()].download(station, this.past, this.now);
 	}
 	
+	public void cancelDownload( Station station ) {
+		this.providers[station.provider.getValue()].cancelDownload();
+	}
+	
 	public String getInfoUrl( Station station ) {
 		return this.providers[station.provider.getValue()].getInfoUrl(station.code);
 	}
