@@ -27,9 +27,10 @@ public class EuskalmetProvider implements WindProvider {
 	
 	@SuppressLint("DefaultLocale")
 	public void download(Station station, Calendar past, Calendar now) {
+		this.station = station;
 		String time1 = String.format("%02d:%02d", past.get(Calendar.HOUR_OF_DAY), past.get(Calendar.MINUTE) );
 		String time2 = String.format("%02d:%02d", now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE) );
-		this.downloader = new Downloader(this.tolomet);
+		this.downloader = new Downloader(this.tolomet, this);
 		this.downloader.setUrl("http://www.euskalmet.euskadi.net/s07-5853x/es/meteorologia/lectur_fr.apl");
 		this.downloader.addParam("e", "5");
 		this.downloader.addParam("anyo", now.get(Calendar.YEAR));
@@ -46,8 +47,17 @@ public class EuskalmetProvider implements WindProvider {
 		if( this.downloader != null && this.downloader.getStatus() != AsyncTask.Status.FINISHED )
 			this.downloader.cancel(true);
 	}
+	
+	public void onCancelled() {
+		this.tolomet.onCancelled();
+	}
 
-	public void updateStation(Station station, String data) {
+	public void onDownloaded(String result) {
+		updateStation(result);
+		this.tolomet.onDownloaded();
+	}
+
+	private void updateStation(String data) {
 		int col = this.humidityCol.containsKey(station.code) ? this.humidityCol.get(station.code) : -1;
 	    String[] lines = data.split("<tr>");
 	    Number date, val;		        
@@ -59,20 +69,20 @@ public class EuskalmetProvider implements WindProvider {
 	        	continue;
 	        date = toEpoch(getContent(cells[1]));
 	        val = Integer.parseInt(getContent(cells[3]));
-	        station.listDirection.add(date);
-	        station.listDirection.add(val);
+	        this.station.listDirection.add(date);
+	        this.station.listDirection.add(val);
 	        if( col >= 0 )
 	        	try {	// We can go on without humidity data		        	
 		        	val = MyCharts.convertHumidity(Integer.parseInt(getContent(cells[col])));
-		        	station.listHumidity.add(date);
-		        	station.listHumidity.add(val);
+		        	this.station.listHumidity.add(date);
+		        	this.station.listHumidity.add(val);
 	        	} catch( Exception e ) {}
 	        val = Float.parseFloat(getContent(cells[2]));
-	        station.listSpeedMed.add(date);
-	        station.listSpeedMed.add(val);
+	        this.station.listSpeedMed.add(date);
+	        this.station.listSpeedMed.add(val);
 	        val = Float.parseFloat(getContent(cells[4]));
-	        station.listSpeedMax.add(date);
-	        station.listSpeedMax.add(val);
+	        this.station.listSpeedMax.add(date);
+	        this.station.listSpeedMax.add(val);
 	    }
 	}
 
@@ -123,5 +133,6 @@ public class EuskalmetProvider implements WindProvider {
 	private Map<String,Integer> humidityCol;
 	private char separator;
 	private Tolomet tolomet;
-	private Downloader downloader;	
+	private Downloader downloader;
+	private Station station;
 }

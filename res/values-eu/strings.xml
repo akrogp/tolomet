@@ -7,6 +7,7 @@
     <string name="summary"></string>
     <string name="Direction">Norabidea</string>
     <string name="DirectionHumidity">Norabidea eta hezetasuna</string>
+    <string name="Humidity">Hezetasuna</string>
     <string name="Speed">Abiadura</string>
     <string name="Downloading">Deskargatzen</string>
     <string name="Progress">Aurrerapena</string>

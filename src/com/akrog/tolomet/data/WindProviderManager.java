@@ -6,6 +6,7 @@ import java.util.TimeZone;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.providers.AemetProvider;
 import com.akrog.tolomet.data.providers.EuskalmetProvider;
+import com.akrog.tolomet.data.providers.LaRiojaProvider;
 import com.akrog.tolomet.data.providers.MeteoNavarraProvider;
 
 public class WindProviderManager {
@@ -13,7 +14,8 @@ public class WindProviderManager {
 		this.providers = new WindProvider[WindProviderType.values().length];
 		this.providers[0] = new EuskalmetProvider( tolomet );
 		this.providers[1] = new MeteoNavarraProvider( tolomet );
-		this.providers[2] = new AemetProvider( tolomet ); 
+		this.providers[2] = new AemetProvider( tolomet );
+		this.providers[3] = new LaRiojaProvider( tolomet );
 	}
 	
 	/*public String getUrl( Station station ) {	
@@ -32,9 +34,9 @@ public class WindProviderManager {
 		return this.providers[station.provider.getValue()].getInfoUrl(station.code);
 	}
 	
-	public void updateStation( Station station, String data ) {
+	/*public void updateStation( Station station, String data ) {
 		this.providers[station.provider.getValue()].updateStation(station, data);
-	}
+	}*/
 	
 	public int getRefresh( Station station ) {
 		return this.providers[station.provider.getValue()].getRefresh();
@@ -53,7 +55,7 @@ public class WindProviderManager {
 		
 		// Check update interval
 		this.past.setTimeInMillis((Long)station.listDirection.get(station.listDirection.size()-2));
-		if( (this.now.getTimeInMillis()-this.past.getTimeInMillis()) <= 10*60*1000 )
+		if( (this.now.getTimeInMillis()-this.past.getTimeInMillis()) <= this.providers[station.provider.getValue()].getRefresh()*60*1000 )
 			return false;
 		
 		// Clear cache

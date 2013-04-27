@@ -23,7 +23,9 @@ public class MyCharts {
 	private StationManager stations;
 	private XYPlot chartSpeed, chartDirection;
 	static final float fontSize = 16;
-	private boolean zoom;		
+	private boolean zoom;
+	private int minutes = 10;
+	private int hours = 4;
 
 	public MyCharts( Tolomet tolomet, StationManager data ) {
 		this.tolomet = tolomet;
@@ -101,7 +103,7 @@ public class MyCharts {
         setZoom(true);
     }
 	
-	public static float convertHumidity( int hum ) {
+	public static Float convertHumidity( int hum ) {
     	return 45.0F+hum*2.7F;
     	//return hum*3.6F;
     	//return hum*3.15F;
@@ -145,10 +147,10 @@ public class MyCharts {
     	cal.set(Calendar.SECOND, 0);
     	cal.set(Calendar.MILLISECOND, 0);
     	if( zoom ) {    		
-	        cal.set(Calendar.MINUTE, (cal.get(Calendar.MINUTE)+9)/10*10 );
+	        cal.set(Calendar.MINUTE, (cal.get(Calendar.MINUTE)+this.minutes-1)/this.minutes*this.minutes );
 	        date2 = cal.getTime();
 	        date1 = new Date();
-	        date1.setTime(date2.getTime()-4*60*60*1000);	        
+	        date1.setTime(date2.getTime()-this.hours*60*60*1000);	        
     	} else {
     		cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY)+1 );
     		cal.set(Calendar.MINUTE, 0 );
@@ -173,5 +175,21 @@ public class MyCharts {
 	public void setZoom(boolean zoom) {
 		this.zoom = zoom;		
         updateDomainBoundaries();
+	}
+	
+	public void setRefresh( int minutes ) {
+		if( minutes == 15 ) {
+			this.minutes = 15;
+			this.chartDirection.setDomainStep(XYStepMode.SUBDIVIDE, 17);
+	        this.chartDirection.setTicksPerDomainLabel(4);
+	        this.chartSpeed.setDomainStep(XYStepMode.SUBDIVIDE, 17);
+	        this.chartSpeed.setTicksPerDomainLabel(4);
+		} else {
+			this.minutes = 10;
+			this.chartDirection.setDomainStep(XYStepMode.SUBDIVIDE, 25);
+	        this.chartDirection.setTicksPerDomainLabel(6);
+	        this.chartSpeed.setDomainStep(XYStepMode.SUBDIVIDE, 25);
+	        this.chartSpeed.setTicksPerDomainLabel(6);
+		}
 	}
 }

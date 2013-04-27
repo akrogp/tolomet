@@ -20,9 +20,10 @@ public class MeteoNavarraProvider implements WindProvider {
 	
 	@SuppressLint("DefaultLocale")
 	public void download(Station station, Calendar past, Calendar now) {
+		this.station = station;
 		String time1 = String.format("%d/%d/%d", now.get(Calendar.DAY_OF_MONTH), now.get(Calendar.MONTH)+1, now.get(Calendar.YEAR) );
 		String time2 = String.format("%d/%d/%d", now.get(Calendar.DAY_OF_MONTH)+1, now.get(Calendar.MONTH)+1, now.get(Calendar.YEAR) );
-		this.downloader = new Downloader(this.tolomet);
+		this.downloader = new Downloader(this.tolomet, this);
 		this.downloader.setUrl("http://meteo.navarra.es/download/estacion_datos.cfm");
 		this.downloader.addParam("IDEstacion",station.code.substring(2));
 		this.downloader.addParam("p_10","7");
@@ -39,31 +40,40 @@ public class MeteoNavarraProvider implements WindProvider {
 		if( this.downloader != null && this.downloader.getStatus() != AsyncTask.Status.FINISHED )
 			this.downloader.cancel(true);
 	}
+	
+	public void onCancelled() {
+		this.tolomet.onCancelled();
+	}
 
-	public void updateStation(Station station, String data) {		
+	public void onDownloaded(String result) {
+		updateStation(result);
+		this.tolomet.onDownloaded();
+	}
+
+	private void updateStation(String data) {		
 		String[] cells = data.split(",");
 		Number date, num;
 		if( cells.length < 23 )
 			return;	
-		station.clear();
+		this.station.clear();
 		for( int i = 16; i < cells.length; i+=7 ) {
 			if( cells[i].equals("\"\"") || cells[i+1].equals("\"- -\"") )
 				continue;
 			date = toEpoch(getContent(cells[i]));
 			num = Integer.parseInt(getContent(cells[i+1]));
-			station.listDirection.add(date);
-			station.listDirection.add(num);
+			this.station.listDirection.add(date);
+			this.station.listDirection.add(num);
 			try {	// We can go on without humidity data
 				num = MyCharts.convertHumidity(Integer.parseInt(getContent(cells[i+2])));
-				station.listHumidity.add(date);
-				station.listHumidity.add(num);
+				this.station.listHumidity.add(date);
+				this.station.listHumidity.add(num);
 			} catch( Exception e ) {}
 			num = Float.parseFloat(getContent(cells[i+6]));
-			station.listSpeedMed.add(date);
-			station.listSpeedMed.add(num);
+			this.station.listSpeedMed.add(date);
+			this.station.listSpeedMed.add(num);
 			num = Float.parseFloat(getContent(cells[i+4]));
-			station.listSpeedMax.add(date);
-			station.listSpeedMax.add(num);
+			this.station.listSpeedMax.add(date);
+			this.station.listSpeedMax.add(num);
 		}		
 	}
 
@@ -90,4 +100,5 @@ public class MeteoNavarraProvider implements WindProvider {
 	private char separator;
 	private Tolomet tolomet;
 	private Downloader downloader;
+	private Station station;
 }

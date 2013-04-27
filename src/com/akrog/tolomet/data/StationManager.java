@@ -143,6 +143,24 @@ public class StationManager {
     	this.nearest.add(1,this.all.get(1));
     }
     
+    public void loadVowelStations( char ch ) {
+    	this.nearest.clear();
+    	this.nearest.add(this.all.get(0));
+    	this.nearest.add(this.all.get(1));
+    	for( Station s : this.all )
+			if( s.name.startsWith(""+ch) )
+				this.nearest.add(s);
+    }
+    
+    public void loadRegionStations( int region ) {
+    	this.nearest.clear();
+    	this.nearest.add(this.all.get(0));
+    	this.nearest.add(this.all.get(1));
+    	for( Station s : this.all )
+			if( s.region == region )
+				this.nearest.add(s);
+    }
+    
     public void clearDistance() {
     	for( Station station : this.all )
     		station.distance = -1.0F;

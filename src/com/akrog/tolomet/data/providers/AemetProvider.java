@@ -16,7 +16,8 @@ public class AemetProvider implements WindProvider {
 	}
 	
 	public void download(Station station, Calendar past, Calendar now) {
-		this.downloader = new Downloader(this.tolomet);
+		this.station = station;
+		this.downloader = new Downloader(this.tolomet, this);
 		this.downloader.setUrl("http://www.aemet.es/es/eltiempo/observacion/ultimosdatos.csv");
 		this.downloader.addParam("l",station.code);
 		this.downloader.addParam("datos","det");
@@ -28,14 +29,23 @@ public class AemetProvider implements WindProvider {
 		if( this.downloader != null && this.downloader.getStatus() != AsyncTask.Status.FINISHED )
 			this.downloader.cancel(true);
 	}
+	
+	public void onCancelled() {
+		this.tolomet.onCancelled();
+	}
 
-	public void updateStation(Station station, String data) {			
+	public void onDownloaded(String result) {
+		updateStation(result);
+		this.tolomet.onDownloaded();
+	}
+
+	private void updateStation(String data) {			
 		String[] cells = data.split("\"");
 		String dir;
 		Number date, num, last = 0;
 		if( cells.length < 42 )
 			return;	
-		station.clear();
+		this.station.clear();
 		for( int i = cells.length-19; i >= 23; i-=20 ) {
 			if( cells[i].length() == 0 || cells[i+6].length() == 0 )
 				continue;
@@ -60,19 +70,19 @@ public class AemetProvider implements WindProvider {
 			else	// Calma
 				num = last;
 			last = num;
-			station.listDirection.add(date);				
-			station.listDirection.add(num);
+			this.station.listDirection.add(date);				
+			this.station.listDirection.add(num);
 			try {	// We can go on without humidity data
 				num = MyCharts.convertHumidity((int)(Float.parseFloat(cells[i+18])+0.5F));				
-				station.listHumidity.add(date);
-				station.listHumidity.add(num);
+				this.station.listHumidity.add(date);
+				this.station.listHumidity.add(num);
 			} catch( Exception e ) {}
 			num = Float.parseFloat(cells[i+4]);
-			station.listSpeedMed.add(date);
-			station.listSpeedMed.add(num);
+			this.station.listSpeedMed.add(date);
+			this.station.listSpeedMed.add(num);
 			num = Float.parseFloat(cells[i+8]);
-			station.listSpeedMax.add(date);
-			station.listSpeedMax.add(num);
+			this.station.listSpeedMax.add(date);
+			this.station.listSpeedMax.add(num);
 		}				
 	}
 
@@ -97,4 +107,5 @@ public class AemetProvider implements WindProvider {
 	
 	private Tolomet tolomet;
 	private Downloader downloader;
+	private Station station;
 }

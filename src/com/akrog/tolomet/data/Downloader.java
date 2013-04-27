@@ -2,6 +2,7 @@ package com.akrog.tolomet.data;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -29,11 +30,16 @@ public class Downloader extends AsyncTask<Void, Void, String> {
 	private ProgressDialog progress;
 	private String url, method;
 	private List<NameValuePair> params;
+	private WindProvider provider;
 
-	public Downloader( Tolomet tolomet ) {
+	public Downloader( Tolomet tolomet, WindProvider provider, String desc ) {
 		this.tolomet = tolomet;
+		this.provider = provider;
 		this.progress = new ProgressDialog(this.tolomet);
-        this.progress.setMessage( this.tolomet.getString(R.string.Downloading)+"..." );
+		if( desc == null || desc.length() == 0 )
+			this.progress.setMessage( this.tolomet.getString(R.string.Downloading)+"..." );
+		else
+			this.progress.setMessage( this.tolomet.getString(R.string.Downloading)+" "+desc+"..." );
         this.progress.setTitle( "" );//getString(R.string.Progress) );
         this.progress.setIndeterminate(true);
         this.progress.setCancelable(true);
@@ -43,6 +49,10 @@ public class Downloader extends AsyncTask<Void, Void, String> {
         	}
         });
         this.params = new ArrayList<NameValuePair>();
+	}
+	
+	public Downloader( Tolomet tolomet, WindProvider provider ) {
+		this(tolomet, provider, "");
 	}
 	
 	@Override
@@ -56,12 +66,12 @@ public class Downloader extends AsyncTask<Void, Void, String> {
 		super.onCancelled();
 		//this.progress.dismiss();
 		Toast.makeText(this.tolomet,R.string.DownloadCancelled,Toast.LENGTH_SHORT).show();
-		this.tolomet.OnCancelled();
+		this.provider.onCancelled();
 	}	
 	
 	@Override
 	protected String doInBackground(Void... params) {
-		StringBuilder builder = new StringBuilder();
+		String result = "";
     	try {    		
     		HttpURLConnection con;
     		if( this.method != null && this.method.equalsIgnoreCase("POST") ) {
@@ -79,16 +89,22 @@ public class Downloader extends AsyncTask<Void, Void, String> {
     			con = (HttpURLConnection)url.openConnection();
     		}
     		//con.setRequestProperty("User-Agent","Mozilla/5.0 (Linux)");
-    		BufferedReader rd = new BufferedReader(new InputStreamReader(con.getInputStream()));
-    		String line;
-    		while( (line=rd.readLine()) != null && !isCancelled() )
-    			builder.append(line);
-    		rd.close();
+    		result = parseInput(con.getInputStream());
     	} catch( Exception e ) {
     		System.out.println(e.getMessage());
     		onCancelled();
 		}
-    	return builder.toString();
+    	return result;
+	}
+	
+	protected String parseInput( InputStream is ) throws Exception {		
+		BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+		StringBuilder builder = new StringBuilder();
+		String line;		
+		while( (line=rd.readLine()) != null && !isCancelled() )
+			builder.append(line);
+		rd.close();
+		return builder.toString();
 	}
 	
 	private String getQuery() throws UnsupportedEncodingException {
@@ -111,7 +127,7 @@ public class Downloader extends AsyncTask<Void, Void, String> {
     protected void onPostExecute(String result) {
         super.onPostExecute(result);	        
         this.progress.dismiss();
-        this.tolomet.onDownloaded(result);
+        this.provider.onDownloaded(result);
     }
 
 	public String getUrl() {
