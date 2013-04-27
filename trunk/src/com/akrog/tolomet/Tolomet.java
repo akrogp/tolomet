@@ -67,7 +67,7 @@ public class Tolomet extends Activity
 	
 	@Override
     protected void onPause() {
-    	this.spinner.saveState();
+    	//this.spinner.saveState();
     	super.onPause();
     }
         
@@ -75,6 +75,7 @@ public class Tolomet extends Activity
     protected void onSaveInstanceState(Bundle outState) {
     	super.onSaveInstanceState(outState);
     	this.stations.saveState(outState);
+    	this.spinner.saveState();
     	this.provider.cancelDownload(this.stations.current);
     }
     
@@ -186,6 +187,7 @@ public class Tolomet extends Activity
 		this.buttonInfo.setEnabled(true);
 		this.favorite.setEnabled(true);
 		charts.setZoom(this.provider.getRefresh(this.stations.current)<60);
+		charts.setRefresh(this.provider.getRefresh(this.stations.current));
 		if( this.stations.current.isOutdated() )
 			downloadData();
 		else
@@ -198,20 +200,21 @@ public class Tolomet extends Activity
 	
 	// Downloader events
 	
-	public void onDownloaded(String result) {
+	public void onDownloaded() {
         Station sel = this.spinner.getSelectedItem();
-        try {
+        /*try {
         	this.provider.updateStation(this.stations.current, result);
         	sel.replace(this.stations.current);
         } catch (Exception e) {
 			System.out.println( e.getMessage() );
 			this.stations.current.replace(sel);
-		}
+		}*/
+        sel.replace(this.stations.current);
         redraw();
         checkMotd();
     }
 	
-	public void OnCancelled() {
+	public void onCancelled() {
 		redraw();
 	}
 

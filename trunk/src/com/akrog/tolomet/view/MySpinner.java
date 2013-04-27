@@ -16,6 +16,8 @@ public class MySpinner {
 	private Spinner spinner;
 	private ArrayAdapter<Station> adapter;
 	private SpinnerType spinnerType;
+	private char vowel = '#';
+	private int region = -1;
 	
 	public MySpinner( Tolomet tolomet, StationManager data, Bundle bundle ) {
 		this.tolomet = tolomet;
@@ -35,7 +37,13 @@ public class MySpinner {
 		SharedPreferences settings = this.tolomet.getPreferences(0);
     	SpinnerState spinner = new SpinnerState();
 		spinner.type = SpinnerType.values()[settings.getInt("spinner-type", SpinnerType.StartMenu.getValue())-SpinnerType.StartMenu.getValue()];
-    	spinner.selection = settings.getInt("spinner-sel", 0);    	
+    	spinner.selection = settings.getInt("spinner-sel", 0);
+    	this.vowel = settings.getString("spinner-vowel", "#").charAt(0);
+    	this.region = settings.getInt("spinner-region", -1);
+    	if( spinner.type == SpinnerType.VowelSations )
+    		this.stations.loadVowelStations(this.vowel);
+    	else if( spinner.type == SpinnerType.RegionStations )
+    		this.stations.loadRegionStations(this.region);
 		return spinner;
 	}
 	
@@ -45,6 +53,10 @@ public class MySpinner {
     	//editor.putString("selection", mStation.Code);
     	editor.putInt("spinner-type", this.spinnerType.getValue());
     	editor.putInt("spinner-sel", this.spinner.getSelectedItemPosition());
+    	if( this.vowel != '#' )
+    		editor.putString("spinner-vowel", ""+this.vowel);
+    	if( this.region != -1 )
+    		editor.putInt("spinner-region", this.region);
     	editor.commit();
 	}
 
@@ -102,21 +114,16 @@ public class MySpinner {
 				setType( SpinnerType.StartMenu, 0 );
 			return;
 		}
-		if( station.special < SpinnerType.StartMenu.getValue() || station.special > 200 ) {
-			this.stations.nearest.clear();			
-			this.stations.nearest.add(this.stations.all.get(0));
-			this.stations.nearest.add(this.stations.all.get(1));
-			if( station.special > 200 ) {
-				for( Station s : this.stations.all )
-					if( s.name.startsWith(""+(char)(station.special-200)) )
-						this.stations.nearest.add(s);
-				setType( SpinnerType.VowelSations, 0 );
-			} else {
-				for( Station s : this.stations.all )
-					if( s.region == station.special )
-						this.stations.nearest.add(s);
-				setType( SpinnerType.RegionStations, 0 );
-			}			
+		if( station.special > 200 ) { // Vowel
+			this.vowel = (char)(station.special-200);
+			this.stations.loadVowelStations(this.vowel);
+			setType( SpinnerType.VowelSations, 0 );
+			return;
+		}
+		if( station.special < SpinnerType.StartMenu.getValue() ) {	// Region
+			this.region = station.special;
+			this.stations.loadRegionStations(this.region);
+			setType( SpinnerType.RegionStations, 0 );			
 			return;
 		}
 		setType( SpinnerType.values()[station.special-SpinnerType.StartMenu.getValue()], 0 );
