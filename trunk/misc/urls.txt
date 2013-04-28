@@ -10,6 +10,7 @@ http://www.aemet.es/es/eltiempo/observacion/ultimosdatos.csv?l=1082&datos=det&x=
 
 La Rioja:
 http://ias1.larioja.org/estaciones/estaciones/mapa/informes/ExportarDatosServlet?direccion=/opt/tomcat/webapps/estaciones/estaciones&codOrg=1&codigo=12&codigoP=7&Seleccion=D&Ano=2013&Mes=4&DiaD=6&DiaH=6&Informe=Y&extension=csv
+http://ias1.larioja.org/estaciones/estaciones/mapa/consulta/consulta.jsp?codOrg=1&codigo=1
 - Sólo devuelve en Excel (aunque le pidas CSV)
 - Hay que hacer 3 peticiones -> Velocidad (codigoP=7), Dirección (codigoP=8), Humedad (codigoP=2)
 

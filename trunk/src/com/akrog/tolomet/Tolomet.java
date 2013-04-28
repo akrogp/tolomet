@@ -186,7 +186,7 @@ public class Tolomet extends Activity
 		this.buttonRefresh.setEnabled(true);
 		this.buttonInfo.setEnabled(true);
 		this.favorite.setEnabled(true);
-		charts.setZoom(this.provider.getRefresh(this.stations.current)<60);
+		//charts.setZoom(this.provider.getRefresh(this.stations.current)<60);
 		charts.setRefresh(this.provider.getRefresh(this.stations.current));
 		if( this.stations.current.isOutdated() )
 			downloadData();
