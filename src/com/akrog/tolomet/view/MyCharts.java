@@ -23,7 +23,6 @@ public class MyCharts {
 	private StationManager stations;
 	private XYPlot chartSpeed, chartDirection;
 	static final float fontSize = 16;
-	private boolean zoom;
 	private int minutes = 10;
 	private int hours = 4;
 
@@ -100,7 +99,7 @@ public class MyCharts {
         this.chartSpeed.addMarker(getYMarker(30));
         
         //updateDomainBoundaries();
-        setZoom(true);
+        setRefresh(15);
     }
 	
 	public static Float convertHumidity( int hum ) {
@@ -146,18 +145,15 @@ public class MyCharts {
         Date date1;
     	cal.set(Calendar.SECOND, 0);
     	cal.set(Calendar.MILLISECOND, 0);
-    	if( zoom ) {    		
-	        cal.set(Calendar.MINUTE, (cal.get(Calendar.MINUTE)+this.minutes-1)/this.minutes*this.minutes );
-	        date2 = cal.getTime();
-	        date1 = new Date();
-	        date1.setTime(date2.getTime()-this.hours*60*60*1000);	        
-    	} else {
-    		cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY)+1 );
-    		cal.set(Calendar.MINUTE, 0 );
-    		date2 = cal.getTime();
-	        date1 = new Date();
-	        date1.setTime(date2.getTime()-24*60*60*1000);
-    	}
+    	int minute = (cal.get(Calendar.MINUTE)+this.minutes-1)/this.minutes*this.minutes;
+    	int hour = cal.get(Calendar.HOUR_OF_DAY);
+    	hour += minute/60;
+    	minute -= minute/60*60;
+    	cal.set(Calendar.MINUTE, minute );
+    	cal.set(Calendar.HOUR_OF_DAY, hour );
+    	date2 = cal.getTime();
+        date1 = new Date();
+        date1.setTime(date2.getTime()-this.hours*60*60*1000);    	
     	this.chartDirection.setDomainBoundaries(date1.getTime(), date2.getTime(), BoundaryMode.FIXED);
         this.chartSpeed.setDomainBoundaries(date1.getTime(), date2.getTime(), BoundaryMode.FIXED);
     }
@@ -167,29 +163,10 @@ public class MyCharts {
     	this.chartDirection.redraw();
         this.chartSpeed.redraw();
     }
-    
-    public boolean isZoom() {
-		return zoom;
-	}
-
-	public void setZoom(boolean zoom) {
-		this.zoom = zoom;		
-        updateDomainBoundaries();
-	}
 	
-	public void setRefresh( int minutes ) {
-		if( minutes == 15 ) {
-			this.minutes = 15;
-			this.chartDirection.setDomainStep(XYStepMode.SUBDIVIDE, 17);
-	        this.chartDirection.setTicksPerDomainLabel(4);
-	        this.chartSpeed.setDomainStep(XYStepMode.SUBDIVIDE, 17);
-	        this.chartSpeed.setTicksPerDomainLabel(4);
-		} else {
-			this.minutes = 10;
-			this.chartDirection.setDomainStep(XYStepMode.SUBDIVIDE, 25);
-	        this.chartDirection.setTicksPerDomainLabel(6);
-	        this.chartSpeed.setDomainStep(XYStepMode.SUBDIVIDE, 25);
-	        this.chartSpeed.setTicksPerDomainLabel(6);
-		}
+	public void setRefresh( int minutes ) {		
+		this.minutes = minutes;
+		this.hours = minutes * 24 / 60;
+		updateDomainBoundaries();
 	}
 }

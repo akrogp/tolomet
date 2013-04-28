@@ -59,7 +59,7 @@ public class LaRiojaProvider implements WindProvider {
 	}
 
 	public String getInfoUrl(String code) {
-		return "http://www.larioja.org/npRioja/default/defaultpage.jsp?idtab=442821";
+		return "http://ias1.larioja.org/estaciones/estaciones/mapa/consulta/consulta.jsp?codOrg=1&codigo="+code;
 	}
 
 	public void onCancelled() {
