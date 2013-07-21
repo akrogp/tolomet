@@ -62,7 +62,7 @@ public class Summary {
         		this.summary.setText( String.format("%s | %dº (%s) | %d %% | %.1f~%.1f km/h", date, dir, getDir(dir), hum, med, max ));
         	else
         		this.summary.setText( String.format("%s|%dº(%s)|%d%%|%.1f~%.1f", date, dir, getDir(dir), hum, med, max ));
-	}
+	}	
 	
 	private String getDir( int degrees ) {
 		String[] vals = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};

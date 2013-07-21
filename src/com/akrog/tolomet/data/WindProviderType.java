@@ -1,10 +1,10 @@
 package com.akrog.tolomet.data;
 
 public enum WindProviderType {
-	Euskalmet(0), MeteoNavarra(1), Aemet(2), LaRioja(3), MeteoGalicia(4);
+	Euskalmet(0), MeteoNavarra(1), Aemet(2), LaRioja(3), MeteoGalicia(4), RedVigia(5);
 	
 	private final int value;
-	private final String codes[]={"EU", "GN", "AE", "RI", "GA" };
+	private final String codes[]={"EU", "GN", "AE", "RI", "GA", "RV" };
 	
 	private WindProviderType(int value) {
         this.value = value;

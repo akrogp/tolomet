@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-
 import android.os.Bundle;
 
 public class Station {		
@@ -117,10 +116,16 @@ public class Station {
 		return this.special != -1;
 	}
 	
+	public Number getStamp() {
+		if( isEmpty() )
+			return null;
+		return this.listDirection.get(this.listDirection.size()-2);
+	}
+	
 	public boolean isOutdated() {
 		if( isEmpty() )
 			return true;
-		long stamp = (Long)this.listDirection.get(this.listDirection.size()-2);
+		long stamp = (Long)getStamp();
 		if( Calendar.getInstance().getTimeInMillis()-stamp > 220*60*1000)
 			return true;
 		return false;
