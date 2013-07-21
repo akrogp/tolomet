@@ -67,6 +67,7 @@ public class MeteoGaliciaProvider implements WindProvider {
 			parser.setInput(new StringReader(data));
 			parser.nextTag();
 			//parser.require(XmlPullParser.START_TAG, null, "Estacion");
+			this.station.clear();
 			while( parser.next() != XmlPullParser.END_DOCUMENT ) {			
 				if( parser.getEventType() != XmlPullParser.START_TAG ) {
 		            continue;

@@ -31,11 +31,13 @@ public class Downloader extends AsyncTask<Void, Void, String> {
 	private String url, method;
 	private List<NameValuePair> params;
 	private WindProvider provider;
+	private boolean usingLinebreak;
 
 	public Downloader( Tolomet tolomet, WindProvider provider, String desc ) {
 		this.tolomet = tolomet;
 		this.provider = provider;
-		this.progress = new ProgressDialog(this.tolomet);
+		this.usingLinebreak = false;
+		this.progress = new ProgressDialog(this.tolomet);		
 		if( desc == null || desc.length() == 0 )
 			this.progress.setMessage( this.tolomet.getString(R.string.Downloading)+"..." );
 		else
@@ -97,12 +99,19 @@ public class Downloader extends AsyncTask<Void, Void, String> {
     	return result;
 	}
 	
+	public void useLineBreak(boolean lb) {
+		this.usingLinebreak = lb;
+	}
+	
 	protected String parseInput( InputStream is ) throws Exception {		
 		BufferedReader rd = new BufferedReader(new InputStreamReader(is));
 		StringBuilder builder = new StringBuilder();
 		String line;		
-		while( (line=rd.readLine()) != null && !isCancelled() )
+		while( (line=rd.readLine()) != null && !isCancelled() ) {
 			builder.append(line);
+			if( this.usingLinebreak )
+				builder.append('\n');
+		}
 		rd.close();
 		return builder.toString();
 	}
