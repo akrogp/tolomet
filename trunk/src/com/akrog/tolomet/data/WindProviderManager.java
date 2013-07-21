@@ -7,6 +7,7 @@ import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.providers.AemetProvider;
 import com.akrog.tolomet.data.providers.EuskalmetProvider;
 import com.akrog.tolomet.data.providers.LaRiojaProvider;
+import com.akrog.tolomet.data.providers.MeteoGaliciaProvider;
 import com.akrog.tolomet.data.providers.MeteoNavarraProvider;
 
 public class WindProviderManager {
@@ -16,6 +17,7 @@ public class WindProviderManager {
 		this.providers[1] = new MeteoNavarraProvider( tolomet );
 		this.providers[2] = new AemetProvider( tolomet );
 		this.providers[3] = new LaRiojaProvider( tolomet );
+		this.providers[4] = new MeteoGaliciaProvider( tolomet );
 	}
 	
 	/*public String getUrl( Station station ) {	

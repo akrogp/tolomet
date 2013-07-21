@@ -17,3 +17,4 @@ http://ias1.larioja.org/estaciones/estaciones/mapa/consulta/consulta.jsp?codOrg=
 Galicia:
 Gráfica -> http://www2.meteogalicia.es/NovoXeollador/accesograficas/graficashoxe.asp?est=10143&Nest=%20Cari%F1o
 XML -> http://www2.meteogalicia.es/servizos/MComunicacion/xml/observacion/estacions/estado_actual_p.asp?idEst=10064
+http://www2.meteogalicia.es/galego/observacion/estacions/contidos/DatosHistoricosXML_dezminutal.asp?est=10124&param=1306,1307,1311,1312&data1=28/4/2013&data2=29/4/2013
