@@ -12,19 +12,17 @@ import java.util.TimeZone;
 import org.xmlpull.v1.XmlPullParser;
 
 import android.annotation.SuppressLint;
-import android.os.AsyncTask;
 import android.util.Xml;
 
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.Downloader;
 import com.akrog.tolomet.data.Station;
-import com.akrog.tolomet.data.WindProvider;
 import com.akrog.tolomet.view.MyCharts;
 
-public class MeteoGaliciaProvider implements WindProvider {
+public class MeteoGaliciaProvider extends AbstractProvider {
 	public MeteoGaliciaProvider( Tolomet tolomet ) {
-		this.tolomet = tolomet;
+		super(tolomet);
 		loadParams();
 		this.separator = '.';//(new DecimalFormatSymbols()).getDecimalSeparator();
 	}
@@ -44,22 +42,9 @@ public class MeteoGaliciaProvider implements WindProvider {
 		this.downloader.addParam("red", fields[3]);
 		this.downloader.execute();
 	}
-	
-	public void cancelDownload() {
-		if( this.downloader != null && this.downloader.getStatus() != AsyncTask.Status.FINISHED )
-			this.downloader.cancel(true);
-	}
-	
-	public void onCancelled() {
-		this.tolomet.onCancelled();
-	}
 
-	public void onDownloaded(String result) {
-		updateStation(result);
-		this.tolomet.onDownloaded();
-	}
-
-	private void updateStation(String data) {
+	@Override
+	protected void updateStation(String data) {
 		Number date = null, val;
 		XmlPullParser parser = Xml.newPullParser();
 		try {
@@ -155,7 +140,4 @@ public class MeteoGaliciaProvider implements WindProvider {
 	
 	private Map<String,String> urlParams;
 	private char separator;
-	private Tolomet tolomet;
-	private Downloader downloader;
-	private Station station;
 }

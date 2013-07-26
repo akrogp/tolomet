@@ -9,18 +9,16 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import android.annotation.SuppressLint;
-import android.os.AsyncTask;
 
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.Downloader;
 import com.akrog.tolomet.data.Station;
-import com.akrog.tolomet.data.WindProvider;
 import com.akrog.tolomet.view.MyCharts;
 
-public class EuskalmetProvider implements WindProvider {
+public class EuskalmetProvider extends AbstractProvider {
 	public EuskalmetProvider( Tolomet tolomet ) {
-		this.tolomet = tolomet;
+		super(tolomet);
 		loadCols();
 		this.separator = '.';//(new DecimalFormatSymbols()).getDecimalSeparator();
 	}
@@ -43,21 +41,8 @@ public class EuskalmetProvider implements WindProvider {
 		this.downloader.execute();
 	}
 	
-	public void cancelDownload() {
-		if( this.downloader != null && this.downloader.getStatus() != AsyncTask.Status.FINISHED )
-			this.downloader.cancel(true);
-	}
-	
-	public void onCancelled() {
-		this.tolomet.onCancelled();
-	}
-
-	public void onDownloaded(String result) {
-		updateStation(result);
-		this.tolomet.onDownloaded();
-	}
-
-	private void updateStation(String data) {
+	@Override
+	protected void updateStation(String data) {
 		int col = this.humidityCol.containsKey(station.code) ? this.humidityCol.get(station.code) : -1;
 	    String[] lines = data.split("<tr>");
 	    Number date, val;		        
@@ -132,7 +117,4 @@ public class EuskalmetProvider implements WindProvider {
 	
 	private Map<String,Integer> humidityCol;
 	private char separator;
-	private Tolomet tolomet;
-	private Downloader downloader;
-	private Station station;
 }

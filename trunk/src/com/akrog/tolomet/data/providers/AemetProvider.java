@@ -2,17 +2,14 @@ package com.akrog.tolomet.data.providers;
 
 import java.util.Calendar;
 
-import android.os.AsyncTask;
-
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.Downloader;
 import com.akrog.tolomet.data.Station;
-import com.akrog.tolomet.data.WindProvider;
 import com.akrog.tolomet.view.MyCharts;
 
-public class AemetProvider implements WindProvider {
+public class AemetProvider extends AbstractProvider {
 	public AemetProvider( Tolomet tolomet ) {
-		this.tolomet = tolomet;
+		super(tolomet);
 	}
 	
 	public void download(Station station, Calendar past, Calendar now) {
@@ -25,21 +22,8 @@ public class AemetProvider implements WindProvider {
 		this.downloader.execute();
 	}
 	
-	public void cancelDownload() {
-		if( this.downloader != null && this.downloader.getStatus() != AsyncTask.Status.FINISHED )
-			this.downloader.cancel(true);
-	}
-	
-	public void onCancelled() {
-		this.tolomet.onCancelled();
-	}
-
-	public void onDownloaded(String result) {
-		updateStation(result);
-		this.tolomet.onDownloaded();
-	}
-
-	private void updateStation(String data) {			
+	@Override	
+	protected void updateStation(String data) {			
 		String[] cells = data.split("\"");
 		String dir;
 		Number date, num, last = 0;
@@ -104,8 +88,4 @@ public class AemetProvider implements WindProvider {
 	public String getInfoUrl(String code) {
 		return "http://www.aemet.es/es/eltiempo/observacion/ultimosdatos?l="+code+"&datos=det";
 	}
-	
-	private Tolomet tolomet;
-	private Downloader downloader;
-	private Station station;
 }
