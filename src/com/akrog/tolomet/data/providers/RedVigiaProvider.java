@@ -4,20 +4,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Calendar;
-import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.os.AsyncTask;
 
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.Downloader;
 import com.akrog.tolomet.data.Station;
-import com.akrog.tolomet.data.WindProvider;
 import com.akrog.tolomet.view.MyCharts;
 
-public class RedVigiaProvider implements WindProvider {	
+public class RedVigiaProvider extends AbstractProvider {	
 	public RedVigiaProvider( Tolomet tolomet ) {
-		this.tolomet = tolomet;
+		super(tolomet);
 		this.separator = '.';
 	}
 	
@@ -33,22 +30,9 @@ public class RedVigiaProvider implements WindProvider {
 		this.downloader.addParam("variable", "1");
 		this.downloader.execute();
 	}
-	
-	public void cancelDownload() {
-		if( this.downloader != null && this.downloader.getStatus() != AsyncTask.Status.FINISHED )
-			this.downloader.cancel(true);
-	}
-	
-	public void onCancelled() {
-		this.tolomet.onCancelled();
-	}
 
-	public void onDownloaded(String result) {
-		updateStation(result);
-		this.tolomet.onDownloaded();
-	}
-
-	private void updateStation(String data) {		
+	@Override
+	protected void updateStation(String data) {		
 		try {
 			BufferedReader rd = new BufferedReader(new StringReader(data));
 			String line;
@@ -81,27 +65,7 @@ public class RedVigiaProvider implements WindProvider {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}				
-	}
-	
-	private void updateList(List<Number> list, Number date, Number val) {
-		long stamp;
-		int location = -2;
-		boolean equal = false;
-		for( int i = 0; i < list.size(); i+=2 ) {
-			stamp = (Long)list.get(i);
-			if( (Long)date >= stamp ) {
-				equal = (Long)date == stamp ? true : false;
-				location = i;				
-			}
-		}
-		if( equal ) {
-			list.remove(location+1);
-			list.add(location+1,val);
-		} else {
-			list.add(location+2,date);
-			list.add(location+3,val);
-		}
-	}
+	}		
 
 	public int getRefresh() {
 		return 60;
@@ -135,7 +99,4 @@ public class RedVigiaProvider implements WindProvider {
 	}
 	
 	private char separator;
-	private Tolomet tolomet;
-	private Downloader downloader;
-	private Station station;
 }

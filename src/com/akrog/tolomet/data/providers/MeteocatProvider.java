@@ -4,17 +4,15 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 import android.annotation.SuppressLint;
-import android.os.AsyncTask;
 
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.Downloader;
 import com.akrog.tolomet.data.Station;
-import com.akrog.tolomet.data.WindProvider;
 import com.akrog.tolomet.view.MyCharts;
 
-public class MeteocatProvider implements WindProvider {
+public class MeteocatProvider extends AbstractProvider {
 	public MeteocatProvider( Tolomet tolomet ) {
-		this.tolomet = tolomet;
+		super(tolomet);
 	}
 	
 	@SuppressLint("DefaultLocale")
@@ -29,22 +27,9 @@ public class MeteocatProvider implements WindProvider {
 		this.downloader.addParam("inputSource", "DadesActualsEstacio");
 		this.downloader.execute();
 	}
-	
-	public void cancelDownload() {
-		if( this.downloader != null && this.downloader.getStatus() != AsyncTask.Status.FINISHED )
-			this.downloader.cancel(true);
-	}
-	
-	public void onCancelled() {
-		this.tolomet.onCancelled();
-	}
 
-	public void onDownloaded(String result) {
-		updateStation(result);
-		this.tolomet.onDownloaded();
-	}
-
-	private void updateStation(String data) {
+	@Override
+	protected void updateStation(String data) {
 		Number date = null, val;
 		String fields[] = data.split("<td");
 		if( fields.length < 11 )			
@@ -94,8 +79,4 @@ public class MeteocatProvider implements WindProvider {
 	public String getInfoUrl(String code) {
 		return "http://www.meteo.cat/xema/AppJava/SeleccioPerComarca.do";
 	}
-	
-	private Tolomet tolomet;
-	private Downloader downloader;
-	private Station station;
 }

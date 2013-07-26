@@ -2,18 +2,15 @@ package com.akrog.tolomet.data.providers;
 
 import java.util.Calendar;
 
-import android.os.AsyncTask;
-
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.ExcelDownloader;
 import com.akrog.tolomet.data.Station;
-import com.akrog.tolomet.data.WindProvider;
 import com.akrog.tolomet.view.MyCharts;
 
-public class LaRiojaProvider implements WindProvider {	
+public class LaRiojaProvider extends AbstractProvider {	
 	public LaRiojaProvider( Tolomet tolomet ) {
-		this.tolomet = tolomet;
+		super(tolomet);
 		this.step = 0;
 		this.separator = '.';
 	}
@@ -49,11 +46,6 @@ public class LaRiojaProvider implements WindProvider {
 		this.downloader.execute();
 	}
 
-	public void cancelDownload() {
-		if( this.downloader != null && this.downloader.getStatus() != AsyncTask.Status.FINISHED )
-			this.downloader.cancel(true);
-	}
-
 	public int getRefresh() {
 		return 15;
 	}
@@ -62,12 +54,14 @@ public class LaRiojaProvider implements WindProvider {
 		return "http://ias1.larioja.org/estaciones/estaciones/mapa/consulta/consulta.jsp?codOrg=1&codigo="+code;
 	}
 
-	public void onCancelled() {
-		this.tolomet.onCancelled();
-	}
-
+	@Override
 	public void onDownloaded(String result) {
-		updateStation(result);
+		try {
+			updateStation(result);
+		} catch( Exception e ) {
+			this.station.clear();
+			this.step = 3;
+		}
 		switch( this.step ) {
 			case 1:
 				this.step++;
@@ -84,7 +78,8 @@ public class LaRiojaProvider implements WindProvider {
 		}		
 	}
 
-	private void updateStation(String result) {
+	@Override
+	protected void updateStation(String result) {
 		String[] lines = result.split("\n");		
 		if( lines.length < 9 )
 			return;
@@ -147,9 +142,6 @@ public class LaRiojaProvider implements WindProvider {
 	    return cal.getTimeInMillis();
 	}
 
-	private Tolomet tolomet;
-	private ExcelDownloader downloader;
-	private Station station;
 	private Calendar now;
 	private int step;
 	private char separator;

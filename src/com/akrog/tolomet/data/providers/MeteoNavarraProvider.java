@@ -4,18 +4,16 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 import android.annotation.SuppressLint;
-import android.os.AsyncTask;
 
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.Downloader;
 import com.akrog.tolomet.data.Station;
-import com.akrog.tolomet.data.WindProvider;
 import com.akrog.tolomet.view.MyCharts;
 
-public class MeteoNavarraProvider implements WindProvider {
+public class MeteoNavarraProvider extends AbstractProvider {
 	public MeteoNavarraProvider( Tolomet tolomet ) {
+		super(tolomet);
 		this.separator = '.';//(new DecimalFormatSymbols()).getDecimalSeparator();
-		this.tolomet = tolomet;
 	}	
 	
 	@SuppressLint("DefaultLocale")
@@ -36,21 +34,8 @@ public class MeteoNavarraProvider implements WindProvider {
 		this.downloader.execute();
 	}
 	
-	public void cancelDownload() {
-		if( this.downloader != null && this.downloader.getStatus() != AsyncTask.Status.FINISHED )
-			this.downloader.cancel(true);
-	}
-	
-	public void onCancelled() {
-		this.tolomet.onCancelled();
-	}
-
-	public void onDownloaded(String result) {
-		updateStation(result);
-		this.tolomet.onDownloaded();
-	}
-
-	private void updateStation(String data) {		
+	@Override
+	protected void updateStation(String data) {		
 		String[] cells = data.split(",");
 		Number date, num;
 		if( cells.length < 23 )
@@ -98,7 +83,4 @@ public class MeteoNavarraProvider implements WindProvider {
 	}
 	
 	private char separator;
-	private Tolomet tolomet;
-	private Downloader downloader;
-	private Station station;
 }
