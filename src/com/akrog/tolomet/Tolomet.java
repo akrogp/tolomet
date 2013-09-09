@@ -83,9 +83,13 @@ public class Tolomet extends Activity
 
 	private void downloadData() {
     	if( !this.provider.updateTimes(this.stations.current) ) {
-    		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-			alertDialog.setMessage( getString(R.string.Impatient) + " " + this.provider.getRefresh(this.stations.current) + " " + getString(R.string.minutes) );
-			alertDialog.show();
+    		if( this.charts.getZoomed() )
+    			this.charts.redraw();
+    		else {
+	    		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+				alertDialog.setMessage( getString(R.string.Impatient) + " " + this.provider.getRefresh(this.stations.current) + " " + getString(R.string.minutes) );
+				alertDialog.show();
+    		}
 			return;
     	}
     	if( alertNetwork() )

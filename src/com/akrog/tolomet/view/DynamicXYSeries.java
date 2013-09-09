@@ -2,7 +2,7 @@ package com.akrog.tolomet.view;
 
 import java.util.List;
 
-import com.androidplot.series.XYSeries;
+import com.androidplot.xy.XYSeries;
 
 public class DynamicXYSeries implements XYSeries {
 	private List<Number> data;
