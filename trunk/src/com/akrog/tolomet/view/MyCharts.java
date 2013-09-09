@@ -11,20 +11,21 @@ import android.graphics.Color;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.StationManager;
-import com.androidplot.series.XYSeries;
 import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.XYPlot;
+import com.androidplot.xy.XYSeries;
 import com.androidplot.xy.XYStepMode;
 import com.androidplot.xy.YValueMarker;
 
 public class MyCharts {
 	private Tolomet tolomet;
 	private StationManager stations;
-	private XYPlot chartSpeed, chartDirection;
+	private MyPlot chartSpeed, chartDirection;
 	static final float fontSize = 16;
 	private int minutes = 10;
 	private int hours = 4;
+	private final int SpeedRange = 50;
 
 	public MyCharts( Tolomet tolomet, StationManager data ) {
 		this.tolomet = tolomet;
@@ -34,32 +35,33 @@ public class MyCharts {
 	
 	@SuppressLint("SimpleDateFormat")
 	private void createCharts() {    	       
-    	this.chartDirection = (XYPlot)this.tolomet.findViewById(R.id.chartDirection);
-        this.chartDirection.disableAllMarkup();
+    	this.chartDirection = (MyPlot)this.tolomet.findViewById(R.id.chartDirection);
+        //this.chartDirection.disableAllMarkup();
         //this.chartDirection.setTitle(getString(R.string.Direction));
         this.chartDirection.setTitle(this.tolomet.getString(R.string.DirectionHumidity));
         this.chartDirection.setRangeLabel(this.tolomet.getString(R.string.Degrees));                
         this.chartDirection.setRangeValueFormat(new DecimalFormat("#"));        
         this.chartDirection.setRangeBoundaries(0, 360, BoundaryMode.FIXED);
         this.chartDirection.setRangeStep(XYStepMode.SUBDIVIDE, 9);
+        this.chartDirection.setZoomVertically(false);
         //this.chartDirection.setTicksPerRangeLabel(3);
         this.chartDirection.setDomainLabel(this.tolomet.getString(R.string.Time));
         this.chartDirection.setDomainValueFormat(new SimpleDateFormat("HH:mm"));        
         this.chartDirection.setDomainStep(XYStepMode.SUBDIVIDE, 25);
         this.chartDirection.setTicksPerDomainLabel(6);
-        adjustFonts(this.chartDirection);
+        adjustFonts(this.chartDirection);        
         
         XYSeries series = new DynamicXYSeries( this.stations.current.listDirection, "Dir. Med." );
         LineAndPointFormatter format = new LineAndPointFormatter(
                 Color.rgb(0, 0, 200),                   // line color
                 Color.rgb(0, 0, 100),                   // point color
-                null);                                  // fill color (none)
+                null, null);                           // fill color (none)
         this.chartDirection.addSeries(series, format);
         series = new DynamicXYSeries( this.stations.current.listHumidity, "% Hum." );
         format = new LineAndPointFormatter(
                 Color.rgb(200, 200, 200),                   // line color
                 Color.rgb(100, 100, 100),                   // point color
-                null);                                  // fill color (none)
+                null, null);                               // fill color (none)
         this.chartDirection.addSeries(series, format);
         
         /*for( int i = 0; i <= 100; i += 25 )
@@ -67,32 +69,33 @@ public class MyCharts {
         this.chartDirection.addMarker(getYMarker(convertHumidity(0),0+"%"));
         this.chartDirection.addMarker(getYMarker(convertHumidity(50),50+"%"));
         this.chartDirection.addMarker(getYMarker(convertHumidity(100),100+"%"));
+        this.chartDirection.setZoomVertically(false);
         
-        this.chartSpeed = (XYPlot)this.tolomet.findViewById(R.id.chartSpeed);
-        this.chartSpeed.disableAllMarkup();
+        this.chartSpeed = (MyPlot)this.tolomet.findViewById(R.id.chartSpeed);
+        //this.chartSpeed.disableAllMarkup();
         this.chartSpeed.setTitle(this.tolomet.getString(R.string.Speed));
         this.chartSpeed.setRangeLabel("km/h");        
         this.chartSpeed.setRangeValueFormat(new DecimalFormat("#"));
-        this.chartSpeed.setRangeBoundaries(0, 50, BoundaryMode.FIXED);
+        this.chartSpeed.setRangeBoundaries(0, this.SpeedRange, BoundaryMode.FIXED);
         this.chartSpeed.setRangeStep(XYStepMode.SUBDIVIDE, 11);
         //this.chartSpeed.setTicksPerRangeLabel(2);
         this.chartSpeed.setDomainLabel(this.tolomet.getString(R.string.Time));
         this.chartSpeed.setDomainValueFormat(new SimpleDateFormat("HH:mm"));        
         this.chartSpeed.setDomainStep(XYStepMode.SUBDIVIDE, 25);
         this.chartSpeed.setTicksPerDomainLabel(6);
-        adjustFonts(this.chartSpeed);
+        adjustFonts(this.chartSpeed);        
         
         series = new DynamicXYSeries( this.stations.current.listSpeedMed, "Vel. Med." );
         format = new LineAndPointFormatter(
                 Color.rgb(0, 200, 0),                   // line color
                 Color.rgb(0, 100, 0),                   // point color
-                null);                                  // fill color (none)
+                null, null);                           // fill color (none)
         this.chartSpeed.addSeries(series, format);
         series = new DynamicXYSeries( this.stations.current.listSpeedMax, "Vel. Máx." );
         format = new LineAndPointFormatter(
                 Color.rgb(200, 0, 0),                   // line color
                 Color.rgb(100, 0, 0),                   // point color
-                null);                                  // fill color (none)
+                null, null);                           // fill color (none)
         this.chartSpeed.addSeries(series, format);
         
         this.chartSpeed.addMarker(getYMarker(10));
@@ -141,8 +144,7 @@ public class MyCharts {
     
     private void updateDomainBoundaries() {
     	Calendar cal = Calendar.getInstance();
-    	Date date2;
-        Date date1;
+    	Date date0, date1, date2;
     	cal.set(Calendar.SECOND, 0);
     	cal.set(Calendar.MILLISECOND, 0);
     	int minute = (cal.get(Calendar.MINUTE)+this.minutes-1)/this.minutes*this.minutes;
@@ -153,9 +155,16 @@ public class MyCharts {
     	cal.set(Calendar.HOUR_OF_DAY, hour );
     	date2 = cal.getTime();
         date1 = new Date();
-        date1.setTime(date2.getTime()-this.hours*60*60*1000);    	
+        date1.setTime(date2.getTime()-this.hours*60*60*1000);
+        date0 = new Date();
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        date0 = cal.getTime();
     	this.chartDirection.setDomainBoundaries(date1.getTime(), date2.getTime(), BoundaryMode.FIXED);
+    	this.chartDirection.setDomainZoomLimits(date0.getTime(), date2.getTime());
         this.chartSpeed.setDomainBoundaries(date1.getTime(), date2.getTime(), BoundaryMode.FIXED);
+        this.chartSpeed.setDomainZoomLimits(date0.getTime(), date2.getTime());
+        this.chartSpeed.setRangeZoomLimits(0, this.SpeedRange);
     }
     
     public void redraw() {
@@ -169,4 +178,8 @@ public class MyCharts {
 		this.hours = minutes * 24 / 60;
 		updateDomainBoundaries();
 	}
+	
+	public boolean getZoomed() {
+        return this.chartDirection.getZoomed() || this.chartSpeed.getZoomed();
+    }
 }

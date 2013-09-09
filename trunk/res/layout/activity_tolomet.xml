@@ -58,14 +58,14 @@
  		android:layout_above="@id/textView1"
  		android:weightSum="1.0">
  		
-    <com.androidplot.xy.XYPlot
+    <com.akrog.tolomet.view.MyPlot
         android:id="@+id/chartDirection"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight=".5"
         title="Dirección y Humedad" />
     
-    <com.androidplot.xy.XYPlot
+    <com.akrog.tolomet.view.MyPlot
         android:id="@+id/chartSpeed"
         android:layout_width="match_parent"
         android:layout_height="0dp"
