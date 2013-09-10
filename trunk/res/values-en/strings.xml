@@ -32,4 +32,7 @@
     <string name="menu_index">Station index</string>
     <string name="menu_start">Start menu</string>
     <string name="select">Select</string>
+    <string name="pref_minMarker">Marker #1</string>
+    <string name="pref_maxMarker">Marker #2</string>    
+    <string name="pref_catSpeed">Speed chart</string>
 </resources>

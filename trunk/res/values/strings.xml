@@ -31,5 +31,10 @@
     <string name="menu_fav">Estaciones favoritas</string>
     <string name="menu_index">Índice de estaciones</string>
     <string name="menu_start">Menú inicio</string>
-    <string name="select">Selecciona</string>
+    <string name="select">Selecciona</string>    
+    <string name="pref_minMarker">Marcador #1</string>
+    <string name="pref_maxMarker">Marcador #2</string>    
+    <string name="pref_minMarkerDefault">10</string>
+    <string name="pref_maxMarkerefault">30</string>
+    <string name="pref_catSpeed">Gráfica de velocidad</string>
 </resources>

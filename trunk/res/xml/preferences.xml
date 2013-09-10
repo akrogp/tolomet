@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/pref_catSpeed">
+	    <ListPreference
+	        android:key="pref_minMarker"
+	        android:title="@string/pref_minMarker"
+	        android:dialogTitle="@string/pref_minMarker"
+	        android:entries="@array/pref_markerEntries"
+	        android:entryValues="@array/pref_markerValues"
+	        android:defaultValue="@string/pref_minMarkerDefault" />
+	    <ListPreference
+	        android:key="pref_maxMarker"
+	        android:title="@string/pref_maxMarker"
+	        android:dialogTitle="@string/pref_maxMarker"
+	        android:entries="@array/pref_markerEntries"
+	        android:entryValues="@array/pref_markerValues"
+	        android:defaultValue="@string/pref_maxMarkerefault" />
+	</PreferenceCategory>
+</PreferenceScreen>

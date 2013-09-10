@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string-array name="pref_markerEntries">
+    <item>0 km/h</item>
+    <item>10 km/h</item>
+    <item>20 km/h</item>
+    <item>30 km/h</item>
+    <item>40 km/h</item>
+</string-array>
+<string-array name="pref_markerValues">
+    <item>0</item>
+    <item>10</item>
+    <item>20</item>
+    <item>30</item>
+    <item>40</item>
+</string-array>
+</resources>
