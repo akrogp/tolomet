@@ -1,5 +1,8 @@
 package com.akrog.tolomet.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.graphics.PointF;
 import android.util.AttributeSet;
@@ -39,6 +42,8 @@ public class MyPlot extends XYPlot implements OnTouchListener {
     private boolean mZoomVerticallyInit;
     private boolean mZoomHorizontallyInit;
     private boolean mZoomed = false;
+    private List<XYPlot> mDomainPlots = new ArrayList<XYPlot>();
+    private List<XYPlot> mRangePlots = new ArrayList<XYPlot>();
 
     public MyPlot(Context context, String title, RenderMode mode) {
         super(context, title, mode);
@@ -179,6 +184,36 @@ public class MyPlot extends XYPlot implements OnTouchListener {
         return lastMaxY;
     }
     
+    @Override
+    public synchronized void setDomainBoundaries(Number arg0, Number arg1, BoundaryMode arg2) {
+    	super.setDomainBoundaries(arg0, arg1, arg2);
+    	lastMinX = arg0.floatValue();
+    	lastMaxX = arg1.floatValue();
+    };
+    
+    @Override
+    public synchronized void setRangeBoundaries(Number arg0, Number arg1, BoundaryMode arg2) {
+    	super.setRangeBoundaries(arg0, arg1, arg2);
+    	lastMinY = arg0.floatValue();
+    	lastMaxY = arg1.floatValue();
+    };
+    
+    private void setDomainBoundaries(Number arg0, Number arg1) {
+    	setDomainBoundaries(arg0, arg1, BoundaryMode.FIXED);
+    	for( XYPlot plot : mDomainPlots ) {
+        	plot.setDomainBoundaries(arg0, arg1, BoundaryMode.FIXED);
+        	plot.redraw();
+        }
+    }
+    
+    private void setRangeBoundaries(Number arg0, Number arg1) {
+    	setRangeBoundaries(arg0, arg1, BoundaryMode.FIXED);
+    	for( XYPlot plot : mRangePlots ) {
+        	plot.setRangeBoundaries(arg0, arg1, BoundaryMode.FIXED);
+        	plot.redraw();
+        }
+    }
+    
     public void setDomainZoomLimits( final Number lowerBoundary, final Number upperBoundary ) {
     	minXLimit = lowerBoundary.floatValue();
     	maxXLimit = upperBoundary.floatValue();
@@ -201,6 +236,16 @@ public class MyPlot extends XYPlot implements OnTouchListener {
     	lastMinY = Float.MAX_VALUE;
         lastMaxY = Float.MAX_VALUE;
         mZoomed = false;
+    }
+    
+    public void connectDomains(XYPlot plot) {
+    	if( this != plot && !mDomainPlots.contains(plot) )
+    		mDomainPlots.add(plot);
+    }
+    
+    public void connectRanges(XYPlot plot) {
+    	if( this != plot && !mRangePlots.contains(plot) )
+    		mRangePlots.add(plot);
     }
     
     public boolean onTouch(final View view, final MotionEvent event) {		
@@ -244,15 +289,11 @@ public class MyPlot extends XYPlot implements OnTouchListener {
         PointF newX = new PointF();
         if(mZoomHorizontally) {
             calculatePan(oldFirstFinger, newX, true);
-            setDomainBoundaries(newX.x, newX.y, BoundaryMode.FIXED);
-            lastMinX = newX.x;
-            lastMaxX = newX.y;
+            setDomainBoundaries(newX.x, newX.y);
         }
         if(mZoomVertically) {
             calculatePan(oldFirstFinger, newX, false);
-            setRangeBoundaries(newX.x, newX.y, BoundaryMode.FIXED);            
-            lastMinY = newX.x;
-            lastMaxY = newX.y;
+            setRangeBoundaries(newX.x, newX.y);
         }
         redraw();
     }
@@ -313,15 +354,11 @@ public class MyPlot extends XYPlot implements OnTouchListener {
         PointF newX = new PointF();
         if(mZoomHorizontally) {
             calculateZoom(scale, newX, true);
-            setDomainBoundaries(newX.x, newX.y, BoundaryMode.FIXED);
-            lastMinX = newX.x;
-            lastMaxX = newX.y;
+            setDomainBoundaries(newX.x, newX.y);
         }
         if(mZoomVertically) {
             calculateZoom(scale, newX, false);
-            setRangeBoundaries(newX.x, newX.y, BoundaryMode.FIXED);
-            lastMinY = newX.x;
-            lastMaxY = newX.y;
+            setRangeBoundaries(newX.x, newX.y);
         }
         redraw();
     }
