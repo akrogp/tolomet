@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
@@ -101,6 +102,9 @@ public class MyCharts {
         this.chartSpeed.addMarker(getYMarker(10));
         this.chartSpeed.addMarker(getYMarker(30));
         
+        this.chartDirection.connectDomains(this.chartSpeed);
+        this.chartSpeed.connectDomains(this.chartDirection);
+        
         //updateDomainBoundaries();
         setRefresh(15);
     }
@@ -142,9 +146,8 @@ public class MyCharts {
         return m;
     }
     
-    private void updateDomainBoundaries() {
+    private void updateBoundaries() {
     	Calendar cal = Calendar.getInstance();
-    	Date date0, date1, date2;
     	cal.set(Calendar.SECOND, 0);
     	cal.set(Calendar.MILLISECOND, 0);
     	int minute = (cal.get(Calendar.MINUTE)+this.minutes-1)/this.minutes*this.minutes;
@@ -153,22 +156,25 @@ public class MyCharts {
     	minute -= minute/60*60;
     	cal.set(Calendar.MINUTE, minute );
     	cal.set(Calendar.HOUR_OF_DAY, hour );
-    	date2 = cal.getTime();
-        date1 = new Date();
+    	Date date2 = cal.getTime();
+        Date date1 = new Date();
         date1.setTime(date2.getTime()-this.hours*60*60*1000);
-        date0 = new Date();
+        cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        cal.set(Calendar.SECOND, 0);
+    	cal.set(Calendar.MILLISECOND, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.HOUR_OF_DAY, 0);
-        date0 = cal.getTime();
+        Date date0 = cal.getTime();
     	this.chartDirection.setDomainBoundaries(date1.getTime(), date2.getTime(), BoundaryMode.FIXED);
     	this.chartDirection.setDomainZoomLimits(date0.getTime(), date2.getTime());
         this.chartSpeed.setDomainBoundaries(date1.getTime(), date2.getTime(), BoundaryMode.FIXED);
         this.chartSpeed.setDomainZoomLimits(date0.getTime(), date2.getTime());
+        this.chartSpeed.setRangeBoundaries(0, this.SpeedRange, BoundaryMode.FIXED);
         this.chartSpeed.setRangeZoomLimits(0, this.SpeedRange);
     }
     
     public void redraw() {
-    	updateDomainBoundaries();
+    	updateBoundaries();
     	this.chartDirection.redraw();
         this.chartSpeed.redraw();
     }
@@ -176,7 +182,7 @@ public class MyCharts {
 	public void setRefresh( int minutes ) {		
 		this.minutes = minutes;
 		this.hours = minutes * 24 / 60;
-		updateDomainBoundaries();
+		updateBoundaries();
 	}
 	
 	public boolean getZoomed() {
