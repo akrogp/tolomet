@@ -167,6 +167,11 @@ public class Tolomet extends Activity
     			about.setTitle(getString(R.string.About));
     			about.show();
     			break;
+    		case R.id.menu_settings:
+    			startActivity(new Intent(Tolomet.this, SettingsActivity.class));
+    			break;
+    		default:
+                return super.onOptionsItemSelected(item);
     	}
     	return true;
     }
