@@ -32,4 +32,8 @@
     <string name="menu_index">Estazioen aurkibidea</string>
     <string name="menu_start">Hasierako menua</string>
     <string name="select">Hautatu</string>
+    <string name="pref_minMarker">1. Markatzailea</string>
+    <string name="pref_maxMarker">2. Markatzailea</string>        
+    <string name="pref_catSpeed">Abiaduraren grafikoa</string>
+    <string name="pref_speedRange">Abiadura tartea</string>
 </resources>
