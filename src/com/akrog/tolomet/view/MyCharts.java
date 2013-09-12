@@ -7,9 +7,12 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 
 import com.akrog.tolomet.R;
+import com.akrog.tolomet.SettingsActivity;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.StationManager;
 import com.androidplot.xy.BoundaryMode;
@@ -26,7 +29,9 @@ public class MyCharts {
 	static final float fontSize = 16;
 	private int minutes = 10;
 	private int hours = 4;
-	private final int SpeedRange = 50;
+	private int speedRange = -1;
+	private int marker1 = -1;
+	private int marker2 = -1;
 
 	public MyCharts( Tolomet tolomet, StationManager data ) {
 		this.tolomet = tolomet;
@@ -34,11 +39,36 @@ public class MyCharts {
 		createCharts();
 	}
 	
+	private int getSpeedRange() {
+		if( this.speedRange == -1 ) {
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.tolomet);
+			this.speedRange = Integer.parseInt(prefs.getString(SettingsActivity.KEY_SPEED_RANGE, ""));
+		}
+		return this.speedRange;
+	}
+	
+	private int getMarker1() {
+		if( this.marker1 == -1 ) {
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.tolomet);
+			this.marker1 = Integer.parseInt(prefs.getString(SettingsActivity.KEY_MIN_MARKER, ""));
+		}
+		return this.marker1;
+	}
+	
+	private int getMarker2() {
+		if( this.marker2 == -1 ) {
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.tolomet);
+			this.marker2 = Integer.parseInt(prefs.getString(SettingsActivity.KEY_MAX_MARKER, ""));
+		}
+		return this.marker2;
+	}
+	
 	@SuppressLint("SimpleDateFormat")
-	private void createCharts() {    	       
+	private void createCharts() {				
     	this.chartDirection = (MyPlot)this.tolomet.findViewById(R.id.chartDirection);
         //this.chartDirection.disableAllMarkup();
-        //this.chartDirection.setTitle(getString(R.string.Direction));
+    	this.chartDirection.setPlotMargins(0, 0, 0, 0);
+    	this.chartDirection.setPlotPadding(3, 3, 3, 3);
         this.chartDirection.setTitle(this.tolomet.getString(R.string.DirectionHumidity));
         this.chartDirection.setRangeLabel(this.tolomet.getString(R.string.Degrees));                
         this.chartDirection.setRangeValueFormat(new DecimalFormat("#"));        
@@ -74,11 +104,13 @@ public class MyCharts {
         
         this.chartSpeed = (MyPlot)this.tolomet.findViewById(R.id.chartSpeed);
         //this.chartSpeed.disableAllMarkup();
+        this.chartSpeed.setPlotMargins(0, 0, 0, 0);
+    	this.chartSpeed.setPlotPadding(3, 3, 3, 3);
         this.chartSpeed.setTitle(this.tolomet.getString(R.string.Speed));
         this.chartSpeed.setRangeLabel("km/h");        
         this.chartSpeed.setRangeValueFormat(new DecimalFormat("#"));
-        this.chartSpeed.setRangeBoundaries(0, this.SpeedRange, BoundaryMode.FIXED);
-        this.chartSpeed.setRangeStep(XYStepMode.SUBDIVIDE, 11);
+        this.chartSpeed.setRangeBoundaries(0, getSpeedRange(), BoundaryMode.FIXED);
+        this.chartSpeed.setRangeStep(XYStepMode.SUBDIVIDE, getSpeedRange()/5+1);
         //this.chartSpeed.setTicksPerRangeLabel(2);
         this.chartSpeed.setDomainLabel(this.tolomet.getString(R.string.Time));
         this.chartSpeed.setDomainValueFormat(new SimpleDateFormat("HH:mm"));        
@@ -99,8 +131,8 @@ public class MyCharts {
                 null, null);                           // fill color (none)
         this.chartSpeed.addSeries(series, format);
         
-        this.chartSpeed.addMarker(getYMarker(10));
-        this.chartSpeed.addMarker(getYMarker(30));
+        this.chartSpeed.addMarker(getYMarker(getMarker1()));
+        this.chartSpeed.addMarker(getYMarker(getMarker2()));
         
         this.chartDirection.connectDomains(this.chartSpeed);
         this.chartSpeed.connectDomains(this.chartDirection);
@@ -169,8 +201,8 @@ public class MyCharts {
     	this.chartDirection.setDomainZoomLimits(date0.getTime(), date2.getTime());
         this.chartSpeed.setDomainBoundaries(date1.getTime(), date2.getTime(), BoundaryMode.FIXED);
         this.chartSpeed.setDomainZoomLimits(date0.getTime(), date2.getTime());
-        this.chartSpeed.setRangeBoundaries(0, this.SpeedRange, BoundaryMode.FIXED);
-        this.chartSpeed.setRangeZoomLimits(0, this.SpeedRange);
+        this.chartSpeed.setRangeBoundaries(0, getSpeedRange(), BoundaryMode.FIXED);
+        this.chartSpeed.setRangeZoomLimits(0, getSpeedRange());
     }
     
     public void redraw() {

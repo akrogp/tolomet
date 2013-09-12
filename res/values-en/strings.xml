@@ -35,4 +35,5 @@
     <string name="pref_minMarker">Marker #1</string>
     <string name="pref_maxMarker">Marker #2</string>    
     <string name="pref_catSpeed">Speed chart</string>
+    <string name="pref_speedRange">Speed range</string>
 </resources>
