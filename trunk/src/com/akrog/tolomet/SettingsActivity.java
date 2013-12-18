@@ -56,4 +56,10 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 		getPreferenceScreen().getSharedPreferences()
 				.unregisterOnSharedPreferenceChangeListener(this);
 	}
+	
+	@Override
+	public void onBackPressed() {
+		setResult(RESULT_OK);
+		super.onBackPressed();
+	}
 }

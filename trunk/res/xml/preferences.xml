@@ -21,6 +21,6 @@
 	        android:dialogTitle="@string/pref_maxMarker"
 	        android:entries="@array/pref_markerEntries"
 	        android:entryValues="@array/pref_markerValues"
-	        android:defaultValue="@string/pref_maxMarkerefault" />
+	        android:defaultValue="@string/pref_maxMarkerDefault" />
 	</PreferenceCategory>
 </PreferenceScreen>

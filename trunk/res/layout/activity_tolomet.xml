@@ -65,8 +65,8 @@
         android:layout_weight=".5"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="1dp"
-        android:layout_marginLeft="0dp"
-    	android:layout_marginRight="0dp"
+        android:layout_marginLeft="2dp"
+    	android:layout_marginRight="2dp"
         title="Dirección y Humedad" />
     
     <com.akrog.tolomet.view.MyPlot
@@ -75,8 +75,8 @@
         android:layout_height="0dp"
         android:layout_marginTop="1dp"
         android:layout_marginBottom="0dp"
-        android:layout_marginLeft="0dp"
-    	android:layout_marginRight="0dp"
+        android:layout_marginLeft="2dp"
+    	android:layout_marginRight="2dp"
         android:layout_weight=".5"
         title="Velocidad"/>
     

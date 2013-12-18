@@ -17,11 +17,14 @@ public class MyPlot extends XYPlot implements OnTouchListener {
 	private static final float MIN_DIST_2_FING = 5f;
 
     // Definition of the touch states
-    private enum State
-    {
+    private enum State {
         NONE,
         ONE_FINGER_DRAG,
         TWO_FINGERS_DRAG
+    }
+    
+    public interface DoubleClickListener {
+    	public void onDoubleClick();
     }
 
     private State mode = State.NONE;
@@ -44,6 +47,7 @@ public class MyPlot extends XYPlot implements OnTouchListener {
     private boolean mZoomed = false;
     private List<XYPlot> mDomainPlots = new ArrayList<XYPlot>();
     private List<XYPlot> mRangePlots = new ArrayList<XYPlot>();
+    private List<DoubleClickListener> mListeners = new ArrayList<DoubleClickListener>();
 
     public MyPlot(Context context, String title, RenderMode mode) {
         super(context, title, mode);
@@ -248,24 +252,26 @@ public class MyPlot extends XYPlot implements OnTouchListener {
     		mRangePlots.add(plot);
     }
     
-    public boolean onTouch(final View view, final MotionEvent event) {		
-        switch (event.getAction() & MotionEvent.ACTION_MASK)
-        {
+    public void registerListener(DoubleClickListener listener) {
+    	if( !mListeners.contains(listener) )
+    		mListeners.add(listener);
+    }      
+    
+    public boolean onTouch(final View view, final MotionEvent event) {
+        switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN: // start gesture
                 firstFingerPos = new PointF(event.getX(), event.getY());
                 mode = State.ONE_FINGER_DRAG;
-                break;
+                break;            
             case MotionEvent.ACTION_POINTER_DOWN: // second finger
-            {
                 mDistX = getXDistance(event);
                 // the distance check is done to avoid false alarms
                 if(mDistX > MIN_DIST_2_FING || mDistX < -MIN_DIST_2_FING) {
                     mode = State.TWO_FINGERS_DRAG;
                 }
                 break;
-            }
             case MotionEvent.ACTION_POINTER_UP: // end zoom
-                mode = State.NONE;
+                mode = State.NONE;                
                 break;
             case MotionEvent.ACTION_MOVE:
             	mZoomed = true;
@@ -278,6 +284,12 @@ public class MyPlot extends XYPlot implements OnTouchListener {
         }
         return true;
     }
+    
+    public boolean onDoubleTap(MotionEvent e) {
+    	for( DoubleClickListener listener : mListeners )
+			listener.onDoubleClick();
+		return false;
+	}
 
     private float getXDistance(final MotionEvent event) {
         return event.getX(0) - event.getX(1);
@@ -392,5 +404,5 @@ public class MyPlot extends XYPlot implements OnTouchListener {
                 newX.y = getMaxYLimit();
             }
         }
-    }
+    }	
 }

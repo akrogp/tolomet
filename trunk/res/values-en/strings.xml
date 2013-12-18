@@ -36,4 +36,7 @@
     <string name="pref_maxMarker">Marker #2</string>    
     <string name="pref_catSpeed">Speed chart</string>
     <string name="pref_speedRange">Speed range</string>
+    <string name="pref_minMarkerDefault">10</string>
+    <string name="pref_maxMarkerDefault">30</string>
+    <string name="pref_rangeDefault">50</string>
 </resources>
