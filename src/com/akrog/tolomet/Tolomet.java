@@ -10,11 +10,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,12 +38,12 @@ import com.akrog.tolomet.view.MySpinner;
 import com.akrog.tolomet.view.Summary;
 
 public class Tolomet extends Activity
-	implements OnItemSelectedListener, View.OnClickListener, OnCheckedChangeListener {
+	implements OnItemSelectedListener, View.OnClickListener, OnCheckedChangeListener, OnSharedPreferenceChangeListener {
 	
 	// Creation and state
 	
 	@Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {		
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.activity_tolomet);
@@ -62,12 +64,23 @@ public class Tolomet extends Activity
         this.favorite.setChecked(false);
         this.favorite.setOnCheckedChangeListener(this);
         
-        this.charts = new MyCharts(this, this.stations);                
+        this.charts = new MyCharts(this, this.stations);
+        
+        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).registerOnSharedPreferenceChangeListener(this);
     }
 	
 	@Override
+	protected void onStart() {
+		super.onStart();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+	};
+	
+	@Override
     protected void onPause() {
-    	//this.spinner.saveState();
     	super.onPause();
     }
         
@@ -168,12 +181,22 @@ public class Tolomet extends Activity
     			about.show();
     			break;
     		case R.id.menu_settings:
-    			startActivity(new Intent(Tolomet.this, SettingsActivity.class));
+    			startActivityForResult(new Intent(Tolomet.this, SettingsActivity.class),-1);
     			break;
     		default:
                 return super.onOptionsItemSelected(item);
     	}
     	return true;
+    }
+    
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+    	this.charts.redraw();
+	}
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	this.charts.redraw();
+    	super.onActivityResult(requestCode, resultCode, data);
     }
 
     // Spinner events
@@ -310,4 +333,5 @@ public class Tolomet extends Activity
 	private GaeClient gaeClient;
 	private StationManager stations;	
 	private WindProviderManager provider;
+	public static Tolomet instance = null;	
 }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string-array name="pref_markerEntries">
+    <item>0 km/h</item>
+    <item>5 km/h</item>
+    <item>10 km/h</item>
+    <item>15 km/h</item>
+    <item>20 km/h</item>
+    <item>25 km/h</item>
+    <item>30 km/h</item>
+    <item>35 km/h</item>
+    <item>40 km/h</item>
+</string-array>
+<string-array name="pref_markerValues">
+    <item>0</item>
+    <item>5</item>
+    <item>10</item>
+    <item>15</item>
+    <item>20</item>
+    <item>25</item>
+    <item>30</item>
+    <item>35</item>
+    <item>40</item>
+</string-array>
+<string-array name="pref_rangeEntries">
+    <item>40 km/h</item>
+    <item>50 km/h</item>
+    <item>60 km/h</item>
+    <item>70 km/h</item>
+    <item>80 km/h</item>
+</string-array>
+<string-array name="pref_rangeValues">
+    <item>40</item>
+    <item>50</item>
+    <item>60</item>
+    <item>70</item>
+    <item>80</item>
+</string-array>
+</resources>

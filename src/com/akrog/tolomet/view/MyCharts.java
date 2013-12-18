@@ -15,6 +15,7 @@ import com.akrog.tolomet.R;
 import com.akrog.tolomet.SettingsActivity;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.StationManager;
+import com.akrog.tolomet.view.MyPlot.DoubleClickListener;
 import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.XYPlot;
@@ -22,7 +23,7 @@ import com.androidplot.xy.XYSeries;
 import com.androidplot.xy.XYStepMode;
 import com.androidplot.xy.YValueMarker;
 
-public class MyCharts {
+public class MyCharts implements DoubleClickListener {
 	private Tolomet tolomet;
 	private StationManager stations;
 	private MyPlot chartSpeed, chartDirection;
@@ -32,17 +33,18 @@ public class MyCharts {
 	private int speedRange = -1;
 	private int marker1 = -1;
 	private int marker2 = -1;
+	private YValueMarker markerMin, markerMax; 
 
 	public MyCharts( Tolomet tolomet, StationManager data ) {
 		this.tolomet = tolomet;
 		this.stations = data;
 		createCharts();
-	}
+	}	
 	
 	private int getSpeedRange() {
 		if( this.speedRange == -1 ) {
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.tolomet);
-			this.speedRange = Integer.parseInt(prefs.getString(SettingsActivity.KEY_SPEED_RANGE, ""));
+			this.speedRange = Integer.parseInt(prefs.getString(SettingsActivity.KEY_SPEED_RANGE, this.tolomet.getString(R.string.pref_rangeDefault)));
 		}
 		return this.speedRange;
 	}
@@ -50,7 +52,7 @@ public class MyCharts {
 	private int getMarker1() {
 		if( this.marker1 == -1 ) {
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.tolomet);
-			this.marker1 = Integer.parseInt(prefs.getString(SettingsActivity.KEY_MIN_MARKER, ""));
+			this.marker1 = Integer.parseInt(prefs.getString(SettingsActivity.KEY_MIN_MARKER, this.tolomet.getString(R.string.pref_minMarkerDefault)));
 		}
 		return this.marker1;
 	}
@@ -58,7 +60,7 @@ public class MyCharts {
 	private int getMarker2() {
 		if( this.marker2 == -1 ) {
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.tolomet);
-			this.marker2 = Integer.parseInt(prefs.getString(SettingsActivity.KEY_MAX_MARKER, ""));
+			this.marker2 = Integer.parseInt(prefs.getString(SettingsActivity.KEY_MAX_MARKER, this.tolomet.getString(R.string.pref_maxMarkerDefault)));
 		}
 		return this.marker2;
 	}
@@ -131,15 +133,19 @@ public class MyCharts {
                 null, null);                           // fill color (none)
         this.chartSpeed.addSeries(series, format);
         
-        this.chartSpeed.addMarker(getYMarker(getMarker1()));
-        this.chartSpeed.addMarker(getYMarker(getMarker2()));
+        this.markerMin = getYMarker(getMarker1());
+        this.chartSpeed.addMarker(this.markerMin);
+        this.markerMax = getYMarker(getMarker2());
+        this.chartSpeed.addMarker(this.markerMax);
         
         this.chartDirection.connectDomains(this.chartSpeed);
+        this.chartDirection.registerListener(this);
         this.chartSpeed.connectDomains(this.chartDirection);
+        this.chartSpeed.registerListener(this);
         
         //updateDomainBoundaries();
         setRefresh(15);
-    }
+    }	
 	
 	public static Float convertHumidity( int hum ) {
     	return 45.0F+hum*2.7F;
@@ -207,6 +213,8 @@ public class MyCharts {
     
     public void redraw() {
     	updateBoundaries();
+    	this.markerMin.setValue(getMarker1());
+    	this.markerMax.setValue(getMarker2());
     	this.chartDirection.redraw();
         this.chartSpeed.redraw();
     }
@@ -220,4 +228,8 @@ public class MyCharts {
 	public boolean getZoomed() {
         return this.chartDirection.getZoomed() || this.chartSpeed.getZoomed();
     }
+
+	public void onDoubleClick() {
+		redraw();		
+	}
 }
