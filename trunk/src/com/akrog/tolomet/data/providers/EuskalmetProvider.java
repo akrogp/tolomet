@@ -29,7 +29,8 @@ public class EuskalmetProvider extends AbstractProvider {
 		String time1 = String.format("%02d:%02d", past.get(Calendar.HOUR_OF_DAY), past.get(Calendar.MINUTE) );
 		String time2 = String.format("%02d:%02d", now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE) );
 		this.downloader = new Downloader(this.tolomet, this);
-		this.downloader.setUrl("http://www.euskalmet.euskadi.net/s07-5853x/es/meteorologia/lectur_fr.apl");
+		//this.downloader.setUrl("http://www.euskalmet.euskadi.net/s07-5853x/es/meteorologia/lectur_fr.apl");
+		this.downloader.setUrl("http://www.euskalmet.euskadi.net/s07-5853x/es/meteorologia/lectur_imp.apl");
 		this.downloader.addParam("e", "5");
 		this.downloader.addParam("anyo", now.get(Calendar.YEAR));
 		this.downloader.addParam("mes", now.get(Calendar.MONTH)+1);
@@ -44,9 +45,9 @@ public class EuskalmetProvider extends AbstractProvider {
 	@Override
 	protected void updateStation(String data) {
 		int col = this.humidityCol.containsKey(station.code) ? this.humidityCol.get(station.code) : -1;
-	    String[] lines = data.split("<tr>");
+	    String[] lines = data.split("<tr ?>");
 	    Number date, val;		        
-	    for( int i = 1; i < lines.length; i++ ) {
+	    for( int i = 4; i < lines.length; i++ ) {
 	        String[] cells = lines[i].split("<td");
 	        if( getContent(cells[1]).equals("Med") )
 	        	break;

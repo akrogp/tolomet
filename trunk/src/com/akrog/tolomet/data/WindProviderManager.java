@@ -28,7 +28,7 @@ public class WindProviderManager {
 		return this.providers[station.provider.getValue()].getUrl(station, this.past, this.now);
 	}*/
 	
-	public void download( Station station ) {
+	public void download( Station station ) {		
 		this.providers[station.provider.getValue()].download(station, this.past, this.now);
 	}
 	

@@ -67,7 +67,7 @@ public class Downloader extends AsyncTask<Void, Void, String> {
 	protected void onCancelled() {
 		super.onCancelled();
 		//this.progress.dismiss();
-		Toast.makeText(this.tolomet,R.string.DownloadCancelled,Toast.LENGTH_SHORT).show();
+		Toast.makeText(this.tolomet,this.tolomet.getString(R.string.DownloadCancelled),Toast.LENGTH_SHORT).show();
 		this.provider.onCancelled();
 	}	
 	
@@ -93,8 +93,8 @@ public class Downloader extends AsyncTask<Void, Void, String> {
     		//con.setRequestProperty("User-Agent","Mozilla/5.0 (Linux)");
     		result = parseInput(con.getInputStream());
     	} catch( Exception e ) {
-    		System.out.println(e.getMessage());
-    		onCancelled();
+    		e.printStackTrace();
+    		//onCancelled();
 		}
     	return result;
 	}
