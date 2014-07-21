@@ -47,7 +47,7 @@ public class MapCreator {
         String[] fields = line.split( ":" );
         wr.println( "<Placemark>" );
         wr.println( "<styleUrl>#"+fields[2]+"</styleUrl>" );
-        //wr.println( "<name>" + fields[0] + "</name>" );
+        wr.println( "<name>" + fields[1] + "</name>" );
         wr.println( "<Point>" );
         wr.println( "<coordinates>" + fields[5] + "," + fields[4] + ",0</coordinates>" );
         wr.println( "</Point>" );

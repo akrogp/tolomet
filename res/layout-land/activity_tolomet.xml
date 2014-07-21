@@ -50,7 +50,7 @@
         android:contentDescription="@string/Refresh" />
 
     <LinearLayout
- 		xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layout"
  		android:layout_height="match_parent"
  		android:layout_width="match_parent"
  		android:orientation="horizontal"
@@ -66,8 +66,7 @@
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"
         android:layout_marginLeft="2dp"
-    	android:layout_marginRight="1dp"    	
-        title="Dirección y Humedad" />
+    	android:layout_marginRight="1dp" />
     
     <com.akrog.tolomet.view.MyPlot
         android:id="@+id/chartSpeed"
@@ -77,9 +76,8 @@
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"
         android:layout_marginLeft="1dp"
-    	android:layout_marginRight="2dp"
-        title="Velocidad"/>
-    
+    	android:layout_marginRight="2dp"/>
+        
     </LinearLayout>
         
 </RelativeLayout>

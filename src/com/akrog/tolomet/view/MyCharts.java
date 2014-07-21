@@ -1,7 +1,5 @@
 package com.akrog.tolomet.view;
 
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -15,15 +13,8 @@ import com.akrog.tolomet.R;
 import com.akrog.tolomet.SettingsActivity;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.StationManager;
-import com.akrog.tolomet.view.MyPlot.DoubleClickListener;
-import com.androidplot.xy.BoundaryMode;
-import com.androidplot.xy.LineAndPointFormatter;
-import com.androidplot.xy.XYPlot;
-import com.androidplot.xy.XYSeries;
-import com.androidplot.xy.XYStepMode;
-import com.androidplot.xy.YValueMarker;
 
-public class MyCharts implements DoubleClickListener {
+public class MyCharts {
 	private Tolomet tolomet;
 	private StationManager stations;
 	private MyPlot chartSpeed, chartDirection;
@@ -31,9 +22,6 @@ public class MyCharts implements DoubleClickListener {
 	private int minutes = 10;
 	private int hours = 4;
 	private int speedRange = -1;
-	private int marker1 = -1;
-	private int marker2 = -1;
-	private YValueMarker markerMin, markerMax; 
 
 	public MyCharts( Tolomet tolomet, StationManager data ) {
 		this.tolomet = tolomet;
@@ -50,98 +38,57 @@ public class MyCharts implements DoubleClickListener {
 	}
 	
 	private int getMarker1() {
-		if( this.marker1 == -1 ) {
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.tolomet);
-			this.marker1 = Integer.parseInt(prefs.getString(SettingsActivity.KEY_MIN_MARKER, this.tolomet.getString(R.string.pref_minMarkerDefault)));
-		}
-		return this.marker1;
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.tolomet);
+		return Integer.parseInt(prefs.getString(SettingsActivity.KEY_MIN_MARKER, this.tolomet.getString(R.string.pref_minMarkerDefault)));
 	}
 	
 	private int getMarker2() {
-		if( this.marker2 == -1 ) {
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.tolomet);
-			this.marker2 = Integer.parseInt(prefs.getString(SettingsActivity.KEY_MAX_MARKER, this.tolomet.getString(R.string.pref_maxMarkerDefault)));
-		}
-		return this.marker2;
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.tolomet);
+		return Integer.parseInt(prefs.getString(SettingsActivity.KEY_MAX_MARKER, this.tolomet.getString(R.string.pref_maxMarkerDefault)));
 	}
 	
 	@SuppressLint("SimpleDateFormat")
 	private void createCharts() {				
     	this.chartDirection = (MyPlot)this.tolomet.findViewById(R.id.chartDirection);
-        //this.chartDirection.disableAllMarkup();
-    	this.chartDirection.setPlotMargins(0, 0, 0, 0);
-    	this.chartDirection.setPlotPadding(3, 3, 3, 3);
         this.chartDirection.setTitle(this.tolomet.getString(R.string.DirectionHumidity));
-        this.chartDirection.setRangeLabel(this.tolomet.getString(R.string.Degrees));                
-        this.chartDirection.setRangeValueFormat(new DecimalFormat("#"));        
-        this.chartDirection.setRangeBoundaries(0, 360, BoundaryMode.FIXED);
-        this.chartDirection.setRangeStep(XYStepMode.SUBDIVIDE, 9);
+        this.chartDirection.setY1Label(this.tolomet.getString(R.string.Degrees));        
+        this.chartDirection.setY1Range(0, 360);
+        this.chartDirection.setStepsY1(8);
         this.chartDirection.setZoomVertically(false);
-        //this.chartDirection.setTicksPerRangeLabel(3);
-        this.chartDirection.setDomainLabel(this.tolomet.getString(R.string.Time));
-        this.chartDirection.setDomainValueFormat(new SimpleDateFormat("HH:mm"));        
-        this.chartDirection.setDomainStep(XYStepMode.SUBDIVIDE, 25);
-        this.chartDirection.setTicksPerDomainLabel(6);
-        adjustFonts(this.chartDirection);        
+        //this.chartDirection.setTicksPerStepY1(3);
+        //this.chartDirection.setDomainLabel(this.tolomet.getString(R.string.Time));        
+        this.chartDirection.setStepsX(4);
+        this.chartDirection.setTicksPerStepX(6);       
         
-        XYSeries series = new DynamicXYSeries( this.stations.current.listDirection, "Dir. Med." );
-        LineAndPointFormatter format = new LineAndPointFormatter(
-                Color.rgb(0, 0, 200),                   // line color
-                Color.rgb(0, 0, 100),                   // point color
-                null, null);                           // fill color (none)
-        this.chartDirection.addSeries(series, format);
-        series = new DynamicXYSeries( this.stations.current.listHumidity, "% Hum." );
-        format = new LineAndPointFormatter(
-                Color.rgb(200, 200, 200),                   // line color
-                Color.rgb(100, 100, 100),                   // point color
-                null, null);                               // fill color (none)
-        this.chartDirection.addSeries(series, format);
-        
-        /*for( int i = 0; i <= 100; i += 25 )
-        	this.chartDirection.addMarker(getYMarker(convertHumidity(i),i+"%"));*/
-        this.chartDirection.addMarker(getYMarker(convertHumidity(0),0+"%"));
-        this.chartDirection.addMarker(getYMarker(convertHumidity(50),50+"%"));
-        this.chartDirection.addMarker(getYMarker(convertHumidity(100),100+"%"));
+        this.chartDirection.addGraph(
+        	new Graph(this.stations.current.listDirection, "Dir. Med.", Color.rgb(0, 0, 200), Color.rgb(0, 0, 100)));
+        this.chartDirection.addGraph(
+            new Graph(this.stations.current.listHumidity, "% Hum.", Color.rgb(200, 200, 200), Color.rgb(100, 100, 100)));        
+        this.chartDirection.addY1Marker(convertHumidity(0),0+"%");
+        this.chartDirection.addY1Marker(convertHumidity(50),50+"%");
+        this.chartDirection.addY1Marker(convertHumidity(100),100+"%");
         this.chartDirection.setZoomVertically(false);
         
-        this.chartSpeed = (MyPlot)this.tolomet.findViewById(R.id.chartSpeed);
-        //this.chartSpeed.disableAllMarkup();
-        this.chartSpeed.setPlotMargins(0, 0, 0, 0);
-    	this.chartSpeed.setPlotPadding(3, 3, 3, 3);
+        this.chartSpeed = (MyPlot)this.tolomet.findViewById(R.id.chartSpeed);      
         this.chartSpeed.setTitle(this.tolomet.getString(R.string.Speed));
-        this.chartSpeed.setRangeLabel("km/h");        
-        this.chartSpeed.setRangeValueFormat(new DecimalFormat("#"));
-        this.chartSpeed.setRangeBoundaries(0, getSpeedRange(), BoundaryMode.FIXED);
-        this.chartSpeed.setRangeStep(XYStepMode.SUBDIVIDE, getSpeedRange()/5+1);
-        //this.chartSpeed.setTicksPerRangeLabel(2);
-        this.chartSpeed.setDomainLabel(this.tolomet.getString(R.string.Time));
-        this.chartSpeed.setDomainValueFormat(new SimpleDateFormat("HH:mm"));        
-        this.chartSpeed.setDomainStep(XYStepMode.SUBDIVIDE, 25);
-        this.chartSpeed.setTicksPerDomainLabel(6);
-        adjustFonts(this.chartSpeed);        
+        this.chartSpeed.setY1Label("km/h");        
+        this.chartSpeed.setY1Range(0, getSpeedRange());
+        this.chartSpeed.setStepsY1(getSpeedRange()/5);
+        //this.chartSpeed.setTicksPerStepY(2);
+        //this.chartSpeed.setDomainLabel(this.tolomet.getString(R.string.Time));        
+        this.chartSpeed.setStepsX(4);
+        this.chartSpeed.setTicksPerStepX(6); 
         
-        series = new DynamicXYSeries( this.stations.current.listSpeedMed, "Vel. Med." );
-        format = new LineAndPointFormatter(
-                Color.rgb(0, 200, 0),                   // line color
-                Color.rgb(0, 100, 0),                   // point color
-                null, null);                           // fill color (none)
-        this.chartSpeed.addSeries(series, format);
-        series = new DynamicXYSeries( this.stations.current.listSpeedMax, "Vel. Máx." );
-        format = new LineAndPointFormatter(
-                Color.rgb(200, 0, 0),                   // line color
-                Color.rgb(100, 0, 0),                   // point color
-                null, null);                           // fill color (none)
-        this.chartSpeed.addSeries(series, format);
+        this.chartSpeed.addGraph(new Graph(
+        	this.stations.current.listSpeedMed, "Vel. Med.", Color.rgb(0, 200, 0), Color.rgb(0, 100, 0)));
+        this.chartSpeed.addGraph(new Graph(
+        	this.stations.current.listSpeedMax, "Vel. Máx.", Color.rgb(200, 0, 0), Color.rgb(100, 0, 0))); 
         
-        this.markerMin = getYMarker(getMarker1());
-        this.chartSpeed.addMarker(this.markerMin);
-        this.markerMax = getYMarker(getMarker2());
-        this.chartSpeed.addMarker(this.markerMax);
+        this.chartSpeed.addY1Marker(getMarker1(),null);
+        this.chartSpeed.addY1Marker(getMarker2(),null);
         
-        this.chartDirection.connectDomains(this.chartSpeed);
-        this.chartDirection.registerListener(this);
-        this.chartSpeed.connectDomains(this.chartDirection);
-        this.chartSpeed.registerListener(this);
+        //this.chartDirection.connectDomains(this.chartSpeed);
+        //this.chartSpeed.connectDomains(this.chartDirection);
         
         //updateDomainBoundaries();
         setRefresh(15);
@@ -157,31 +104,6 @@ public class MyCharts implements DoubleClickListener {
     	return (int)((hum-45.0)/2.7+0.05);
     	//return (int)(hum/3.6+0.05);
     	//return (int)(hum/3.15+0.05);
-    }
-    
-    private void adjustFonts( XYPlot plot ) {
-    	plot.getGraphWidget().setMarginBottom(MyCharts.fontSize);
-    	plot.getGraphWidget().setMarginTop(MyCharts.fontSize);
-    	plot.getGraphWidget().setMarginRight(1.5f*MyCharts.fontSize);
-    	//plot.getTitleWidget().getLabelPaint().setTextSize(this.fontSize);
-    	//plot.getLegendWidget().getTextPaint().setTextSize(this.fontSize);
-        plot.getGraphWidget().getDomainLabelPaint().setTextSize(MyCharts.fontSize);
-        plot.getGraphWidget().getDomainOriginLabelPaint().setTextSize(MyCharts.fontSize);
-        plot.getGraphWidget().getRangeLabelPaint().setTextSize(MyCharts.fontSize);
-        plot.getGraphWidget().getRangeOriginLabelPaint().setTextSize(MyCharts.fontSize);
-        plot.getGraphWidget().getGridBackgroundPaint().setColor(Color.WHITE);
-    }
-    
-    private YValueMarker getYMarker( float y ) {
-        return getYMarker(y, null);
-    }
-    
-    private YValueMarker getYMarker( float y, String text ) {
-    	YValueMarker m = new YValueMarker(y, text);
-    	m.getLinePaint().setColor(Color.BLACK);
-        m.getLinePaint().setStrokeWidth(0.0f);
-        m.getTextPaint().setColor(Color.BLACK);
-        return m;
     }
     
     private void updateBoundaries() {
@@ -203,18 +125,18 @@ public class MyCharts implements DoubleClickListener {
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.HOUR_OF_DAY, 0);
         Date date0 = cal.getTime();
-    	this.chartDirection.setDomainBoundaries(date1.getTime(), date2.getTime(), BoundaryMode.FIXED);
-    	this.chartDirection.setDomainZoomLimits(date0.getTime(), date2.getTime());
-        this.chartSpeed.setDomainBoundaries(date1.getTime(), date2.getTime(), BoundaryMode.FIXED);
-        this.chartSpeed.setDomainZoomLimits(date0.getTime(), date2.getTime());
-        this.chartSpeed.setRangeBoundaries(0, getSpeedRange(), BoundaryMode.FIXED);
-        this.chartSpeed.setRangeZoomLimits(0, getSpeedRange());
+    	this.chartDirection.setXRange(date1.getTime(), date2.getTime());
+    	this.chartDirection.setXZoomLimits(date0.getTime(), date2.getTime());
+        this.chartSpeed.setXRange(date1.getTime(), date2.getTime());
+        this.chartSpeed.setXZoomLimits(date0.getTime(), date2.getTime());
+        this.chartSpeed.setY1Range(0, getSpeedRange());
+        this.chartSpeed.setY1ZoomLimits(0, getSpeedRange());
     }
     
     public void redraw() {
     	updateBoundaries();
-    	this.markerMin.setValue(getMarker1());
-    	this.markerMax.setValue(getMarker2());
+    	/*this.markerMin.setValue(getMarker1());
+    	this.markerMax.setValue(getMarker2());*/
     	this.chartDirection.redraw();
         this.chartSpeed.redraw();
     }
@@ -228,8 +150,4 @@ public class MyCharts implements DoubleClickListener {
 	public boolean getZoomed() {
         return this.chartDirection.getZoomed() || this.chartSpeed.getZoomed();
     }
-
-	public void onDoubleClick() {
-		redraw();		
-	}
 }
