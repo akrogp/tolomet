@@ -7,9 +7,11 @@ public class Graph {
     private final String title;
     private final int lineColor;
     private final int pointColor;
+    private final float wrap;
  
-    public Graph( List<Number> data, String title, int lineColor, int pointColor ) {
+    public Graph( List<Number> data, float wrap, String title, int lineColor, int pointColor ) {
         this.data = data;
+        this.wrap = wrap;
         this.title = title;
         this.lineColor = lineColor;
         this.pointColor = pointColor;
@@ -37,5 +39,9 @@ public class Graph {
 
 	public int getPointColor() {
 		return pointColor;
+	}
+
+	public float getWrap() {
+		return wrap;
 	}
 }

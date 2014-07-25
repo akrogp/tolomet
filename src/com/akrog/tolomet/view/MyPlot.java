@@ -45,13 +45,13 @@ public class MyPlot extends PlotYY implements OnTouchListener {
 	private boolean mZoomVertically;
 	private boolean mZoomHorizontally;
 	private boolean mZoomed = false;
-	private List<PlotYY> mDomainPlots = new ArrayList<PlotYY>();
-	private List<PlotYY> mRangePlots = new ArrayList<PlotYY>();
+	private List<PlotYY> mRangePlots = new ArrayList<PlotYY>();	
+	private boolean updatingX = false;
 	
 	private void init() {
 		setZoomEnabled(true);
 		mZoomHorizontally = true;
-		mZoomVertically = true;
+		mZoomVertically = false;
 	}
 
 	public MyPlot(Context context) {
@@ -195,13 +195,17 @@ public class MyPlot extends PlotYY implements OnTouchListener {
 
 	@Override
 	public void setXRange(float minX, float maxX) {
+		if( updatingX )
+			return;
+		updatingX = true;
 		super.setXRange(minX, maxX);
 		lastMinX = minX;
 		lastMaxX = maxX;
-		for( PlotYY plot : mDomainPlots ) {
+		for( PlotYY plot : mRangePlots ) {
 			plot.setXRange(minX, maxX);
 			plot.redraw();
 		}
+		updatingX = false;
 	};
 	
 	@Override
@@ -209,10 +213,6 @@ public class MyPlot extends PlotYY implements OnTouchListener {
 		super.setY1Range(minY, maxY);
 		lastMinY1 = minY;
 		lastMaxY1 = maxY;
-		for( PlotYY plot : mDomainPlots ) {
-			plot.setY1Range(minY, maxY);
-			plot.redraw();
-		}
 	}
 	
 	@Override
@@ -220,10 +220,6 @@ public class MyPlot extends PlotYY implements OnTouchListener {
 		super.setY2Range(minY, maxY);
 		lastMinY2 = minY;
 		lastMaxY2 = maxY;
-		for( PlotYY plot : mDomainPlots ) {
-			plot.setY2Range(minY, maxY);
-			plot.redraw();
-		}
 	}
 
 	public void setXZoomLimits( long lowerBoundary, long upperBoundary ) {
@@ -262,12 +258,7 @@ public class MyPlot extends PlotYY implements OnTouchListener {
 		mZoomed = false;
 	}
 
-	public void connectDomains(PlotYY plot) {
-		if( this != plot && !mDomainPlots.contains(plot) )
-			mDomainPlots.add(plot);
-	}
-
-	public void connectRanges(PlotYY plot) {
+	public void connectXRanges(PlotYY plot) {
 		if( this != plot && !mRangePlots.contains(plot) )
 			mRangePlots.add(plot);
 	}
