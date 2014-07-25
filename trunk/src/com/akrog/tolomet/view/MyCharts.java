@@ -22,6 +22,8 @@ public class MyCharts {
 	private int minutes = 10;
 	private int hours = 4;
 	private int speedRange = -1;
+	private Marker marker1 = new Marker(0.0f, null);
+	private Marker marker2 = new Marker(0.0f, null);
 
 	public MyCharts( Tolomet tolomet, StationManager data ) {
 		this.tolomet = tolomet;
@@ -37,14 +39,14 @@ public class MyCharts {
 		return this.speedRange;
 	}
 	
-	private int getMarker1() {
+	private void updateMarkers() {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.tolomet);
-		return Integer.parseInt(prefs.getString(SettingsActivity.KEY_MIN_MARKER, this.tolomet.getString(R.string.pref_minMarkerDefault)));
-	}
-	
-	private int getMarker2() {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.tolomet);
-		return Integer.parseInt(prefs.getString(SettingsActivity.KEY_MAX_MARKER, this.tolomet.getString(R.string.pref_maxMarkerDefault)));
+		int pos = Integer.parseInt(prefs.getString(SettingsActivity.KEY_MIN_MARKER, this.tolomet.getString(R.string.pref_minMarkerDefault))); 
+		marker1.setPos(pos);
+		marker1.setLabel(pos+"");
+		pos = Integer.parseInt(prefs.getString(SettingsActivity.KEY_MAX_MARKER, this.tolomet.getString(R.string.pref_maxMarkerDefault))); 
+		marker2.setPos(pos);
+		marker2.setLabel(pos+"");
 	}
 	
 	@SuppressLint("SimpleDateFormat")
@@ -55,40 +57,41 @@ public class MyCharts {
         this.chartDirection.setY1Range(0, 360);
         this.chartDirection.setStepsY1(8);
         this.chartDirection.setZoomVertically(false);
-        //this.chartDirection.setTicksPerStepY1(3);
-        //this.chartDirection.setDomainLabel(this.tolomet.getString(R.string.Time));        
+        this.chartDirection.setXLabel(this.tolomet.getString(R.string.Time));        
         this.chartDirection.setStepsX(4);
         this.chartDirection.setTicksPerStepX(6);       
         
         this.chartDirection.addGraph(
-        	new Graph(this.stations.current.listDirection, "Dir. Med.", Color.rgb(0, 0, 200), Color.rgb(0, 0, 100)));
+        	new Graph(this.stations.current.listDirection, 180.0f, "Dir. Med.", Color.rgb(0, 0, 200), Color.rgb(0, 0, 100)));
         this.chartDirection.addGraph(
-            new Graph(this.stations.current.listHumidity, "% Hum.", Color.rgb(200, 200, 200), Color.rgb(100, 100, 100)));        
-        this.chartDirection.addY1Marker(convertHumidity(0),0+"%");
-        this.chartDirection.addY1Marker(convertHumidity(50),50+"%");
-        this.chartDirection.addY1Marker(convertHumidity(100),100+"%");
+            new Graph(this.stations.current.listHumidity, -1.0f, "% Hum.", Color.rgb(200, 200, 200), Color.rgb(100, 100, 100)));        
+        this.chartDirection.addY1Marker(new Marker(convertHumidity(0),0+"%"));
+        this.chartDirection.addY1Marker(new Marker(convertHumidity(50),50+"%"));
+        this.chartDirection.addY1Marker(new Marker(convertHumidity(100),100+"%"));
         this.chartDirection.setZoomVertically(false);
         
         this.chartSpeed = (MyPlot)this.tolomet.findViewById(R.id.chartSpeed);      
         this.chartSpeed.setTitle(this.tolomet.getString(R.string.Speed));
         this.chartSpeed.setY1Label("km/h");        
         this.chartSpeed.setY1Range(0, getSpeedRange());
+        this.chartSpeed.setY2Range(0, 360);
+        this.chartSpeed.setY2Label(this.tolomet.getString(R.string.Degrees));
         this.chartSpeed.setStepsY1(getSpeedRange()/5);
-        //this.chartSpeed.setTicksPerStepY(2);
-        //this.chartSpeed.setDomainLabel(this.tolomet.getString(R.string.Time));        
+        this.chartSpeed.setXLabel(this.tolomet.getString(R.string.Time));        
         this.chartSpeed.setStepsX(4);
         this.chartSpeed.setTicksPerStepX(6); 
         
         this.chartSpeed.addGraph(new Graph(
-        	this.stations.current.listSpeedMed, "Vel. Med.", Color.rgb(0, 200, 0), Color.rgb(0, 100, 0)));
+        	this.stations.current.listSpeedMed, -1.0f, "Vel. Med.", Color.rgb(0, 200, 0), Color.rgb(0, 100, 0)));
         this.chartSpeed.addGraph(new Graph(
-        	this.stations.current.listSpeedMax, "Vel. Máx.", Color.rgb(200, 0, 0), Color.rgb(100, 0, 0))); 
+        	this.stations.current.listSpeedMax, -1.0f, "Vel. Máx.", Color.rgb(200, 0, 0), Color.rgb(100, 0, 0))); 
         
-        this.chartSpeed.addY1Marker(getMarker1(),null);
-        this.chartSpeed.addY1Marker(getMarker2(),null);
+        updateMarkers();
+        this.chartSpeed.addY1Marker(marker1);
+        this.chartSpeed.addY1Marker(marker2);
         
-        //this.chartDirection.connectDomains(this.chartSpeed);
-        //this.chartSpeed.connectDomains(this.chartDirection);
+        this.chartDirection.connectXRanges(this.chartSpeed);
+        this.chartSpeed.connectXRanges(this.chartDirection);
         
         //updateDomainBoundaries();
         setRefresh(15);
@@ -135,8 +138,7 @@ public class MyCharts {
     
     public void redraw() {
     	updateBoundaries();
-    	/*this.markerMin.setValue(getMarker1());
-    	this.markerMax.setValue(getMarker2());*/
+    	updateMarkers();
     	this.chartDirection.redraw();
         this.chartSpeed.redraw();
     }

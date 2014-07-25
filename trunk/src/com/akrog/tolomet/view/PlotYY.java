@@ -5,17 +5,21 @@ import java.util.Calendar;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
 public class PlotYY extends View {	
 	private static final int DEFAULT_TITLE_SIZE = 15;
 	private static final int DEFAULT_LABEL_SIZE = 15;
+	private static final int DEFAULT_MARKER_SIZE = 12;
+	private static final int DEFAULT_LEGEND_SIZE = 12;
 	private static final int TICK_SIZE = 3;
 	private static final int TICK_MARGIN = 2;
 	private static final int BORDER = 2;
@@ -26,14 +30,20 @@ public class PlotYY extends View {
 	private final Paint paintX = new Paint();
 	private final Paint paintChart = new Paint();
 	private final Paint paintGrid = new Paint();
+	private final Paint paintMarker = new Paint();
+	private final Paint paintLegend = new Paint();
 	private String title = "Title";
 	private String y1label = "y1label";
 	private String y2label = "y2label";
+	private String xlabel = "xlabel";
 	private long minX=0, maxX=1000*60*60;
 	private int stepsX=10, ticksPerStepX=1;
 	private int minY1=0, maxY1=10, stepsY1=10, ticksPerStepY1=1;
 	private int minY2=0, maxY2=100, stepsY2=10, ticksPerStepY2=1;
 	private final List<Graph> graphs = new ArrayList<Graph>();
+	private Bitmap bgBitmap;
+	private final Canvas bgCanvas = new Canvas();
+	private List<Marker> y1Markers = new ArrayList<Marker>();
 	
 	public PlotYY(Context context) {
 		super(context);
@@ -62,6 +72,7 @@ public class PlotYY extends View {
 		paintTitle.setColor(Color.LTGRAY);
 		paintTitle.setTextSize(DEFAULT_TITLE_SIZE);
 		paintTitle.setTextAlign(Align.CENTER);
+		//paintTitle.setTypeface(Typeface.DEFAULT_BOLD);
 		
 		paintY1.setColor(Color.LTGRAY);
 		paintY1.setTextSize(DEFAULT_LABEL_SIZE);
@@ -74,6 +85,14 @@ public class PlotYY extends View {
 		paintX.setColor(Color.LTGRAY);
 		paintX.setTextSize(DEFAULT_LABEL_SIZE);
 		paintX.setTextAlign(Align.CENTER);
+		
+		paintMarker.setColor(Color.BLACK);
+		paintMarker.setTextSize(DEFAULT_MARKER_SIZE);
+		paintMarker.setTextAlign(Align.LEFT);
+		
+		paintLegend.setColor(Color.LTGRAY);
+		paintLegend.setTextSize(DEFAULT_LEGEND_SIZE);
+		paintLegend.setTextAlign(Align.LEFT);
 	}
 	
 	public void addGraph(Graph graph) {
@@ -81,15 +100,37 @@ public class PlotYY extends View {
 	}
 	
 	@Override
+	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+		RectF rect = getChartPosition(w, h);
+		createBackgroundBuffer(rect.width(), rect.height());
+		super.onSizeChanged(w, h, oldw, oldh);
+	}
+	
+	private void createBackgroundBuffer(float w, float h) {		
+		bgBitmap = Bitmap.createBitmap(Math.round(w), Math.round(h), Bitmap.Config.ARGB_4444);
+		bgCanvas.setBitmap(bgBitmap);
+	}
+	
+	private RectF getChartPosition( float w, float h ) {
+		RectF rect = new RectF();
+		rect.top = BORDER+paintTitle.getTextSize()+paintY1.getTextSize();
+		rect.bottom = h-1-BORDER-paintX.getTextSize()-TICK_SIZE-2*TICK_MARGIN-paintLegend.getTextSize();
+		rect.left = 2*BORDER+paintTitle.getTextSize()+paintY1.measureText(maxY1+"")+TICK_SIZE+TICK_MARGIN;
+		rect.right = w-1-2*BORDER-paintTitle.getTextSize()-paintY2.measureText(maxY2+"")-TICK_SIZE-TICK_MARGIN;
+		return rect;
+	}
+	
+	@Override
 	protected void onDraw(Canvas canvas) {
 		float canvasHeight = getHeight();
 		float canvasWidth = getWidth();
-		float chartTop = BORDER+paintTitle.getTextSize()+paintY1.getTextSize();
-		float chartBottom = canvasHeight-1-BORDER-paintX.getTextSize()-TICK_SIZE-TICK_MARGIN;
-		float chartLeft = 2*BORDER+paintTitle.getTextSize()+paintY1.measureText(maxY1+"")+TICK_SIZE+TICK_MARGIN;
-		float chartRight = canvasWidth-1-2*BORDER-paintTitle.getTextSize()-paintY2.measureText(maxY2+"")-TICK_SIZE-TICK_MARGIN;
-		float chartWidth = chartRight-chartLeft+1;
-		float chartHeight = chartBottom-chartTop+1;
+		RectF rect = getChartPosition(canvasWidth, canvasHeight);
+		float chartTop = rect.top;
+		float chartBottom = rect.bottom;
+		float chartLeft = rect.left;
+		float chartRight = rect.right;
+		float chartWidth = rect.width();
+		float chartHeight = rect.height();
 		
 		canvas.drawRect(0, 0, canvasWidth-1, canvasHeight-1, paintBorder);
 		canvas.drawRect(chartLeft, chartTop, chartRight, chartBottom, paintChart);
@@ -97,49 +138,92 @@ public class PlotYY extends View {
 		
 		drawYTicks(canvas, chartLeft-TICK_SIZE-TICK_MARGIN, chartBottom, chartWidth, chartHeight, minY1, maxY1, stepsY1, ticksPerStepY1, paintY1);
 		drawYTicks(canvas, chartRight+TICK_SIZE+TICK_MARGIN, chartBottom, -1, chartHeight, minY2, maxY2, stepsY2, ticksPerStepY2, paintY2);
-		drawXTicks(canvas, chartLeft, canvasHeight-1-BORDER, chartBottom, chartWidth, chartHeight);
+		drawXTicks(canvas, chartLeft, chartBottom+TICK_SIZE+TICK_MARGIN+paintX.getTextSize(), chartBottom, chartWidth, chartHeight);
+		drawMarkers(canvas, chartLeft, chartBottom, chartWidth, chartHeight);
 		
 		canvas.save();
 		canvas.rotate(-90,0,0);
 		canvas.drawText(y1label, -canvasHeight/2, BORDER+paintTitle.getTextSize(), paintTitle);
-		canvas.drawText(y2label, -canvasHeight/2, canvasWidth-1-BORDER-paintTitle.getTextSize()/3, paintTitle);
+		canvas.drawText(y2label, -canvasHeight/2, canvasWidth-1-BORDER-paintTitle.getTextSize()/3, paintTitle);		
 		canvas.restore();
+		canvas.drawText(xlabel, chartLeft, chartBottom+TICK_SIZE+TICK_MARGIN+paintX.getTextSize()*2, paintTitle);
 		
-		for( Graph graph : graphs )
-			drawGraph(canvas,graph,chartLeft,chartBottom,chartWidth,chartHeight);
+		createBackgroundBuffer(chartWidth, chartHeight);
+		for( int i = 0; i < graphs.size(); i++ ) {
+			Graph graph = graphs.get(i);
+			drawGraph(graph);		
+			drawLegend(canvas,canvasWidth/(graphs.size()+1)*(i+1),canvasHeight-BORDER-1,graph);
+		}
+		canvas.drawBitmap(bgBitmap,chartLeft,chartTop,null);
 	}
-	
-	private void drawGraph(Canvas canvas, Graph graph, float x0, float y0, float w, float h) {		
-		int len = graph.size();
-		if( len == 0 )
-			return;
+
+	private void drawLegend(Canvas canvas, float x1, float y2, Graph graph) {
+		float w = paintLegend.getTextSize();
+		float x2 = x1+w-1;
+		float y1 = y2-w+1;
+		
 		Paint linePaint = new Paint();
 		linePaint.setColor(graph.getLineColor());
 		linePaint.setStrokeWidth(2.0f);
 		Paint pointPaint = new Paint();
 		pointPaint.setColor(graph.getPointColor());
 		pointPaint.setStrokeWidth(6.0f);
+		
+		canvas.drawRect(x1, y1, x2, y2, paintChart);
+		canvas.drawText(graph.getTitle(), x1+w, y2, paintLegend);
+		canvas.drawLine(x1+1, y2-1, x2-1, y1+1, linePaint);
+		canvas.drawPoint((x1+x2)/2, (y1+y2)/2, pointPaint);
+	}
+
+	private void drawMarkers(Canvas canvas, float x, float bottom, float w, float h) {		
+		for( Marker marker : y1Markers ) {
+			float y = Math.round(bottom-y1px(marker.getPos(),h));
+			canvas.drawLine(x, y, x+w-1, y, paintMarker);
+			String text = marker.getLabel();
+			if( text == null )
+				text = String.format("%s", marker.getPos());
+			canvas.drawText(text, x+TICK_MARGIN, y-TICK_MARGIN, paintMarker);
+		}
+	}
+
+	private void drawGraph(Graph graph) {		
+		int len = graph.size();
+		if( len == 0 )
+			return;
+				
+		Paint linePaint = new Paint();
+		linePaint.setColor(graph.getLineColor());
+		linePaint.setStrokeWidth(2.0f);
+		Paint pointPaint = new Paint();
+		pointPaint.setColor(graph.getPointColor());
+		pointPaint.setStrokeWidth(6.0f);
+		
 		float x1 = Float.MIN_VALUE;
 		float y1 = Float.MIN_VALUE;
 		float x2, y2;
 		for( int i = 0; i < len; i++ ) {
-			if( graph.getX(i) < getMinX() )
-				continue;
-			if( graph.getX(i) > getMaxX() )
-				break;
-			x2 = Math.round((double)x0+xpx(graph.getX(i),w));
-			y2 = Math.round(y0-y1px(graph.getY(i),h));
+			x2 = xgpx(graph,i);
+			y2 = y1gpx(graph,i);
 			if( x1 == Float.MIN_VALUE ) {
 				x1=x2;
 				y1=y2;
-			}
-			canvas.drawLine(x1, y1, x2, y2, linePaint);
-			canvas.drawPoint(x2, y2, pointPaint);
+			} /*else if( graph.getWrap() >= 0 && Math.abs(y2-y1) > graph.getWrap() )
+				y2 = y2 > y1 ? y2-graph.getWrap() : y2+graph.getWrap();*/
+			bgCanvas.drawLine(x1, y1, x2, y2, linePaint);
+			bgCanvas.drawPoint(x2, y2, pointPaint);
 			x1=x2;
 			y1=y2;
 		}
 	}
-	
+
+	private float y1gpx(Graph graph, int i) {
+		return Math.round(bgCanvas.getHeight()-1-y1px(graph.getY(i),bgCanvas.getHeight()));
+	}
+
+	private float xgpx(Graph graph, int i) {
+		return Math.round((double)xpx(graph.getX(i),bgCanvas.getWidth()));
+	}
+
 	private float px(float n, float min, float max, float pixels) {
 		return (n-min)/(max-min)*(pixels-1);
 	}
@@ -208,6 +292,14 @@ public class PlotYY extends View {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	
+	public void setXLabel(String xlabel) {
+		this.xlabel = xlabel;
+	}
+	
+	public String getXLabel() {
+		return xlabel;
 	}
 	
 	public String getY1Label() {
@@ -337,9 +429,7 @@ public class PlotYY extends View {
 		this.ticksPerStepY2 = ticksPerStepY2;
 	}
 	
-	public void addY1Marker(float y, String text) {		
-	}
-	
-	public void addY2Marker(float y, String text) {		
+	public void addY1Marker(Marker marker) {
+		y1Markers.add(marker);
 	}
 }
