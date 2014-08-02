@@ -18,7 +18,6 @@ import com.akrog.tolomet.R;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.Downloader;
 import com.akrog.tolomet.data.Station;
-import com.akrog.tolomet.view.MyCharts;
 
 public class MeteoGaliciaProvider extends AbstractProvider {
 	public MeteoGaliciaProvider( Tolomet tolomet ) {
@@ -70,7 +69,7 @@ public class MeteoGaliciaProvider extends AbstractProvider {
 						this.station.listSpeedMed.add(date);
 				        this.station.listSpeedMed.add(val);
 					} else if( attr.equals("86") ) {
-						val = MyCharts.convertHumidity(Integer.parseInt(getContent(parser)));
+						val = (float)Integer.parseInt(getContent(parser));
 						this.station.listHumidity.add(date);
 			        	this.station.listHumidity.add(val);
 					} else if( attr.equals("82") || attr.equals("10124") ) {

@@ -10,7 +10,6 @@ import android.annotation.SuppressLint;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.Downloader;
 import com.akrog.tolomet.data.Station;
-import com.akrog.tolomet.view.MyCharts;
 
 public class RedVigiaProvider extends AbstractProvider {	
 	public RedVigiaProvider( Tolomet tolomet ) {
@@ -59,7 +58,7 @@ public class RedVigiaProvider extends AbstractProvider {
 		        updateList(this.station.listSpeedMed, date, val);
 		        val = Float.parseFloat(getContent(fields[3],true))*3.6F;
 		        updateList(this.station.listSpeedMax, date, val);
-		        val = MyCharts.convertHumidity((int)Float.parseFloat(getContent(fields[5],true)));
+		        val = (float)(int)(Float.parseFloat(getContent(fields[5],true))+0.5f);
 	        	updateList(this.station.listHumidity, date, val);
 			}
 		} catch (IOException e) {

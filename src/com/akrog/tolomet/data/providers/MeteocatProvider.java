@@ -8,7 +8,6 @@ import android.annotation.SuppressLint;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.Downloader;
 import com.akrog.tolomet.data.Station;
-import com.akrog.tolomet.view.MyCharts;
 
 public class MeteocatProvider extends AbstractProvider {
 	public MeteocatProvider( Tolomet tolomet ) {
@@ -46,7 +45,7 @@ public class MeteocatProvider extends AbstractProvider {
 			val = Float.parseFloat(getContent(fields[i+7],2))*3.6F;
 			this.station.listSpeedMax.add(0,date);
 			this.station.listSpeedMax.add(1,val);
-			val = MyCharts.convertHumidity(Integer.parseInt(getContent(fields[i+4],2)));
+			val = (float)Integer.parseInt(getContent(fields[i+4],2));
 			this.station.listHumidity.add(0,date);
 			this.station.listHumidity.add(1,val);
 		}						

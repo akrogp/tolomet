@@ -7,7 +7,7 @@ import java.util.List;
 import android.os.Bundle;
 
 public class Station {		
-	public List<Number> listDirection, listHumidity, listSpeedMed, listSpeedMax;
+	public List<Number> listDirection, listHumidity, listSpeedMed, listSpeedMax, listTemperature, listPressure;
 	public String name, code;
 	public int region;
 	public double latitude, longitude;
@@ -66,6 +66,8 @@ public class Station {
 		this.listHumidity = new ArrayList<Number>();
 		this.listSpeedMed = new ArrayList<Number>();
 		this.listSpeedMax = new ArrayList<Number>();
+		this.listTemperature = new ArrayList<Number>();
+		this.listPressure = new ArrayList<Number>();
 	}	
 	
 	@Override
@@ -84,6 +86,8 @@ public class Station {
 		this.listHumidity.clear();
 		this.listSpeedMed.clear();
 		this.listSpeedMax.clear();
+		this.listTemperature.clear();
+		this.listPressure.clear();
 	}
 	
 	public void add( Station station ) {
@@ -93,6 +97,8 @@ public class Station {
 		this.listHumidity.addAll(station.listHumidity);
 		this.listSpeedMed.addAll(station.listSpeedMed);
 		this.listSpeedMax.addAll(station.listSpeedMax);
+		this.listTemperature.addAll(station.listTemperature);
+		this.listPressure.addAll(station.listPressure);
 	}
 	
 	public void replace( Station station ) {
@@ -146,6 +152,10 @@ public class Station {
 		saveFloatArray(outState, "medy", this.listSpeedMed, 1);
 		saveLongArray(outState, "maxx", this.listSpeedMax, 0);
 		saveFloatArray(outState, "maxy", this.listSpeedMax, 1);
+		saveLongArray(outState, "tempx", this.listTemperature, 0);
+		saveFloatArray(outState, "tempy", this.listTemperature, 1);
+		saveLongArray(outState, "presx", this.listPressure, 0);
+		saveFloatArray(outState, "presy", this.listPressure, 1);
 	}
 	
 	public boolean loadState( Bundle bundle, String code, boolean fav ) {
@@ -169,6 +179,8 @@ public class Station {
 		loadLongFloat( bundle, "humx", "humy", this.listHumidity );
 		loadLongFloat( bundle, "medx", "medy", this.listSpeedMed );
 		loadLongFloat( bundle, "maxx", "maxy", this.listSpeedMax );
+		loadLongFloat( bundle, "tempx", "tempy", this.listTemperature );
+		loadLongFloat( bundle, "presx", "presy", this.listPressure );
 		return true;
 	}
 	

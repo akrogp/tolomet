@@ -3,10 +3,20 @@ package com.akrog.tolomet.view;
 public class Marker {
 	private float pos;
 	private String label;
+	int color;
 	
-	public Marker( float pos, String label ) {
+	public int getColor() {
+		return color;
+	}
+
+	public void setColor(int color) {
+		this.color = color;
+	}
+
+	public Marker( float pos, String label, int color ) {
 		this.setPos(pos);
 		this.setLabel(label);
+		this.color = color;
 	}
 
 	public float getPos() {
