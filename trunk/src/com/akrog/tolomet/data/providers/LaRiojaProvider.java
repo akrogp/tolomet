@@ -6,7 +6,6 @@ import com.akrog.tolomet.R;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.ExcelDownloader;
 import com.akrog.tolomet.data.Station;
-import com.akrog.tolomet.view.MyCharts;
 
 public class LaRiojaProvider extends AbstractProvider {	
 	public LaRiojaProvider( Tolomet tolomet ) {
@@ -116,7 +115,7 @@ public class LaRiojaProvider extends AbstractProvider {
 				break;
 			case 3:	// Humidity
 				try {	// We can go on without humidity data
-					num = MyCharts.convertHumidity(Integer.parseInt(cols[2]));
+					num = (float)Integer.parseInt(cols[2]);
 					this.station.listHumidity.add(date);
 					this.station.listHumidity.add(num);
 				} catch( Exception e ) {}

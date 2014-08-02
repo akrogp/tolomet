@@ -14,7 +14,6 @@ import com.akrog.tolomet.R;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.Downloader;
 import com.akrog.tolomet.data.Station;
-import com.akrog.tolomet.view.MyCharts;
 
 public class EuskalmetProvider extends AbstractProvider {
 	public EuskalmetProvider( Tolomet tolomet ) {
@@ -59,7 +58,7 @@ public class EuskalmetProvider extends AbstractProvider {
 	        this.station.listDirection.add(val);
 	        if( col >= 0 )
 	        	try {	// We can go on without humidity data		        	
-		        	val = MyCharts.convertHumidity(Integer.parseInt(getContent(cells[col])));
+		        	val = (float)Integer.parseInt(getContent(cells[col]));
 		        	this.station.listHumidity.add(date);
 		        	this.station.listHumidity.add(val);
 	        	} catch( Exception e ) {}
@@ -69,6 +68,12 @@ public class EuskalmetProvider extends AbstractProvider {
 	        val = Float.parseFloat(getContent(cells[4]));
 	        this.station.listSpeedMax.add(date);
 	        this.station.listSpeedMax.add(val);
+	        val = Float.parseFloat(getContent(cells[7]));
+	        this.station.listTemperature.add(date);
+	        this.station.listTemperature.add(val);
+	        val = Float.parseFloat(getContent(cells[10]));
+	        this.station.listPressure.add(date);
+	        this.station.listPressure.add(val);
 	    }
 	}
 

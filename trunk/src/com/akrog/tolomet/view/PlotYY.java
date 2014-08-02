@@ -40,10 +40,13 @@ public class PlotYY extends View {
 	private int stepsX=10, ticksPerStepX=1;
 	private int minY1=0, maxY1=10, stepsY1=10, ticksPerStepY1=1;
 	private int minY2=0, maxY2=100, stepsY2=10, ticksPerStepY2=1;
+	private int minY3=0, maxY3=100;
 	private final List<Graph> graphs = new ArrayList<Graph>();
 	private Bitmap bgBitmap;
 	private final Canvas bgCanvas = new Canvas();
 	private List<Marker> y1Markers = new ArrayList<Marker>();
+	private List<Marker> y2Markers = new ArrayList<Marker>();
+	private List<Marker> y3Markers = new ArrayList<Marker>();
 	
 	public PlotYY(Context context) {
 		super(context);
@@ -88,14 +91,26 @@ public class PlotYY extends View {
 		
 		paintMarker.setColor(Color.BLACK);
 		paintMarker.setTextSize(DEFAULT_MARKER_SIZE);
-		paintMarker.setTextAlign(Align.LEFT);
+		paintMarker.setTextAlign(Align.LEFT);		
+		//paintMarker.setPathEffect(new DashPathEffect(new float[] {10,20}, 0));
 		
 		paintLegend.setColor(Color.LTGRAY);
 		paintLegend.setTextSize(DEFAULT_LEGEND_SIZE);
 		paintLegend.setTextAlign(Align.LEFT);
 	}
 	
-	public void addGraph(Graph graph) {
+	public void addY1Graph(Graph graph) {
+		graph.setyAxis(0);
+		graphs.add(graph);
+	}
+	
+	public void addY2Graph(Graph graph) {
+		graph.setyAxis(1);
+		graphs.add(graph);
+	}
+	
+	public void addY3Graph(Graph graph) {
+		graph.setyAxis(2);
 		graphs.add(graph);
 	}
 	
@@ -139,7 +154,9 @@ public class PlotYY extends View {
 		drawYTicks(canvas, chartLeft-TICK_SIZE-TICK_MARGIN, chartBottom, chartWidth, chartHeight, minY1, maxY1, stepsY1, ticksPerStepY1, paintY1);
 		drawYTicks(canvas, chartRight+TICK_SIZE+TICK_MARGIN, chartBottom, -1, chartHeight, minY2, maxY2, stepsY2, ticksPerStepY2, paintY2);
 		drawXTicks(canvas, chartLeft, chartBottom+TICK_SIZE+TICK_MARGIN+paintX.getTextSize(), chartBottom, chartWidth, chartHeight);
-		drawMarkers(canvas, chartLeft, chartBottom, chartWidth, chartHeight);
+		drawY1Markers(canvas, chartLeft, chartBottom, chartWidth, chartHeight);
+		drawY2Markers(canvas, chartLeft, chartBottom, chartWidth, chartHeight);
+		drawY3Markers(canvas, chartLeft, chartBottom, chartWidth, chartHeight);
 		
 		canvas.save();
 		canvas.rotate(-90,0,0);
@@ -175,9 +192,37 @@ public class PlotYY extends View {
 		canvas.drawPoint((x1+x2)/2, (y1+y2)/2, pointPaint);
 	}
 
-	private void drawMarkers(Canvas canvas, float x, float bottom, float w, float h) {		
+	private void drawY1Markers(Canvas canvas, float x, float bottom, float w, float h) {
+		paintMarker.setTextAlign(Align.LEFT);
 		for( Marker marker : y1Markers ) {
 			float y = Math.round(bottom-y1px(marker.getPos(),h));
+			paintMarker.setColor(marker.getColor());
+			canvas.drawLine(x, y, x+w-1, y, paintMarker);
+			String text = marker.getLabel();
+			if( text == null )
+				text = String.format("%s", marker.getPos());
+			canvas.drawText(text, x+TICK_MARGIN, y-TICK_MARGIN, paintMarker);
+		}
+	}
+	
+	private void drawY2Markers(Canvas canvas, float x, float bottom, float w, float h) {
+		paintMarker.setTextAlign(Align.RIGHT);
+		for( Marker marker : y2Markers ) {
+			float y = Math.round(bottom-y2px(marker.getPos(),h));
+			paintMarker.setColor(marker.getColor());
+			canvas.drawLine(x, y, x+w-1, y, paintMarker);
+			String text = marker.getLabel();
+			if( text == null )
+				text = String.format("%s", marker.getPos());
+			canvas.drawText(text, x+w-1-TICK_MARGIN, y-TICK_MARGIN, paintMarker);
+		}
+	}
+	
+	private void drawY3Markers(Canvas canvas, float x, float bottom, float w, float h) {
+		paintMarker.setTextAlign(Align.LEFT);
+		for( Marker marker : y3Markers ) {
+			float y = Math.round(bottom-y3px(marker.getPos(),h));
+			paintMarker.setColor(marker.getColor());
 			canvas.drawLine(x, y, x+w-1, y, paintMarker);
 			String text = marker.getLabel();
 			if( text == null )
@@ -203,21 +248,29 @@ public class PlotYY extends View {
 		float x2, y2;
 		for( int i = 0; i < len; i++ ) {
 			x2 = xgpx(graph,i);
-			y2 = y1gpx(graph,i);
+			y2 = ygpx(graph,i);
 			if( x1 == Float.MIN_VALUE ) {
 				x1=x2;
 				y1=y2;
 			} /*else if( graph.getWrap() >= 0 && Math.abs(y2-y1) > graph.getWrap() )
 				y2 = y2 > y1 ? y2-graph.getWrap() : y2+graph.getWrap();*/
 			bgCanvas.drawLine(x1, y1, x2, y2, linePaint);
-			bgCanvas.drawPoint(x2, y2, pointPaint);
 			x1=x2;
 			y1=y2;
 		}
+		for( int i = 0; i < len; i++ )
+			bgCanvas.drawPoint(xgpx(graph,i), ygpx(graph,i), pointPaint);
 	}
-
-	private float y1gpx(Graph graph, int i) {
-		return Math.round(bgCanvas.getHeight()-1-y1px(graph.getY(i),bgCanvas.getHeight()));
+	
+	private float ygpx(Graph graph, int i) {
+		float y = graph.getY(i);
+		int h = bgCanvas.getHeight();
+		switch( graph.getyAxis() ) {
+			case 0: y = y1px(y,h); break;
+			case 1: y = y2px(y,h); break;
+			case 2: y = y3px(y,h); break;
+		}
+		return Math.round(bgCanvas.getHeight()-1-y);
 	}
 
 	private float xgpx(Graph graph, int i) {
@@ -236,9 +289,13 @@ public class PlotYY extends View {
 		return px(n, getMinY1(), getMaxY1(), h);
 	}
 	
-	/*private float y2px(float n, float h) {
+	private float y2px(float n, float h) {
 		return px(n, getMinY2(), getMaxY2(), h);
-	}*/
+	}
+	
+	private float y3px(float n, float h) {
+		return px(n, getMinY3(), getMaxY3(), h);
+	}
 
 	public void redraw() {
 		invalidate();
@@ -250,7 +307,7 @@ public class PlotYY extends View {
 			return;
 		float y, yy;
 		for( float i = min; i <= max; i+= step ) {
-			y = Math.round(y2-px(i,min,max,height));
+			y = Math.round(y2-1-px(i,min,max,height));
 			canvas.drawText((int)i+"", x1, y, paint);
 			if( width > 0 ) {
 				canvas.drawLine(x1+TICK_MARGIN, y, x1+TICK_MARGIN+2*TICK_SIZE+width-1, y, paintGrid);
@@ -333,6 +390,11 @@ public class PlotYY extends View {
 		setMaxY2(Math.round(maxY));
 	};
 	
+	public void setY3Range(float minY, float maxY) {
+		setMinY3(Math.round(minY));
+		setMaxY3(Math.round(maxY));
+	};
+	
 	public long getMinX() {
 		return minX;
 	}
@@ -405,6 +467,22 @@ public class PlotYY extends View {
 		this.stepsY2 = ticksY2;
 	}
 	
+	public int getMinY3() {
+		return minY3;
+	}
+
+	public void setMinY3(int minY3) {
+		this.minY3 = minY3;
+	}
+
+	public int getMaxY3() {
+		return maxY3;
+	}
+
+	public void setMaxY3(int maxY3) {
+		this.maxY3 = maxY3;
+	}
+	
 	public int getTicksPerStepX() {
 		return ticksPerStepX;
 	}
@@ -431,5 +509,13 @@ public class PlotYY extends View {
 	
 	public void addY1Marker(Marker marker) {
 		y1Markers.add(marker);
+	}
+	
+	public void addY2Marker(Marker marker) {
+		y2Markers.add(marker);
+	}
+	
+	public void addY3Marker(Marker marker) {
+		y3Markers.add(marker);
 	}
 }

@@ -8,7 +8,6 @@ import android.annotation.SuppressLint;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.Downloader;
 import com.akrog.tolomet.data.Station;
-import com.akrog.tolomet.view.MyCharts;
 
 public class MeteoNavarraProvider extends AbstractProvider {
 	public MeteoNavarraProvider( Tolomet tolomet ) {
@@ -28,6 +27,7 @@ public class MeteoNavarraProvider extends AbstractProvider {
 		this.downloader.addParam("p_10","2");
 		this.downloader.addParam("p_10","9");
 		this.downloader.addParam("p_10","6");
+		this.downloader.addParam("p_10","1");
 		this.downloader.addParam("fecha_desde",time1);
 		this.downloader.addParam("fecha_hasta",time2);
 		this.downloader.addParam("dl","csv");
@@ -38,10 +38,10 @@ public class MeteoNavarraProvider extends AbstractProvider {
 	protected void updateStation(String data) {		
 		String[] cells = data.split(",");
 		Number date, num;
-		if( cells.length < 23 )
+		if( cells.length < 26 )
 			return;	
 		this.station.clear();
-		for( int i = 16; i < cells.length; i+=7 ) {
+		for( int i = 18; i < cells.length; i+=8 ) {
 			if( cells[i].equals("\"\"") || cells[i+1].equals("\"- -\"") )
 				continue;
 			date = toEpoch(getContent(cells[i]));
@@ -49,7 +49,7 @@ public class MeteoNavarraProvider extends AbstractProvider {
 			this.station.listDirection.add(date);
 			this.station.listDirection.add(num);
 			try {	// We can go on without humidity data
-				num = MyCharts.convertHumidity(Integer.parseInt(getContent(cells[i+2])));
+				num = (float)Integer.parseInt(getContent(cells[i+2]));
 				this.station.listHumidity.add(date);
 				this.station.listHumidity.add(num);
 			} catch( Exception e ) {}
@@ -59,6 +59,9 @@ public class MeteoNavarraProvider extends AbstractProvider {
 			num = Float.parseFloat(getContent(cells[i+4]));
 			this.station.listSpeedMax.add(date);
 			this.station.listSpeedMax.add(num);
+			num = Float.parseFloat(getContent(cells[i+7]));
+			this.station.listTemperature.add(date);
+			this.station.listTemperature.add(num);
 		}		
 	}
 

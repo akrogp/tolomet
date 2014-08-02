@@ -33,8 +33,8 @@ public class Summary {
         Number[] last = new Number[2];        
         long d, d2;
         int dir;
-        float med, max, h;
-        int hum = -1;
+        float med, max;
+        float hum = -1;
         
         getLast(this.stations.current.listDirection, last);
         d = (Long)last[0];
@@ -45,9 +45,8 @@ public class Summary {
         max = (Float)last[1];
         if( getLast(this.stations.current.listHumidity, last) ) {
         	d2 = (Long)last[0];
-            h = (Float)last[1];
         	if( d2 == d )
-        		hum = MyCharts.convertHumidity(h);
+        		hum = (Float)last[1];
         }
         
         Calendar cal = Calendar.getInstance();
@@ -59,9 +58,9 @@ public class Summary {
         	this.summary.setText( String.format("%s | %dº (%s) | %.1f~%.1f km/h", date, dir, getDir(dir), med, max ));
         else
         	if( this.tolomet.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE )
-        		this.summary.setText( String.format("%s | %dº (%s) | %d %% | %.1f~%.1f km/h", date, dir, getDir(dir), hum, med, max ));
+        		this.summary.setText( String.format("%s | %dº (%s) | %.0f %% | %.1f~%.1f km/h", date, dir, getDir(dir), hum, med, max ));
         	else
-        		this.summary.setText( String.format("%s|%dº(%s)|%d%%|%.1f~%.1f", date, dir, getDir(dir), hum, med, max ));
+        		this.summary.setText( String.format("%s|%dº(%s)|%.0f%%|%.1f~%.1f", date, dir, getDir(dir), hum, med, max ));
 	}	
 	
 	private String getDir( int degrees ) {

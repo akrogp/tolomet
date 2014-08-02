@@ -8,6 +8,7 @@ public class Graph {
     private final int lineColor;
     private final int pointColor;
     private final float wrap;
+    private int yAxis= 0;
  
     public Graph( List<Number> data, float wrap, String title, int lineColor, int pointColor ) {
         this.data = data;
@@ -43,5 +44,13 @@ public class Graph {
 
 	public float getWrap() {
 		return wrap;
+	}
+
+	public int getyAxis() {
+		return yAxis;
+	}
+
+	public void setyAxis(int yAxis) {
+		this.yAxis = yAxis;
 	}
 }

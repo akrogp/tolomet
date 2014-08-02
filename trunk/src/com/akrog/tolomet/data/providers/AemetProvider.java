@@ -5,7 +5,6 @@ import java.util.Calendar;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.Downloader;
 import com.akrog.tolomet.data.Station;
-import com.akrog.tolomet.view.MyCharts;
 
 public class AemetProvider extends AbstractProvider {
 	public AemetProvider( Tolomet tolomet ) {
@@ -57,7 +56,7 @@ public class AemetProvider extends AbstractProvider {
 			this.station.listDirection.add(date);				
 			this.station.listDirection.add(num);
 			try {	// We can go on without humidity data
-				num = MyCharts.convertHumidity((int)(Float.parseFloat(cells[i+18])+0.5F));				
+				num = (float)(int)(Float.parseFloat(cells[i+18])+0.5F);				
 				this.station.listHumidity.add(date);
 				this.station.listHumidity.add(num);
 			} catch( Exception e ) {}
