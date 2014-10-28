@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Tolomet;
+import com.akrog.tolomet.providers.WindProvider;
 
 public class Downloader extends AsyncTask<Void, Void, String> {
 	private Tolomet tolomet;

@@ -1,34 +1,50 @@
-package com.akrog.tolomet.data.providers;
+package com.akrog.tolomet.providers;
 
 import java.util.Calendar;
 
-import com.akrog.tolomet.Tolomet;
-import com.akrog.tolomet.data.Downloader;
-import com.akrog.tolomet.data.Station;
+import com.akrog.tolomet.Station;
+import com.akrog.tolomet.io.Downloader;
 
-public class AemetProvider extends AbstractProvider {
-	public AemetProvider( Tolomet tolomet ) {
-		super(tolomet);
-	}
+public class AemetProvider implements WindProvider {
 	
-	public void download(Station station, Calendar past, Calendar now) {
-		this.station = station;
-		this.downloader = new Downloader(this.tolomet, this);
-		this.downloader.setUrl("http://www.aemet.es/es/eltiempo/observacion/ultimosdatos.csv");
-		this.downloader.addParam("l",station.code);
-		this.downloader.addParam("datos","det");
-		this.downloader.addParam("x","h24");
-		this.downloader.execute();
+	@Override
+	public String getInfoUrl(String code) {
+		return "http://www.aemet.es/es/eltiempo/observacion/ultimosdatos?l="+code+"&datos=det";
 	}
-	
-	@Override	
-	protected void updateStation(String data) {			
+
+	@Override
+	public void refresh(Station station) {
+		downloader = new Downloader();
+		downloader.useLineBreak(false);
+		downloader.setUrl("http://www.aemet.es/es/eltiempo/observacion/ultimosdatos.csv");
+		downloader.addParam("l",station.getCode());
+		downloader.addParam("datos","det");
+		downloader.addParam("x","h24");
+		updateStation(station,downloader.download());
+	}
+
+	@Override
+	public void cancel() {
+		downloader.cancel();		
+	}
+
+	@Override
+	public int getRefresh(String code) {
+		return 60;
+	}
+		
+	private void updateStation(Station station, String data) {
+		if( data == null )
+			return;
+		
 		String[] cells = data.split("\"");
 		String dir;
-		Number date, num, last = 0;
+		long date; 
+		Number num, last = 0;
 		if( cells.length < 42 )
-			return;	
-		this.station.clear();
+			return;
+		
+		station.clear();
 		for( int i = cells.length-19; i >= 23; i-=20 ) {
 			if( cells[i].length() == 0 || cells[i+6].length() == 0 )
 				continue;
@@ -53,25 +69,17 @@ public class AemetProvider extends AbstractProvider {
 			else	// Calma
 				num = last;
 			last = num;
-			this.station.listDirection.add(date);				
-			this.station.listDirection.add(num);
+			station.getMeteo().getWindDirection().put(date, num);
 			try {	// We can go on without humidity data
-				num = (float)(int)(Float.parseFloat(cells[i+18])+0.5F);				
-				this.station.listHumidity.add(date);
-				this.station.listHumidity.add(num);
+				num = (float)(int)(Float.parseFloat(cells[i+18])+0.5F);
+				station.getMeteo().getAirHumidity().put(date, num);
 			} catch( Exception e ) {}
 			num = Float.parseFloat(cells[i+4]);
-			this.station.listSpeedMed.add(date);
-			this.station.listSpeedMed.add(num);
+			station.getMeteo().getWindSpeedMed().put(date, num);
 			num = Float.parseFloat(cells[i+8]);
-			this.station.listSpeedMax.add(date);
-			this.station.listSpeedMax.add(num);
+			station.getMeteo().getWindSpeedMax().put(date, num);
 		}				
 	}
-
-	public int getRefresh() {
-		return 60;
-	}	
 
 	private long toEpoch( String str ) {
 		Calendar cal = Calendar.getInstance();		
@@ -82,9 +90,7 @@ public class AemetProvider extends AbstractProvider {
 		cal.set(Calendar.MINUTE, Integer.parseInt(str.substring(14)));
 		cal.set(Calendar.SECOND, 0);
 	    return cal.getTimeInMillis();
-	}
-
-	public String getInfoUrl(String code) {
-		return "http://www.aemet.es/es/eltiempo/observacion/ultimosdatos?l="+code+"&datos=det";
-	}
+	}	
+	
+	private Downloader downloader;
 }

@@ -1,4 +1,4 @@
-package com.akrog.tolomet.data.providers;
+package com.akrog.tolomet.providers;
 
 import java.io.BufferedReader;
 import java.io.IOException;

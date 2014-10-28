@@ -1,20 +1,9 @@
-package com.akrog.tolomet.data;
+package com.akrog.tolomet.io;
 
 import jxl.Sheet;
 import jxl.Workbook;
 
-import com.akrog.tolomet.Tolomet;
-import com.akrog.tolomet.providers.WindProvider;
-
 public class ExcelDownloader extends Downloader {
-	public ExcelDownloader(Tolomet tolomet, WindProvider provider, String desc) {
-		super(tolomet, provider, desc);
-	}
-	
-	public ExcelDownloader(Tolomet tolomet, WindProvider provider) {
-		super(tolomet, provider);
-	}
-	
 	@Override
 	protected String parseInput(java.io.InputStream is) throws Exception {
 		Workbook workbook = Workbook.getWorkbook(is);
@@ -23,6 +12,8 @@ public class ExcelDownloader extends Downloader {
 		StringBuilder line;
 		StringBuilder result = new StringBuilder();
 		for( y = 0; y < sheet.getRows(); y++ ) {
+			if( isCancelled() )
+				return null;
 			line = new StringBuilder();
 			for( x = 0; x < sheet.getColumns(); x++ ) {
 				if( x > 0 )
@@ -30,7 +21,8 @@ public class ExcelDownloader extends Downloader {
 				line.append(sheet.getCell(x, y).getContents());
 			}
 			result.append(line);
-			result.append("\n");
+			if( usingLinebreak )
+				result.append("\n");
 		}
 		workbook.close();
 		return result.toString();
