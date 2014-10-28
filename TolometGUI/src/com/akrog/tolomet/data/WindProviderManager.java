@@ -4,13 +4,15 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 import com.akrog.tolomet.Tolomet;
-import com.akrog.tolomet.data.providers.AemetProvider;
-import com.akrog.tolomet.data.providers.EuskalmetProvider;
-import com.akrog.tolomet.data.providers.LaRiojaProvider;
-import com.akrog.tolomet.data.providers.MeteoGaliciaProvider;
-import com.akrog.tolomet.data.providers.MeteoNavarraProvider;
-import com.akrog.tolomet.data.providers.MeteocatProvider;
-import com.akrog.tolomet.data.providers.RedVigiaProvider;
+import com.akrog.tolomet.providers.AemetProvider;
+import com.akrog.tolomet.providers.EuskalmetProvider;
+import com.akrog.tolomet.providers.LaRiojaProvider;
+import com.akrog.tolomet.providers.MeteoGaliciaProvider;
+import com.akrog.tolomet.providers.MeteoNavarraProvider;
+import com.akrog.tolomet.providers.MeteocatProvider;
+import com.akrog.tolomet.providers.RedVigiaProvider;
+import com.akrog.tolomet.providers.WindProvider;
+import com.akrog.tolomet.providers.WindProviderType;
 
 public class WindProviderManager {
 	public WindProviderManager( Tolomet tolomet ) {

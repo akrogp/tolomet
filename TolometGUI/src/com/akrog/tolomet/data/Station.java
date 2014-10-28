@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import com.akrog.tolomet.providers.WindProviderType;
+
 import android.os.Bundle;
 
 public class Station {		
