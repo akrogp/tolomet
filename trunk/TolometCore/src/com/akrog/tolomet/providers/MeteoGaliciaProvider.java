@@ -9,80 +9,84 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
-import org.xmlpull.v1.XmlPullParser;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 
-import android.annotation.SuppressLint;
-import android.util.Xml;
+import com.akrog.tolomet.Station;
+import com.akrog.tolomet.io.Downloader;
 
-import com.akrog.tolomet.R;
-import com.akrog.tolomet.Tolomet;
-import com.akrog.tolomet.data.Downloader;
-import com.akrog.tolomet.data.Station;
-
-public class MeteoGaliciaProvider extends AbstractProvider {
-	public MeteoGaliciaProvider( Tolomet tolomet ) {
-		super(tolomet);
+public class MeteoGaliciaProvider implements WindProvider {
+	public MeteoGaliciaProvider() {
 		loadParams();
-		this.separator = '.';//(new DecimalFormatSymbols()).getDecimalSeparator();
+	}
+		
+	@Override
+	public void refresh(com.akrog.tolomet.Station station) {
+		String[] fields = urlParams.get(station.getCode()).split(":");
+		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+		String time = String.format("%d/%d/%d", now.get(Calendar.DAY_OF_MONTH), now.get(Calendar.MONTH)+1, now.get(Calendar.YEAR) );
+		
+		downloader = new Downloader();
+		downloader.setUrl("http://www2.meteogalicia.es/galego/observacion/estacions/contidos/DatosHistoricosXML_dezminutal.asp");
+		downloader.addParam("est", station.getCode());
+		downloader.addParam("param", fields[1]);
+		downloader.addParam("data1", time);
+		downloader.addParam("data2", time);
+		downloader.addParam("idprov", fields[2]);
+		downloader.addParam("red", fields[3]);
+		updateStation(station, downloader.download());
 	}
 	
-	@SuppressLint("DefaultLocale")
-	public void download(Station station, Calendar past, Calendar now) {
-		this.station = station;
-		String[] fields = this.urlParams.get(station.code).split(":"); 
-		String time = String.format("%d/%d/%d", now.get(Calendar.DAY_OF_MONTH), now.get(Calendar.MONTH)+1, now.get(Calendar.YEAR) );
-		this.downloader = new Downloader(this.tolomet, this);
-		this.downloader.setUrl("http://www2.meteogalicia.es/galego/observacion/estacions/contidos/DatosHistoricosXML_dezminutal.asp");
-		this.downloader.addParam("est", station.code);
-		this.downloader.addParam("param", fields[1]);
-		this.downloader.addParam("data1", time);
-		this.downloader.addParam("data2", time);
-		this.downloader.addParam("idprov", fields[2]);
-		this.downloader.addParam("red", fields[3]);
-		this.downloader.execute();
+	@Override
+	public void cancel() {
+		downloader.cancel();	
 	}
 
-	@Override
-	protected void updateStation(String data) {
-		Number date = null, val;
-		XmlPullParser parser = Xml.newPullParser();
+	protected void updateStation(Station station, String data) {
+		if( data == null )
+			return;
+		XMLEventReader rd;
 		try {
-			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);		
-			parser.setInput(new StringReader(data));
-			parser.nextTag();
+			rd = XMLInputFactory.newInstance().createXMLEventReader(new StringReader(data));
+		} catch (Exception e) {
+			return;
+		}
+		long date=0;
+		Number val;
+		try {
 			//parser.require(XmlPullParser.START_TAG, null, "Estacion");
-			this.station.clear();
-			while( parser.next() != XmlPullParser.END_DOCUMENT ) {			
-				if( parser.getEventType() != XmlPullParser.START_TAG ) {
-		            continue;
-		        }
-				String name = parser.getName();
-				if( name.equals("Valores") ) {
-					date = toEpoch(parser.getAttributeValue(null, "Data"));
+			station.clear();
+			while( rd.hasNext() ) {
+				XMLEvent event = rd.nextEvent();
+				if( !event.isStartElement() )
+					continue;				
+				StartElement element = event.asStartElement();
+				String name = element.getName().getLocalPart();
+				if( name.equals("Valores") ) {					
+					date = toEpoch(element.getAttributeByName(new QName("Data")).getValue());
 				} else if( name.equals("Medida") ) {
-					String attr = parser.getAttributeValue(null, "ID");
+					String attr = element.getAttributeByName(new QName("ID")).getValue();
 					if( attr.equals("81") ) {
-						if( parser.getAttributeValue(null, "Unidades").equals("m/s") )
-							val = Float.parseFloat(getContent(parser))*3.6F;
+						if( element.getAttributeByName(new QName("Unidades")).getValue().equals("m/s") )
+							val = Float.parseFloat(getContent(element))*3.6F;
 						else
-							val = Float.parseFloat(getContent(parser));
-						this.station.listSpeedMed.add(date);
-				        this.station.listSpeedMed.add(val);
+							val = Float.parseFloat(getContent(element));
+				        station.getMeteo().getWindSpeedMed().put(date, val);
 					} else if( attr.equals("86") ) {
-						val = (float)Integer.parseInt(getContent(parser));
-						this.station.listHumidity.add(date);
-			        	this.station.listHumidity.add(val);
+						val = (float)Integer.parseInt(getContent(element));
+			        	station.getMeteo().getAirHumidity().put(date, val);
 					} else if( attr.equals("82") || attr.equals("10124") ) {
-						val = Integer.parseInt(getContent(parser));
-						this.station.listDirection.add(date);
-				        this.station.listDirection.add(val);
+						val = Integer.parseInt(getContent(element));
+				        station.getMeteo().getWindDirection().put(date, val);
 					} else if( attr.equals("10003") ) {
-						if( parser.getAttributeValue(null, "Unidades").equals("m/s") )
-							val = Float.parseFloat(getContent(parser))*3.6F;
+						if( element.getAttributeByName(new QName("Unidades")).getValue().equals("m/s") )
+							val = Float.parseFloat(getContent(element))*3.6F;
 						else
-							val = Float.parseFloat(getContent(parser));
-						this.station.listSpeedMax.add(date);
-				        this.station.listSpeedMax.add(val);
+							val = Float.parseFloat(getContent(element));
+				        station.getMeteo().getWindSpeedMax().put(date, val);
 					}
 				}
 			}
@@ -91,7 +95,8 @@ public class MeteoGaliciaProvider extends AbstractProvider {
 		}
 	}
 
-	public int getRefresh() {
+	@Override
+	public int getRefresh(String code) {
 		return 10;
 	}		
 	
@@ -110,15 +115,15 @@ public class MeteoGaliciaProvider extends AbstractProvider {
 	    return cal.getTimeInMillis();
 	}
 	
-	private String getContent( XmlPullParser parser ) {
-		String val = parser.getAttributeValue(null, "Valor"); 	
+	private String getContent( StartElement element ) {
+		String val = element.getAttributeByName(new QName("Valor")).getValue(); 	
 		return val.replace(',', this.separator);
 	}
 	
 	private void loadParams() {
-		this.urlParams = new HashMap<String, String>();
+		urlParams = new HashMap<String, String>();
 		
-		InputStream inputStream = this.tolomet.getResources().openRawResource(R.raw.meteogalicia);
+		InputStream inputStream = getClass().getResourceAsStream("/res/meteogalicia.csv");
 		InputStreamReader in = new InputStreamReader(inputStream);
 		BufferedReader rd = new BufferedReader(in);
 		String line;
@@ -126,17 +131,19 @@ public class MeteoGaliciaProvider extends AbstractProvider {
 		try {
 			while( (line=rd.readLine()) != null ) {
 				fields = line.split(":");
-				this.urlParams.put(fields[0], line);
+				urlParams.put(fields[0], line);
 			}
 			rd.close();
 		} catch( Exception e ) {			
 		}
     }
 	
+	@Override
 	public String getInfoUrl(String code) {
 		return "http://www2.meteogalicia.es/galego/observacion/estacions/estacionsinfo.asp?Nest="+code;
 	}
 	
 	private Map<String,String> urlParams;
-	private char separator;
+	private final char separator = '.';
+	private Downloader downloader;	
 }
