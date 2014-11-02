@@ -3,55 +3,52 @@ package com.akrog.tolomet.providers;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-import android.annotation.SuppressLint;
+import com.akrog.tolomet.Station;
+import com.akrog.tolomet.io.Downloader;
 
-import com.akrog.tolomet.Tolomet;
-import com.akrog.tolomet.data.Downloader;
-import com.akrog.tolomet.data.Station;
-
-public class MeteocatProvider extends AbstractProvider {
-	public MeteocatProvider( Tolomet tolomet ) {
-		super(tolomet);
+public class MeteocatProvider implements WindProvider {
+	@Override
+	public void refresh(Station station) {
+		downloader = new Downloader();
+		downloader.setMethod("POST");
+		downloader.useLineBreak(false);
+		downloader.setUrl("http://www.meteo.cat/xema/AppJava/Detall24Estacio.do");
+		downloader.addParam("idEstacio", station.getCode());
+		downloader.addParam("team", "ObservacioTeledeteccio");
+		downloader.addParam("inputSource", "DadesActualsEstacio");
+		updateStation(station,downloader.download());
 	}
 	
-	@SuppressLint("DefaultLocale")
-	public void download(Station station, Calendar past, Calendar now) {
-		this.station = station;
-		this.downloader = new Downloader(this.tolomet, this);
-		//this.downloader.useLineBreak(true);
-		this.downloader.setMethod("POST");
-		this.downloader.setUrl("http://www.meteo.cat/xema/AppJava/Detall24Estacio.do");
-		this.downloader.addParam("idEstacio", station.code);
-		this.downloader.addParam("team", "ObservacioTeledeteccio");
-		this.downloader.addParam("inputSource", "DadesActualsEstacio");
-		this.downloader.execute();
+	@Override
+	public void cancel() {
+		downloader.cancel();	
 	}
 
-	@Override
-	protected void updateStation(String data) {
-		Number date = null, val;
+	protected void updateStation(Station station, String data) {
+		if( data == null )
+			return;
+		
+		long date; 
+		Number val;
 		String fields[] = data.split("<td");
 		if( fields.length < 11 )			
 			return;
-		this.station.clear();
+		station.clear();
 		for( int i = 1; i < fields.length; i += 10 ) {
 			date = toEpoch(getContent(fields[i],2));
 			val = Integer.parseInt(getContent(fields[i+6],4));
-			this.station.listDirection.add(0,date);
-			this.station.listDirection.add(1,val);
+			station.getMeteo().getWindDirection().put(date, val);
 			val = Float.parseFloat(getContent(fields[i+6],2).replaceAll(" -", ""))*3.6F;
-			this.station.listSpeedMed.add(0,date);
-			this.station.listSpeedMed.add(1,val);
+			station.getMeteo().getWindSpeedMed().put(date, val);
 			val = Float.parseFloat(getContent(fields[i+7],2))*3.6F;
-			this.station.listSpeedMax.add(0,date);
-			this.station.listSpeedMax.add(1,val);
+			station.getMeteo().getWindSpeedMax().put(date, val);
 			val = (float)Integer.parseInt(getContent(fields[i+4],2));
-			this.station.listHumidity.add(0,date);
-			this.station.listHumidity.add(1,val);
+			station.getMeteo().getAirHumidity().put(date, val);
 		}						
 	}
 
-	public int getRefresh() {
+	@Override
+	public int getRefresh( String code ) {
 		return 30;
 	}		
 	
@@ -75,7 +72,10 @@ public class MeteocatProvider extends AbstractProvider {
 		return string;
 	}
 	
+	@Override
 	public String getInfoUrl(String code) {
 		return "http://www.meteo.cat/xema/AppJava/SeleccioPerComarca.do";
 	}
+	
+	private Downloader downloader; 
 }

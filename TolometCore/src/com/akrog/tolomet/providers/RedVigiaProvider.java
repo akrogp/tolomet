@@ -5,38 +5,36 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.Calendar;
 
-import android.annotation.SuppressLint;
+import com.akrog.tolomet.Station;
+import com.akrog.tolomet.io.Downloader;
 
-import com.akrog.tolomet.Tolomet;
-import com.akrog.tolomet.data.Downloader;
-import com.akrog.tolomet.data.Station;
-
-public class RedVigiaProvider extends AbstractProvider {	
-	public RedVigiaProvider( Tolomet tolomet ) {
-		super(tolomet);
-		this.separator = '.';
+public class RedVigiaProvider implements WindProvider {	
+	@Override
+	public void refresh(com.akrog.tolomet.Station station) {
+		downloader = new Downloader();
+		downloader.useLineBreak(true);
+		downloader.setUrl("http://www.redvigia.es/Historico.aspx");
+		downloader.addParam("codigoBoya", station.getCode());
+		downloader.addParam("numeroDatos", "5");
+		downloader.addParam("tipo", "1");
+		downloader.addParam("variable", "1");
+		updateStation(station, downloader.download());
 	}
 	
-	@SuppressLint("DefaultLocale")
-	public void download(Station station, Calendar past, Calendar now) {
-		this.station = station;
-		this.downloader = new Downloader(this.tolomet, this);
-		this.downloader.useLineBreak(true);
-		this.downloader.setUrl("http://www.redvigia.es/Historico.aspx");
-		this.downloader.addParam("codigoBoya", station.code);
-		this.downloader.addParam("numeroDatos", "5");
-		this.downloader.addParam("tipo", "1");
-		this.downloader.addParam("variable", "1");
-		this.downloader.execute();
+	@Override
+	public void cancel() {
+		downloader.cancel();
 	}
 
-	@Override
-	protected void updateStation(String data) {		
+	protected void updateStation(Station station, String data) {
+		if( data == null )
+			return;
 		try {
 			BufferedReader rd = new BufferedReader(new StringReader(data));
 			String line;
 			String[] fields;
-			Number date, val;
+			long date;
+			Number val;
 			while( (line=rd.readLine()) != null ) {
 				if( line.contains("Velocidad") )
 					break;
@@ -53,20 +51,21 @@ public class RedVigiaProvider extends AbstractProvider {
 					continue;
 				date = toEpoch(getContent(fields[1],false));
 				val = Integer.parseInt(getContent(fields[4],true).replaceAll("\\..*", ""));
-		        updateList(this.station.listDirection, date, val);
+		        station.getMeteo().getWindDirection().put(date, val);
 		        val = Float.parseFloat(getContent(fields[2],true))*3.6F;
-		        updateList(this.station.listSpeedMed, date, val);
+		        station.getMeteo().getWindSpeedMed().put(date, val);
 		        val = Float.parseFloat(getContent(fields[3],true))*3.6F;
-		        updateList(this.station.listSpeedMax, date, val);
+		        station.getMeteo().getWindSpeedMax().put(date, val);
 		        val = (float)(int)(Float.parseFloat(getContent(fields[5],true))+0.5f);
-	        	updateList(this.station.listHumidity, date, val);
+	        	station.getMeteo().getAirHumidity().put(date, val);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}				
 	}		
 
-	public int getRefresh() {
+	@Override
+	public int getRefresh( String code ) {
 		return 60;
 	}		
 	
@@ -93,9 +92,11 @@ public class RedVigiaProvider extends AbstractProvider {
 		return str.replace(',', this.separator); 	
 	}	
 	
+	@Override
 	public String getInfoUrl(String code) {
 		return "http://www.redvigia.es/DetalleBoya.aspx?codigoBoya="+code;
 	}
 	
-	private char separator;
+	private final char separator = '.';
+	private Downloader downloader;
 }
