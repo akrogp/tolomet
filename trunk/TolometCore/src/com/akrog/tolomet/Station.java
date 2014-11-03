@@ -25,18 +25,6 @@ public class Station {
 		this.special = special;		
 	}
 	
-	public Station( String str ) {
-		String[] fields = str.split(":");		
-    	this.code = fields[0];
-    	this.name = fields[1];
-    	this.providerType = WindProviderType.values()[Integer.parseInt(fields[2])];
-    	this.region = Integer.parseInt(fields[3]);    	
-    	this.latitude = Double.parseDouble(fields[4]);
-    	this.longitude = Double.parseDouble(fields[5]);
-    	this.special = -1;
-    	this.distance = -1.0F;
-	}	
-	
 	public Station( String name, String code, int region, boolean favorite, WindProviderType provider, double lat, double lon ) {
 		this.name = name;
 		this.code = code;
@@ -70,7 +58,7 @@ public class Station {
 	}
 	
 	public void merge( Station station ) {
-		if( station == null )
+		if( station == null || station.isSpecial() )
 			return;
 		meteo.merge(station.getMeteo());
 	}
@@ -187,24 +175,5 @@ public class Station {
 
 	public void setDistance(float distance) {
 		this.distance = distance;
-	}
-
-	public int getRefresh() {
-		return getProvider().getRefresh(code);
-	}
-	
-	public String getInforUrl() {
-		return getProvider().getInfoUrl(code);
-	}
-	
-	public boolean refresh() {
-		if( !isEmpty() && ((System.currentTimeMillis()-getStamp())/60000L < getRefresh()) )
-			return false;
-		getProvider().refresh(this);
-		return true;
-	}
-	
-	public void cancel() {
-		getProvider().cancel();
 	}
 }

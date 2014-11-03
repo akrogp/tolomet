@@ -3,7 +3,7 @@ package com.akrog.tolomet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Data {
+public class Measurement {
 	private final Map<Long, Number> map = new LinkedHashMap<Long, Number>();
 	
 	public void put(long time, Number value ) {
@@ -36,7 +36,7 @@ public class Data {
 		return map.isEmpty();
 	}
 	
-	public void merge(Data data) {
+	public void merge(Measurement data) {
 		map.putAll(data.map);
 	}
 }
