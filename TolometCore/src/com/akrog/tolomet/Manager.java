@@ -3,7 +3,9 @@ package com.akrog.tolomet;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import com.akrog.tolomet.providers.WindProviderType;
@@ -56,6 +58,15 @@ public class Manager {
 		} catch (IOException e) {}
 	}
 	
+	public void selectAll() {
+		selStations.clear();
+		selStations.addAll(allStations);
+	}
+	
+	public void selectNone() {
+		selStations.clear();
+	}
+	
 	public void selectRegion( int code ) {
 		selStations.clear();
 		for( Station station : allStations )
@@ -77,7 +88,7 @@ public class Manager {
 				selStations.add(station);
 	}
 	
-	public void selectClose() {
+	public void selectNearest() {
 		selStations.clear();
 		for( Station station : allStations )
 			if( station.getDistance() < 50000.0F )
@@ -121,5 +132,43 @@ public class Manager {
 	
 	public void cancel() {
 		currentStation.getProvider().cancel();
+	}
+	
+	public String getSummary( boolean large ) {
+		if( currentStation == null )
+			return null;
+		
+		Number hum = currentStation.getMeteo().getAirHumidity().getLast();
+		String date = getStamp();
+		int dir = currentStation.getMeteo().getWindDirection().getLast().intValue();
+		String strDir = parseDirection(dir);
+		float med = currentStation.getMeteo().getWindSpeedMed().getLast().floatValue();
+		float max = currentStation.getMeteo().getWindSpeedMax().getLast().floatValue();
+		if( hum == null )
+			return String.format("%s | %dº (%s) | %.1f~%.1f km/h", date, dir, strDir, med, max );
+		if( large )
+    		return String.format("%s | %dº (%s) | %.0f %% | %.1f~%.1f km/h", date, dir, strDir, hum, med, max );
+    	return String.format("%s|%dº(%s)|%.0f%%|%.1f~%.1f", date, dir, strDir, hum, med, max );
+	}
+		
+	public String getStamp() {
+		Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(currentStation.getMeteo().getWindDirection().getStamp());
+        SimpleDateFormat df = new SimpleDateFormat();
+        df.applyPattern("HH:mm");
+        return df.format(cal.getTime());
+	}
+	
+	public static String parseDirection( int degrees ) {
+		String[] vals = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
+        double deg = degrees + 11.25;
+		while( deg >= 360.0 )
+			deg -= 360.0;
+		int index = (int)(deg/22.5);
+		if( index < 0 )
+			index = 0;
+		else if( index >= 16 )
+			index = 15;
+		return vals[index];
 	}
 }
