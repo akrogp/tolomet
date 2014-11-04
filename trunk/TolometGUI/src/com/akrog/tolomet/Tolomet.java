@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -26,16 +27,14 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.akrog.tolomet.data.Station;
-import com.akrog.tolomet.data.StationManager;
-import com.akrog.tolomet.data.WindProviderManager;
 import com.akrog.tolomet.gae.GaeClient;
 import com.akrog.tolomet.gae.Motd;
 import com.akrog.tolomet.view.AboutDialog;
 import com.akrog.tolomet.view.MyCharts;
 import com.akrog.tolomet.view.MySpinner;
-import com.akrog.tolomet.view.Summary;
 
 public class Tolomet extends Activity
 	implements OnItemSelectedListener, View.OnClickListener, OnCheckedChangeListener, OnSharedPreferenceChangeListener {
@@ -48,23 +47,23 @@ public class Tolomet extends Activity
         
         setContentView(R.layout.activity_tolomet);
 
-        this.stations = new StationManager(this, savedInstanceState);
-        this.provider = new WindProviderManager(this);
-        this.gaeClient = new GaeClient(this);
-        this.summary = new Summary(this, this.stations);
+        // TO-DO: load state from savedInstanceState in model
+        gaeClient = new GaeClient(this);
         
-        this.spinner = new MySpinner(this, this.stations, savedInstanceState);               
+        spinner = new MySpinner(this, this.stations, savedInstanceState);
+        
+        summary = (TextView)findViewById(R.id.textView1);
 
-        this.buttonRefresh = (ImageButton)findViewById(R.id.button1);
-        this.buttonRefresh.setOnClickListener(this);
-        this.buttonInfo = (ImageButton)findViewById(R.id.button2);
-        this.buttonInfo.setOnClickListener(this);
+        buttonRefresh = (ImageButton)findViewById(R.id.button1);
+        buttonRefresh.setOnClickListener(this);
+        buttonInfo = (ImageButton)findViewById(R.id.button2);
+        buttonInfo.setOnClickListener(this);
         
-        this.favorite = (CheckBox)findViewById(R.id.favorite_button);
-        this.favorite.setChecked(false);
-        this.favorite.setOnCheckedChangeListener(this);
+        favorite = (CheckBox)findViewById(R.id.favorite_button);
+        favorite.setChecked(false);
+        favorite.setOnCheckedChangeListener(this);
         
-        this.charts = new MyCharts(this, this.stations);
+        charts = new MyCharts(this, this.stations);
         
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).registerOnSharedPreferenceChangeListener(this);
     }
@@ -129,9 +128,9 @@ public class Tolomet extends Activity
     
     public void redraw() {
     	this.charts.redraw();
-        this.summary.update();
+        updateSummary();
         this.favorite.setChecked(this.stations.current.favorite);
-    }
+    }    
     
     /*public void postRedraw() {
     	runOnUiThread(new Runnable() {
@@ -140,6 +139,13 @@ public class Tolomet extends Activity
             }
         });
     }*/
+    
+    private void updateSummary() {
+    	if( model.getCurrentStation().isEmpty() )
+    		summary.setText(getString(R.string.NoData));
+    	else
+    		summary.setText(model.getSummary(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE));
+    }
     
     // Buttons events
     
@@ -328,10 +334,9 @@ public class Tolomet extends Activity
 	private ImageButton buttonRefresh, buttonInfo;
 	private MyCharts charts;
 	private MySpinner spinner;
-	private Summary summary;
+	private TextView summary;
 	private CheckBox favorite;
 	private GaeClient gaeClient;
-	private StationManager stations;	
-	private WindProviderManager provider;
+	private final Manager model = new Manager();
 	public static Tolomet instance = null;	
 }

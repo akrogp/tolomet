@@ -1,49 +1,56 @@
 package com.akrog.tolomet.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.R;
+import com.akrog.tolomet.Station;
 import com.akrog.tolomet.Tolomet;
-import com.akrog.tolomet.data.Station;
-import com.akrog.tolomet.data.StationManager;
 
-public class MySpinner {
+public class MySpinner implements OnItemSelectedListener {
 	private Tolomet tolomet;
-	private StationManager stations;
+	private Manager model;
 	private Spinner spinner;
 	private ArrayAdapter<Station> adapter;
-	private SpinnerType spinnerType;
+	private Type spinnerType;
 	private char vowel = '#';
 	private int region = -1;
+	private final List<Station> stations = new ArrayList<Station>();
 	
-	public MySpinner( Tolomet tolomet, StationManager data, Bundle bundle ) {
+	public MySpinner( Tolomet tolomet, Manager model, Bundle bundle ) {
 		this.tolomet = tolomet;
-		this.stations = data;
+		this.model = model;
 		
-		SpinnerState spinnerState = loadState( bundle );                       
-        this.spinner = (Spinner)this.tolomet.findViewById(R.id.spinner1);        
-        this.adapter = new ArrayAdapter<Station>(this.tolomet,android.R.layout.simple_spinner_item,this.stations.spinner);
-        this.adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    	this.spinner.setAdapter(this.adapter);
+		State spinnerState = loadState( bundle );                       
+        spinner = (Spinner)tolomet.findViewById(R.id.spinner1);        
+        adapter = new ArrayAdapter<Station>(tolomet,android.R.layout.simple_spinner_item,stations);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    	spinner.setAdapter(adapter);
     	//setSpinnerType(spinnerState.Type, spinnerState.Selection, savedInstanceState == null ? true : false);
-    	setType(spinnerState.type, spinnerState.selection, false);
-        this.spinner.setOnItemSelectedListener(this.tolomet);
+    	setType(spinnerState.getType(), spinnerState.getSelection(), false);
+        spinner.setOnItemSelectedListener(this);
 	}
 	
-	private SpinnerState loadState( Bundle bundle ) {
-		SharedPreferences settings = this.tolomet.getPreferences(0);
-    	SpinnerState spinner = new SpinnerState();
-		spinner.type = SpinnerType.values()[settings.getInt("spinner-type", SpinnerType.StartMenu.getValue())-SpinnerType.StartMenu.getValue()];
-    	spinner.selection = settings.getInt("spinner-sel", 0);
-    	this.vowel = settings.getString("spinner-vowel", "#").charAt(0);
-    	this.region = settings.getInt("spinner-region", -1);
-    	if( spinner.type == SpinnerType.VowelSations )
-    		this.stations.loadVowelStations(this.vowel);
-    	else if( spinner.type == SpinnerType.RegionStations )
-    		this.stations.loadRegionStations(this.region);
+	private State loadState( Bundle bundle ) {
+		SharedPreferences settings = tolomet.getPreferences(0);
+    	State spinner = new State();
+		spinner.setType(Type.values()[settings.getInt("spinner-type", Type.StartMenu.getValue())-Type.StartMenu.getValue()]);
+    	spinner.setSelection(settings.getInt("spinner-sel", 0));
+    	vowel = settings.getString("spinner-vowel", "#").charAt(0);
+    	region = settings.getInt("spinner-region", -1);
+    	if( spinner.getType() == Type.VowelSations )
+    		model.selectVowel(vowel);
+    	else if( spinner.getType() == Type.RegionStations )
+    		model.selectRegion(region);
 		return spinner;
 	}
 	
@@ -60,26 +67,29 @@ public class MySpinner {
     	editor.commit();
 	}
 
-	public SpinnerType getType() {
+	public Type getType() {
 		return this.spinnerType;
 	}
 	
-	private void setType( SpinnerType type, int sel ) {
+	private void setType( Type type, int sel ) {
     	setType(type, sel, true);
     }
 	
-	private void setType( SpinnerType type, int sel, boolean popup ) {
-		this.stations.spinner.clear();
+	private void setType( Type type, int sel, boolean popup ) {
+		stations.clear();
 		switch( type ) {
 			case AllStations:
-				this.stations.spinner.addAll(this.stations.all);
+				model.selectAll();
+				stations.addAll(model.getSelStations());
 				break;
 			case CloseStations:
-				this.stations.loadCloseStations();
-				this.stations.spinner.addAll(this.stations.nearest);
+				//this.stations.loadCloseStations();
+				model.selectNearest();
+				stations.addAll(model.getSelStations());
 				break;
 			case FavoriteStations:
-				this.stations.spinner.addAll(this.stations.favorites);
+				model.selectFavorites();
+				stations.addAll(model.getSelStations());
 				break;
 			case RegionStations:
 				this.stations.spinner.addAll(this.stations.nearest);
@@ -107,26 +117,26 @@ public class MySpinner {
 	public void setType( Station station ) {
 		if( station.special == 0 )
 			return;
-		if( station.special != SpinnerType.CloseStations.getValue() && this.spinnerType == SpinnerType.CloseStations ) 
+		if( station.special != Type.CloseStations.getValue() && this.spinnerType == Type.CloseStations ) 
 			this.stations.clearDistance();
-		if( station.special == SpinnerType.StartMenu.getValue() ) {
-			if( this.spinnerType != SpinnerType.StartMenu )
-				setType( SpinnerType.StartMenu, 0 );
+		if( station.special == Type.StartMenu.getValue() ) {
+			if( this.spinnerType != Type.StartMenu )
+				setType( Type.StartMenu, 0 );
 			return;
 		}
 		if( station.special > 200 ) { // Vowel
 			this.vowel = (char)(station.special-200);
 			this.stations.loadVowelStations(this.vowel);
-			setType( SpinnerType.VowelSations, 0 );
+			setType( Type.VowelSations, 0 );
 			return;
 		}
-		if( station.special < SpinnerType.StartMenu.getValue() ) {	// Region
+		if( station.special < Type.StartMenu.getValue() ) {	// Region
 			this.region = station.special;
 			this.stations.loadRegionStations(this.region);
-			setType( SpinnerType.RegionStations, 0 );			
+			setType( Type.RegionStations, 0 );			
 			return;
 		}
-		setType( SpinnerType.values()[station.special-SpinnerType.StartMenu.getValue()], 0 );
+		setType( Type.values()[station.special-Type.StartMenu.getValue()], 0 );
 	}
 	
 	public void notifyDataSetChanged() {
@@ -135,5 +145,62 @@ public class MySpinner {
 	
 	public Station getSelectedItem() {
 		return (Station)this.spinner.getSelectedItem();
+	}
+
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int position,
+			long id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> parent) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public static enum Type {
+		StartMenu(100),
+		AllStations(101),
+		FavoriteStations(102),
+		CloseStations(103),
+		RegionStations(104),
+		VowelSations(105),
+		Regions(106),
+		Vowels(107);
+		
+		private final int value;
+		
+		private Type(int value) {
+	        this.value = value;
+	    }
+		
+		public int getValue() {
+	        return value;
+	    }
+	}
+	
+	public static class State {
+		private int selection;
+		private Type type;
+		
+		public State() {
+			setSelection(0);
+			setType(Type.StartMenu);
+		}
+		
+		public int getSelection() {
+			return selection;
+		}
+		public void setSelection(int selection) {
+			this.selection = selection;
+		}
+		public Type getType() {
+			return type;
+		}
+		public void setType(Type type) {
+			this.type = type;
+		}
 	}
 }

@@ -45,7 +45,7 @@ public class StationManager {
         	this.nearest.add(start);
         	this.regions.add(start);
         	this.vowels.add(start);
-        	start = new Station("["+this.tolomet.getString(R.string.menu_start)+"]", SpinnerType.StartMenu.getValue());
+        	start = new Station("["+this.tolomet.getString(R.string.menu_start)+"]", Type.StartMenu.getValue());
         	this.all.add(start);
         	this.favorites.add(start);
         	this.nearest.add(start);
@@ -109,11 +109,11 @@ public class StationManager {
 	}
     
     private void loadOptions() {
-    	this.options.add(new Station(this.tolomet.getString(R.string.menu_fav),SpinnerType.FavoriteStations.getValue()));
-    	this.options.add(new Station(this.tolomet.getString(R.string.menu_reg),SpinnerType.Regions.getValue()));    	    	   
-    	this.options.add(new Station(this.tolomet.getString(R.string.menu_close),SpinnerType.CloseStations.getValue()));
-    	this.options.add(new Station(this.tolomet.getString(R.string.menu_index),SpinnerType.Vowels.getValue()));
-    	this.options.add(new Station(this.tolomet.getString(R.string.menu_all),SpinnerType.AllStations.getValue()));
+    	this.options.add(new Station(this.tolomet.getString(R.string.menu_fav),Type.FavoriteStations.getValue()));
+    	this.options.add(new Station(this.tolomet.getString(R.string.menu_reg),Type.Regions.getValue()));    	    	   
+    	this.options.add(new Station(this.tolomet.getString(R.string.menu_close),Type.CloseStations.getValue()));
+    	this.options.add(new Station(this.tolomet.getString(R.string.menu_index),Type.Vowels.getValue()));
+    	this.options.add(new Station(this.tolomet.getString(R.string.menu_all),Type.AllStations.getValue()));
 	}
     
     private void loadVowels() {

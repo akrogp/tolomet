@@ -20,6 +20,12 @@ public class Measurement {
 		return getTimes()[size()-1];
 	}
 	
+	public Number getLast() {
+		if( isEmpty() )
+			return null;
+		return getValues()[size()-1];
+	}
+	
 	public Number[] getValues() {
 		return map.values().toArray(new Number[0]);
 	}
