@@ -1,16 +1,16 @@
 package com.akrog.tolomet.view;
 
-import java.util.List;
+import com.akrog.tolomet.Measurement;
 
 public class Graph {
-	private final List<Number> data;
+	private final Measurement data;
     private final String title;
     private final int lineColor;
     private final int pointColor;
     private final float wrap;
     private int yAxis= 0;
  
-    public Graph( List<Number> data, float wrap, String title, int lineColor, int pointColor ) {
+    public Graph( Measurement data, float wrap, String title, int lineColor, int pointColor ) {
         this.data = data;
         this.wrap = wrap;
         this.title = title;
@@ -19,19 +19,19 @@ public class Graph {
     }
     
     public String getTitle() {
-        return this.title;
+        return title;
     }
  
     public int size() {
-        return this.data.size()/2;
+        return data.size();
     }
  
     public long getX(int index) {
-        return this.data.get(index*2).longValue();
+        return data.getTimes()[index];
     }
  
     public float getY(int index) {
-    	return this.data.get(index*2+1).floatValue();
+    	return data.getValues()[index].floatValue();
     }
 
 	public int getLineColor() {

@@ -9,10 +9,11 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
 
+import com.akrog.tolomet.Manager;
+import com.akrog.tolomet.Meteo;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.SettingsActivity;
 import com.akrog.tolomet.Tolomet;
-import com.akrog.tolomet.data.StationManager;
 
 public class MyCharts {
 	private static final int LINE_BLUE=Color.rgb(0, 0, 200);
@@ -24,7 +25,7 @@ public class MyCharts {
 	private static final int LINE_GRAY=Color.rgb(200, 200, 200);
 	private static final int POINT_GRAY=Color.rgb(100, 100, 100);
 	private Tolomet tolomet;
-	private StationManager stations;
+	private Manager model;
 	private MyPlot chartWind, chartAir;
 	static final float fontSize = 16;
 	private int minutes = 10;
@@ -41,84 +42,86 @@ public class MyCharts {
 	private Marker markerEast = new Marker(90, "90º (E)", LINE_BLUE);
 	private Marker markerWest = new Marker(270, "270º (W)", LINE_BLUE);*/
 
-	public MyCharts( Tolomet tolomet, StationManager data ) {
+	public MyCharts( Tolomet tolomet, Manager model ) {
 		this.tolomet = tolomet;
-		this.stations = data;
+		this.model = model;
 		createCharts();
 	}	
 	
 	private int getSpeedRange() {
-		if( this.speedRange == -1 ) {
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.tolomet);
-			this.speedRange = Integer.parseInt(prefs.getString(SettingsActivity.KEY_SPEED_RANGE, this.tolomet.getString(R.string.pref_rangeDefault)));
+		if( speedRange == -1 ) {
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(tolomet);
+			speedRange = Integer.parseInt(prefs.getString(SettingsActivity.KEY_SPEED_RANGE, tolomet.getString(R.string.pref_rangeDefault)));
 		}
 		return this.speedRange;
 	}
 	
 	private void updateMarkers() {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.tolomet);
-		int pos = Integer.parseInt(prefs.getString(SettingsActivity.KEY_MIN_MARKER, this.tolomet.getString(R.string.pref_minMarkerDefault))); 
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(tolomet);
+		int pos = Integer.parseInt(prefs.getString(SettingsActivity.KEY_MIN_MARKER, tolomet.getString(R.string.pref_minMarkerDefault))); 
 		markerVmin.setPos(pos);
 		markerVmin.setLabel(pos+"");
-		pos = Integer.parseInt(prefs.getString(SettingsActivity.KEY_MAX_MARKER, this.tolomet.getString(R.string.pref_maxMarkerDefault))); 
+		pos = Integer.parseInt(prefs.getString(SettingsActivity.KEY_MAX_MARKER, tolomet.getString(R.string.pref_maxMarkerDefault))); 
 		markerVmax.setPos(pos);
 		markerVmax.setLabel(pos+"");
 	}
 	
 	@SuppressLint("SimpleDateFormat")
 	private void createCharts() {				
-    	this.chartAir = (MyPlot)this.tolomet.findViewById(R.id.chartDirection);
-        this.chartAir.setTitle(this.tolomet.getString(R.string.DirectionHumidity));
-        this.chartAir.setY1Label("Temp. (grados)");        
-        this.chartAir.setY1Range(0, 30);        
-        this.chartAir.setStepsY1(6);
-        this.chartAir.setY2Label("Hum. (%)");
-        this.chartAir.setY2Range(10, 110);
-        this.chartAir.setY3Range(813, 1113);
-        this.chartAir.setXLabel(this.tolomet.getString(R.string.Time));        
-        this.chartAir.setStepsX(4);
-        this.chartAir.setTicksPerStepX(6);       
+    	chartAir = (MyPlot)tolomet.findViewById(R.id.chartDirection);
+        chartAir.setTitle(tolomet.getString(R.string.DirectionHumidity));
+        chartAir.setY1Label("Temp. (grados)");        
+        chartAir.setY1Range(0, 30);        
+        chartAir.setStepsY1(6);
+        chartAir.setY2Label("Hum. (%)");
+        chartAir.setY2Range(10, 110);
+        chartAir.setY3Range(813, 1113);
+        chartAir.setXLabel(tolomet.getString(R.string.Time));        
+        chartAir.setStepsX(4);
+        chartAir.setTicksPerStepX(6);       
         
-        this.chartAir.addY1Graph(new Graph(
-            this.stations.current.listTemperature, -1.0f, "Temp.", LINE_RED, POINT_RED));
-        this.chartAir.addY2Graph(new Graph(
-        	this.stations.current.listHumidity, -1.0f, "% Hum.", LINE_BLUE, POINT_BLUE));
-        this.chartAir.addY3Graph(new Graph(
-            this.stations.current.listPressure, -1.0f, "Pres.", LINE_GRAY, POINT_GRAY));
+        Meteo meteo = model.getCurrentStation().getMeteo(); 
         
-        this.chartAir.addY2Marker(markerCloud);
-        this.chartAir.addY3Marker(markerSea);
-        this.chartAir.addY3Marker(markerLow);
-        //this.chartAir.addY3Marker(markerHigh);
+        chartAir.addY1Graph(new Graph(
+            meteo.getAirTemperature(), -1.0f, "Temp.", LINE_RED, POINT_RED));
+        chartAir.addY2Graph(new Graph(
+        	meteo.getAirHumidity(), -1.0f, "% Hum.", LINE_BLUE, POINT_BLUE));
+        chartAir.addY3Graph(new Graph(
+            meteo.getAirPressure(), -1.0f, "Pres.", LINE_GRAY, POINT_GRAY));
         
-        this.chartWind = (MyPlot)this.tolomet.findViewById(R.id.chartSpeed);      
-        this.chartWind.setTitle(this.tolomet.getString(R.string.Speed));
-        this.chartWind.setY1Label("Vel. (km/h)");        
-        this.chartWind.setY1Range(0, getSpeedRange());
-        this.chartWind.setStepsY1(getSpeedRange()/5);
-        this.chartWind.setY2Range(0, 360);
-        this.chartWind.setY2Label("Dir. (grados)");        
-        this.chartWind.setXLabel(this.tolomet.getString(R.string.Time));        
-        this.chartWind.setStepsX(4);
-        this.chartWind.setTicksPerStepX(6); 
+        chartAir.addY2Marker(markerCloud);
+        chartAir.addY3Marker(markerSea);
+        chartAir.addY3Marker(markerLow);
+        //chartAir.addY3Marker(markerHigh);
         
-        this.chartWind.addY1Graph(new Graph(
-        	this.stations.current.listSpeedMed, -1.0f, "Vel. Med.", LINE_GREEN, POINT_GREEN));
-        this.chartWind.addY1Graph(new Graph(
-        	this.stations.current.listSpeedMax, -1.0f, "Vel. Máx.", LINE_RED, POINT_RED)); 
-        this.chartWind.addY2Graph(new Graph(
-        	this.stations.current.listDirection, 180.0f, "Dir. Med.", LINE_BLUE, POINT_BLUE));        
+        chartWind = (MyPlot)tolomet.findViewById(R.id.chartSpeed);      
+        chartWind.setTitle(tolomet.getString(R.string.Speed));
+        chartWind.setY1Label("Vel. (km/h)");        
+        chartWind.setY1Range(0, getSpeedRange());
+        chartWind.setStepsY1(getSpeedRange()/5);
+        chartWind.setY2Range(0, 360);
+        chartWind.setY2Label("Dir. (grados)");        
+        chartWind.setXLabel(tolomet.getString(R.string.Time));        
+        chartWind.setStepsX(4);
+        chartWind.setTicksPerStepX(6); 
+        
+        chartWind.addY1Graph(new Graph(
+        	meteo.getWindSpeedMed(), -1.0f, "Vel. Med.", LINE_GREEN, POINT_GREEN));
+        chartWind.addY1Graph(new Graph(
+        	meteo.getWindSpeedMax(), -1.0f, "Vel. Máx.", LINE_RED, POINT_RED)); 
+        chartWind.addY2Graph(new Graph(
+        	meteo.getWindDirection(), 180.0f, "Dir. Med.", LINE_BLUE, POINT_BLUE));        
         
         updateMarkers();
-        this.chartWind.addY1Marker(markerVmin);
-        this.chartWind.addY1Marker(markerVmax);
-        /*this.chartWind.addY2Marker(markerSouth);
-        this.chartWind.addY2Marker(markerNorth);
-        this.chartWind.addY2Marker(markerEast);
-        this.chartWind.addY2Marker(markerWest);*/
+        chartWind.addY1Marker(markerVmin);
+        chartWind.addY1Marker(markerVmax);
+        /*chartWind.addY2Marker(markerSouth);
+        chartWind.addY2Marker(markerNorth);
+        chartWind.addY2Marker(markerEast);
+        chartWind.addY2Marker(markerWest);*/
         
-        this.chartAir.connectXRanges(this.chartWind);
-        this.chartWind.connectXRanges(this.chartAir);
+        chartAir.connectXRanges(chartWind);
+        chartWind.connectXRanges(chartAir);
         
         //updateDomainBoundaries();
         setRefresh(15);
@@ -128,7 +131,7 @@ public class MyCharts {
     	Calendar cal = Calendar.getInstance();
     	cal.set(Calendar.SECOND, 0);
     	cal.set(Calendar.MILLISECOND, 0);
-    	int minute = (cal.get(Calendar.MINUTE)+this.minutes-1)/this.minutes*this.minutes;
+    	int minute = (cal.get(Calendar.MINUTE)+minutes-1)/minutes*minutes;
     	int hour = cal.get(Calendar.HOUR_OF_DAY);
     	hour += minute/60;
     	minute -= minute/60*60;
@@ -136,35 +139,35 @@ public class MyCharts {
     	cal.set(Calendar.HOUR_OF_DAY, hour );
     	Date date2 = cal.getTime();
         Date date1 = new Date();
-        date1.setTime(date2.getTime()-this.hours*60*60*1000);
+        date1.setTime(date2.getTime()-hours*60*60*1000);
         cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         cal.set(Calendar.SECOND, 0);
     	cal.set(Calendar.MILLISECOND, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.HOUR_OF_DAY, 0);
         Date date0 = cal.getTime();
-    	this.chartAir.setXRange(date1.getTime(), date2.getTime());
-    	this.chartAir.setXZoomLimits(date0.getTime(), date2.getTime());
-        this.chartWind.setXRange(date1.getTime(), date2.getTime());
-        this.chartWind.setXZoomLimits(date0.getTime(), date2.getTime());
-        this.chartWind.setY1Range(0, getSpeedRange());
-        this.chartWind.setY1ZoomLimits(0, getSpeedRange());
+    	chartAir.setXRange(date1.getTime(), date2.getTime());
+    	chartAir.setXZoomLimits(date0.getTime(), date2.getTime());
+        chartWind.setXRange(date1.getTime(), date2.getTime());
+        chartWind.setXZoomLimits(date0.getTime(), date2.getTime());
+        chartWind.setY1Range(0, getSpeedRange());
+        chartWind.setY1ZoomLimits(0, getSpeedRange());
     }
     
     public void redraw() {
     	updateBoundaries();
     	updateMarkers();
-    	this.chartAir.redraw();
-        this.chartWind.redraw();
+    	chartAir.redraw();
+        chartWind.redraw();
     }
 	
 	public void setRefresh( int minutes ) {		
 		this.minutes = minutes;
-		this.hours = minutes * 24 / 60;
+		hours = minutes * 24 / 60;
 		updateBoundaries();
 	}
 	
 	public boolean getZoomed() {
-        return this.chartAir.getZoomed() || this.chartWind.getZoomed();
+        return chartAir.getZoomed() || chartWind.getZoomed();
     }
 }
