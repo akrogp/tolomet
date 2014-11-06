@@ -8,7 +8,7 @@ import com.akrog.tolomet.providers.WindProviderType;
 
 import android.os.Bundle;
 
-public class Station {		
+public class StationOld {		
 	public List<Number> listDirection, listHumidity, listSpeedMed, listSpeedMax, listTemperature, listPressure;
 	public String name, code;
 	public int region;
@@ -18,16 +18,16 @@ public class Station {
 	public int special;
 	public float distance;
 		
-	public Station() {
+	public StationOld() {
 		this("none","none",1,false,WindProviderType.Aemet,0,0);
 	}
 	
-	public Station( String name, int special ) {
+	public StationOld( String name, int special ) {
 		this(name,"none",1,false,WindProviderType.Aemet,0,0);
 		this.special = special;		
 	}
 	
-	public Station( String str ) {		
+	public StationOld( String str ) {		
 		String[] fields = str.split(":");
     	this.code = fields[0];
     	this.name = fields[1];
@@ -40,7 +40,7 @@ public class Station {
     	createArrays();    	
 	}	
 	
-	public Station( String name, String code, int region, boolean favorite, WindProviderType provider, double lat, double lon ) {
+	public StationOld( String name, String code, int region, boolean favorite, WindProviderType provider, double lat, double lon ) {
 		this.name = name;
 		this.code = code;
 		this.region = region;
@@ -53,12 +53,12 @@ public class Station {
 		createArrays();
 	}
 	
-	public Station( Station station ) {
+	public StationOld( StationOld station ) {
 		this( station.name, station.code, station.region, station.favorite, station.provider, station.latitude, station.longitude );
 		replace(station);
 	}
 	
-	public Station( Bundle bundle, String code, boolean fav ) {
+	public StationOld( Bundle bundle, String code, boolean fav ) {
 		this();
 		loadState(bundle, code, fav);
 	}
@@ -92,7 +92,7 @@ public class Station {
 		this.listPressure.clear();
 	}
 	
-	public void add( Station station ) {
+	public void add( StationOld station ) {
 		if( station == null )
 			return;
 		this.listDirection.addAll(station.listDirection);
@@ -103,7 +103,7 @@ public class Station {
 		this.listPressure.addAll(station.listPressure);
 	}
 	
-	public void replace( Station station ) {
+	public void replace( StationOld station ) {
 		clear();
 		add(station);
 		this.name = station.name;

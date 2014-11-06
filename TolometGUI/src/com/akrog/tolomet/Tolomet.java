@@ -21,23 +21,20 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.akrog.tolomet.data.Station;
+import com.akrog.tolomet.data.Downloader;
 import com.akrog.tolomet.gae.GaeClient;
 import com.akrog.tolomet.gae.Motd;
 import com.akrog.tolomet.view.AboutDialog;
 import com.akrog.tolomet.view.MyCharts;
 import com.akrog.tolomet.view.MySpinner;
 
-public class Tolomet extends Activity
-	implements OnItemSelectedListener, View.OnClickListener, OnCheckedChangeListener, OnSharedPreferenceChangeListener {
+public class Tolomet extends Activity implements View.OnClickListener, OnCheckedChangeListener, OnSharedPreferenceChangeListener {
 	
 	// Creation and state
 	
@@ -50,7 +47,7 @@ public class Tolomet extends Activity
         // TO-DO: load state from savedInstanceState in model
         gaeClient = new GaeClient(this);
         
-        spinner = new MySpinner(this, this.stations, savedInstanceState);
+        spinner = new MySpinner(this, model, savedInstanceState);
         
         summary = (TextView)findViewById(R.id.textView1);
 
@@ -63,7 +60,7 @@ public class Tolomet extends Activity
         favorite.setChecked(false);
         favorite.setOnCheckedChangeListener(this);
         
-        charts = new MyCharts(this, this.stations);
+        charts = new MyCharts(this, model);
         
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).registerOnSharedPreferenceChangeListener(this);
     }
@@ -86,27 +83,28 @@ public class Tolomet extends Activity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
     	super.onSaveInstanceState(outState);
-    	this.stations.saveState(outState);
+    	/*this.stations.saveState(outState);
     	this.spinner.saveState();
-    	this.provider.cancelDownload(this.stations.current);
+    	this.provider.cancelDownload(this.stations.current);*/
     }
     
     // Actions
 
 	private void downloadData() {
-    	if( !this.provider.updateTimes(this.stations.current) ) {
-    		if( this.charts.getZoomed() )
-    			this.charts.redraw();
+    	if( !model.getCurrentStation().isOutdated() ) {
+    		if( charts.getZoomed() )
+    			charts.redraw();
     		else {
 	    		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-				alertDialog.setMessage( getString(R.string.Impatient) + " " + this.provider.getRefresh(this.stations.current) + " " + getString(R.string.minutes) );
+				alertDialog.setMessage( getString(R.string.Impatient) + " " + model.getRefresh() + " " + getString(R.string.minutes) );
 				alertDialog.show();
     		}
 			return;
     	}
     	if( alertNetwork() )
 			return;
-    	this.provider.download(this.stations.current); 
+    	Downloader downloader = new Downloader(this, model);
+    	downloader.execute(); 
     }
 	
 	private boolean isNetworkAvailable() {
@@ -127,9 +125,9 @@ public class Tolomet extends Activity
 	}
     
     public void redraw() {
-    	this.charts.redraw();
+    	charts.redraw();
         updateSummary();
-        this.favorite.setChecked(this.stations.current.favorite);
+        favorite.setChecked(model.getCurrentStation().isFavorite());
     }    
     
     /*public void postRedraw() {
@@ -150,7 +148,7 @@ public class Tolomet extends Activity
     // Buttons events
     
     public void onClick(View v) {
-    	if( this.stations.current.isSpecial() )
+    	if( model.getCurrentStation().isSpecial() )
     		return;
     	switch( v.getId() ) {
     		case R.id.button1:
@@ -159,16 +157,13 @@ public class Tolomet extends Activity
     		case R.id.button2:
     			if( alertNetwork() )
     				return;
-    			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(this.provider.getInfoUrl(this.stations.current))));
+    			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(model.getInforUrl())));
     			break;
     	}
 	}
     
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-    	if( isChecked )
-    		this.stations.addFavorite();
-    	else if( this.stations.removeFavorite() )
-    		this.spinner.notifyDataSetChanged();
+    	model.getCurrentStation().setFavorite(isChecked);
 	}
     
     // Menu events
@@ -204,50 +199,27 @@ public class Tolomet extends Activity
     	this.charts.redraw();
     	super.onActivityResult(requestCode, resultCode, data);
     }
-
-    // Spinner events
     
-	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-		Station station = this.spinner.getSelectedItem();
-		this.stations.current.replace(station);
-		this.favorite.setChecked(station.favorite);
+	public void onSpinner(Station station) {
+		favorite.setChecked(station.isFavorite());
+		buttonRefresh.setEnabled(!station.isSpecial());
+		buttonInfo.setEnabled(!station.isSpecial());
+		favorite.setEnabled(!station.isSpecial());
 		
-		if( station.isSpecial() ) {
-			this.stations.current.clear();
-			this.buttonRefresh.setEnabled(false);
-			this.buttonInfo.setEnabled(false);
-			this.favorite.setEnabled(false);
-			this.spinner.setType(station);
+		if( station.isSpecial() )
 			redraw();
-			return;
+		else {		
+			charts.setRefresh(model.getRefresh());
+			if( station.isOutdated() )
+				downloadData();
+			else
+				redraw();	
 		}
-		this.buttonRefresh.setEnabled(true);
-		this.buttonInfo.setEnabled(true);
-		this.favorite.setEnabled(true);
-		//charts.setZoom(this.provider.getRefresh(this.stations.current)<60);
-		charts.setRefresh(this.provider.getRefresh(this.stations.current));
-		if( this.stations.current.isOutdated() )
-			downloadData();
-		else
-			redraw();	
-	}
-	
-	public void onNothingSelected(AdapterView<?> arg0) {
-		this.stations.current.clear();
 	}
 	
 	// Downloader events
 	
 	public void onDownloaded() {
-        Station sel = this.spinner.getSelectedItem();
-        /*try {
-        	this.provider.updateStation(this.stations.current, result);
-        	sel.replace(this.stations.current);
-        } catch (Exception e) {
-			System.out.println( e.getMessage() );
-			this.stations.current.replace(sel);
-		}*/
-        sel.replace(this.stations.current);
         redraw();
         checkMotd();
     }

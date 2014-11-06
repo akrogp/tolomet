@@ -148,16 +148,15 @@ public class MySpinner implements OnItemSelectedListener {
 	}
 
 	@Override
-	public void onItemSelected(AdapterView<?> parent, View view, int position,
-			long id) {
-		// TODO Auto-generated method stub
-		
+	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+		Station station = getSelectedItem();
+		model.setCurrentStation(station);
+		setType(station);
+		tolomet.onSpinner(station);
 	}
 
 	@Override
-	public void onNothingSelected(AdapterView<?> parent) {
-		// TODO Auto-generated method stub
-		
+	public void onNothingSelected(AdapterView<?> parent) {	
 	}
 	
 	public static enum Type {
