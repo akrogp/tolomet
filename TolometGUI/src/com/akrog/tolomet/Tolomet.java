@@ -27,12 +27,12 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.akrog.tolomet.controllers.MySpinner;
 import com.akrog.tolomet.data.Downloader;
 import com.akrog.tolomet.gae.GaeClient;
 import com.akrog.tolomet.gae.Motd;
 import com.akrog.tolomet.view.AboutDialog;
 import com.akrog.tolomet.view.MyCharts;
-import com.akrog.tolomet.view.MySpinner;
 
 public class Tolomet extends Activity implements View.OnClickListener, OnCheckedChangeListener, OnSharedPreferenceChangeListener {
 	
@@ -305,6 +305,7 @@ public class Tolomet extends Activity implements View.OnClickListener, OnChecked
 
 	private ImageButton buttonRefresh, buttonInfo;
 	private MyCharts charts;
+	@SuppressWarnings("unused")
 	private MySpinner spinner;
 	private TextView summary;
 	private CheckBox favorite;

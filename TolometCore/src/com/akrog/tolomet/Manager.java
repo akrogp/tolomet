@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
 
 import com.akrog.tolomet.providers.WindProviderType;
@@ -93,6 +94,12 @@ public class Manager {
 		for( Station station : allStations )
 			if( station.getDistance() < 50000.0F )
 				selStations.add(station);
+		selStations.sort(new Comparator<Station>() {
+			@Override
+			public int compare(Station s1, Station s2) {
+				return (int)Math.signum(s1.getDistance()-s2.getDistance());
+			}
+		});
 	}
 	
 	public void setCurrentStation( Station station ) {
@@ -116,14 +123,20 @@ public class Manager {
 	}
 	
 	public int getRefresh() {
+		if( !checkCurrent() )
+			return 0;
 		return currentStation.getProvider().getRefresh(currentStation.getCode());
 	}
 	
 	public String getInforUrl() {
+		if( !checkCurrent() )
+			return null;
 		return currentStation.getProvider().getInfoUrl(currentStation.getCode());
 	}
 	
 	public boolean refresh() {
+		if( !checkCurrent() )
+			return false;
 		if( !currentStation.isEmpty() && ((System.currentTimeMillis()-currentStation.getStamp())/60000L < getRefresh()) )
 			return false;
 		currentStation.getProvider().refresh(currentStation);
@@ -131,11 +144,13 @@ public class Manager {
 	}
 	
 	public void cancel() {
+		if( !checkCurrent() )
+			return;
 		currentStation.getProvider().cancel();
 	}
 	
 	public String getSummary( boolean large ) {
-		if( currentStation == null )
+		if( !checkCurrent() )
 			return null;
 		
 		Number hum = currentStation.getMeteo().getAirHumidity().getLast();
@@ -152,6 +167,9 @@ public class Manager {
 	}
 		
 	public String getStamp() {
+		if( !checkCurrent() )
+			return null;
+		
 		Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(currentStation.getMeteo().getWindDirection().getStamp());
         SimpleDateFormat df = new SimpleDateFormat();
@@ -170,5 +188,9 @@ public class Manager {
 		else if( index >= 16 )
 			index = 15;
 		return vals[index];
+	}
+	
+	private boolean checkCurrent() {
+		return currentStation != null && !currentStation.isSpecial();
 	}
 }
