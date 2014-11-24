@@ -40,8 +40,8 @@ public class Manager {
 				allStations.add(station);
 			}
 			rd.close();
-		} catch( Exception e ) {			
-		}    	
+		} catch( Exception e ) {
+		}
     }
 	
 	private void loadRegions() {
