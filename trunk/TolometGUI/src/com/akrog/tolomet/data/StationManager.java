@@ -1,25 +1,8 @@
 package com.akrog.tolomet.data;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.location.Location;
-import android.location.LocationManager;
-import android.os.Bundle;
-
-import com.akrog.tolomet.R;
-import com.akrog.tolomet.Tolomet;
-import com.akrog.tolomet.view.SpinnerType;
 
 public class StationManager {
-	public StationOld current;
+	/*public StationOld current;
 	public List<StationOld> spinner, all, favorites, nearest, regions, options, vowels;
 	private Tolomet tolomet;
 	
@@ -217,5 +200,5 @@ public class StationManager {
     	editor.commit();
     	
     	return true;
-	}
+	}*/
 }
