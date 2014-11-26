@@ -13,13 +13,14 @@ import com.akrog.tolomet.providers.WindProviderType;
 
 public class Manager {
 	private Station currentStation;
-	private final List<Station> allStations = new ArrayList<>();
-	private final List<Station> selStations = new ArrayList<>();
-	private final List<Region> regions = new ArrayList<>();
+	private final List<Station> allStations = new ArrayList<Station>();
+	private final List<Station> selStations = new ArrayList<Station>();
+	private final List<Region> regions = new ArrayList<Region>();
 	
 	public Manager() {
 		loadStations();
 		loadRegions();
+		setCurrentStation(allStations.get(0));	// just for first tests
 	}	
 
 	private void loadStations() {

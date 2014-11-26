@@ -15,16 +15,22 @@ public enum WindProviderType {
 	
 	private WindProviderType(String code) {
         this.code = code;
-        switch( code ) {
-        	case "EU": provider = new EuskalmetProvider(); break;
-        	case "GN": provider = new MeteoNavarraProvider(); break;
-        	case "AE": provider = new AemetProvider(); break;
-        	case "RI": provider = new LaRiojaProvider(); break;
-        	case "GA": provider = new MeteoGaliciaProvider(); break;
-        	case "RV": provider = new RedVigiaProvider(); break;
-        	case "CA": provider = new MeteocatProvider(); break;
-        	default: provider=null;
-        }
+        if( code.equals("EU") )
+        	provider = new EuskalmetProvider();
+        else if( code.equals("GN") )
+        	provider = new MeteoNavarraProvider();
+        else if( code.equals("AE") )
+        	provider = new AemetProvider();
+        else if( code.equals("RI") )
+        	provider = new LaRiojaProvider();
+        else if( code.equals("GA") )
+        	provider = new MeteoGaliciaProvider();
+        else if( code.equals("RV") )
+        	provider = new RedVigiaProvider();
+        else if( code.equals("CA") )
+        	provider = new MeteocatProvider();
+        else
+        	provider=null;
     }
 	
 	public String getCode() {
