@@ -2,7 +2,9 @@ package com.akrog.tolomet;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,7 +13,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -20,21 +21,17 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
+import com.akrog.tolomet.controllers.Controller;
+import com.akrog.tolomet.controllers.MyButtons;
+import com.akrog.tolomet.controllers.MyCharts;
 import com.akrog.tolomet.controllers.MySpinner;
+import com.akrog.tolomet.controllers.MySummary;
 import com.akrog.tolomet.data.Downloader;
 import com.akrog.tolomet.gae.GaeClient;
 import com.akrog.tolomet.gae.Motd;
-import com.akrog.tolomet.view.AboutDialog;
-import com.akrog.tolomet.view.MyCharts;
 
-public class Tolomet extends Activity implements View.OnClickListener, OnCheckedChangeListener, OnSharedPreferenceChangeListener {
+public class Tolomet extends Activity implements OnSharedPreferenceChangeListener {
 	
 	// Creation and state
 	
@@ -43,64 +40,43 @@ public class Tolomet extends Activity implements View.OnClickListener, OnChecked
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.activity_tolomet);
+        
+        controllers.add(spinner);
+        controllers.add(buttons);
+        controllers.add(charts);
+        controllers.add(summary);
 
-        // TO-DO: load state from savedInstanceState in model
         gaeClient = new GaeClient(this);
-        
-        spinner = new MySpinner(this, model, savedInstanceState);
-        
-        summary = (TextView)findViewById(R.id.textView1);
-
-        buttonRefresh = (ImageButton)findViewById(R.id.button1);
-        buttonRefresh.setOnClickListener(this);
-        buttonInfo = (ImageButton)findViewById(R.id.button2);
-        buttonInfo.setOnClickListener(this);
-        
-        favorite = (CheckBox)findViewById(R.id.favorite_button);
-        favorite.setChecked(false);
-        favorite.setOnCheckedChangeListener(this);
-        
-        charts = new MyCharts(this, model);
+        for( Controller controller : controllers )
+        	controller.initialize(this, model, savedInstanceState);
         
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).registerOnSharedPreferenceChangeListener(this);
-    }
-	
-	@Override
-	protected void onStart() {
-		super.onStart();
-	}
-	
-	@Override
-	protected void onResume() {
-		super.onResume();
-	};
-	
-	@Override
-    protected void onPause() {
-    	super.onPause();
     }
         
     @Override
     protected void onSaveInstanceState(Bundle outState) {
     	super.onSaveInstanceState(outState);
-    	/*this.stations.saveState(outState);
-    	this.spinner.saveState();
-    	this.provider.cancelDownload(this.stations.current);*/
+    	for( Controller controller : controllers )
+    		controller.save(outState);
+    	//this.provider.cancelDownload(this.stations.current);
     }
     
     // Actions
-
-	private void downloadData() {
-    	if( !model.getCurrentStation().isOutdated() ) {
-    		if( charts.getZoomed() )
-    			charts.redraw();
-    		else {
-	    		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-				alertDialog.setMessage( getString(R.string.Impatient) + " " + model.getRefresh() + " " + getString(R.string.minutes) );
-				alertDialog.show();
-    		}
-			return;
-    	}
+    
+    public void redraw() {
+    	for( Controller controller : controllers )
+    		controller.redraw();
+    }    
+    
+    public void postRedraw() {
+    	runOnUiThread(new Runnable() {
+            public void run() {
+            	redraw();
+            }
+        });
+    }
+    
+    private void downloadData() {    	
     	if( alertNetwork() )
 			return;
     	Downloader downloader = new Downloader(this, model);
@@ -123,50 +99,32 @@ public class Tolomet extends Activity implements View.OnClickListener, OnChecked
     	}
 		return false;
 	}
+	
+	public int getConfigVersion() {
+		SharedPreferences settings = getPreferences(0);
+		return settings.getInt("version", 1);
+	}
     
-    public void redraw() {
-    	charts.redraw();
-        updateSummary();
-        favorite.setChecked(model.getCurrentStation().isFavorite());
-    }    
+    // Events
     
-    /*public void postRedraw() {
-    	runOnUiThread(new Runnable() {
-            public void run() {
-            	redraw();
-            }
-        });
-    }*/
-    
-    private void updateSummary() {
-    	if( model.getCurrentStation().isEmpty() )
-    		summary.setText(getString(R.string.NoData));
-    	else
-    		summary.setText(model.getSummary(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE));
+    public void onRefresh() {
+    	if( !model.getCurrentStation().isOutdated() ) {
+    		if( charts.getZoomed() )
+    			charts.redraw();
+    		else {
+	    		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+				alertDialog.setMessage( getString(R.string.Impatient) + " " + model.getRefresh() + " " + getString(R.string.minutes) );
+				alertDialog.show();
+    		}
+    	} else
+    		downloadData();
     }
     
-    // Buttons events
-    
-    public void onClick(View v) {
-    	if( model.getCurrentStation().isSpecial() )
-    		return;
-    	switch( v.getId() ) {
-    		case R.id.button1:
-    			downloadData();
-    			break;
-    		case R.id.button2:
-    			if( alertNetwork() )
-    				return;
-    			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(model.getInforUrl())));
-    			break;
-    	}
-	}
-    
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-    	model.getCurrentStation().setFavorite(isChecked);
-	}
-    
-    // Menu events
+    public void onInfoUrl() {
+    	if( alertNetwork() )
+			return;
+		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(model.getInforUrl())));
+    }
 
     @Override
     public boolean onCreateOptionsMenu( Menu menu ) {
@@ -174,6 +132,7 @@ public class Tolomet extends Activity implements View.OnClickListener, OnChecked
         return true;
     }
     
+    @Override
     public boolean onOptionsItemSelected( MenuItem item ) {
     	switch( item.getItemId() ) {
     		case R.id.about:
@@ -201,23 +160,15 @@ public class Tolomet extends Activity implements View.OnClickListener, OnChecked
     }
     
 	public void onSpinner(Station station) {
-		favorite.setChecked(station.isFavorite());
-		buttonRefresh.setEnabled(!station.isSpecial());
-		buttonInfo.setEnabled(!station.isSpecial());
-		favorite.setEnabled(!station.isSpecial());
-		
+		redraw();		
 		if( station.isSpecial() )
+			return;
+		charts.setRefresh(model.getRefresh());
+		if( station.isOutdated() )
+			downloadData();
+		else
 			redraw();
-		else {		
-			charts.setRefresh(model.getRefresh());
-			if( station.isOutdated() )
-				downloadData();
-			else
-				redraw();	
-		}
 	}
-	
-	// Downloader events
 	
 	public void onDownloaded() {
         redraw();
@@ -302,13 +253,11 @@ public class Tolomet extends Activity implements View.OnClickListener, OnChecked
 	}
 	
 	// Fields
-
-	private ImageButton buttonRefresh, buttonInfo;
-	private MyCharts charts;
-	@SuppressWarnings("unused")
-	private MySpinner spinner;
-	private TextView summary;
-	private CheckBox favorite;
+	private final List<Controller> controllers = new ArrayList<Controller>();
+	private final MyCharts charts = new MyCharts();
+	private final MySpinner spinner = new MySpinner();
+	private final MyButtons buttons = new MyButtons();
+	private final MySummary summary = new MySummary();
 	private GaeClient gaeClient;
 	private final Manager model = new Manager();
 	public static Tolomet instance = null;	
