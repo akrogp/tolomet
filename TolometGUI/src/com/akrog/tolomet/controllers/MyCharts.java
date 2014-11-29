@@ -1,4 +1,4 @@
-package com.akrog.tolomet.view;
+package com.akrog.tolomet.controllers;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -7,6 +7,7 @@ import java.util.TimeZone;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import com.akrog.tolomet.Manager;
@@ -14,8 +15,11 @@ import com.akrog.tolomet.Meteo;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.SettingsActivity;
 import com.akrog.tolomet.Tolomet;
+import com.akrog.tolomet.view.Graph;
+import com.akrog.tolomet.view.Marker;
+import com.akrog.tolomet.view.MyPlot;
 
-public class MyCharts {
+public class MyCharts implements Controller {
 	private static final int LINE_BLUE=Color.rgb(0, 0, 200);
 	private static final int POINT_BLUE=Color.rgb(0, 0, 100);
 	private static final int LINE_RED=Color.rgb(200, 0, 0);
@@ -26,6 +30,7 @@ public class MyCharts {
 	private static final int POINT_GRAY=Color.rgb(100, 100, 100);
 	private Tolomet tolomet;
 	private Manager model;
+	private final Meteo meteo = new Meteo();
 	private MyPlot chartWind, chartAir;
 	static final float fontSize = 16;
 	private int minutes = 10;
@@ -42,11 +47,16 @@ public class MyCharts {
 	private Marker markerEast = new Marker(90, "90º (E)", LINE_BLUE);
 	private Marker markerWest = new Marker(270, "270º (W)", LINE_BLUE);*/
 
-	public MyCharts( Tolomet tolomet, Manager model ) {
+	@Override
+	public void initialize(Tolomet tolomet, Manager model, Bundle bundle) {
 		this.tolomet = tolomet;
 		this.model = model;
 		createCharts();
-	}	
+	}
+	
+	@Override
+	public void save(Bundle bundle) {	
+	}
 	
 	private int getSpeedRange() {
 		if( speedRange == -1 ) {
@@ -79,8 +89,6 @@ public class MyCharts {
         chartAir.setXLabel(tolomet.getString(R.string.Time));        
         chartAir.setStepsX(4);
         chartAir.setTicksPerStepX(6);       
-        
-        Meteo meteo = model.getCurrentStation().getMeteo(); 
         
         chartAir.addY1Graph(new Graph(
             meteo.getAirTemperature(), -1.0f, "Temp.", LINE_RED, POINT_RED));
@@ -153,10 +161,14 @@ public class MyCharts {
         chartWind.setY1Range(0, getSpeedRange());
         chartWind.setY1ZoomLimits(0, getSpeedRange());
     }
-    
+
+    @Override
     public void redraw() {
     	updateBoundaries();
     	updateMarkers();
+    	meteo.clear();
+    	if( !model.getCurrentStation().isSpecial() )
+    		meteo.merge(model.getCurrentStation().getMeteo());
     	chartAir.redraw();
         chartWind.redraw();
     }
@@ -169,5 +181,5 @@ public class MyCharts {
 	
 	public boolean getZoomed() {
         return chartAir.getZoomed() || chartWind.getZoomed();
-    }
+    }		
 }

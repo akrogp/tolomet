@@ -1,6 +1,6 @@
 // http://www.techrepublic.com/blog/app-builder/a-reusable-about-dialog-for-your-android-apps/504
 
-package com.akrog.tolomet.view;
+package com.akrog.tolomet;
 
 import java.io.BufferedReader;
 import java.io.IOException;
