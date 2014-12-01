@@ -34,6 +34,15 @@ public class Meteo {
 		airHumidity.clear();
 	}
 	
+	public void clear( long fromStamp ) {
+		windDirection.clear(fromStamp);
+		windSpeedMed.clear(fromStamp);
+		windSpeedMax.clear(fromStamp);
+		airTemperature.clear(fromStamp);
+		airPressure.clear(fromStamp);
+		airHumidity.clear(fromStamp);
+	}
+	
 	public void merge(Meteo meteo) {
 		windDirection.merge(meteo.getWindDirection());
 		windSpeedMed.merge(meteo.getWindSpeedMed());

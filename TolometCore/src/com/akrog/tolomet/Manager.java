@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -95,7 +96,7 @@ public class Manager {
 		for( Station station : allStations )
 			if( station.getDistance() < 50000.0F )
 				selStations.add(station);
-		selStations.sort(new Comparator<Station>() {
+		Collections.sort(selStations, new Comparator<Station>() {
 			@Override
 			public int compare(Station s1, Station s2) {
 				return (int)Math.signum(s1.getDistance()-s2.getDistance());

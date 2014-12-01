@@ -12,26 +12,25 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.akrog.tolomet.controllers.Controller;
+import com.akrog.tolomet.controllers.Downloader;
 import com.akrog.tolomet.controllers.MyButtons;
 import com.akrog.tolomet.controllers.MyCharts;
 import com.akrog.tolomet.controllers.MySpinner;
 import com.akrog.tolomet.controllers.MySummary;
-import com.akrog.tolomet.data.Downloader;
+import com.akrog.tolomet.data.Settings;
 import com.akrog.tolomet.gae.GaeClient;
 import com.akrog.tolomet.gae.Motd;
 
-public class Tolomet extends Activity implements OnSharedPreferenceChangeListener {
+public class Tolomet extends Activity {
 	
 	// Creation and state
 	
@@ -41,16 +40,14 @@ public class Tolomet extends Activity implements OnSharedPreferenceChangeListene
         
         setContentView(R.layout.activity_tolomet);
         
+        settings.initialize(this, model);
+        gaeClient = new GaeClient(this);
         controllers.add(spinner);
         controllers.add(buttons);
         controllers.add(charts);
-        controllers.add(summary);
-
-        gaeClient = new GaeClient(this);
+        controllers.add(summary);        
         for( Controller controller : controllers )
-        	controller.initialize(this, model, savedInstanceState);
-        
-        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).registerOnSharedPreferenceChangeListener(this);
+        	controller.initialize(this, savedInstanceState);
     }
         
     @Override
@@ -58,7 +55,6 @@ public class Tolomet extends Activity implements OnSharedPreferenceChangeListene
     	super.onSaveInstanceState(outState);
     	for( Controller controller : controllers )
     		controller.save(outState);
-    	//this.provider.cancelDownload(this.stations.current);
     }
     
     // Actions
@@ -100,9 +96,12 @@ public class Tolomet extends Activity implements OnSharedPreferenceChangeListene
 		return false;
 	}
 	
-	public int getConfigVersion() {
-		SharedPreferences settings = getPreferences(0);
-		return settings.getInt("version", 1);
+	public Settings getSettings() {
+		return settings;
+	}
+	
+	public Manager getModel() {
+		return model;
 	}
     
     // Events
@@ -149,13 +148,9 @@ public class Tolomet extends Activity implements OnSharedPreferenceChangeListene
     	return true;
     }
     
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-    	this.charts.redraw();
-	}
-    
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    	this.charts.redraw();
+    	charts.redraw();
     	super.onActivityResult(requestCode, resultCode, data);
     }
     
@@ -171,6 +166,7 @@ public class Tolomet extends Activity implements OnSharedPreferenceChangeListene
 	}
 	
 	public void onDownloaded() {
+		model.getCurrentStation().getMeteo().clear(System.currentTimeMillis()-24L*60*60*1000);
         redraw();
         checkMotd();
     }
@@ -250,7 +246,7 @@ public class Tolomet extends Activity implements OnSharedPreferenceChangeListene
     	
     	this.gaeClient = new GaeClient(this);
     	this.gaeClient.execute("http://tolomet-gae.appspot.com/rest/motd?version="+version+"&stamp="+stamp);
-	}
+	}	
 	
 	// Fields
 	private final List<Controller> controllers = new ArrayList<Controller>();
@@ -260,5 +256,6 @@ public class Tolomet extends Activity implements OnSharedPreferenceChangeListene
 	private final MySummary summary = new MySummary();
 	private GaeClient gaeClient;
 	private final Manager model = new Manager();
+	private final Settings settings = new Settings();
 	public static Tolomet instance = null;	
 }

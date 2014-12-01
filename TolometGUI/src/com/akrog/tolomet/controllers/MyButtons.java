@@ -1,6 +1,5 @@
 package com.akrog.tolomet.controllers;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,17 +11,20 @@ import android.widget.ImageButton;
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Tolomet;
+import com.akrog.tolomet.data.Settings;
 
 public class MyButtons implements OnClickListener, OnCheckedChangeListener, Controller {
 	private Tolomet tolomet;
 	private Manager model;
+	private Settings settings;
 	private ImageButton buttonRefresh, buttonInfo;
 	private CheckBox favorite;
 
 	@Override
-	public void initialize(Tolomet tolomet, Manager model, Bundle bundle) {
+	public void initialize(Tolomet tolomet, Bundle bundle) {
 		this.tolomet = tolomet;
-		this.model = model;
+		model = tolomet.getModel();
+		settings = tolomet.getSettings();
 		
 		buttonRefresh = (ImageButton)tolomet.findViewById(R.id.button1);
         buttonRefresh.setOnClickListener(this);
@@ -51,13 +53,7 @@ public class MyButtons implements OnClickListener, OnCheckedChangeListener, Cont
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		model.getCurrentStation().setFavorite(isChecked);
-		SharedPreferences settings = this.tolomet.getPreferences(0); 
-		SharedPreferences.Editor editor = settings.edit();
-		if( isChecked )
-			editor.putBoolean(model.getCurrentStation().getCode(), true);
-		else
-			editor.remove(model.getCurrentStation().getCode());
-    	editor.commit();
+		settings.setFavorite(model.getCurrentStation().getCode(), isChecked);
 	}
 
 	@Override
