@@ -48,9 +48,9 @@ public class MyCharts implements Controller {
 	private Marker markerWest = new Marker(270, "270º (W)", LINE_BLUE);*/
 
 	@Override
-	public void initialize(Tolomet tolomet, Manager model, Bundle bundle) {
+	public void initialize(Tolomet tolomet, Bundle bundle) {
 		this.tolomet = tolomet;
-		this.model = model;
+		model = tolomet.getModel();
 		createCharts();
 	}
 	

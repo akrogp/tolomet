@@ -38,6 +38,12 @@ public class Measurement {
 		map.clear();
 	}
 	
+	public void clear( long fromStamp ) {
+		for( Long stamp : getTimes() )
+			if( stamp < fromStamp )
+				map.remove(stamp);
+	}
+	
 	public boolean isEmpty() {
 		return map.isEmpty();
 	}

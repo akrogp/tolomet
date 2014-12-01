@@ -14,9 +14,9 @@ public class MySummary implements Controller {
 	private TextView summary;
 	
 	@Override
-	public void initialize(Tolomet tolomet, Manager model, Bundle bundle) {
+	public void initialize(Tolomet tolomet, Bundle bundle) {
 		this.tolomet = tolomet;
-		this.model = model;
+		model = tolomet.getModel();
 		summary = (TextView)tolomet.findViewById(R.id.textView1);
 	}
 	
