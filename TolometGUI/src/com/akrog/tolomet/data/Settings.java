@@ -5,17 +5,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 
 import com.akrog.tolomet.Manager;
+import com.akrog.tolomet.R;
+import com.akrog.tolomet.SettingsActivity;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.controllers.MySpinner;
 
-public class Settings implements OnSharedPreferenceChangeListener {
+public class Settings {	
 	private SharedPreferences settings;
+	private Tolomet tolomet;
 	
 	public void initialize( Tolomet tolomet, Manager model ) {
+		this.tolomet = tolomet;
 		settings = tolomet.getPreferences(0);
 		migrate(model);
 		SharedPreferences.Editor editor = settings.edit();
@@ -84,9 +87,26 @@ public class Settings implements OnSharedPreferenceChangeListener {
 		return state;
 	}
 	
-	@Override
-	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-		
+	public long getGaeStamp() {
+		return settings.getLong("gae:last", 0);
+	}
+	
+	public void saveGaeStamp( long stamp ) {
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putLong("gae:last", stamp);
+		editor.commit();
+	}
+	
+	public int getSpeedRange() {
+		return Integer.parseInt(settings.getString(SettingsActivity.KEY_SPEED_RANGE, tolomet.getString(R.string.pref_rangeDefault)));
+	}
+	
+	public int getMinMarker() {
+		return Integer.parseInt(settings.getString(SettingsActivity.KEY_MIN_MARKER, tolomet.getString(R.string.pref_minMarkerDefault)));
+	}
+	
+	public int getMaxMarker() {
+		return Integer.parseInt(settings.getString(SettingsActivity.KEY_MAX_MARKER, tolomet.getString(R.string.pref_maxMarkerDefault)));
 	}
 	
 	private void migrate( Manager model ) {

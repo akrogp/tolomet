@@ -6,6 +6,7 @@ import java.util.TimeZone;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -13,13 +14,13 @@ import android.preference.PreferenceManager;
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.Meteo;
 import com.akrog.tolomet.R;
-import com.akrog.tolomet.SettingsActivity;
 import com.akrog.tolomet.Tolomet;
+import com.akrog.tolomet.data.Settings;
 import com.akrog.tolomet.view.Graph;
 import com.akrog.tolomet.view.Marker;
 import com.akrog.tolomet.view.MyPlot;
 
-public class MyCharts implements Controller {
+public class MyCharts implements Controller, OnSharedPreferenceChangeListener {
 	private static final int LINE_BLUE=Color.rgb(0, 0, 200);
 	private static final int POINT_BLUE=Color.rgb(0, 0, 100);
 	private static final int LINE_RED=Color.rgb(200, 0, 0);
@@ -30,6 +31,7 @@ public class MyCharts implements Controller {
 	private static final int POINT_GRAY=Color.rgb(100, 100, 100);
 	private Tolomet tolomet;
 	private Manager model;
+	private Settings settings;
 	private final Meteo meteo = new Meteo();
 	private MyPlot chartWind, chartAir;
 	static final float fontSize = 16;
@@ -51,7 +53,9 @@ public class MyCharts implements Controller {
 	public void initialize(Tolomet tolomet, Bundle bundle) {
 		this.tolomet = tolomet;
 		model = tolomet.getModel();
+		settings = tolomet.getSettings();
 		createCharts();
+		PreferenceManager.getDefaultSharedPreferences(tolomet.getApplicationContext()).registerOnSharedPreferenceChangeListener(this);
 	}
 	
 	@Override
@@ -59,19 +63,16 @@ public class MyCharts implements Controller {
 	}
 	
 	private int getSpeedRange() {
-		if( speedRange == -1 ) {
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(tolomet);
-			speedRange = Integer.parseInt(prefs.getString(SettingsActivity.KEY_SPEED_RANGE, tolomet.getString(R.string.pref_rangeDefault)));
-		}
+		if( speedRange == -1 )
+			speedRange = settings.getSpeedRange();
 		return this.speedRange;
 	}
 	
 	private void updateMarkers() {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(tolomet);
-		int pos = Integer.parseInt(prefs.getString(SettingsActivity.KEY_MIN_MARKER, tolomet.getString(R.string.pref_minMarkerDefault))); 
+		int pos = settings.getMinMarker(); 
 		markerVmin.setPos(pos);
 		markerVmin.setLabel(pos+"");
-		pos = Integer.parseInt(prefs.getString(SettingsActivity.KEY_MAX_MARKER, tolomet.getString(R.string.pref_maxMarkerDefault))); 
+		pos = settings.getMaxMarker(); 
 		markerVmax.setPos(pos);
 		markerVmax.setLabel(pos+"");
 	}
@@ -181,5 +182,10 @@ public class MyCharts implements Controller {
 	
 	public boolean getZoomed() {
         return chartAir.getZoomed() || chartWind.getZoomed();
-    }		
+    }
+
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+		redraw();		
+	}		
 }

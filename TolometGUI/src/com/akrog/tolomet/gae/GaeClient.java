@@ -7,13 +7,11 @@ import java.net.URLConnection;
 
 import android.os.AsyncTask;
 
-import com.akrog.tolomet.Tolomet;
-
 public class GaeClient extends AsyncTask<String, Void, String> {
-	private Tolomet tolomet;
+	private GaeManager manager;
 
-	public GaeClient( Tolomet tolomet ) {
-		this.tolomet = tolomet;		
+	public GaeClient( GaeManager manager ) {
+		this.manager = manager;
 	}
 	
 	@Override
@@ -47,6 +45,6 @@ public class GaeClient extends AsyncTask<String, Void, String> {
 	@Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
-        this.tolomet.onMotd(Motd.getInstance(result));
+        manager.onMotd(Motd.getInstance(result));
     }
 }
