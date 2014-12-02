@@ -40,5 +40,5 @@
     <string name="pref_speedRange">Rango de velocidad</string>
     <string name="pref_minMarkerDefault">10</string>
     <string name="pref_maxMarkerDefault">30</string>
-    <string name="pref_rangeDefault">50</string>
+    <string name="pref_rangeDefault">40</string>
 </resources>

@@ -8,11 +8,13 @@ public class Graph {
     private final int lineColor;
     private final int pointColor;
     private final float wrap;
+    private final float wrap2;
     private int yAxis= 0;
  
     public Graph( Measurement data, float wrap, String title, int lineColor, int pointColor ) {
         this.data = data;
         this.wrap = wrap;
+        wrap2 = wrap/2;
         this.title = title;
         this.lineColor = lineColor;
         this.pointColor = pointColor;
@@ -29,9 +31,25 @@ public class Graph {
     public long getX(int index) {
         return data.getTimes()[index];
     }
+    
+    public long[] getX() {
+    	Long[] stamps = data.getTimes();
+    	long[] x = new long[data.size()];
+    	for( int i = 0; i < x.length; i++ )
+    		x[i] = stamps[i];
+    	return x;
+    }
  
     public float getY(int index) {
     	return data.getValues()[index].floatValue();
+    }
+    
+    public float[] getY() {
+    	Number[] values = data.getValues();
+    	float[] y = new float[data.size()];
+    	for( int i = 0; i < y.length; i++ )
+    		y[i] = values[i].floatValue();
+    	return y;
     }
 
 	public int getLineColor() {
@@ -44,6 +62,10 @@ public class Graph {
 
 	public float getWrap() {
 		return wrap;
+	}
+	
+	public float getWrap2() {
+		return wrap2;
 	}
 
 	public int getyAxis() {

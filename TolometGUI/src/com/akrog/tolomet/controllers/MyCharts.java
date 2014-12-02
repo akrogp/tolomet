@@ -37,7 +37,6 @@ public class MyCharts implements Controller, OnSharedPreferenceChangeListener {
 	static final float fontSize = 16;
 	private int minutes = 10;
 	private int hours = 4;
-	private int speedRange = -1;
 	private Marker markerVmin = new Marker(0.0f, null, POINT_GRAY);
 	private Marker markerVmax = new Marker(0.0f, null, POINT_GRAY);
 	private Marker markerSea = new Marker(1013.0f, "1013 mb", POINT_GRAY);
@@ -60,12 +59,6 @@ public class MyCharts implements Controller, OnSharedPreferenceChangeListener {
 	
 	@Override
 	public void save(Bundle bundle) {	
-	}
-	
-	private int getSpeedRange() {
-		if( speedRange == -1 )
-			speedRange = settings.getSpeedRange();
-		return this.speedRange;
 	}
 	
 	private void updateMarkers() {
@@ -105,29 +98,31 @@ public class MyCharts implements Controller, OnSharedPreferenceChangeListener {
         
         chartWind = (MyPlot)tolomet.findViewById(R.id.chartWind);      
         chartWind.setTitle(tolomet.getString(R.string.Wind));
-        chartWind.setY1Label("Vel. (km/h)");        
-        chartWind.setY1Range(0, getSpeedRange());
-        chartWind.setStepsY1(getSpeedRange()/5);
-        chartWind.setY2Range(0, 360);
-        chartWind.setY2Label("Dir. (grados)");        
+        chartWind.setY1Range(0, 360);
+        chartWind.setY1Label("Dir. (grados)");
+        chartWind.setStepsY1(8);
+        chartWind.setY2Label("Vel. (km/h)");     
+        int speedRange = settings.getSpeedRange();
+        chartWind.setY2Range(0, speedRange);
+        chartWind.setStepsY2(speedRange/5);               
         chartWind.setXLabel(tolomet.getString(R.string.Time));        
         chartWind.setStepsX(4);
         chartWind.setTicksPerStepX(6); 
         
         chartWind.addY1Graph(new Graph(
-        	meteo.getWindSpeedMed(), -1.0f, "Vel. Med.", LINE_GREEN, POINT_GREEN));
-        chartWind.addY1Graph(new Graph(
-        	meteo.getWindSpeedMax(), -1.0f, "Vel. Máx.", LINE_RED, POINT_RED)); 
+            	meteo.getWindDirection(), 360.0f, "Dir. Med.", LINE_BLUE, POINT_BLUE));    
         chartWind.addY2Graph(new Graph(
-        	meteo.getWindDirection(), 180.0f, "Dir. Med.", LINE_BLUE, POINT_BLUE));        
+        	meteo.getWindSpeedMed(), -1.0f, "Vel. Med.", LINE_GREEN, POINT_GREEN));
+        chartWind.addY2Graph(new Graph(
+        	meteo.getWindSpeedMax(), -1.0f, "Vel. Máx.", LINE_RED, POINT_RED));             
         
         updateMarkers();
-        chartWind.addY1Marker(markerVmin);
-        chartWind.addY1Marker(markerVmax);
-        /*chartWind.addY2Marker(markerSouth);
-        chartWind.addY2Marker(markerNorth);
-        chartWind.addY2Marker(markerEast);
-        chartWind.addY2Marker(markerWest);*/
+        /*chartWind.addY1Marker(markerSouth);
+        chartWind.addY1Marker(markerNorth);
+        chartWind.addY1Marker(markerEast);
+        chartWind.addY1Marker(markerWest);*/
+        chartWind.addY2Marker(markerVmin);
+        chartWind.addY2Marker(markerVmax);        
         
         chartAir.connectXRanges(chartWind);
         chartWind.connectXRanges(chartAir);
@@ -159,8 +154,10 @@ public class MyCharts implements Controller, OnSharedPreferenceChangeListener {
     	chartAir.setXZoomLimits(date0.getTime(), date2.getTime());
         chartWind.setXRange(date1.getTime(), date2.getTime());
         chartWind.setXZoomLimits(date0.getTime(), date2.getTime());
-        chartWind.setY1Range(0, getSpeedRange());
-        chartWind.setY1ZoomLimits(0, getSpeedRange());
+        int speedRange = settings.getSpeedRange();
+        chartWind.setY2Range(0, speedRange);
+        chartWind.setY2ZoomLimits(0, speedRange);
+        chartWind.setStepsY2(speedRange/5);      
     }
 
     @Override

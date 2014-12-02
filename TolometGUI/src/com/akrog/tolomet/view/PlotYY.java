@@ -243,29 +243,37 @@ public class PlotYY extends View {
 		pointPaint.setColor(graph.getPointColor());
 		pointPaint.setStrokeWidth(6.0f);
 		
-		float x1 = Float.MIN_VALUE;
-		float y1 = Float.MIN_VALUE;
-		float x2, y2;
+		long[] x = graph.getX();
+		float[] y = graph.getY();
+		float xg1 = Float.MIN_VALUE, yg1 = Float.MIN_VALUE, y1=Float.MIN_VALUE, xg2, yg2, y2;
+		long x2;
 		for( int i = 0; i < len; i++ ) {
-			x2 = xgpx(graph,i);
-			y2 = ygpx(graph,i);
-			if( x1 == Float.MIN_VALUE ) {
-				x1=x2;
+			x2=x[i];
+			y2=y[i];
+			xg2 = xgpx(x2);
+			yg2 = ygpx(y2,graph.getyAxis());
+			if( xg1 == Float.MIN_VALUE ) {
+				xg1=xg2;
+				yg1=yg2;
 				y1=y2;
-			} /*else if( graph.getWrap() >= 0 && Math.abs(y2-y1) > graph.getWrap() )
-				y2 = y2 > y1 ? y2-graph.getWrap() : y2+graph.getWrap();*/
-			bgCanvas.drawLine(x1, y1, x2, y2, linePaint);
-			x1=x2;
+			} else if( graph.getWrap() > 0 && Math.abs(yg2-yg1) > graph.getWrap2() ) {
+				float wy = y2 > y1 ? y2-graph.getWrap() : y2+graph.getWrap();
+				bgCanvas.drawLine(xg1, yg1, xg2, ygpx(wy, graph.getyAxis()), linePaint);
+				wy = y2 > y1 ? y1+graph.getWrap() : y1-graph.getWrap();
+				yg1 = ygpx(wy, graph.getyAxis());
+			}
+			bgCanvas.drawLine(xg1, yg1, xg2, yg2, linePaint);
+			xg1=xg2;
+			yg1=yg2;
 			y1=y2;
 		}
 		for( int i = 0; i < len; i++ )
-			bgCanvas.drawPoint(xgpx(graph,i), ygpx(graph,i), pointPaint);
+			bgCanvas.drawPoint(xgpx(x[i]), ygpx(y[i],graph.getyAxis()), pointPaint);
 	}
 	
-	private float ygpx(Graph graph, int i) {
-		float y = graph.getY(i);
+	private float ygpx(float y, int axis) {
 		int h = bgCanvas.getHeight();
-		switch( graph.getyAxis() ) {
+		switch( axis ) {
 			case 0: y = y1px(y,h); break;
 			case 1: y = y2px(y,h); break;
 			case 2: y = y3px(y,h); break;
@@ -273,8 +281,8 @@ public class PlotYY extends View {
 		return Math.round(bgCanvas.getHeight()-1-y);
 	}
 
-	private float xgpx(Graph graph, int i) {
-		return Math.round((double)xpx(graph.getX(i),bgCanvas.getWidth()));
+	private float xgpx(long x) {
+		return Math.round((double)xpx(x,bgCanvas.getWidth()));
 	}
 
 	private float px(float n, float min, float max, float pixels) {
