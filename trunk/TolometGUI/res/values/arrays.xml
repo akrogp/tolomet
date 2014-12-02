@@ -10,6 +10,7 @@
     <item>30 km/h</item>
     <item>35 km/h</item>
     <item>40 km/h</item>
+    <item>50 km/h</item>
 </string-array>
 <string-array name="pref_markerValues">
     <item>0</item>
@@ -21,19 +22,16 @@
     <item>30</item>
     <item>35</item>
     <item>40</item>
+    <item>50</item>
 </string-array>
 <string-array name="pref_rangeEntries">
     <item>40 km/h</item>
-    <item>50 km/h</item>
-    <item>60 km/h</item>
-    <item>70 km/h</item>
     <item>80 km/h</item>
+    <item>160 km/h</item>
 </string-array>
 <string-array name="pref_rangeValues">
     <item>40</item>
-    <item>50</item>
-    <item>60</item>
-    <item>70</item>
     <item>80</item>
+    <item>160</item>
 </string-array>
 </resources>
