@@ -59,7 +59,7 @@
  		android:weightSum="1.0">
  		
     <com.akrog.tolomet.view.MyPlot
-        android:id="@+id/chartDirection"
+        android:id="@+id/chartAir"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight=".5"
@@ -69,14 +69,14 @@
     	android:layout_marginRight="1dp" />
     
     <com.akrog.tolomet.view.MyPlot
-        android:id="@+id/chartSpeed"
+        android:id="@+id/chartWind"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight=".5"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"
         android:layout_marginLeft="1dp"
-    	android:layout_marginRight="2dp"/>
+    	android:layout_marginRight="2dp" />
         
     </LinearLayout>
         

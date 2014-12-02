@@ -79,8 +79,8 @@ public class MyCharts implements Controller, OnSharedPreferenceChangeListener {
 	
 	@SuppressLint("SimpleDateFormat")
 	private void createCharts() {				
-    	chartAir = (MyPlot)tolomet.findViewById(R.id.chartDirection);
-        chartAir.setTitle(tolomet.getString(R.string.DirectionHumidity));
+    	chartAir = (MyPlot)tolomet.findViewById(R.id.chartAir);
+        chartAir.setTitle(tolomet.getString(R.string.Air));
         chartAir.setY1Label("Temp. (grados)");        
         chartAir.setY1Range(0, 30);        
         chartAir.setStepsY1(6);
@@ -103,8 +103,8 @@ public class MyCharts implements Controller, OnSharedPreferenceChangeListener {
         chartAir.addY3Marker(markerLow);
         //chartAir.addY3Marker(markerHigh);
         
-        chartWind = (MyPlot)tolomet.findViewById(R.id.chartSpeed);      
-        chartWind.setTitle(tolomet.getString(R.string.Speed));
+        chartWind = (MyPlot)tolomet.findViewById(R.id.chartWind);      
+        chartWind.setTitle(tolomet.getString(R.string.Wind));
         chartWind.setY1Label("Vel. (km/h)");        
         chartWind.setY1Range(0, getSpeedRange());
         chartWind.setStepsY1(getSpeedRange()/5);
