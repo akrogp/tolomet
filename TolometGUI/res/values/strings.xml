@@ -7,8 +7,10 @@
     <string name="summary"></string>
     <string name="Direction">Dirección</string>
     <string name="DirectionHumidity">Dirección y Humedad</string>
+    <string name="Air">Aire</string>
     <string name="Humidity">Humedad</string>
     <string name="Speed">Velocidad</string>
+    <string name="Wind">Viento</string>
     <string name="Downloading">Descargando</string>
     <string name="Progress">Progreso</string>
     <string name="About">Acerca de &#8230;</string>

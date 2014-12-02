@@ -7,8 +7,10 @@
     <string name="summary"></string>
     <string name="Direction">Norabidea</string>
     <string name="DirectionHumidity">Norabidea eta hezetasuna</string>
+    <string name="Air">Airea</string>
     <string name="Humidity">Hezetasuna</string>
     <string name="Speed">Abiadura</string>
+    <string name="Wind">Haizea</string>
     <string name="Downloading">Deskargatzen</string>
     <string name="Progress">Aurrerapena</string>
     <string name="About">Tolomet-i buruz &#8230;</string>
