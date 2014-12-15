@@ -1,3 +1,4 @@
+package com.akrog.tolomet.utils;
 import java.io.*;
 
 public class MapCreator {
