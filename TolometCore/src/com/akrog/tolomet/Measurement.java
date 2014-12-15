@@ -5,13 +5,23 @@ import java.util.Map;
 
 public class Measurement {
 	private final Map<Long, Number> map = new LinkedHashMap<Long, Number>();
+	private Long[] times;
+	private Number[] values;
+	
+	private void clearCache() {
+		times = null;
+		values = null;
+	}
 	
 	public void put(long time, Number value ) {
 		map.put(time, value);
+		clearCache();
 	}
 	
 	public Long[] getTimes() {
-		return map.keySet().toArray(new Long[0]);
+		if( times == null )
+			times = map.keySet().toArray(new Long[0]); 
+		return times;
 	}
 	
 	public Long getStamp() {
@@ -27,7 +37,9 @@ public class Measurement {
 	}
 	
 	public Number[] getValues() {
-		return map.values().toArray(new Number[0]);
+		if( values == null )
+			values = map.values().toArray(new Number[0]); 
+		return values;
 	}
 	
 	public int size() {
@@ -36,12 +48,14 @@ public class Measurement {
 	
 	public void clear() {
 		map.clear();
+		clearCache();
 	}
 	
 	public void clear( long fromStamp ) {
 		for( Long stamp : getTimes() )
 			if( stamp < fromStamp )
 				map.remove(stamp);
+		clearCache();
 	}
 	
 	public boolean isEmpty() {
@@ -50,5 +64,6 @@ public class Measurement {
 	
 	public void merge(Measurement data) {
 		map.putAll(data.map);
+		clearCache();
 	}
 }
