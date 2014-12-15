@@ -42,9 +42,20 @@ public class MeteocatProvider implements WindProvider {
 			station.getMeteo().getWindSpeedMed().put(date, val);
 			val = Float.parseFloat(getContent(fields[i+7],2))*3.6F;
 			station.getMeteo().getWindSpeedMax().put(date, val);
-			val = (float)Integer.parseInt(getContent(fields[i+4],2));
-			station.getMeteo().getAirHumidity().put(date, val);
-		}						
+			try {
+				val = (float)Integer.parseInt(getContent(fields[i+4],2));
+				station.getMeteo().getAirHumidity().put(date, val);
+			} catch( Exception e ) {};
+			try {
+				val = Float.parseFloat(getContent(fields[i+1],2));
+				station.getMeteo().getAirTemperature().put(date, val);
+			} catch( Exception e ) {};
+			try {
+				val = Float.parseFloat(getContent(fields[i+8],2));
+				station.getMeteo().getAirPressure().put(date, val);
+			} catch( Exception e ) {};
+		}
+		station.getMeteo().sort();
 	}
 
 	@Override

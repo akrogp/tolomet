@@ -18,9 +18,9 @@ public class LaRiojaProvider implements WindProvider {
 		if( direction == null )
 			return;
 		String humidity = download(station.getCode(), now, 2);
-		if( humidity == null )
-			return;
-		updateStation(station, speed, direction, humidity);
+		String temperature = download(station.getCode(), now, 6);
+		String pressure = download(station.getCode(), now, 15);
+		updateStation(station, speed, direction, humidity, temperature, pressure);
 	}
 
 	@Override
@@ -55,10 +55,9 @@ public class LaRiojaProvider implements WindProvider {
 		return downloader.download();
 	}
 
-	protected void updateStation(Station station, String speed, String direction, String humidity) {
+	protected void updateStation(Station station, String speed, String direction, String humidity, String temperature, String pressure) {
 		String[] speedLines = speed.split("\n");
-		String[] directionLines = direction.split("\n");
-		String[] humidityLines = humidity.split("\n");
+		String[] directionLines = direction.split("\n");		
 		if( speedLines.length < 9 || directionLines.length < 9 )
 			return;
 		
@@ -84,13 +83,34 @@ public class LaRiojaProvider implements WindProvider {
 			station.getMeteo().getWindDirection().put(date, num);
 		}
 		
-		for( int i = 8; i < humidityLines.length; i++ ) {
-			cols = humidityLines[i].split("\\|");
-			date = toEpoch(cols[0], cols[1]);
-			try {	// We can go on without humidity data
+		if( humidity != null ) {
+			String[] lines = humidity.split("\n");
+			for( int i = 8; i < lines.length; i++ ) {
+				cols = lines[i].split("\\|");
+				date = toEpoch(cols[0], cols[1]);
 				num = (float)Integer.parseInt(cols[2]);
 				station.getMeteo().getAirHumidity().put(date, num);
-			} catch( Exception e ) {}
+			}
+		}
+		
+		if( temperature != null ) {
+			String[] lines = temperature.split("\n");
+			for( int i = 8; i < lines.length; i++ ) {
+				cols = lines[i].split("\\|");
+				date = toEpoch(cols[0], cols[1]);
+				num = parseFloat(cols[2]);
+				station.getMeteo().getAirTemperature().put(date, num);
+			}
+		}
+		
+		if( pressure != null ) {
+			String[] lines = pressure.split("\n");
+			for( int i = 8; i < lines.length; i++ ) {
+				cols = lines[i].split("\\|");
+				date = toEpoch(cols[0], cols[1]);
+				num = parseFloat(cols[2]);
+				station.getMeteo().getAirPressure().put(date, num);
+			}
 		}
 	}
 	

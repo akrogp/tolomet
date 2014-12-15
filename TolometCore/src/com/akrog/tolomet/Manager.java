@@ -141,7 +141,12 @@ public class Manager {
 			return false;
 		if( !currentStation.isEmpty() && ((System.currentTimeMillis()-currentStation.getStamp())/60000L < getRefresh()) )
 			return false;
-		currentStation.getProvider().refresh(currentStation);
+		try {
+			currentStation.getProvider().refresh(currentStation);
+		} catch( Exception e ) {
+			currentStation.clear();
+			return false;
+		}
 		return true;
 	}
 	

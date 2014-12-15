@@ -1,6 +1,18 @@
 package com.akrog.tolomet;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Meteo {
+	public Meteo() {
+		measurements.add(windDirection);
+		measurements.add(windSpeedMed);
+		measurements.add(windSpeedMax);
+		measurements.add(airHumidity);
+		measurements.add(airTemperature);
+		measurements.add(airPressure);
+	}
+	
 	public Measurement getWindDirection() {
 		return windDirection;
 	}
@@ -26,21 +38,13 @@ public class Meteo {
 	}
 	
 	public void clear() {
-		windDirection.clear();
-		windSpeedMed.clear();
-		windSpeedMax.clear();
-		airTemperature.clear();
-		airPressure.clear();
-		airHumidity.clear();
+		for( Measurement measurement : measurements )
+			measurement.clear();
 	}
 	
 	public void clear( long fromStamp ) {
-		windDirection.clear(fromStamp);
-		windSpeedMed.clear(fromStamp);
-		windSpeedMax.clear(fromStamp);
-		airTemperature.clear(fromStamp);
-		airPressure.clear(fromStamp);
-		airHumidity.clear(fromStamp);
+		for( Measurement measurement : measurements )
+			measurement.clear(fromStamp);
 	}
 	
 	public void merge(Meteo meteo) {
@@ -59,6 +63,11 @@ public class Meteo {
 	public Long getStamp() {
 		return windDirection.getStamp();
 	}
+	
+	public void sort() {
+		for( Measurement measurement : measurements )
+			measurement.sort();
+	}
 
 	private final Measurement windDirection = new Measurement();
 	private final Measurement windSpeedMed = new Measurement();
@@ -66,4 +75,5 @@ public class Meteo {
 	private final Measurement airTemperature = new Measurement();
 	private final Measurement airPressure = new Measurement();
 	private final Measurement airHumidity = new Measurement();
+	private final List<Measurement> measurements = new ArrayList<Measurement>();
 }
