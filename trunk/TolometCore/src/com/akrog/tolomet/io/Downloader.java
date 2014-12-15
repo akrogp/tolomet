@@ -16,6 +16,7 @@ import java.util.Map.Entry;
 
 public class Downloader {
 	private String url;
+	private String query;
 	private String method;
 	private final List<Entry<String,Object>> params = new ArrayList<Entry<String,Object>>();
 	protected boolean usingLinebreak = true;
@@ -75,7 +76,14 @@ public class Downloader {
 		return builder.toString();
 	}
 	
+	public void setQuery(String query) {
+		this.query = query;
+	}
+	
 	private String getQuery() throws UnsupportedEncodingException {
+		if( query != null )
+			return query;
+		
 		StringBuilder result = new StringBuilder();
 		boolean first = true;
 		

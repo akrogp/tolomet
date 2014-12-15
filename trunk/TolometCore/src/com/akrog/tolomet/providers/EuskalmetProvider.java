@@ -1,21 +1,13 @@
 package com.akrog.tolomet.providers;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.TimeZone;
 
+import com.akrog.tolomet.Header;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
 
 public class EuskalmetProvider implements WindProvider {
-	
-	public EuskalmetProvider() {
-		loadCols();
-	}
 	
 	@Override
 	public String getInfoUrl(String code) {
@@ -60,10 +52,10 @@ public class EuskalmetProvider implements WindProvider {
 	
 	private void updateStation(Station station, String data) {
 		if( data == null )
-			return;
+			return;		
 		
-		int col = this.humidityCol.containsKey(station.getCode()) ? this.humidityCol.get(station.getCode()) : -1;
 	    String[] lines = data.split("<tr ?>");
+	    Header index = getIndex(lines[3]);
 	    long date;
 	    Number val;		        
 	    for( int i = 4; i < lines.length; i++ ) {
@@ -72,25 +64,41 @@ public class EuskalmetProvider implements WindProvider {
 	        	break;
 	        if( getContent(cells[2]).equals("-") )
 	        	continue;
-	        date = toEpoch(getContent(cells[1]));
-	        val = Integer.parseInt(getContent(cells[3]));
+	        date = toEpoch(getContent(cells[index.getDate()]));
+	        val = Integer.parseInt(getContent(cells[index.getDir()]));
 	        station.getMeteo().getWindDirection().put(date, val);
-	        if( col >= 0 )
-	        	try {	// We can go on without humidity data		        	
-		        	val = (float)Integer.parseInt(getContent(cells[col]));
-		        	station.getMeteo().getAirHumidity().put(date, val);
-	        	} catch( Exception e ) {}
-	        val = Float.parseFloat(getContent(cells[2]));
+	        val = Float.parseFloat(getContent(cells[index.getMed()]));
 	        station.getMeteo().getWindSpeedMed().put(date, val);
-	        val = Float.parseFloat(getContent(cells[4]));
+	        val = Float.parseFloat(getContent(cells[index.getMax()]));
 	        station.getMeteo().getWindSpeedMax().put(date, val);
-	        val = Float.parseFloat(getContent(cells[7]));
-	        station.getMeteo().getAirTemperature().put(date, val);
-	        val = Float.parseFloat(getContent(cells[10]));
-	        station.getMeteo().getAirPressure().put(date, val);
+	        if( index.getHum() > 0 ) {
+		        val = (float)Integer.parseInt(getContent(cells[index.getHum()]));
+	        	station.getMeteo().getAirHumidity().put(date, val);
+	        }
+	        if( index.getTemp() > 0 ) {
+		        val = Float.parseFloat(getContent(cells[index.getTemp()]));
+		        station.getMeteo().getAirTemperature().put(date, val);
+	        }
+	        if( index.getPres() > 0 ) {
+		        val = Float.parseFloat(getContent(cells[index.getPres()]));
+		        station.getMeteo().getAirPressure().put(date, val);
+	        }
 	    }
 	}
 	
+	private Header getIndex(String row) {
+		Header index = new Header();
+		String[] cells = row.split("<td");
+		index.findDate("Hora",cells);		// 1
+		index.findDir("Dir", cells);		// 3
+		index.findMed("Vel.Med", cells);	// 2
+		index.findMax("Vel.Max", cells);	// 4
+		index.findTemp("Tem.Aire", cells);
+		index.findHum("Humedad", cells);
+		index.findPres("Pres", cells);
+		return index;
+	}
+
 	private long toEpoch( String str ) {
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 		String[] fields = str.split(":");
@@ -108,25 +116,6 @@ public class EuskalmetProvider implements WindProvider {
 		return cell.substring(i, i2).replace(',', this.separator);
 	}
 	
-	private void loadCols() {
-		this.humidityCol = new HashMap<String, Integer>();
-		
-		InputStream inputStream = getClass().getResourceAsStream("/res/euskalmet.csv");
-		InputStreamReader in = new InputStreamReader(inputStream);
-		BufferedReader rd = new BufferedReader(in);
-		String line;
-		String[] fields;
-		try {
-			while( (line=rd.readLine()) != null ) {
-				fields = line.split(",");
-				this.humidityCol.put(fields[0], Integer.parseInt(fields[1]));
-			}
-			rd.close();
-		} catch( Exception e ) {			
-		}
-    }	
-	
-	private Map<String,Integer> humidityCol;
 	private final char separator = '.';	
 	private Downloader downloader;
 }
