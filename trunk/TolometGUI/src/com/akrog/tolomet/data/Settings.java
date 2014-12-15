@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.R;
@@ -19,7 +20,8 @@ public class Settings {
 	
 	public void initialize( Tolomet tolomet, Manager model ) {
 		this.tolomet = tolomet;
-		settings = tolomet.getPreferences(0);
+		//settings = tolomet.getPreferences(0);
+		settings = PreferenceManager.getDefaultSharedPreferences(tolomet);
 		migrate(model);
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putInt("cfg", VERSION);

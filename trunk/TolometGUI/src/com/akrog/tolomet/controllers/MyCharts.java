@@ -40,7 +40,7 @@ public class MyCharts implements Controller, OnSharedPreferenceChangeListener {
 	private Marker markerVmin = new Marker(0.0f, null, POINT_GRAY);
 	private Marker markerVmax = new Marker(0.0f, null, POINT_GRAY);
 	private Marker markerSea = new Marker(1013.0f, "1013 mb", POINT_GRAY);
-	private Marker markerLow = new Marker(900.0f, "900 mb", POINT_GRAY);
+	private Marker markerLow = new Marker(1000.0f, "1000 mb", POINT_GRAY);
 	//private Marker markerHigh = new Marker(1100.0f, "1100 mb", POINT_GRAY);
 	private Marker markerCloud = new Marker(100.0f, "100% humedad", LINE_BLUE);
 	/*private Marker markerNorth = new Marker(0, "0º (N)", LINE_BLUE);
@@ -75,11 +75,14 @@ public class MyCharts implements Controller, OnSharedPreferenceChangeListener {
     	chartAir = (MyPlot)tolomet.findViewById(R.id.chartAir);
         chartAir.setTitle(tolomet.getString(R.string.Air));
         chartAir.setY1Label("Temp. (grados)");        
-        chartAir.setY1Range(0, 30);        
-        chartAir.setStepsY1(6);
+        chartAir.setY1Range(0, 40);        
+        chartAir.setStepsY1(8);
+        //chartAir.setTicksPerStepY1(5);
         chartAir.setY2Label("Hum. (%)");
-        chartAir.setY2Range(10, 110);
-        chartAir.setY3Range(813, 1113);
+        chartAir.setY2Range(30, 110);
+        chartAir.setStepsY2(8);
+        // See: http://www.theweatherprediction.com/habyhints2/410/
+        chartAir.setY3Range(990, 1020);
         chartAir.setXLabel(tolomet.getString(R.string.Time));        
         chartAir.setStepsX(4);
         chartAir.setTicksPerStepX(6);       
