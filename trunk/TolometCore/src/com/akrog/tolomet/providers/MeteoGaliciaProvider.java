@@ -1,6 +1,7 @@
 package com.akrog.tolomet.providers;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
@@ -9,14 +10,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
+import com.akrog.tolomet.io.XmlElement;
+import com.akrog.tolomet.io.XmlParser;
 
 public class MeteoGaliciaProvider implements WindProvider {
 	public MeteoGaliciaProvider() {
@@ -48,51 +45,57 @@ public class MeteoGaliciaProvider implements WindProvider {
 	protected void updateStation(Station station, String data) {
 		if( data == null )
 			return;
-		XMLEventReader rd;
+		XmlElement root;
 		try {
-			rd = XMLInputFactory.newInstance().createXMLEventReader(new StringReader(data));
-		} catch (Exception e) {
+			root = XmlParser.load(new StringReader(data));
+		} catch (IOException e) {
 			return;
 		}
+		if( root == null || !root.getName().equals("Estacion") )
+			return;
+		
 		long date=0;
 		Number val;
-		try {
-			//parser.require(XmlPullParser.START_TAG, null, "Estacion");
-			station.clear();
-			while( rd.hasNext() ) {
-				XMLEvent event = rd.nextEvent();
-				if( !event.isStartElement() )
-					continue;				
-				StartElement element = event.asStartElement();
-				String name = element.getName().getLocalPart();
-				if( name.equals("Valores") ) {					
-					date = toEpoch(element.getAttributeByName(new QName("Data")).getValue());
-				} else if( name.equals("Medida") ) {
-					String attr = element.getAttributeByName(new QName("ID")).getValue();
-					if( attr.equals("81") ) {
-						if( element.getAttributeByName(new QName("Unidades")).getValue().equals("m/s") )
-							val = Float.parseFloat(getContent(element))*3.6F;
-						else
-							val = Float.parseFloat(getContent(element));
-				        station.getMeteo().getWindSpeedMed().put(date, val);
-					} else if( attr.equals("86") ) {
-						val = (float)Integer.parseInt(getContent(element));
-			        	station.getMeteo().getAirHumidity().put(date, val);
-					} else if( attr.equals("82") || attr.equals("10124") ) {
-						val = Integer.parseInt(getContent(element));
-				        station.getMeteo().getWindDirection().put(date, val);
-					} else if( attr.equals("10003") ) {
-						if( element.getAttributeByName(new QName("Unidades")).getValue().equals("m/s") )
-							val = Float.parseFloat(getContent(element))*3.6F;
-						else
-							val = Float.parseFloat(getContent(element));
-				        station.getMeteo().getWindSpeedMax().put(date, val);
-					}
+		station.clear();
+		for( XmlElement element : root.getSubElements() ) {
+			String name = element.getName();
+			if( !name.equals("Valores") )
+				continue;
+			date = toEpoch(element.getAttribute("Data"));
+			for( XmlElement meas : element.getSubElements() ) {					
+				String attr = meas.getAttribute("ID");
+				if( attr.equals("82") || attr.equals("10124") ) {
+					val = Integer.parseInt(getContent(meas));
+					station.getMeteo().getWindDirection().put(date, val);
+				} else if( attr.equals("81") ) {
+					station.getMeteo().getWindSpeedMed().put(date, getSpeed(meas));
+				} else if( attr.equals("10003") ) {
+					station.getMeteo().getWindSpeedMax().put(date, getSpeed(meas));
+				} else if( attr.equals("86") ) {
+					try {
+						val = Float.parseFloat(getContent(meas));
+						station.getMeteo().getAirHumidity().put(date, val);
+					} catch( Exception e ) {}
+				} else if( attr.equals("83") ) {
+					try {
+						val = Float.parseFloat(getContent(meas));
+						station.getMeteo().getAirTemperature().put(date, val);
+					} catch( Exception e ) {}
+				} else if( attr.equals("10002") ) {
+					try {
+						val = Float.parseFloat(getContent(meas));
+						station.getMeteo().getAirPressure().put(date, val);
+					} catch( Exception e ) {}
 				}
 			}
-		} catch( Exception e ) {
-			e.printStackTrace();
 		}
+	}
+	
+	private float getSpeed( XmlElement meas ) {
+		float val = Float.parseFloat(getContent(meas));
+		if( meas.getAttribute("Unidades").equals("m/s") )
+			return val*3.6F;
+		return val;
 	}
 
 	@Override
@@ -115,8 +118,8 @@ public class MeteoGaliciaProvider implements WindProvider {
 	    return cal.getTimeInMillis();
 	}
 	
-	private String getContent( StartElement element ) {
-		String val = element.getAttributeByName(new QName("Valor")).getValue(); 	
+	private String getContent( XmlElement element ) {
+		String val = element.getAttribute("Valor"); 	
 		return val.replace(',', this.separator);
 	}
 	

@@ -63,11 +63,6 @@ public class Meteo {
 	public Long getStamp() {
 		return windDirection.getStamp();
 	}
-	
-	public void sort() {
-		for( Measurement measurement : measurements )
-			measurement.sort();
-	}
 
 	private final Measurement windDirection = new Measurement();
 	private final Measurement windSpeedMed = new Measurement();

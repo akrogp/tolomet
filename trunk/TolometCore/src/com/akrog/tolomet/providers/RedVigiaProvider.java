@@ -12,7 +12,6 @@ public class RedVigiaProvider implements WindProvider {
 	@Override
 	public void refresh(com.akrog.tolomet.Station station) {
 		downloader = new Downloader();
-		downloader.useLineBreak(true);
 		downloader.setUrl("http://www.redvigia.es/Historico.aspx");
 		downloader.addParam("codigoBoya", station.getCode());
 		downloader.addParam("numeroDatos", "5");
@@ -56,8 +55,18 @@ public class RedVigiaProvider implements WindProvider {
 		        station.getMeteo().getWindSpeedMed().put(date, val);
 		        val = Float.parseFloat(getContent(fields[3],true))*3.6F;
 		        station.getMeteo().getWindSpeedMax().put(date, val);
-		        val = (float)(int)(Float.parseFloat(getContent(fields[5],true))+0.5f);
-	        	station.getMeteo().getAirHumidity().put(date, val);
+		        try {
+			        val = Float.parseFloat(getContent(fields[5],true));
+		        	station.getMeteo().getAirHumidity().put(date, val);
+		        } catch( Exception e ) {}
+		        try {
+			        val = Float.parseFloat(getContent(fields[7],true));
+		        	station.getMeteo().getAirPressure().put(date, val);
+		        } catch( Exception e ) {}
+		        try {
+			        val = Float.parseFloat(getContent(fields[10],true));
+		        	station.getMeteo().getAirTemperature().put(date, val);
+		        } catch( Exception e ) {}	        	
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
