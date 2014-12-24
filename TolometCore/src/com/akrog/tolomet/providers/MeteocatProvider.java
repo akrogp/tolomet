@@ -55,7 +55,6 @@ public class MeteocatProvider implements WindProvider {
 				station.getMeteo().getAirPressure().put(date, val);
 			} catch( Exception e ) {};
 		}
-		station.getMeteo().sort();
 	}
 
 	@Override

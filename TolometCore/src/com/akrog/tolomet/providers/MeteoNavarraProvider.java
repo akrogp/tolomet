@@ -13,6 +13,7 @@ public class MeteoNavarraProvider implements WindProvider {
 		String time1 = String.format("%d/%d/%d", now.get(Calendar.DAY_OF_MONTH), now.get(Calendar.MONTH)+1, now.get(Calendar.YEAR) );
 		String time2 = String.format("%d/%d/%d", now.get(Calendar.DAY_OF_MONTH)+1, now.get(Calendar.MONTH)+1, now.get(Calendar.YEAR) );
 		downloader = new Downloader();
+		downloader.useLineBreak(false);
 		downloader.setUrl("http://meteo.navarra.es/download/estacion_datos.cfm");
 		downloader.addParam("IDEstacion",station.getCode().substring(2));
 		downloader.addParam("p_10","7");
@@ -45,17 +46,19 @@ public class MeteoNavarraProvider implements WindProvider {
 				continue;
 			date = toEpoch(getContent(cells[i]));
 			num = Integer.parseInt(getContent(cells[i+1]));
-			station.getMeteo().getWindDirection().put(date, num);
-			try {	// We can go on without humidity data
-				num = (float)Integer.parseInt(getContent(cells[i+2]));
-				station.getMeteo().getAirHumidity().put(date, num);
-			} catch( Exception e ) {}
+			station.getMeteo().getWindDirection().put(date, num);			
 			num = Float.parseFloat(getContent(cells[i+6]));
 			station.getMeteo().getWindSpeedMed().put(date, num);
 			num = Float.parseFloat(getContent(cells[i+4]));
 			station.getMeteo().getWindSpeedMax().put(date, num);
-			num = Float.parseFloat(getContent(cells[i+7]));
-			station.getMeteo().getAirTemperature().put(date, num);
+			try {
+				num = (float)Integer.parseInt(getContent(cells[i+2]));
+				station.getMeteo().getAirHumidity().put(date, num);
+			} catch( Exception e ) {}
+			try {
+				num = Float.parseFloat(getContent(cells[i+7]));
+				station.getMeteo().getAirTemperature().put(date, num);
+			} catch( Exception e ) {}
 		}		
 	}
 

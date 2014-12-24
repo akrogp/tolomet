@@ -43,10 +43,10 @@ public class MyCharts implements Controller, OnSharedPreferenceChangeListener {
 	private Marker markerLow = new Marker(1000.0f, "1000 mb", POINT_GRAY);
 	//private Marker markerHigh = new Marker(1100.0f, "1100 mb", POINT_GRAY);
 	private Marker markerCloud = new Marker(100.0f, "100% humedad", LINE_BLUE);
-	/*private Marker markerNorth = new Marker(0, "0º (N)", LINE_BLUE);
+	//private Marker markerNorth = new Marker(0, "0º (N)", LINE_BLUE);
 	private Marker markerSouth = new Marker(180, "180º (S)", LINE_BLUE);
-	private Marker markerEast = new Marker(90, "90º (E)", LINE_BLUE);
-	private Marker markerWest = new Marker(270, "270º (W)", LINE_BLUE);*/
+	//private Marker markerEast = new Marker(90, "90º (E)", LINE_BLUE);
+	//private Marker markerWest = new Marker(270, "270º (W)", LINE_BLUE);
 
 	@Override
 	public void initialize(Tolomet tolomet, Bundle bundle) {
@@ -64,10 +64,10 @@ public class MyCharts implements Controller, OnSharedPreferenceChangeListener {
 	private void updateMarkers() {
 		int pos = settings.getMinMarker(); 
 		markerVmin.setPos(pos);
-		markerVmin.setLabel(pos+"");
+		markerVmin.setLabel(pos+" km/h");
 		pos = settings.getMaxMarker(); 
 		markerVmax.setPos(pos);
-		markerVmax.setLabel(pos+"");
+		markerVmax.setLabel(pos+" km/h");
 	}
 	
 	@SuppressLint("SimpleDateFormat")
@@ -120,10 +120,10 @@ public class MyCharts implements Controller, OnSharedPreferenceChangeListener {
         	meteo.getWindSpeedMax(), -1.0f, "Vel. Máx.", LINE_RED, POINT_RED));             
         
         updateMarkers();
-        /*chartWind.addY1Marker(markerSouth);
-        chartWind.addY1Marker(markerNorth);
-        chartWind.addY1Marker(markerEast);
-        chartWind.addY1Marker(markerWest);*/
+        chartWind.addY1Marker(markerSouth);
+        //chartWind.addY1Marker(markerNorth);
+        //chartWind.addY1Marker(markerEast);
+        //chartWind.addY1Marker(markerWest);
         chartWind.addY2Marker(markerVmin);
         chartWind.addY2Marker(markerVmax);        
         
