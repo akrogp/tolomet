@@ -3,6 +3,7 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_tolomet">Tolomet</string>
     <string name="Refresh">Update</string>
+    <string name="Settings">Settings</string>
     <string name="station_prompt">Station</string>
     <string name="summary"></string>
     <string name="Direction">Direction</string>
@@ -36,9 +37,7 @@
     <string name="select">Select</string>
     <string name="pref_minMarker">Marker #1</string>
     <string name="pref_maxMarker">Marker #2</string>    
-    <string name="pref_catSpeed">Speed chart</string>
+    <string name="pref_catWind">Wind chart</string>
+    <string name="pref_catAir">Air chart</string>
     <string name="pref_speedRange">Speed range</string>
-    <string name="pref_minMarkerDefault">10</string>
-    <string name="pref_maxMarkerDefault">30</string>
-    <string name="pref_rangeDefault">50</string>
 </resources>

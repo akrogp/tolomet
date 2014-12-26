@@ -3,6 +3,7 @@
     <string name="menu_settings">Ajustes</string>
     <string name="title_activity_tolomet">Tolomet</string>
     <string name="Refresh">Actualizar</string>
+    <string name="Settings">Ajustes</string>
     <string name="station_prompt">Estación</string>
     <string name="summary"></string>
     <string name="Direction">Dirección</string>
@@ -36,9 +37,18 @@
     <string name="select">Selecciona</string>    
     <string name="pref_minMarker">Marcador #1</string>
     <string name="pref_maxMarker">Marcador #2</string>        
-    <string name="pref_catSpeed">Gráfica de velocidad</string>
+    <string name="pref_catWind">Gráfica de viento</string>
+    <string name="pref_catAir">Gráfica de aire</string>
     <string name="pref_speedRange">Rango de velocidad</string>
     <string name="pref_minMarkerDefault">10</string>
     <string name="pref_maxMarkerDefault">30</string>
-    <string name="pref_rangeDefault">40</string>
+    <string name="pref_speedRangeDefault">40</string>    
+    <string name="pref_minTemp">Temperatura mínima</string>
+    <string name="pref_minTempDefault">0</string>
+    <string name="pref_maxTemp">Temperatura máxima</string>
+    <string name="pref_maxTempDefault">40</string>
+    <string name="pref_minPres">Presión mínima</string>
+    <string name="pref_minPresDefault">980</string>
+    <string name="pref_maxPres">Presión máxima</string>
+    <string name="pref_maxPresDefault">1030</string>
 </resources>

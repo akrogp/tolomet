@@ -13,16 +13,19 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 
 public class PlotYY extends View {	
-	private static final int DEFAULT_TITLE_SIZE = 15;
-	private static final int DEFAULT_LABEL_SIZE = 15;
-	private static final int DEFAULT_MARKER_SIZE = 12;
-	private static final int DEFAULT_LEGEND_SIZE = 12;
-	private static final int TICK_SIZE = 3;
-	private static final int TICK_MARGIN = 2;
-	private static final int BORDER = 2;
+	private float DEFAULT_TITLE_SIZE = 11;	// sp
+	private float DEFAULT_LABEL_SIZE = 9;	// sp
+	private float DEFAULT_MARKER_SIZE = 9;	// sp
+	private float DEFAULT_LEGEND_SIZE = 8;	// sp
+	private float TICK_SIZE = 3;			// dip
+	private float TICK_MARGIN = 2;			// dip
+	private float BORDER = 2;				// dip
+	private float LINE_SIZE = 1.5f;			// dip
+	private float POINT_SIZE = 5;			// dip
 	private final Paint paintBorder = new Paint();
 	private final Paint paintTitle = new Paint();
 	private final Paint paintY1 = new Paint();
@@ -64,6 +67,16 @@ public class PlotYY extends View {
 	}
 	
 	private void init() {
+		DEFAULT_TITLE_SIZE = sp2px(DEFAULT_TITLE_SIZE);
+		DEFAULT_LABEL_SIZE = sp2px(DEFAULT_LABEL_SIZE);
+		DEFAULT_MARKER_SIZE = sp2px(DEFAULT_MARKER_SIZE);
+		DEFAULT_LEGEND_SIZE = sp2px(DEFAULT_LEGEND_SIZE);
+		TICK_SIZE = dip2px(TICK_SIZE);
+		TICK_MARGIN = dip2px(TICK_MARGIN);
+		BORDER = dip2px(BORDER);
+		LINE_SIZE = dip2px(LINE_SIZE);
+		POINT_SIZE = dip2px(POINT_SIZE);
+		
 		paintBorder.setColor(Color.DKGRAY);
 		paintBorder.setStyle(Style.FILL);
 				
@@ -181,10 +194,10 @@ public class PlotYY extends View {
 		
 		Paint linePaint = new Paint();
 		linePaint.setColor(graph.getLineColor());
-		linePaint.setStrokeWidth(2.0f);
+		linePaint.setStrokeWidth(LINE_SIZE);
 		Paint pointPaint = new Paint();
 		pointPaint.setColor(graph.getPointColor());
-		pointPaint.setStrokeWidth(6.0f);
+		pointPaint.setStrokeWidth(POINT_SIZE);
 		
 		canvas.drawRect(x1, y1, x2, y2, paintChart);
 		canvas.drawText(graph.getTitle(), x1+w, y2, paintLegend);
@@ -238,10 +251,10 @@ public class PlotYY extends View {
 				
 		Paint linePaint = new Paint();
 		linePaint.setColor(graph.getLineColor());
-		linePaint.setStrokeWidth(2.0f);
+		linePaint.setStrokeWidth(LINE_SIZE);
 		Paint pointPaint = new Paint();
 		pointPaint.setColor(graph.getPointColor());
-		pointPaint.setStrokeWidth(6.0f);
+		pointPaint.setStrokeWidth(POINT_SIZE);
 		
 		long[] x = graph.getX();
 		float[] y = graph.getY();
@@ -525,5 +538,17 @@ public class PlotYY extends View {
 	
 	public void addY3Marker(Marker marker) {
 		y3Markers.add(marker);
+	}
+	
+	public float dip2px( float dip ) {
+		return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, getContext().getResources().getDisplayMetrics());
+	}
+	
+	public float sp2px( float sp ) {
+		return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, getContext().getResources().getDisplayMetrics());
+	}
+	
+	public float pt2px( float pt ) {
+		return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PT, pt, getContext().getResources().getDisplayMetrics());
 	}
 }

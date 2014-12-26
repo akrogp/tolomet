@@ -28,10 +28,68 @@
     <item>40 km/h</item>
     <item>80 km/h</item>
     <item>160 km/h</item>
+    <item>200 km/h</item>
 </string-array>
 <string-array name="pref_rangeValues">
     <item>40</item>
     <item>80</item>
     <item>160</item>
+    <item>200</item>
+</string-array>
+<string-array name="pref_minTempEntries">
+    <item>-5 ºC</item>
+    <item>0 ºC</item>
+    <item>5 ºC</item>
+    <item>10 ºC</item>
+</string-array>
+<string-array name="pref_minTempValues">
+    <item>-5</item>
+    <item>0</item>
+    <item>5</item>
+    <item>10</item>
+</string-array>
+<string-array name="pref_maxTempEntries">
+    <item>15 ºC</item>
+    <item>20 ºC</item>
+    <item>25 ºC</item>
+    <item>30 ºC</item>
+    <item>35 ºC</item>
+    <item>40 ºC</item>
+</string-array>
+<string-array name="pref_maxTempValues">
+    <item>15</item>
+    <item>20</item>
+    <item>25</item>
+    <item>30</item>
+    <item>35</item>
+    <item>40</item>
+</string-array>
+<string-array name="pref_minPresEntries">
+    <item>870 mb (mínimo histórico)</item>
+    <item>940 mb</item>
+    <item>960 mb</item>
+    <item>980 mb</item>
+    <item>1000 mb (típico baja presión)</item>
+</string-array>
+<string-array name="pref_minPresValues">
+    <item>870</item>
+    <item>940</item>
+    <item>960</item>
+    <item>980</item>
+    <item>1000</item>
+</string-array>
+<string-array name="pref_maxPresEntries">
+    <item>1020 mb</item>
+    <item>1030 mb</item>
+    <item>1040 mb</item>
+    <item>1050 mb</item>
+    <item>1086 mb (máximo histórico)</item>
+</string-array>
+<string-array name="pref_maxPresValues">
+    <item>1020</item>
+    <item>1030</item>
+    <item>1040</item>
+    <item>1050</item>
+    <item>1086</item>
 </string-array>
 </resources>

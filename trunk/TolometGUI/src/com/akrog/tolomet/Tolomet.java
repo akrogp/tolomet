@@ -122,6 +122,17 @@ public class Tolomet extends Activity {
 			return;
 		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(model.getInforUrl())));
     }
+    
+    public void onSettings() {
+    	//startActivity(new Intent(Tolomet.this, SettingsActivity.class));
+    	startActivityForResult(new Intent(Tolomet.this, SettingsActivity.class), 0);
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	if( requestCode == 0 )
+    		redraw();
+    }
 
     @Override
     public boolean onCreateOptionsMenu( Menu menu ) {
@@ -139,7 +150,7 @@ public class Tolomet extends Activity {
     			about.show();
     			break;
     		case R.id.menu_settings:
-    			startActivity(new Intent(Tolomet.this, SettingsActivity.class));
+    			onSettings();
     			break;
     		default:
                 return super.onOptionsItemSelected(item);

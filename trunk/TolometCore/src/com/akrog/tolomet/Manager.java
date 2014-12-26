@@ -159,18 +159,31 @@ public class Manager {
 	public String getSummary( boolean large ) {
 		if( !checkCurrent() )
 			return null;
-		
-		Number hum = currentStation.getMeteo().getAirHumidity().getLast();
-		String date = getStamp();
+				
 		int dir = currentStation.getMeteo().getWindDirection().getLast().intValue();
 		String strDir = parseDirection(dir);
 		float med = currentStation.getMeteo().getWindSpeedMed().getLast().floatValue();
 		float max = currentStation.getMeteo().getWindSpeedMax().getLast().floatValue();
-		if( hum == null )
-			return String.format("%s | %dº (%s) | %.1f~%.1f km/h", date, dir, strDir, med, max );
-		if( large )
-    		return String.format("%s | %dº (%s) | %.0f %% | %.1f~%.1f km/h", date, dir, strDir, hum, med, max );
-    	return String.format("%s|%dº(%s)|%.0f%%|%.1f~%.1f", date, dir, strDir, hum, med, max );
+		Number hum = currentStation.getMeteo().getAirHumidity().getLast();
+		Number temp = currentStation.getMeteo().getAirTemperature().getLast();
+		
+		StringBuilder str = new StringBuilder(getStamp());
+		if( large ) {
+			str.append(String.format(" | %dº (%s) | ", dir, strDir));
+			if( hum != null )
+				str.append(String.format("%.0f %% | ", hum));
+			if( temp != null )
+				str.append(String.format("%.0f ºC | ", temp));
+			str.append(String.format(" %.1f~%.1f km/h", med, max));
+		} else {
+			str.append(String.format("|%dº(%s)|", dir, strDir));
+			if( hum != null )
+				str.append(String.format("%.0f%%|", hum));
+			if( temp != null )
+				str.append(String.format("%.0fºC|", temp));
+			str.append(String.format("%.1f~%.1f", med, max));
+		}
+		return str.toString();
 	}
 		
 	public String getStamp() {

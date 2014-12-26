@@ -5,11 +5,8 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.Meteo;
@@ -20,7 +17,7 @@ import com.akrog.tolomet.view.Graph;
 import com.akrog.tolomet.view.Marker;
 import com.akrog.tolomet.view.MyPlot;
 
-public class MyCharts implements Controller, OnSharedPreferenceChangeListener {
+public class MyCharts implements Controller {
 	private static final int LINE_BLUE=Color.rgb(0, 0, 200);
 	private static final int POINT_BLUE=Color.rgb(0, 0, 100);
 	private static final int LINE_RED=Color.rgb(200, 0, 0);
@@ -54,7 +51,7 @@ public class MyCharts implements Controller, OnSharedPreferenceChangeListener {
 		model = tolomet.getModel();
 		settings = tolomet.getSettings();
 		createCharts();
-		PreferenceManager.getDefaultSharedPreferences(tolomet.getApplicationContext()).registerOnSharedPreferenceChangeListener(this);
+		//PreferenceManager.getDefaultSharedPreferences(tolomet.getApplicationContext()).registerOnSharedPreferenceChangeListener(this);
 	}
 	
 	@Override
@@ -74,15 +71,12 @@ public class MyCharts implements Controller, OnSharedPreferenceChangeListener {
 	private void createCharts() {				
     	chartAir = (MyPlot)tolomet.findViewById(R.id.chartAir);
         chartAir.setTitle(tolomet.getString(R.string.Air));
-        chartAir.setY1Label("Temp. (grados)");        
-        chartAir.setY1Range(0, 40);        
+        chartAir.setY1Label("Temp. (grados)");                        
         chartAir.setStepsY1(8);
         //chartAir.setTicksPerStepY1(5);
         chartAir.setY2Label("Hum. (%)");
         chartAir.setY2Range(30, 110);
-        chartAir.setStepsY2(8);
-        // See: http://www.theweatherprediction.com/habyhints2/410/
-        chartAir.setY3Range(990, 1020);
+        chartAir.setStepsY2(8);        
         chartAir.setXLabel(tolomet.getString(R.string.Time));        
         chartAir.setStepsX(4);
         chartAir.setTicksPerStepX(6);       
@@ -105,9 +99,6 @@ public class MyCharts implements Controller, OnSharedPreferenceChangeListener {
         chartWind.setY1Label("Dir. (grados)");
         chartWind.setStepsY1(8);
         chartWind.setY2Label("Vel. (km/h)");     
-        int speedRange = settings.getSpeedRange();
-        chartWind.setY2Range(0, speedRange);
-        chartWind.setStepsY2(speedRange/5);               
         chartWind.setXLabel(tolomet.getString(R.string.Time));        
         chartWind.setStepsX(4);
         chartWind.setTicksPerStepX(6); 
@@ -130,11 +121,28 @@ public class MyCharts implements Controller, OnSharedPreferenceChangeListener {
         chartAir.connectXRanges(chartWind);
         chartWind.connectXRanges(chartAir);
         
-        //updateDomainBoundaries();
         setRefresh(15);
+        updateBoundaries();
     }
     
     private void updateBoundaries() {
+    	updateTimeRange();
+        
+        int speedRange = settings.getSpeedRange();
+        chartWind.setY2Range(0, speedRange);
+        chartWind.setY2ZoomLimits(0, speedRange);
+        chartWind.setStepsY2(speedRange/5);
+        
+        int minTemp = settings.getMinTemp();
+        int maxTemp = settings.getMaxTemp();
+        chartAir.setY1Range(minTemp, maxTemp);
+        chartAir.setY1ZoomLimits(minTemp, maxTemp);
+        
+        // See: http://www.theweatherprediction.com/habyhints2/410/
+        chartAir.setY3Range(settings.getMinPres(), settings.getMaxPres());
+    }
+    
+    private void updateTimeRange() {
     	Calendar cal = Calendar.getInstance();
     	cal.set(Calendar.SECOND, 0);
     	cal.set(Calendar.MILLISECOND, 0);
@@ -157,10 +165,6 @@ public class MyCharts implements Controller, OnSharedPreferenceChangeListener {
     	chartAir.setXZoomLimits(date0.getTime(), date2.getTime());
         chartWind.setXRange(date1.getTime(), date2.getTime());
         chartWind.setXZoomLimits(date0.getTime(), date2.getTime());
-        int speedRange = settings.getSpeedRange();
-        chartWind.setY2Range(0, speedRange);
-        chartWind.setY2ZoomLimits(0, speedRange);
-        chartWind.setStepsY2(speedRange/5);      
     }
 
     @Override
@@ -183,9 +187,4 @@ public class MyCharts implements Controller, OnSharedPreferenceChangeListener {
 	public boolean getZoomed() {
         return chartAir.getZoomed() || chartWind.getZoomed();
     }
-
-	@Override
-	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-		redraw();		
-	}		
 }
