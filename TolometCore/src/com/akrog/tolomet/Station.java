@@ -45,11 +45,10 @@ public class Station {
 	@Override
 	public String toString() {
 		if( isSpecial() )
-			return this.name;
-		//String str = this.code + " - " + this.name;
-		String str = this.providerType.getCode() + " - " + this.name;
-		if( this.distance > 0.0F )
-			str += " (" + String.format("%.1f",this.distance/1000.0F) + " km)";
+			return name;
+		String str = String.format("%s (%s)", name, providerType.getCode());
+		if( distance > 0.0F )
+			str = String.format("%s @ %.1f km", str, distance/1000.0F);
 		return str;
 	}
 	

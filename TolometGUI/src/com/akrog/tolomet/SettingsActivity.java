@@ -10,13 +10,13 @@ import android.preference.PreferenceGroup;
 
 @SuppressWarnings("deprecation")
 public class SettingsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
-	public static final String KEY_SPEED_RANGE = "pref_speedRange";
-	public static final String KEY_MIN_MARKER = "pref_minMarker";
-	public static final String KEY_MAX_MARKER = "pref_maxMarker";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		/*PreferenceManager manager = getPreferenceManager(); 
+		manager.setSharedPreferencesMode(MODE_PRIVATE);
+		manager.setSharedPreferencesName("kk");*/
 		addPreferencesFromResource(R.xml.preferences);
 		initSummaries(this.getPreferenceScreen());
 	}

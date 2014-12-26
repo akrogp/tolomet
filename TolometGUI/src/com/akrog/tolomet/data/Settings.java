@@ -9,7 +9,6 @@ import android.preference.PreferenceManager;
 
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.R;
-import com.akrog.tolomet.SettingsActivity;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.controllers.MySpinner;
@@ -22,6 +21,8 @@ public class Settings {
 		this.tolomet = tolomet;
 		//settings = tolomet.getPreferences(0);
 		settings = PreferenceManager.getDefaultSharedPreferences(tolomet);
+		//settings = tolomet.getSharedPreferences("kk", 0);
+		//settings = tolomet.getSharedPreferences("com.akrog.tolomet", Tolomet.MODE_PRIVATE);
 		migrate(model);
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putInt("cfg", VERSION);
@@ -100,15 +101,31 @@ public class Settings {
 	}
 	
 	public int getSpeedRange() {
-		return Integer.parseInt(settings.getString(SettingsActivity.KEY_SPEED_RANGE, tolomet.getString(R.string.pref_rangeDefault)));
+		return Integer.parseInt(settings.getString(tolomet.getString(R.string.pref_speedRange), tolomet.getString(R.string.pref_speedRangeDefault)));
 	}
 	
 	public int getMinMarker() {
-		return Integer.parseInt(settings.getString(SettingsActivity.KEY_MIN_MARKER, tolomet.getString(R.string.pref_minMarkerDefault)));
+		return Integer.parseInt(settings.getString(tolomet.getString(R.string.pref_minMarker), tolomet.getString(R.string.pref_minMarkerDefault)));
 	}
 	
 	public int getMaxMarker() {
-		return Integer.parseInt(settings.getString(SettingsActivity.KEY_MAX_MARKER, tolomet.getString(R.string.pref_maxMarkerDefault)));
+		return Integer.parseInt(settings.getString(tolomet.getString(R.string.pref_maxMarker), tolomet.getString(R.string.pref_maxMarkerDefault)));
+	}
+	
+	public int getMinTemp() {
+		return Integer.parseInt(settings.getString(tolomet.getString(R.string.pref_minTemp), tolomet.getString(R.string.pref_minTempDefault)));
+	}
+	
+	public int getMaxTemp() {
+		return Integer.parseInt(settings.getString(tolomet.getString(R.string.pref_maxTemp), tolomet.getString(R.string.pref_maxTempDefault)));
+	}
+	
+	public int getMinPres() {
+		return Integer.parseInt(settings.getString(tolomet.getString(R.string.pref_minPres), tolomet.getString(R.string.pref_minPresDefault)));
+	}
+	
+	public int getMaxPres() {
+		return Integer.parseInt(settings.getString(tolomet.getString(R.string.pref_maxPres), tolomet.getString(R.string.pref_maxPresDefault)));
 	}
 	
 	private void migrate( Manager model ) {

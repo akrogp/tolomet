@@ -17,7 +17,7 @@ public class MyButtons implements OnClickListener, OnCheckedChangeListener, Cont
 	private Tolomet tolomet;
 	private Manager model;
 	private Settings settings;
-	private ImageButton buttonRefresh, buttonInfo;
+	private ImageButton buttonRefresh, buttonInfo, buttonSettings;
 	private CheckBox favorite;
 
 	@Override
@@ -30,6 +30,8 @@ public class MyButtons implements OnClickListener, OnCheckedChangeListener, Cont
         buttonRefresh.setOnClickListener(this);
         buttonInfo = (ImageButton)tolomet.findViewById(R.id.button2);
         buttonInfo.setOnClickListener(this);
+        buttonSettings = (ImageButton)tolomet.findViewById(R.id.settings_button);
+        buttonSettings.setOnClickListener(this);
         
         favorite = (CheckBox)tolomet.findViewById(R.id.favorite_button);
         favorite.setChecked(false);
@@ -46,6 +48,9 @@ public class MyButtons implements OnClickListener, OnCheckedChangeListener, Cont
     			break;
     		case R.id.button2:
     			tolomet.onInfoUrl();
+    			break;
+    		case R.id.settings_button:
+    			tolomet.onSettings();
     			break;
     	}
 	}

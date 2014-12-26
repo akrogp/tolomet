@@ -3,6 +3,7 @@
     <string name="menu_settings">Ezarpenak</string>
     <string name="title_activity_tolomet">Tolomet</string>
     <string name="Refresh">Eguneratu</string>
+    <string name="Settings">Ajustes</string>
     <string name="station_prompt">Estazioa </string>
     <string name="summary"></string>
     <string name="Direction">Norabidea</string>
@@ -36,9 +37,7 @@
     <string name="select">Hautatu</string>
     <string name="pref_minMarker">1. Markatzailea</string>
     <string name="pref_maxMarker">2. Markatzailea</string>        
-    <string name="pref_catSpeed">Abiaduraren grafikoa</string>
+    <string name="pref_catWind">Haizearen grafikoa</string>
+    <string name="pref_catAir">Airearen grafikoa</string>
     <string name="pref_speedRange">Abiadura tartea</string>
-    <string name="pref_minMarkerDefault">10</string>
-    <string name="pref_maxMarkerDefault">30</string>
-    <string name="pref_rangeDefault">50</string>
 </resources>
