@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -13,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.R;
@@ -89,7 +93,12 @@ public class MySpinner implements OnItemSelectedListener, Controller {
 		switch( type ) {
 			case All: model.selectAll(); break;
 			case Favorite: model.selectFavorites(); break;
-			case Nearest: selectNearest(); break;
+			case Nearest:
+				if( !selectNearest() ) {
+					popup = false;
+					selectRegions();
+				}
+				break;
 			case Region: model.selectRegion(region); break;
 			case Regions: selectRegions(); break;
 			case StartMenu: selectStart(); break;
@@ -104,13 +113,13 @@ public class MySpinner implements OnItemSelectedListener, Controller {
 	
 	public void select( Station station ) {
 		if( station == model.getCurrentStation() )
-			return;
-		clearDistance();
+			return;		
 		model.setCurrentStation(station);
 		save(null);
 		if( !station.isSpecial() )			
 			return;
 		
+		clearDistance();
 		if( station.getSpecial() > 200 ) {
 			vowel=(char)(station.getSpecial()-200);
 			spinnerType = Type.Vowel;
@@ -138,15 +147,60 @@ public class MySpinner implements OnItemSelectedListener, Controller {
 			choices.add(startItem);
 	}
 	
-	private void selectNearest() {
-    	LocationManager locationManager = (LocationManager)this.tolomet.getSystemService(Context.LOCATION_SERVICE);
-    	Location ll = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+	private boolean selectNearest() {
+    	Location ll = getLocation();
+    	if( ll == null ) {
+    		Toast.makeText(tolomet,tolomet.getString(R.string.error_gps),Toast.LENGTH_SHORT).show();
+    		return false;
+    	}
     	float[] dist = new float[1];
     	for( Station station : model.getAllStations() ) {    		
     		Location.distanceBetween(ll.getLatitude(), ll.getLongitude(), station.getLatitude(), station.getLongitude(), dist);
     		station.setDistance(dist[0]);
     	}
 		model.selectNearest();
+		return true;
+	}
+	
+	private Location getLocation() {
+		Location locationGps = null;
+		Location locationNet = null;
+	    try {
+	    	LocationManager locationManager = (LocationManager)tolomet.getSystemService(Context.LOCATION_SERVICE);
+	    	boolean isGps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+	    	boolean isNet = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER); 
+	        if( isGps )
+	        	locationGps = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+	        if( isNet )
+	            locationNet = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+	        else if( !isGps )
+	            showLocationDialog();
+	    } catch (Exception e) {
+	    }
+	    
+	    if( locationGps == null )
+	    	return locationNet;
+	    if( locationNet == null )
+	    	return locationGps;
+	    return locationGps.getTime() >= locationNet.getTime() ? locationGps : locationNet;
+	}
+
+	private void showLocationDialog() {
+		AlertDialog.Builder dialog = new AlertDialog.Builder(tolomet);
+        dialog.setMessage(tolomet.getString(R.string.warn_gps));
+        dialog.setPositiveButton(tolomet.getString(R.string.gps_ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                Intent myIntent = new Intent( android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS );
+                tolomet.startActivity(myIntent);
+            }
+        });
+        dialog.setNegativeButton(tolomet.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+            }
+        });
+        dialog.show();
 	}
 	
 	private void clearDistance() {

@@ -71,7 +71,7 @@ public class MyCharts implements Controller {
 	private void createCharts() {				
     	chartAir = (MyPlot)tolomet.findViewById(R.id.chartAir);
         chartAir.setTitle(tolomet.getString(R.string.Air));
-        chartAir.setY1Label("Temp. (grados)");                        
+        chartAir.setY1Label("Temp. (ºC)");                        
         chartAir.setStepsY1(10);
         //chartAir.setTicksPerStepY1(5);
         chartAir.setY2Label("Hum. (%)");
@@ -96,7 +96,7 @@ public class MyCharts implements Controller {
         chartWind = (MyPlot)tolomet.findViewById(R.id.chartWind);      
         chartWind.setTitle(tolomet.getString(R.string.Wind));
         chartWind.setY1Range(0, 360);
-        chartWind.setY1Label("Dir. (grados)");
+        chartWind.setY1Label("Dir. (º)");
         chartWind.setStepsY1(12);
         chartWind.setStepsY2(12);
         chartWind.setY2Label("Vel. (km/h)");     
