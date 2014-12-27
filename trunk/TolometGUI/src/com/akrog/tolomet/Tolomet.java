@@ -105,7 +105,7 @@ public class Tolomet extends Activity {
     // Events
     
     public void onRefresh() {
-    	if( !model.getCurrentStation().isOutdated() ) {
+    	if( !model.isOutdated() ) {
     		if( charts.getZoomed() )
     			charts.redraw();
     		else {
@@ -163,7 +163,7 @@ public class Tolomet extends Activity {
 		if( station.isSpecial() )
 			return;
 		charts.setRefresh(model.getRefresh());
-		if( station.isOutdated() )
+		if( model.isOutdated() )
 			downloadData();
 		else
 			redraw();

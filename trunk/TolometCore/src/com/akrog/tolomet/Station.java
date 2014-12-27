@@ -1,7 +1,5 @@
 package com.akrog.tolomet;
 
-import java.util.Calendar;
-
 import com.akrog.tolomet.providers.WindProvider;
 import com.akrog.tolomet.providers.WindProviderType;
 
@@ -85,15 +83,6 @@ public class Station {
 	
 	public Long getStamp() {
 		return meteo.getStamp();
-	}
-	
-	public boolean isOutdated() {
-		if( isEmpty() )
-			return true;
-		long stamp = getStamp();
-		if( Calendar.getInstance().getTimeInMillis()-stamp > 220*60*1000)
-			return true;
-		return false;
 	}
 	
 	public Meteo getMeteo() {

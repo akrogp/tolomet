@@ -18,18 +18,9 @@
     	android:layout_width="wrap_content"
         android:layout_height="wrap_content"
     	style="?android:attr/starStyle"
-    	android:layout_alignParentTop="true"    	
+    	android:layout_alignParentTop="true"
     	android:layout_toLeftOf="@+id/button2"
     	android:contentDescription="@string/star"/>
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center_horizontal"
-        android:text="@string/summary"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
     
     <ImageButton
         android:id="@+id/button2"
@@ -57,6 +48,15 @@
         android:layout_alignParentTop="true"
         android:src="@android:drawable/ic_menu_preferences"
         android:contentDescription="@string/Settings" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:text="@string/summary"
+        android:textSize="16sp" />
 
     <LinearLayout
         android:id="@+id/layout"

@@ -3,10 +3,12 @@ package com.akrog.tolomet.controllers;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.R;
@@ -32,6 +34,10 @@ public class MyButtons implements OnClickListener, OnCheckedChangeListener, Cont
         buttonInfo.setOnClickListener(this);
         buttonSettings = (ImageButton)tolomet.findViewById(R.id.settings_button);
         buttonSettings.setOnClickListener(this);
+        if( android.os.Build.VERSION.SDK_INT < 11 ) {
+        	((RelativeLayout.LayoutParams)buttonRefresh.getLayoutParams()).addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 1);
+        	((ViewGroup)buttonSettings.getParent()).removeView(buttonSettings);
+        }
         
         favorite = (CheckBox)tolomet.findViewById(R.id.favorite_button);
         favorite.setChecked(false);

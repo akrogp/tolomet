@@ -1,13 +1,17 @@
 package com.akrog.tolomet.data;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.SparseArray;
 
 import com.akrog.tolomet.Manager;
+import com.akrog.tolomet.Measurement;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.Tolomet;
@@ -16,19 +20,32 @@ import com.akrog.tolomet.controllers.MySpinner;
 public class Settings {	
 	private SharedPreferences settings;
 	private Tolomet tolomet;
+	private Manager model;
 	
 	public void initialize( Tolomet tolomet, Manager model ) {
 		this.tolomet = tolomet;
-		//settings = tolomet.getPreferences(0);
+		this.model = model;
 		settings = PreferenceManager.getDefaultSharedPreferences(tolomet);
-		//settings = tolomet.getSharedPreferences("kk", 0);
-		//settings = tolomet.getSharedPreferences("com.akrog.tolomet", Tolomet.MODE_PRIVATE);
-		migrate(model);
+		
+		migrate();
+		setDefaultsAuto();
+		
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putInt("cfg", VERSION);
 		editor.commit();		
 	}
 	
+	private void setDefaultsAuto() {
+		String autoKeys[] = {"pref_speedRange","pref_minTemp","pref_maxTemp","pref_minPres","pref_maxPres"};
+		for( String key : autoKeys ) {
+			if( settings.getString(key, null) == null ) {
+				SharedPreferences.Editor editor = settings.edit();
+				editor.putString(key, INVALID+"");
+				editor.commit();
+			}
+		}
+	}
+
 	public int getConfigVersion() {
 		return settings.getInt("cfg", 1);
 	}
@@ -100,40 +117,76 @@ public class Settings {
 		editor.commit();
 	}
 	
-	public int getSpeedRange() {
-		return Integer.parseInt(settings.getString(tolomet.getString(R.string.pref_speedRange), tolomet.getString(R.string.pref_speedRangeDefault)));
+	private int getPrefValue( String key, int idDefault, int idArray, boolean max, Measurement meas ) {
+		int res = Integer.parseInt(settings.getString(key, tolomet.getString(idDefault)));
+		if( res != INVALID )
+			return res;
+		if( meas.isEmpty() )
+			return Integer.parseInt(tolomet.getString(idDefault));
+		
+		List<Integer> values = mapArrays.get(idArray);
+		if( values == null ) {
+			values = new ArrayList<Integer>();
+			String[] strings = tolomet.getResources().getStringArray(idArray);
+			for( int i = 0; i < strings.length; i++ ) {
+				int value = Integer.parseInt(strings[i]);
+				if( value != INVALID )
+					values.add(value);
+			}				
+			mapArrays.put(idArray, values);
+		}
+		
+		int auto = max ? meas.getMaximum().intValue() : meas.getMinimum().intValue();
+		for( int i = 0; i < values.size(); i++ ) {
+			int value = values.get(i);
+			if( value <= auto )
+				continue;
+			if( !max )
+				i = i > 1 ? i - 1 : 0;
+			res = values.get(i);
+			break;
+		}
+		
+		if( res == INVALID )
+			res = values.get(values.size()-1);
+		
+		return res;
 	}
 	
-	public int getMinMarker() {
-		return Integer.parseInt(settings.getString(tolomet.getString(R.string.pref_minMarker), tolomet.getString(R.string.pref_minMarkerDefault)));
+	public int getSpeedRange(Measurement meas) {
+		return getPrefValue("pref_speedRange", R.string.pref_speedRangeDefault, R.array.pref_rangeValues, true, meas);
+	}
+	
+	public int getMinMarker() {		
+		return Integer.parseInt(settings.getString("pref_minMarker", tolomet.getString(R.string.pref_minMarkerDefault)));
 	}
 	
 	public int getMaxMarker() {
-		return Integer.parseInt(settings.getString(tolomet.getString(R.string.pref_maxMarker), tolomet.getString(R.string.pref_maxMarkerDefault)));
+		return Integer.parseInt(settings.getString("pref_maxMarker", tolomet.getString(R.string.pref_maxMarkerDefault)));
 	}
 	
-	public int getMinTemp() {
-		return Integer.parseInt(settings.getString(tolomet.getString(R.string.pref_minTemp), tolomet.getString(R.string.pref_minTempDefault)));
+	public int getMinTemp(Measurement meas) {
+		return getPrefValue("pref_minTemp", R.string.pref_minTempDefault, R.array.pref_minTempValues, false, meas);
 	}
 	
-	public int getMaxTemp() {
-		return Integer.parseInt(settings.getString(tolomet.getString(R.string.pref_maxTemp), tolomet.getString(R.string.pref_maxTempDefault)));
+	public int getMaxTemp(Measurement meas) {
+		return getPrefValue("pref_maxTemp", R.string.pref_maxTempDefault, R.array.pref_maxTempValues, true, meas);
 	}
 	
-	public int getMinPres() {
-		return Integer.parseInt(settings.getString(tolomet.getString(R.string.pref_minPres), tolomet.getString(R.string.pref_minPresDefault)));
+	public int getMinPres(Measurement meas) {
+		return getPrefValue("pref_minPres", R.string.pref_minPresDefault, R.array.pref_minPresValues, false, meas);
 	}
 	
-	public int getMaxPres() {
-		return Integer.parseInt(settings.getString(tolomet.getString(R.string.pref_maxPres), tolomet.getString(R.string.pref_maxPresDefault)));
+	public int getMaxPres(Measurement meas) {
+		return getPrefValue("pref_maxPres", R.string.pref_maxPresDefault, R.array.pref_maxPresValues, true, meas);
 	}
 	
-	private void migrate( Manager model ) {
+	private void migrate() {
 		if( getConfigVersion() == 0 )
-			migrateFavs(model);
+			migrateFavs();
 	}
 	
-	private void migrateFavs( Manager model ) {
+	private void migrateFavs() {
 		Set<String> set = new HashSet<String>(); 
 		for( Station station : model.getAllStations() )
 			if( settings.contains(station.getCode()) ) {
@@ -160,5 +213,7 @@ public class Settings {
 		return str.toString().replaceAll(",$", "");
 	}
 	
-	private final static int VERSION = 2;	
+	private final static int VERSION = 2;
+	private final static int INVALID = -1000;
+	private final SparseArray<List<Integer>> mapArrays = new SparseArray<List<Integer>>();
 }
