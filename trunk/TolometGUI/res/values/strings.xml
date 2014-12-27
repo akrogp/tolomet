@@ -51,4 +51,8 @@
     <string name="pref_minPresDefault">980</string>
     <string name="pref_maxPres">Presión máxima</string>
     <string name="pref_maxPresDefault">1030</string>
+    <string name="warn_gps">Activa primero el servicio de localización y vuelve a intentarlo</string>
+    <string name="gps_ok">Activar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="error_gps">Localización desconocida</string>
 </resources>
