@@ -42,15 +42,15 @@
 	        android:key="pref_minMarker"
 	        android:title="@string/pref_minMarker"
 	        android:dialogTitle="@string/pref_minMarker"
-	        android:entries="@array/pref_markerEntries"
-	        android:entryValues="@array/pref_markerValues"
+	        android:entries="@array/pref_minSpeedEntries"
+	        android:entryValues="@array/pref_minSpeedValues"
 	        android:defaultValue="@string/pref_minMarkerDefault" />
 	    <ListPreference
 	        android:key="pref_maxMarker"
 	        android:title="@string/pref_maxMarker"
 	        android:dialogTitle="@string/pref_maxMarker"
-	        android:entries="@array/pref_markerEntries"
-	        android:entryValues="@array/pref_markerValues"
+	        android:entries="@array/pref_maxSpeedEntries"
+	        android:entryValues="@array/pref_maxSpeedValues"
 	        android:defaultValue="@string/pref_maxMarkerDefault" />
 	</PreferenceCategory>
 </PreferenceScreen>

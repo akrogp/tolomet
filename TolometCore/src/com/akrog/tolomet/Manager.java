@@ -197,6 +197,15 @@ public class Manager {
         return df.format(cal.getTime());
 	}
 	
+	public boolean isOutdated() {
+		if( currentStation.isSpecial() || currentStation.isEmpty() )
+			return true;
+		long stamp = currentStation.getStamp();
+		if( Calendar.getInstance().getTimeInMillis()-stamp > getRefresh()*60*1000)
+			return true;
+		return false;
+	}
+	
 	public static String parseDirection( int degrees ) {
 		String[] vals = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
         double deg = degrees + 11.25;

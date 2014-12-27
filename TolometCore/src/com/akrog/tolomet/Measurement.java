@@ -7,10 +7,14 @@ public class Measurement {
 	private final Map<Long, Number> map = new TreeMap<Long, Number>();
 	private Long[] times;
 	private Number[] values;
+	private Number minimum;
+	private Number maximum;
 	
 	private void clearCache() {
 		times = null;
 		values = null;
+		minimum = null;
+		maximum = null;
 	}
 	
 	public void put(long time, Number value ) {
@@ -30,6 +34,12 @@ public class Measurement {
 		return getTimes()[size()-1];
 	}
 	
+	public Number getFirst() {
+		if( isEmpty() )
+			return null;
+		return getValues()[0];
+	}
+	
 	public Number getLast() {
 		if( isEmpty() )
 			return null;
@@ -40,6 +50,32 @@ public class Measurement {
 		if( values == null )
 			values = map.values().toArray(new Number[0]); 
 		return values;
+	}
+	
+	public Number getMinimum() {
+		if( isEmpty() )
+			return null;
+		if( minimum == null ) {
+			Number[] values = getValues();
+			minimum = values[0];
+			for(int i = 1; i < values.length; i++ )
+				if( values[i].doubleValue() < minimum.doubleValue() )
+					minimum = values[i];
+		}
+		return minimum;		
+	}
+	
+	public Number getMaximum() {
+		if( isEmpty() )
+			return null;
+		if( maximum == null ) {
+			Number[] values = getValues();
+			maximum = values[0];
+			for(int i = 1; i < values.length; i++ )
+				if( values[i].doubleValue() > maximum.doubleValue() )
+					maximum = values[i];
+		}
+		return maximum;
 	}
 	
 	public int size() {

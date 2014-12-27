@@ -72,11 +72,11 @@ public class MyCharts implements Controller {
     	chartAir = (MyPlot)tolomet.findViewById(R.id.chartAir);
         chartAir.setTitle(tolomet.getString(R.string.Air));
         chartAir.setY1Label("Temp. (grados)");                        
-        chartAir.setStepsY1(8);
+        chartAir.setStepsY1(10);
         //chartAir.setTicksPerStepY1(5);
         chartAir.setY2Label("Hum. (%)");
-        chartAir.setY2Range(30, 110);
-        chartAir.setStepsY2(8);        
+        chartAir.setY2Range(10, 110);
+        chartAir.setStepsY2(10);        
         chartAir.setXLabel(tolomet.getString(R.string.Time));        
         chartAir.setStepsX(4);
         chartAir.setTicksPerStepX(6);       
@@ -97,7 +97,8 @@ public class MyCharts implements Controller {
         chartWind.setTitle(tolomet.getString(R.string.Wind));
         chartWind.setY1Range(0, 360);
         chartWind.setY1Label("Dir. (grados)");
-        chartWind.setStepsY1(8);
+        chartWind.setStepsY1(12);
+        chartWind.setStepsY2(12);
         chartWind.setY2Label("Vel. (km/h)");     
         chartWind.setXLabel(tolomet.getString(R.string.Time));        
         chartWind.setStepsX(4);
@@ -128,18 +129,18 @@ public class MyCharts implements Controller {
     private void updateBoundaries() {
     	updateTimeRange();
         
-        int speedRange = settings.getSpeedRange();
+        int speedRange = settings.getSpeedRange(meteo.getWindSpeedMax());
         chartWind.setY2Range(0, speedRange);
         chartWind.setY2ZoomLimits(0, speedRange);
-        chartWind.setStepsY2(speedRange/5);
+        //chartWind.setStepsY2(speedRange/5);
         
-        int minTemp = settings.getMinTemp();
-        int maxTemp = settings.getMaxTemp();
+        int minTemp = settings.getMinTemp(meteo.getAirTemperature());
+        int maxTemp = settings.getMaxTemp(meteo.getAirTemperature());
         chartAir.setY1Range(minTemp, maxTemp);
         chartAir.setY1ZoomLimits(minTemp, maxTemp);
         
         // See: http://www.theweatherprediction.com/habyhints2/410/
-        chartAir.setY3Range(settings.getMinPres(), settings.getMaxPres());
+        chartAir.setY3Range(settings.getMinPres(meteo.getAirPressure()), settings.getMaxPres(meteo.getAirPressure()));
     }
     
     private void updateTimeRange() {
@@ -168,12 +169,12 @@ public class MyCharts implements Controller {
     }
 
     @Override
-    public void redraw() {
-    	updateBoundaries();
-    	updateMarkers();
+    public void redraw() {    	
     	meteo.clear();
     	if( !model.getCurrentStation().isSpecial() )
     		meteo.merge(model.getCurrentStation().getMeteo());
+    	updateBoundaries();
+    	updateMarkers();
     	chartAir.redraw();
         chartWind.redraw();
     }
