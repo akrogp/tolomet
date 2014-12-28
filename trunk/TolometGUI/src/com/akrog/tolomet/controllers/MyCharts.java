@@ -30,27 +30,36 @@ public class MyCharts implements Controller {
 	private Manager model;
 	private Settings settings;
 	private final Meteo meteo = new Meteo();
+	private final Graph airTemperature = new Graph(meteo.getAirTemperature(), -1.0f, "Temp.", LINE_RED, POINT_RED);
+	private final Graph airHumidity = new Graph(meteo.getAirHumidity(), -1.0f, "% Hum.", LINE_BLUE, POINT_BLUE);
+	private final Graph airHumiditySimple = new Graph(meteo.getAirHumidity(), -1.0f, "% Hum.", LINE_GRAY, POINT_GRAY);
+	private final Graph airPressure = new Graph(meteo.getAirPressure(), -1.0f, "Pres.", LINE_GRAY, POINT_GRAY);
+	private final Graph windDirection = new Graph(meteo.getWindDirection(), 360.0f, "Dir. Med.", LINE_BLUE, POINT_BLUE);
+	private final Graph windSpeedMed = new Graph(meteo.getWindSpeedMed(), -1.0f, "Vel. Med.", LINE_GREEN, POINT_GREEN);
+	private final Graph windSpeedMax = new Graph(meteo.getWindSpeedMax(), -1.0f, "Vel. Máx.", LINE_RED, POINT_RED); 
 	private MyPlot chartWind, chartAir;
 	static final float fontSize = 16;
 	private int minutes = 10;
 	private int hours = 4;
-	private Marker markerVmin = new Marker(0.0f, null, POINT_GRAY);
-	private Marker markerVmax = new Marker(0.0f, null, POINT_GRAY);
-	private Marker markerSea = new Marker(1013.0f, "1013 mb", POINT_GRAY);
-	private Marker markerLow = new Marker(1000.0f, "1000 mb", POINT_GRAY);
-	//private Marker markerHigh = new Marker(1100.0f, "1100 mb", POINT_GRAY);
-	private Marker markerCloud = new Marker(100.0f, "100% humedad", LINE_BLUE);
-	//private Marker markerNorth = new Marker(0, "0º (N)", LINE_BLUE);
-	private Marker markerSouth = new Marker(180, "180º (S)", LINE_BLUE);
-	//private Marker markerEast = new Marker(90, "90º (E)", LINE_BLUE);
-	//private Marker markerWest = new Marker(270, "270º (W)", LINE_BLUE);
+	private final Marker markerVmin = new Marker(0.0f, null, POINT_GRAY);
+	private final Marker markerVmax = new Marker(0.0f, null, POINT_GRAY);
+	private final Marker markerSea = new Marker(1013.0f, "1013 mb", POINT_GRAY);
+	private final Marker markerLow = new Marker(1000.0f, "1000 mb", POINT_GRAY);
+	//private final Marker markerHigh = new Marker(1100.0f, "1100 mb", POINT_GRAY);
+	private final Marker markerCloud = new Marker(100.0f, "100% humedad", LINE_BLUE);
+	private final Marker markerCloudSimple = new Marker(100.0f, "100% humedad", LINE_GRAY);
+	private final Marker markerNorth = new Marker(0, "0º (N)", LINE_BLUE);
+	private final Marker markerSouth = new Marker(180, "180º (S)", LINE_BLUE);
+	private final Marker markerEast = new Marker(90, "90º (E)", LINE_BLUE);
+	private final Marker markerWest = new Marker(270, "270º (W)", LINE_BLUE);
+	private boolean simpleMode;
 
 	@Override
 	public void initialize(Tolomet tolomet, Bundle bundle) {
 		this.tolomet = tolomet;
 		model = tolomet.getModel();
 		settings = tolomet.getSettings();
-		createCharts();
+		initializeCharts();
 		//PreferenceManager.getDefaultSharedPreferences(tolomet.getApplicationContext()).registerOnSharedPreferenceChangeListener(this);
 	}
 	
@@ -68,8 +77,27 @@ public class MyCharts implements Controller {
 	}
 	
 	@SuppressLint("SimpleDateFormat")
-	private void createCharts() {				
+	private void initializeCharts() {				
     	chartAir = (MyPlot)tolomet.findViewById(R.id.chartAir);
+    	chartWind = (MyPlot)tolomet.findViewById(R.id.chartWind);
+    	simpleMode = settings.isSimpleMode();
+        createCharts();                
+        chartAir.connectXRanges(chartWind);
+        chartWind.connectXRanges(chartAir);             
+    }
+	
+	private void createCharts() {
+		chartAir.clear();
+		chartWind.clear();
+		if( simpleMode )
+			createSimpleCharts();
+		else
+			createCompleteCharts();		
+		setRefresh(15);
+		updateMarkers();
+	}
+    
+    private void createCompleteCharts() {
         chartAir.setTitle(tolomet.getString(R.string.Air));
         chartAir.setY1Label("Temp. (ºC)");                        
         chartAir.setStepsY1(10);
@@ -81,19 +109,15 @@ public class MyCharts implements Controller {
         chartAir.setStepsX(4);
         chartAir.setTicksPerStepX(6);       
         
-        chartAir.addY1Graph(new Graph(
-            meteo.getAirTemperature(), -1.0f, "Temp.", LINE_RED, POINT_RED));
-        chartAir.addY2Graph(new Graph(
-        	meteo.getAirHumidity(), -1.0f, "% Hum.", LINE_BLUE, POINT_BLUE));
-        chartAir.addY3Graph(new Graph(
-            meteo.getAirPressure(), -1.0f, "Pres.", LINE_GRAY, POINT_GRAY));
+        chartAir.addY1Graph(airTemperature);
+        chartAir.addY2Graph(airHumidity);
+        chartAir.addY3Graph(airPressure);
         
         chartAir.addY2Marker(markerCloud);
         chartAir.addY3Marker(markerSea);
         chartAir.addY3Marker(markerLow);
         //chartAir.addY3Marker(markerHigh);
-        
-        chartWind = (MyPlot)tolomet.findViewById(R.id.chartWind);      
+              
         chartWind.setTitle(tolomet.getString(R.string.Wind));
         chartWind.setY1Range(0, 360);
         chartWind.setY1Label("Dir. (º)");
@@ -104,32 +128,75 @@ public class MyCharts implements Controller {
         chartWind.setStepsX(4);
         chartWind.setTicksPerStepX(6); 
         
-        chartWind.addY1Graph(new Graph(
-            	meteo.getWindDirection(), 360.0f, "Dir. Med.", LINE_BLUE, POINT_BLUE));    
-        chartWind.addY2Graph(new Graph(
-        	meteo.getWindSpeedMed(), -1.0f, "Vel. Med.", LINE_GREEN, POINT_GREEN));
-        chartWind.addY2Graph(new Graph(
-        	meteo.getWindSpeedMax(), -1.0f, "Vel. Máx.", LINE_RED, POINT_RED));             
+        chartWind.addY1Graph(windDirection);    
+        chartWind.addY2Graph(windSpeedMed);
+        chartWind.addY2Graph(windSpeedMax);             
         
-        updateMarkers();
-        chartWind.addY1Marker(markerSouth);
+        //chartWind.addY1Marker(markerSouth);
         //chartWind.addY1Marker(markerNorth);
         //chartWind.addY1Marker(markerEast);
         //chartWind.addY1Marker(markerWest);
         chartWind.addY2Marker(markerVmin);
-        chartWind.addY2Marker(markerVmax);        
+        chartWind.addY2Marker(markerVmax);
+	}
+
+	private void createSimpleCharts() {
+		chartAir.setTitle(tolomet.getString(R.string.DirectionHumidity));
+        chartAir.setY1Label("Dir. (ºC)");
+        chartAir.setY1Range(0, 360);
+        chartAir.setStepsY1(8);
+        //chartAir.setTicksPerStepY1(5);
+        chartAir.setY2Label("Hum. (%)");
+        chartAir.setY2Range(30, 110);
+        chartAir.setStepsY2(8);        
+        chartAir.setXLabel(tolomet.getString(R.string.Time));        
+        chartAir.setStepsX(4);
+        chartAir.setTicksPerStepX(6);       
         
-        chartAir.connectXRanges(chartWind);
-        chartWind.connectXRanges(chartAir);
-        
-        setRefresh(15);
-        updateBoundaries();
-    }
-    
-    private void updateBoundaries() {
+        chartAir.addY1Graph(windDirection);
+        chartAir.addY1Marker(markerNorth);
+        chartAir.addY1Marker(markerSouth);
+        chartAir.addY1Marker(markerEast);
+        chartAir.addY1Marker(markerWest);
+        chartAir.addY2Graph(airHumiditySimple);        
+        chartAir.addY2Marker(markerCloudSimple);
+              
+        chartWind.setTitle(tolomet.getString(R.string.Speed));
+        chartWind.setY1Label("Vel. (km/h)");
+        chartWind.setY2Label("Vel. (km/h)");
+        chartWind.setStepsY1(12);
+        chartWind.setStepsY2(12);        
+        chartWind.setXLabel(tolomet.getString(R.string.Time));        
+        chartWind.setStepsX(4);
+        chartWind.setTicksPerStepX(6); 
+            
+        chartWind.addY1Graph(windSpeedMed);
+        chartWind.addY2Graph(windSpeedMax);             
+
+        chartWind.addY1Marker(markerVmin);
+        chartWind.addY1Marker(markerVmax);		
+	}
+
+	private void updateBoundaries() {
     	updateTimeRange();
         
-        int speedRange = settings.getSpeedRange(meteo.getWindSpeedMax());
+        if( simpleMode )
+        	updateBoundariesSimple();
+        else
+        	updateBoundariesComplete();
+    }
+	
+	private void updateBoundariesSimple() {
+		int speedRange = settings.getSpeedRange(meteo.getWindSpeedMax());
+		chartWind.setY1Range(0, speedRange);
+        chartWind.setY2Range(0, speedRange);
+        chartWind.setY2ZoomLimits(0, speedRange);
+        chartWind.setY1ZoomLimits(0, speedRange);
+        //chartWind.setStepsY2(speedRange/5);
+	}
+	
+	private void updateBoundariesComplete() {
+		int speedRange = settings.getSpeedRange(meteo.getWindSpeedMax());
         chartWind.setY2Range(0, speedRange);
         chartWind.setY2ZoomLimits(0, speedRange);
         //chartWind.setStepsY2(speedRange/5);
@@ -141,7 +208,7 @@ public class MyCharts implements Controller {
         
         // See: http://www.theweatherprediction.com/habyhints2/410/
         chartAir.setY3Range(settings.getMinPres(meteo.getAirPressure()), settings.getMaxPres(meteo.getAirPressure()));
-    }
+	}
     
     private void updateTimeRange() {
     	Calendar cal = Calendar.getInstance();
@@ -173,8 +240,13 @@ public class MyCharts implements Controller {
     	meteo.clear();
     	if( !model.getCurrentStation().isSpecial() )
     		meteo.merge(model.getCurrentStation().getMeteo());
-    	updateBoundaries();
-    	updateMarkers();
+    	if( settings.isSimpleMode() != simpleMode ) {
+    		simpleMode = !simpleMode;
+    		createCharts();
+    	} else {
+    		updateBoundaries();
+    		updateMarkers();
+    	}
     	chartAir.redraw();
         chartWind.redraw();
     }

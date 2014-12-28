@@ -181,6 +181,10 @@ public class Settings {
 		return getPrefValue("pref_maxPres", R.string.pref_maxPresDefault, R.array.pref_maxPresValues, true, meas);
 	}
 	
+	public boolean isSimpleMode() {		
+		return settings.getString("pref_modeGraphs", tolomet.getString(R.string.pref_modeGraphsDefault)).equals("0");
+	}
+	
 	private void migrate() {
 		if( getConfigVersion() == 0 )
 			migrateFavs();
