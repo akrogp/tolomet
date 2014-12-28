@@ -127,6 +127,15 @@ public class PlotYY extends View {
 		graphs.add(graph);
 	}
 	
+	public void clearGraphs() {
+		graphs.clear();
+	}
+	
+	public void clear() {
+		clearGraphs();
+		clearMarkers();
+	}
+	
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		RectF rect = getChartPosition(w, h);
@@ -541,6 +550,12 @@ public class PlotYY extends View {
 	
 	public void addY3Marker(Marker marker) {
 		y3Markers.add(marker);
+	}
+	
+	public void clearMarkers() {
+		y1Markers.clear();
+		y2Markers.clear();
+		y3Markers.clear();
 	}
 	
 	public float dip2px( float dip ) {

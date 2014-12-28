@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/pref_modes">
+	    <ListPreference
+	        android:key="pref_modeGraphs"
+	        android:title="@string/pref_modeGraphs"
+	        android:dialogTitle="@string/pref_modeGraphs"
+	        android:entries="@array/pref_modeGraphsEntries"
+	        android:entryValues="@array/pref_modeGraphsValues"
+	        android:defaultValue="@string/pref_modeGraphsDefault" />
+	</PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_catAir">
 	    <ListPreference
 	        android:key="pref_minTemp"
