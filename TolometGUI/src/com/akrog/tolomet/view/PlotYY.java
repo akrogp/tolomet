@@ -10,6 +10,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
+import android.graphics.Paint.Cap;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
 import android.util.AttributeSet;
@@ -208,6 +209,7 @@ public class PlotYY extends View {
 		Paint pointPaint = new Paint();
 		pointPaint.setColor(graph.getPointColor());
 		pointPaint.setStrokeWidth(POINT_SIZE);
+		pointPaint.setStrokeCap(Cap.ROUND);
 		
 		canvas.drawRect(x1, y1, x2, y2, paintChart);
 		canvas.drawText(graph.getTitle(), x1+w, y2, paintLegend);
@@ -265,6 +267,7 @@ public class PlotYY extends View {
 		Paint pointPaint = new Paint();
 		pointPaint.setColor(graph.getPointColor());
 		pointPaint.setStrokeWidth(POINT_SIZE);
+		pointPaint.setStrokeCap(Cap.ROUND);
 		
 		long[] x = graph.getX();
 		float[] y = graph.getY();

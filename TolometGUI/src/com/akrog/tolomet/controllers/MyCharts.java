@@ -47,7 +47,7 @@ public class MyCharts implements Controller {
 	private final Marker markerLow = new Marker(1000.0f, "1000 mb", POINT_GRAY);
 	//private final Marker markerHigh = new Marker(1100.0f, "1100 mb", POINT_GRAY);
 	private final Marker markerCloud = new Marker(100.0f, "100% humedad", LINE_BLUE);
-	private final Marker markerCloudSimple = new Marker(100.0f, "100% humedad", LINE_GRAY);
+	private final Marker markerCloudSimple = new Marker(100.0f, "100% humedad", POINT_GRAY);
 	private final Marker markerNorth = new Marker(0, "0º (N)", LINE_BLUE);
 	private final Marker markerSouth = new Marker(180, "180º (S)", LINE_BLUE);
 	private final Marker markerEast = new Marker(90, "90º (E)", LINE_BLUE);
@@ -93,7 +93,7 @@ public class MyCharts implements Controller {
 			createSimpleCharts();
 		else
 			createCompleteCharts();		
-		setRefresh(15);
+		updateBoundaries();
 		updateMarkers();
 	}
     
@@ -211,6 +211,7 @@ public class MyCharts implements Controller {
 	}
     
     private void updateTimeRange() {
+    	getRefresh();
     	Calendar cal = Calendar.getInstance();
     	cal.set(Calendar.SECOND, 0);
     	cal.set(Calendar.MILLISECOND, 0);
@@ -251,10 +252,9 @@ public class MyCharts implements Controller {
         chartWind.redraw();
     }
 	
-	public void setRefresh( int minutes ) {		
-		this.minutes = minutes;
-		hours = minutes * 24 / 60;
-		updateBoundaries();
+	private void getRefresh() {
+		minutes = model.getRefresh();
+		hours = minutes * 24 / 60;		
 	}
 	
 	public boolean getZoomed() {

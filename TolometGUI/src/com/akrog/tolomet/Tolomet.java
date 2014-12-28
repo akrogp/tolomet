@@ -11,6 +11,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -45,6 +46,8 @@ public class Tolomet extends Activity {
         
         if( savedInstanceState != null )
         	Bundler.loadStations(model.getAllStations(), savedInstanceState);
+        
+        updateTimer();
     }
         
     @Override
@@ -58,10 +61,33 @@ public class Tolomet extends Activity {
     @Override
     protected void onResume() {
     	super.onResume();
-    	if( model.isOutdated() )
+    	if( settings.getUpdateMode() >= Settings.SMART_UPDATES && model.isOutdated() )
     		downloadData();
     	else
     		redraw();
+    }
+    
+    private void updateTimer() {
+    	if( settings.getUpdateMode() == Settings.AUTO_UPDATES ) {
+    		timer = new Runnable() {				
+				@Override
+				public void run() {					
+					if( !model.checkCurrent() )
+						return;
+					downloadData();
+					int minutes = 1;
+					if( !model.getCurrentStation().isEmpty() ) {
+						int dif = (int)((System.currentTimeMillis()-model.getCurrentStation().getStamp())/60*1000L);
+						minutes = dif >= model.getRefresh() ? 1 : model.getRefresh();
+					}
+					handler.postDelayed(timer, minutes*60*1000);
+				}
+			};
+			timer.run();
+    	} else if( timer != null ) {
+    		handler.removeCallbacks(timer);
+    		timer = null;
+    	}
     }
     
     // Actions
@@ -142,8 +168,10 @@ public class Tolomet extends Activity {
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    	if( requestCode == 0 )
-    		redraw();
+    	if( requestCode != 0 )
+    		return;
+    	updateTimer();
+    	redraw();
     }
 
     @Override
@@ -174,8 +202,7 @@ public class Tolomet extends Activity {
 		redraw();		
 		if( station.isSpecial() )
 			return;
-		charts.setRefresh(model.getRefresh());
-		if( model.isOutdated() )
+		if( settings.getUpdateMode() >= Settings.SMART_UPDATES && model.isOutdated() )
 			downloadData();
 		else
 			redraw();
@@ -202,6 +229,7 @@ public class Tolomet extends Activity {
 	private final GaeManager gaeManager = new GaeManager();
 	private final Manager model = new Manager();
 	private final Settings settings = new Settings();
+	private final Handler handler = new Handler();
+	private Runnable timer;
 	private boolean downloading = false;
-	public static Tolomet instance = null;		
 }
