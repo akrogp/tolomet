@@ -55,4 +55,6 @@
     <string name="gps_ok">Activar</string>
     <string name="cancel">Cancelar</string>
     <string name="error_gps">Localización desconocida</string>
+    <string name="warn_fav">Primero deberías marcar algunas estaciones como favoritas</string>
+    <string name="fav_ok">OK</string>
 </resources>

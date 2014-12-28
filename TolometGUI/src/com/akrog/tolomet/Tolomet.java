@@ -55,6 +55,15 @@ public class Tolomet extends Activity {
     	Bundler.saveStations(model.getAllStations(), outState);
     }
     
+    @Override
+    protected void onResume() {
+    	super.onResume();
+    	if( model.isOutdated() )
+    		downloadData();
+    	else
+    		redraw();
+    }
+    
     // Actions
     
     public void redraw() {
@@ -70,11 +79,14 @@ public class Tolomet extends Activity {
         });
     }
     
-    private void downloadData() {    	
+    private void downloadData() {
+    	if( downloading )
+    		return;
     	if( alertNetwork() )
 			return;
     	Downloader downloader = new Downloader(this, model);
-    	downloader.execute(); 
+    	downloader.execute();
+    	downloading = true;
     }
 	
 	public boolean isNetworkAvailable() {
@@ -170,12 +182,14 @@ public class Tolomet extends Activity {
 	}
 	
 	public void onDownloaded() {
+		downloading = false;
 		model.getCurrentStation().getMeteo().clear(System.currentTimeMillis()-24L*60*60*1000);
         redraw();
         gaeManager.checkMotd();
     }
 	
 	public void onCancelled() {
+		downloading = false;
 		redraw();
 	}	
 	
@@ -188,5 +202,6 @@ public class Tolomet extends Activity {
 	private final GaeManager gaeManager = new GaeManager();
 	private final Manager model = new Manager();
 	private final Settings settings = new Settings();
+	private boolean downloading = false;
 	public static Tolomet instance = null;		
 }

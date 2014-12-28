@@ -18,11 +18,14 @@ public class EuskalmetProvider implements WindProvider {
 	public void refresh(Station station) {
 		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 		Calendar past = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-		if( station.isEmpty() ) {
+		if( !station.isEmpty() )
+			past.setTimeInMillis(station.getStamp());
+		if( (past.get(Calendar.YEAR) != now.get(Calendar.YEAR)) ||
+			(past.get(Calendar.MONTH) != now.get(Calendar.MONTH)) ||
+			(past.get(Calendar.DAY_OF_MONTH) != now.get(Calendar.DAY_OF_MONTH)) ) {
 			past.set(Calendar.HOUR_OF_DAY,0);
 			past.set(Calendar.MINUTE,0);
-		} else
-			past.setTimeInMillis(station.getStamp());
+		}		
 		
 		downloader = new Downloader();
 		String time1 = String.format("%02d:%02d", past.get(Calendar.HOUR_OF_DAY), past.get(Calendar.MINUTE) );

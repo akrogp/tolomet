@@ -21,7 +21,7 @@ public class MeteoGaliciaProvider implements WindProvider {
 	}
 		
 	@Override
-	public void refresh(com.akrog.tolomet.Station station) {
+	public void refresh(Station station) {
 		String[] fields = urlParams.get(station.getCode()).split(":");
 		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 		String time = String.format("%d/%d/%d", now.get(Calendar.DAY_OF_MONTH), now.get(Calendar.MONTH)+1, now.get(Calendar.YEAR) );
