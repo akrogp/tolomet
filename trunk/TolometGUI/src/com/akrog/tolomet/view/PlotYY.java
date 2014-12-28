@@ -16,7 +16,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 
-public class PlotYY extends View {	
+public class PlotYY extends View { 
 	private float DEFAULT_TITLE_SIZE = 11;	// sp
 	private float DEFAULT_LABEL_SIZE = 9;	// sp
 	private float DEFAULT_MARKER_SIZE = 9;	// sp
@@ -173,7 +173,8 @@ public class PlotYY extends View {
 		
 		canvas.save();
 		canvas.rotate(-90,0,0);
-		canvas.drawText(y1label, -canvasHeight/2, BORDER+paintTitle.getTextSize(), paintTitle);
+		//canvas.drawText(y1label, -canvasHeight/2, BORDER+paintTitle.getTextSize(), paintTitle);
+		canvas.drawText(y1label, -canvasHeight/2, paintTitle.getTextSize(), paintTitle);
 		canvas.drawText(y2label, -canvasHeight/2, canvasWidth-1-BORDER-paintTitle.getTextSize()/3, paintTitle);		
 		canvas.restore();
 		canvas.drawText(xlabel, chartLeft, chartBottom+TICK_SIZE+TICK_MARGIN+paintX.getTextSize()*2, paintTitle);
@@ -343,22 +344,24 @@ public class PlotYY extends View {
 	}
 	
 	private void drawXTicks(Canvas canvas, float x1, float bottom, float y2, float width, float height) {
-		long step = (maxX-minX)/stepsX, inter;
+		double step = ((double)(maxX-minX))/stepsX; 
+		long inter, stamp;
 		if( step == 0 )
 			return;
 		Calendar calendar = Calendar.getInstance();
 		float x, xx;
-		for( long i = minX; i <= maxX; i += step ) {
-			calendar.setTimeInMillis(i);
-			x = Math.round(x1+xpx(i, width));
+		for( double i = minX; i <= maxX; i += step ) {
+			stamp = Math.round(i);
+			calendar.setTimeInMillis(stamp);
+			x = Math.round(x1+xpx(stamp, width));
 			canvas.drawText(
 				String.format("%02d:%02d",calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE)),
 				x, bottom, paintX);
 			canvas.drawLine(x, y2+TICK_SIZE, x, y2-height+1, paintGrid);
-			inter = step/ticksPerStepX;
-			if( i+inter < maxX )
+			inter = Math.round(step/ticksPerStepX);
+			if( stamp+inter < maxX )
 				for( int j = 1; j < ticksPerStepX; j++ ) {
-					xx = Math.round(x1+xpx(i+j*inter, width));
+					xx = Math.round(x1+xpx(stamp+j*inter, width));
 					canvas.drawLine(xx, y2, xx, y2-height+1, paintGrid);
 				}
 		}

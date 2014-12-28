@@ -40,4 +40,21 @@
     <string name="pref_catWind">Wind chart</string>
     <string name="pref_catAir">Air chart</string>
     <string name="pref_speedRange">Speed range</string>
+    <string name="warn_gps">Enable first the location service and try again</string>
+    <string name="gps_ok">Enable</string>
+    <string name="cancel">Cancel</string>
+    <string name="error_gps">Unknown location</string>
+    <string name="warn_fav">First you should mark some stations as starred</string>
+    <string name="fav_ok">OK</string>    
+    <string name="pref_minMarkerDefault">10</string>
+    <string name="pref_maxMarkerDefault">30</string>
+    <string name="pref_speedRangeDefault">60</string>    
+    <string name="pref_minTemp">Temperatura mínima</string>
+    <string name="pref_minTempDefault">0</string>
+    <string name="pref_maxTemp">Temperatura máxima</string>
+    <string name="pref_maxTempDefault">40</string>
+    <string name="pref_minPres">Presión mínima</string>
+    <string name="pref_minPresDefault">980</string>
+    <string name="pref_maxPres">Presión máxima</string>
+    <string name="pref_maxPresDefault">1030</string>
 </resources>

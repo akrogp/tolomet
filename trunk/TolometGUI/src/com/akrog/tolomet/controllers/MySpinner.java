@@ -92,7 +92,14 @@ public class MySpinner implements OnItemSelectedListener, Controller {
 		resetChoices(type!=Type.StartMenu);
 		switch( type ) {
 			case All: model.selectAll(); break;
-			case Favorite: model.selectFavorites(); break;
+			case Favorite:
+				model.selectFavorites();
+				if( model.getSelStations().isEmpty() ) {
+					showFavoriteDialog();
+					popup = false;
+					selectRegions();
+				}
+				break;
 			case Nearest:
 				if( !selectNearest() ) {
 					popup = false;
@@ -200,6 +207,19 @@ public class MySpinner implements OnItemSelectedListener, Controller {
             public void onClick(DialogInterface paramDialogInterface, int paramInt) {
             }
         });
+        dialog.setIcon(android.R.drawable.ic_dialog_alert);
+        dialog.show();
+	}
+	
+	private void showFavoriteDialog() {
+		AlertDialog.Builder dialog = new AlertDialog.Builder(tolomet);
+        dialog.setMessage(tolomet.getString(R.string.warn_fav));
+        dialog.setPositiveButton(tolomet.getString(R.string.fav_ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+            }
+        });
+        dialog.setIcon(android.R.drawable.ic_dialog_info);
         dialog.show();
 	}
 	
