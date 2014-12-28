@@ -126,7 +126,7 @@ public class Manager {
 	
 	public int getRefresh() {
 		if( !checkCurrent() )
-			return 0;
+			return 10;
 		return currentStation.getProvider().getRefresh(currentStation.getCode());
 	}
 	
@@ -219,7 +219,7 @@ public class Manager {
 		return vals[index];
 	}
 	
-	private boolean checkCurrent() {
+	public boolean checkCurrent() {
 		return currentStation != null && !currentStation.isSpecial();
 	}
 }

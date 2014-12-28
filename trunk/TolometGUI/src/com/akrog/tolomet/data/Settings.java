@@ -185,6 +185,10 @@ public class Settings {
 		return settings.getString("pref_modeGraphs", tolomet.getString(R.string.pref_modeGraphsDefault)).equals("0");
 	}
 	
+	public int getUpdateMode() {		
+		return Integer.parseInt(settings.getString("pref_modeUpdate", tolomet.getString(R.string.pref_modeUpdateDefault)));
+	}
+	
 	private void migrate() {
 		if( getConfigVersion() == 0 )
 			migrateFavs();
@@ -220,4 +224,7 @@ public class Settings {
 	private final static int VERSION = 2;
 	private final static int INVALID = -1000;
 	private final SparseArray<List<Integer>> mapArrays = new SparseArray<List<Integer>>();
+	public final static int MANUAL_UPDATES=0;
+	public final static int SMART_UPDATES=1;
+	public final static int AUTO_UPDATES=2;
 }

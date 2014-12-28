@@ -60,4 +60,6 @@
     <string name="pref_modes">Modos de funcionamiento</string>
     <string name="pref_modeGraphs">Visualización</string>
     <string name="pref_modeGraphsDefault">1</string>
+    <string name="pref_modeUpdate">Actualización de lecturas</string>
+    <string name="pref_modeUpdateDefault">1</string>
 </resources>
