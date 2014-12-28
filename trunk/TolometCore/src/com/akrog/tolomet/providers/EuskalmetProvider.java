@@ -20,7 +20,8 @@ public class EuskalmetProvider implements WindProvider {
 		Calendar past = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 		if( !station.isEmpty() )
 			past.setTimeInMillis(station.getStamp());
-		if( (past.get(Calendar.YEAR) != now.get(Calendar.YEAR)) ||
+		if( station.isEmpty() ||
+			(past.get(Calendar.YEAR) != now.get(Calendar.YEAR)) ||
 			(past.get(Calendar.MONTH) != now.get(Calendar.MONTH)) ||
 			(past.get(Calendar.DAY_OF_MONTH) != now.get(Calendar.DAY_OF_MONTH)) ) {
 			past.set(Calendar.HOUR_OF_DAY,0);
