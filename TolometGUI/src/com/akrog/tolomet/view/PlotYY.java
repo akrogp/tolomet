@@ -270,7 +270,7 @@ public class PlotYY extends View {
 				xg1=xg2;
 				yg1=yg2;
 				y1=y2;
-			} else if( graph.getWrap() > 0 && Math.abs(yg2-yg1) > graph.getWrap2() ) {
+			} else if( graph.getWrap() > 0 && Math.abs(y2-y1) > graph.getWrap2() ) {
 				float wy = y2 > y1 ? y2-graph.getWrap() : y2+graph.getWrap();
 				bgCanvas.drawLine(xg1, yg1, xg2, ygpx(wy, graph.getyAxis()), linePaint);
 				wy = y2 > y1 ? y1+graph.getWrap() : y1-graph.getWrap();
