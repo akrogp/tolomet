@@ -27,14 +27,14 @@ public class MyPlot extends PlotYY implements OnTouchListener {
 	}
 
 	private State mode = State.NONE;
-	private float minXLimit = Float.MAX_VALUE;
-	private float maxXLimit = Float.MAX_VALUE;
+	private long minXLimit = Long.MAX_VALUE;
+	private long maxXLimit = Long.MAX_VALUE;
 	private float minY1Limit = Float.MAX_VALUE;
 	private float maxY1Limit = Float.MAX_VALUE;
 	private float minY2Limit = Float.MAX_VALUE;
 	private float maxY2Limit = Float.MAX_VALUE;
-	private float lastMinX = Float.MAX_VALUE;
-	private float lastMaxX = Float.MAX_VALUE;
+	private long lastMinX = Long.MAX_VALUE;
+	private long lastMaxX = Long.MAX_VALUE;
 	private float lastMinY1 = Float.MAX_VALUE;
 	private float lastMaxY1 = Float.MAX_VALUE;
 	private float lastMinY2 = Float.MAX_VALUE;
@@ -109,16 +109,16 @@ public class MyPlot extends PlotYY implements OnTouchListener {
 		return mZoomed;
 	}
 
-	private float getMinXLimit() {
-		if(minXLimit == Float.MAX_VALUE) {
+	private long getMinXLimit() {
+		if(minXLimit == Long.MAX_VALUE) {
 			minXLimit = getMinX();
 			lastMinX = minXLimit;
 		}
 		return minXLimit;
 	}
 
-	private float getMaxXLimit() {
-		if(maxXLimit == Float.MAX_VALUE) {
+	private long getMaxXLimit() {
+		if(maxXLimit == Long.MAX_VALUE) {
 			maxXLimit = getMaxX();
 			lastMaxX = maxXLimit;
 		}
@@ -157,14 +157,14 @@ public class MyPlot extends PlotYY implements OnTouchListener {
 		return maxY2Limit;
 	}
 
-	private float getLastMinX() {
-		if(lastMinX == Float.MAX_VALUE)
+	private long getLastMinX() {
+		if(lastMinX == Long.MAX_VALUE)
 			lastMinX = getMinX();
 		return lastMinX;
 	}
 
-	private float getLastMaxX() {
-		if(lastMaxX == Float.MAX_VALUE)
+	private long getLastMaxX() {
+		if(lastMaxX == Long.MAX_VALUE)
 			lastMaxX = getMaxX();
 		return lastMaxX;
 	}
@@ -194,7 +194,7 @@ public class MyPlot extends PlotYY implements OnTouchListener {
 	}
 
 	@Override
-	public void setXRange(float minX, float maxX) {
+	public void setXRange(long minX, long maxX) {
 		if( updatingX )
 			return;
 		updatingX = true;
@@ -229,8 +229,8 @@ public class MyPlot extends PlotYY implements OnTouchListener {
 			minXLimit = getMinX();
 		if( getMaxX() > maxXLimit )
 			maxXLimit = getMaxX();
-		lastMinX = Float.MAX_VALUE;
-		lastMaxX = Float.MAX_VALUE;
+		lastMinX = Long.MAX_VALUE;
+		lastMaxX = Long.MAX_VALUE;
 		mZoomed = false;
 	}
 
@@ -295,13 +295,14 @@ public class MyPlot extends PlotYY implements OnTouchListener {
 
 	private void pan(final MotionEvent motionEvent) {
 		final PointF oldFirstFinger = firstFingerPos; //save old position of finger
-		firstFingerPos = new PointF(motionEvent.getX(), motionEvent.getY()); //update finger position
-		PointF newX = new PointF();
+		firstFingerPos = new PointF(motionEvent.getX(), motionEvent.getY()); //update finger position		
 		if(mZoomHorizontally) {
-			calculatePan(oldFirstFinger, newX, Axes.X);
+			PointL newX = new PointL();
+			calculatePan(oldFirstFinger, newX);
 			setXRange(newX.x, newX.y);
 		}
 		if(mZoomVertically) {
+			PointF newX = new PointF();
 			calculatePan(oldFirstFinger, newX, Axes.Y1);
 			setY1Range(newX.x, newX.y);
 			calculatePan(oldFirstFinger, newX, Axes.Y2);
@@ -353,6 +354,25 @@ public class MyPlot extends PlotYY implements OnTouchListener {
 			newX.x = newX.y - diff;
 		}
 	}
+	
+	private void calculatePan(final PointF oldFirstFinger, PointL newX) {
+		newX.x = getLastMinX();
+		newX.y = getLastMaxX();
+		long offset = Math.round((oldFirstFinger.x - firstFingerPos.x) * ((newX.y - newX.x) / (double)getWidth()));
+		newX.x = newX.x + offset;
+		newX.y = newX.y + offset;
+		long diff = newX.y - newX.x;
+		long minLimit = getMinXLimit();
+		long maxLimit = getMaxXLimit();
+		if(newX.x < minLimit) {
+			newX.x = minLimit;
+			newX.y = newX.x + diff;
+		}
+		if(newX.y > maxLimit) {
+			newX.y = maxLimit;
+			newX.x = newX.y - diff;
+		}
+	}
 
 	private void zoom(final MotionEvent motionEvent) {
 		final float oldDist = mDistX;
@@ -366,13 +386,14 @@ public class MyPlot extends PlotYY implements OnTouchListener {
 		// sanity check
 		if(Float.isInfinite(scale) || Float.isNaN(scale) || scale > -0.001 && scale < 0.001) {
 			return;
-		}
-		PointF newX = new PointF();
+		}		
 		if(mZoomHorizontally) {
-			calculateZoom(scale, newX, Axes.X);
+			PointL newX = new PointL();
+			calculateZoom(scale, newX);
 			setXRange(newX.x, newX.y);
 		}
 		if(mZoomVertically) {
+			PointF newX = new PointF();
 			calculateZoom(scale, newX, Axes.Y1);
 			setY1Range(newX.x, newX.y);
 			calculateZoom(scale, newX, Axes.Y2);
@@ -413,5 +434,20 @@ public class MyPlot extends PlotYY implements OnTouchListener {
 			newX.x = minLimit;
 		if(newX.y > maxLimit)
 			newX.y = maxLimit;
-	}	
+	}
+	
+	private void calculateZoom(float scale, PointL newX) {
+		long calcMax = getLastMaxX();
+		long span = calcMax - getLastMinX();		
+		long midPoint = calcMax - span/2;
+		long offset = Math.round((double)span/2.0 * scale);
+		newX.x = midPoint - offset;
+		newX.y = midPoint + offset;
+		long minLimit = getMinXLimit();
+		long maxLimit = getMaxXLimit();
+		if(newX.x < minLimit)
+			newX.x = minLimit;
+		if(newX.y > maxLimit)
+			newX.y = maxLimit;
+	}
 }

@@ -411,9 +411,9 @@ public class PlotYY extends View {
 		this.y2label = y2label;
 	}
 
-	public void setXRange(float minX, float maxX) {
-		setMinX(Math.round((double)minX));
-		setMaxX(Math.round((double)maxX));
+	public void setXRange(long minX, long maxX) {
+		setMinX(minX);
+		setMaxX(maxX);
 	};
 
 	public void setY1Range(float minY, float maxY) {

@@ -1,9 +1,5 @@
 package com.akrog.tolomet.controllers;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
-
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -39,8 +35,6 @@ public class MyCharts implements Controller {
 	private final Graph windSpeedMax = new Graph(meteo.getWindSpeedMax(), -1.0f, "Vel. Máx.", LINE_RED, POINT_RED); 
 	private MyPlot chartWind, chartAir;
 	static final float fontSize = 16;
-	private int minutes = 10;
-	private int hours = 4;
 	private final Marker markerVmin = new Marker(0.0f, null, POINT_GRAY);
 	private final Marker markerVmax = new Marker(0.0f, null, POINT_GRAY);
 	private final Marker markerSea = new Marker(1013.0f, "1013 mb", POINT_GRAY);
@@ -211,29 +205,18 @@ public class MyCharts implements Controller {
 	}
     
     private void updateTimeRange() {
-    	getRefresh();
-    	Calendar cal = Calendar.getInstance();
-    	cal.set(Calendar.SECOND, 0);
-    	cal.set(Calendar.MILLISECOND, 0);
-    	int minute = (cal.get(Calendar.MINUTE)+minutes-1)/minutes*minutes;
-    	int hour = cal.get(Calendar.HOUR_OF_DAY);
-    	hour += minute/60;
-    	minute -= minute/60*60;
-    	cal.set(Calendar.MINUTE, minute );
-    	cal.set(Calendar.HOUR_OF_DAY, hour );
-    	Date date2 = cal.getTime();
-        Date date1 = new Date();
-        date1.setTime(date2.getTime()-hours*60*60*1000);
-        cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        cal.set(Calendar.SECOND, 0);
-    	cal.set(Calendar.MILLISECOND, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        Date date0 = cal.getTime();
-    	chartAir.setXRange(date1.getTime(), date2.getTime());
-    	chartAir.setXZoomLimits(date0.getTime(), date2.getTime());
-        chartWind.setXRange(date1.getTime(), date2.getTime());
-        chartWind.setXZoomLimits(date0.getTime(), date2.getTime());
+    	int minutes = model.getRefresh();
+		int hours = minutes * 24 / 60;
+    	    	
+    	long round = minutes*60*1000;
+    	long x2 = System.currentTimeMillis()/round*round;
+    	long x1 = x2-hours*60*60*1000;
+    	long x0 = x2-24*60*60*1000;
+    	
+    	chartAir.setXRange(x1,x2);
+    	chartAir.setXZoomLimits(x0,x2);
+        chartWind.setXRange(x1,x2);
+        chartWind.setXZoomLimits(x0,x2);
     }
 
     @Override
@@ -251,11 +234,6 @@ public class MyCharts implements Controller {
     	chartAir.redraw();
         chartWind.redraw();
     }
-	
-	private void getRefresh() {
-		minutes = model.getRefresh();
-		hours = minutes * 24 / 60;		
-	}
 	
 	public boolean getZoomed() {
         return chartAir.getZoomed() || chartWind.getZoomed();
