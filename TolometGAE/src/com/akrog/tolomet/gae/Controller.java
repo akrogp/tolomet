@@ -73,6 +73,17 @@ public class Controller {
 			motd.setVersion("0.28");
 			motd.addChange("Solucionado fallo con la actualización de Euskalmet");
 		}
+		if( version <= 200 ) {
+			motd.setVersion("2.0");
+			motd.addChange("Incluídas gráficas de temperatura y presión");
+			motd.addChange("Incluídas nuevas estaciones");
+			motd.addChange("Evitados saltos en gráfica de dirección (gracias Guille)");
+			motd.addChange("Ajustados tamaños según resolución de pantalla");
+			motd.addChange("Incluídos modos simple y completo");
+			motd.addChange("Incluída opción de actualización continua de los datos");
+			motd.addChange("Incluido botón de ajustes cuando no está presente en el dispositivo");
+			motd.addChange("Solucionados diferentes fallos");
+		}
 		
 		// MOTD
 		/*Calendar cal = Calendar.getInstance();        
