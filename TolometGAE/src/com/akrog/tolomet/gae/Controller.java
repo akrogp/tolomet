@@ -84,6 +84,10 @@ public class Controller {
 			motd.addChange("Incluido botón de ajustes cuando no está presente en el dispositivo");
 			motd.addChange("Solucionados diferentes fallos");
 		}
+		if( version == 200 ) {
+			motd.setVersion("2.0.1");
+			motd.addChange("Solucionado fallo al migrar preferencias de velocidad a la versión 2.0");
+		}
 		
 		// MOTD
 		/*Calendar cal = Calendar.getInstance();        

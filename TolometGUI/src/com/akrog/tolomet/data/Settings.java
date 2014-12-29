@@ -192,6 +192,18 @@ public class Settings {
 	private void migrate() {
 		if( getConfigVersion() == 0 )
 			migrateFavs();
+		
+		String strRange = settings.getString("pref_speedRange", null);
+		if( strRange == null )
+			return;
+		int range = Integer.parseInt(strRange);
+		if( range == INVALID )
+			return;
+		if( range % 60 == 0 )
+			return;
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putString("pref_speedRange", INVALID+"");
+		editor.commit();
 	}
 	
 	private void migrateFavs() {
