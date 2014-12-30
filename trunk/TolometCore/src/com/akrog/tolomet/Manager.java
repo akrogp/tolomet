@@ -173,14 +173,14 @@ public class Manager {
 			if( hum != null )
 				str.append(String.format("%.0f %% | ", hum));
 			if( temp != null )
-				str.append(String.format("%.0f ºC | ", temp));
+				str.append(String.format("%.1f ºC | ", temp));
 			str.append(String.format(" %.1f~%.1f km/h", med, max));
 		} else {
 			str.append(String.format("|%dº(%s)|", dir, strDir));
 			if( hum != null )
 				str.append(String.format("%.0f%%|", hum));
 			if( temp != null )
-				str.append(String.format("%.0fºC|", temp));
+				str.append(String.format("%.1fºC|", temp));
 			str.append(String.format("%.1f~%.1f", med, max));
 		}
 		return str.toString();

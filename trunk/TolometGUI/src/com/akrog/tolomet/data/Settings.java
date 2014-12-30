@@ -28,6 +28,7 @@ public class Settings {
 		settings = PreferenceManager.getDefaultSharedPreferences(tolomet);
 		
 		migrate();
+		fixValues();
 		setDefaultsAuto();
 		
 		SharedPreferences.Editor editor = settings.edit();
@@ -192,17 +193,30 @@ public class Settings {
 	private void migrate() {
 		if( getConfigVersion() == 0 )
 			migrateFavs();
-		
-		String strRange = settings.getString("pref_speedRange", null);
-		if( strRange == null )
+	}
+	
+	private void fixValues() {
+		fixValues("pref_modeGraphs", R.string.pref_modeGraphsDefault, R.array.pref_modeGraphsValues);
+		fixValues("pref_modeUpdate", R.string.pref_modeUpdateDefault, R.array.pref_modeUpdateValues );
+		fixValues("pref_minTemp", R.string.pref_minTempDefault, R.array.pref_minTempValues );
+		fixValues("pref_maxTemp", R.string.pref_maxTempDefault, R.array.pref_maxTempValues );
+		fixValues("pref_minPres", R.string.pref_minPresDefault, R.array.pref_minPresValues );
+		fixValues("pref_maxPres", R.string.pref_maxPresDefault, R.array.pref_maxPresValues );
+		fixValues("pref_speedRange", R.string.pref_speedRangeDefault, R.array.pref_rangeValues );
+		fixValues("pref_minMarker", R.string.pref_minMarkerDefault, R.array.pref_minSpeedValues );
+		fixValues("pref_maxMarker", R.string.pref_maxMarkerDefault, R.array.pref_maxSpeedValues );
+	}
+	
+	private void fixValues( String key, int idDefault, int idArray ) {
+		String pref = settings.getString(key, null);
+		if( pref == null )
 			return;
-		int range = Integer.parseInt(strRange);
-		if( range == INVALID )
-			return;
-		if( range % 60 == 0 )
-			return;
+		String[] values = tolomet.getResources().getStringArray(idArray);
+		for( String value : values )
+			if( pref.equals(value) )
+				return;
 		SharedPreferences.Editor editor = settings.edit();
-		editor.putString("pref_speedRange", INVALID+"");
+		editor.putString(key, tolomet.getString(idDefault));
 		editor.commit();
 	}
 	

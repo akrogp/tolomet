@@ -1,6 +1,7 @@
 package com.akrog.tolomet;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import android.app.Activity;
@@ -68,30 +69,41 @@ public class Tolomet extends Activity {
     }
     
     private void updateTimer() {
-    	if( settings.getUpdateMode() == Settings.AUTO_UPDATES ) {
-    		timer = new Runnable() {				
-				@Override
-				public void run() {
-					if( settings.getUpdateMode() != Settings.AUTO_UPDATES )
-						timer = null;
-					if( timer == null )
-						return;
-					if( !model.checkCurrent() )
-						return;
-					downloadData();
-					int minutes = 1;
-					if( !model.getCurrentStation().isEmpty() ) {
-						int dif = (int)((System.currentTimeMillis()-model.getCurrentStation().getStamp())/60*1000L);
-						minutes = dif >= model.getRefresh() ? 1 : model.getRefresh();
-					}
-					handler.postDelayed(timer, minutes*60*1000);
-				}
-			};
-			timer.run();
-    	} else if( timer != null ) {
+    	cancelTimer();
+    	if( settings.getUpdateMode() != Settings.AUTO_UPDATES )
+    		return;	
+    	timer = new Runnable() {				
+    		@Override
+    		public void run() {
+    			if( settings.getUpdateMode() != Settings.AUTO_UPDATES )
+    				cancelTimer();
+    			if( timer == null )
+    				return;
+    			if( model.checkCurrent() )
+    				downloadData();					
+    			else
+    				handler.postDelayed(timer, 60*1000);
+    		}
+    	};
+    	timer.run();
+    }
+    
+    private void cancelTimer() {
+    	if( timer != null ) {
     		handler.removeCallbacks(timer);
     		timer = null;
     	}
+    }
+    
+    private void triggerTimer() {
+    	if( timer == null || settings.getUpdateMode() != Settings.AUTO_UPDATES )
+    		return;
+    	int minutes = 1;
+    	if( !model.getCurrentStation().isEmpty() ) {
+			int dif = (int)((System.currentTimeMillis()-model.getCurrentStation().getStamp())/60/1000L);
+			minutes = dif >= model.getRefresh() ? 1 : model.getRefresh()-dif;
+		}
+    	handler.postDelayed(timer, minutes*60*1000);
     }
     
     // Actions
@@ -212,15 +224,23 @@ public class Tolomet extends Activity {
 			redraw();
 	}
 	
-	public void onDownloaded() {
+	public void onDownloaded() {		
 		downloading = false;
-		model.getCurrentStation().getMeteo().clear(System.currentTimeMillis()-24L*60*60*1000);
+		triggerTimer();
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		//model.getCurrentStation().getMeteo().clear(System.currentTimeMillis()-24L*60*60*1000);
+		model.getCurrentStation().getMeteo().clear(cal.getTimeInMillis());
         redraw();
         gaeManager.checkMotd();
     }
 	
-	public void onCancelled() {
+	public void onCancelled() {		
 		downloading = false;
+		triggerTimer();
 		redraw();
 	}	
 	

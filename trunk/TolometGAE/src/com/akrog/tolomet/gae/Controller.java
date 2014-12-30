@@ -88,6 +88,13 @@ public class Controller {
 			motd.setVersion("2.0.1");
 			motd.addChange("Solucionado fallo al migrar preferencias de velocidad a la versión 2.0");
 		}
+		if( version == 200 || version == 201 ) {
+			motd.setVersion("2.0.2");
+			motd.addChange("Visualización simple por defecto");
+			motd.addChange("Optimizada actualización continua");
+			motd.addChange("Terminada traducción a euskera");
+			motd.addChange("Ajustado rango de velocidad");
+		}
 		
 		// MOTD
 		/*Calendar cal = Calendar.getInstance();        

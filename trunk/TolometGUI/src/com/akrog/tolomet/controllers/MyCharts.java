@@ -54,7 +54,6 @@ public class MyCharts implements Controller {
 		model = tolomet.getModel();
 		settings = tolomet.getSettings();
 		initializeCharts();
-		//PreferenceManager.getDefaultSharedPreferences(tolomet.getApplicationContext()).registerOnSharedPreferenceChangeListener(this);
 	}
 	
 	@Override
@@ -115,8 +114,10 @@ public class MyCharts implements Controller {
         chartWind.setTitle(tolomet.getString(R.string.Wind));
         chartWind.setY1Range(0, 360);
         chartWind.setY1Label("Dir. (º)");
-        chartWind.setStepsY1(12);
-        chartWind.setStepsY2(12);
+        //chartWind.setStepsY1(12);
+        //chartWind.setStepsY2(12);
+        chartWind.setStepsY1(8);
+        chartWind.setStepsY2(8);
         chartWind.setY2Label("Vel. (km/h)");     
         chartWind.setXLabel(tolomet.getString(R.string.Time));        
         chartWind.setStepsX(4);
@@ -158,8 +159,10 @@ public class MyCharts implements Controller {
         chartWind.setTitle(tolomet.getString(R.string.Speed));
         chartWind.setY1Label("Vel. (km/h)");
         chartWind.setY2Label("Vel. (km/h)");
-        chartWind.setStepsY1(12);
-        chartWind.setStepsY2(12);        
+        //chartWind.setStepsY1(12);
+        //chartWind.setStepsY2(12);        
+        chartWind.setStepsY1(8);
+        chartWind.setStepsY2(8);
         chartWind.setXLabel(tolomet.getString(R.string.Time));        
         chartWind.setStepsX(4);
         chartWind.setTicksPerStepX(6); 

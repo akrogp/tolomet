@@ -16,6 +16,8 @@
     <item>30 km/h</item>
     <item>35 km/h</item>
     <item>40 km/h</item>
+    <item>45 km/h</item>
+    <item>50 km/h</item>
 </string-array>
 <string-array name="pref_maxSpeedValues">
     <item>20</item>
@@ -23,21 +25,27 @@
     <item>30</item>
     <item>35</item>
     <item>40</item>
+    <item>45</item>
+    <item>50</item>
 </string-array>
 <string-array name="pref_rangeEntries">
-    <item>Automático</item>
-    <item>60 km/h</item>
+    <item>Auto</item>
+    <item>40 km/h</item>
+    <item>48 km/h</item>
+    <item>80 km/h</item>
     <item>120 km/h</item>
-    <item>180 km/h</item>
+    <item>160 km/h</item>
 </string-array>
 <string-array name="pref_rangeValues">    
     <item>-1000</item>
-    <item>60</item>
+    <item>40</item>
+    <item>48</item>
+    <item>80</item>
     <item>120</item>
-    <item>180</item>
+    <item>160</item>
 </string-array>
 <string-array name="pref_minTempEntries">
-    <item>Automático</item>
+    <item>Auto</item>
     <item>-10 ºC</item>
     <item>0 ºC</item>
     <item>10 ºC</item>
@@ -49,10 +57,11 @@
     <item>10</item>
 </string-array>
 <string-array name="pref_maxTempEntries">
-    <item>Automático</item>
+    <item>Auto</item>
     <item>20 ºC</item>
     <item>30 ºC</item>
     <item>40 ºC</item>
+    <item>50 ºC</item>
 </string-array>
 <string-array name="pref_maxTempValues">
     <item>-1000</item>
@@ -62,12 +71,12 @@
     <item>50</item>
 </string-array>
 <string-array name="pref_minPresEntries">
-    <item>Automático</item>
-    <item>870 mb (mínimo histórico)</item>
+    <item>Auto</item>
+    <item>870 mb (minimum historic)</item>
     <item>940 mb</item>
     <item>960 mb</item>
     <item>980 mb</item>
-    <item>1000 mb (típico baja presión)</item>
+    <item>1000 mb (typical low pressure)</item>
 </string-array>
 <string-array name="pref_minPresValues">
     <item>-1000</item>
@@ -78,12 +87,12 @@
     <item>1000</item>
 </string-array>
 <string-array name="pref_maxPresEntries">
-    <item>Automático</item>
+    <item>Auto</item>
     <item>1020 mb</item>
     <item>1030 mb</item>
     <item>1040 mb</item>
     <item>1050 mb</item>
-    <item>1086 mb (máximo histórico)</item>
+    <item>1086 mb (maximum historic)</item>
 </string-array>
 <string-array name="pref_maxPresValues">
     <item>-1000</item>
