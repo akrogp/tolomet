@@ -196,18 +196,18 @@ public class Settings {
 	}
 	
 	private void fixValues() {
-		fixValues("pref_modeGraphs", R.string.pref_modeGraphsDefault, R.array.pref_modeGraphsValues);
-		fixValues("pref_modeUpdate", R.string.pref_modeUpdateDefault, R.array.pref_modeUpdateValues );
-		fixValues("pref_minTemp", R.string.pref_minTempDefault, R.array.pref_minTempValues );
-		fixValues("pref_maxTemp", R.string.pref_maxTempDefault, R.array.pref_maxTempValues );
-		fixValues("pref_minPres", R.string.pref_minPresDefault, R.array.pref_minPresValues );
-		fixValues("pref_maxPres", R.string.pref_maxPresDefault, R.array.pref_maxPresValues );
-		fixValues("pref_speedRange", R.string.pref_speedRangeDefault, R.array.pref_rangeValues );
-		fixValues("pref_minMarker", R.string.pref_minMarkerDefault, R.array.pref_minSpeedValues );
-		fixValues("pref_maxMarker", R.string.pref_maxMarkerDefault, R.array.pref_maxSpeedValues );
+		fixValues("pref_modeGraphs", R.array.pref_modeGraphsValues);
+		fixValues("pref_modeUpdate", R.array.pref_modeUpdateValues );
+		fixValues("pref_minTemp", R.array.pref_minTempValues );
+		fixValues("pref_maxTemp", R.array.pref_maxTempValues );
+		fixValues("pref_minPres", R.array.pref_minPresValues );
+		fixValues("pref_maxPres", R.array.pref_maxPresValues );
+		fixValues("pref_speedRange", R.array.pref_rangeValues );
+		fixValues("pref_minMarker", R.array.pref_minSpeedValues );
+		fixValues("pref_maxMarker", R.array.pref_maxSpeedValues );
 	}
 	
-	private void fixValues( String key, int idDefault, int idArray ) {
+	private void fixValues( String key, int idArray ) {
 		String pref = settings.getString(key, null);
 		if( pref == null )
 			return;
@@ -216,7 +216,7 @@ public class Settings {
 			if( pref.equals(value) )
 				return;
 		SharedPreferences.Editor editor = settings.edit();
-		editor.putString(key, tolomet.getString(idDefault));
+		editor.remove(key);
 		editor.commit();
 	}
 	
