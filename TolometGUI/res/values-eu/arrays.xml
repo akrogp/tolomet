@@ -103,8 +103,8 @@
     <item>1086</item>
 </string-array>
 <string-array name="pref_modeGraphsEntries">
-    <item>Simple</item>
-    <item>Completa</item>
+    <item>Sinplea</item>
+    <item>Osoa</item>
 </string-array>
 <string-array name="pref_modeGraphsValues">
     <item>0</item>

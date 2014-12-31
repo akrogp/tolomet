@@ -77,7 +77,7 @@ public class Tolomet extends Activity {
     		public void run() {
     			if( settings.getUpdateMode() != Settings.AUTO_UPDATES )
     				cancelTimer();
-    			if( timer == null )
+    			if( timer == null || timer != this )
     				return;
     			if( model.checkCurrent() )
     				downloadData();					
