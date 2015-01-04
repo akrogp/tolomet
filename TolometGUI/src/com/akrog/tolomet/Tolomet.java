@@ -57,6 +57,9 @@ public class Tolomet extends Activity {
     	for( Controller controller : controllers )
     		controller.save(outState);
     	Bundler.saveStations(model.getAllStations(), outState);
+    	cancelTimer();
+    	if( downloading )
+    		model.cancel();
     }
     
     @Override

@@ -8,7 +8,8 @@ public enum WindProviderType {
 	LaRioja("RI"),
 	MeteoGalicia("GA"),
 	RedVigia("RV"),
-	Meteocat("CA");
+	Meteocat("CA"),
+	CurrentVantage("RCNL");
 	
 	private final String code;
 	private final WindProvider provider;
@@ -29,6 +30,8 @@ public enum WindProviderType {
         	provider = new RedVigiaProvider();
         else if( code.equals("CA") )
         	provider = new MeteocatProvider();
+        else if( code.equals("RCNL") )
+        	provider = new CurrentVantageProvider();
         else
         	provider=null;
     }

@@ -23,6 +23,10 @@ public class Downloader {
 	private boolean cancelled = false;
 	
 	public String download() {
+		return download(null);
+	}
+	
+	public String download( String stop ) {
 		String result = "";
     	try {    		
     		HttpURLConnection con;
@@ -41,7 +45,7 @@ public class Downloader {
     			con = (HttpURLConnection)url.openConnection();
     		}
     		//con.setRequestProperty("User-Agent","Mozilla/5.0 (Linux)");
-    		result = parseInput(con.getInputStream());
+    		result = parseInput(con.getInputStream(),stop);
     	} catch( Exception e ) {
     		e.printStackTrace();
     		//onCancelled();
@@ -61,13 +65,15 @@ public class Downloader {
 		return cancelled;
 	}
 	
-	protected String parseInput( InputStream is ) throws Exception {		
+	protected String parseInput( InputStream is, String stop ) throws Exception {		
 		BufferedReader rd = new BufferedReader(new InputStreamReader(is));
 		StringBuilder builder = new StringBuilder();
 		String line;		
 		while( (line=rd.readLine()) != null ) {
 			if( cancelled )
 				return null;
+			if( stop != null && line.contains(stop) )
+				break;
 			builder.append(line);
 			if( this.usingLinebreak )
 				builder.append('\n');

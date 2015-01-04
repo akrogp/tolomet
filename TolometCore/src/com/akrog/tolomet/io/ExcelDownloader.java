@@ -5,7 +5,7 @@ import jxl.Workbook;
 
 public class ExcelDownloader extends Downloader {
 	@Override
-	protected String parseInput(java.io.InputStream is) throws Exception {
+	protected String parseInput(java.io.InputStream is, String stop ) throws Exception {
 		Workbook workbook = Workbook.getWorkbook(is);
 		Sheet sheet = workbook.getSheet(0);
 		int x, y;
@@ -20,6 +20,8 @@ public class ExcelDownloader extends Downloader {
 					line.append('|');
 				line.append(sheet.getCell(x, y).getContents());
 			}
+			if( stop != null && line.toString().contains(stop) )
+				break;
 			result.append(line);
 			if( usingLinebreak )
 				result.append("\n");

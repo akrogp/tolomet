@@ -25,7 +25,8 @@ public class LaRiojaProvider implements WindProvider {
 
 	@Override
 	public void cancel() {
-		downloader.cancel();
+		if( downloader != null )
+			downloader.cancel();
 	}
 
 	@Override

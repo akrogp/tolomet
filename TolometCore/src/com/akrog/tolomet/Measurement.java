@@ -18,6 +18,8 @@ public class Measurement {
 	}
 	
 	public void put(long time, Number value ) {
+		if( value == null )
+			return;
 		map.put(time, value);
 		clearCache();
 	}

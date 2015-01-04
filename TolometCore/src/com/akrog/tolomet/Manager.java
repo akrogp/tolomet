@@ -21,7 +21,6 @@ public class Manager {
 	public Manager() {
 		loadStations();
 		loadRegions();
-		setCurrentStation(allStations.get(0));	// just for first tests
 	}	
 
 	private void loadStations() {
@@ -159,29 +158,41 @@ public class Manager {
 	public String getSummary( boolean large ) {
 		if( !checkCurrent() )
 			return null;
-				
-		int dir = currentStation.getMeteo().getWindDirection().getLast().intValue();
-		String strDir = parseDirection(dir);
-		float med = currentStation.getMeteo().getWindSpeedMed().getLast().floatValue();
-		float max = currentStation.getMeteo().getWindSpeedMax().getLast().floatValue();
+		
+		String strDir = null;
+		Number dir = currentStation.getMeteo().getWindDirection().getLast();
+		if( dir != null )
+			strDir = parseDirection(dir.intValue());
+		Number med = currentStation.getMeteo().getWindSpeedMed().getLast();
+		Number max = currentStation.getMeteo().getWindSpeedMax().getLast();
 		Number hum = currentStation.getMeteo().getAirHumidity().getLast();
 		Number temp = currentStation.getMeteo().getAirTemperature().getLast();
 		
 		StringBuilder str = new StringBuilder(getStamp());
 		if( large ) {
-			str.append(String.format(" | %dº (%s) | ", dir, strDir));
+			if( strDir != null )
+				str.append(String.format(" | %dº (%s)", dir.intValue(), strDir));
 			if( hum != null )
-				str.append(String.format("%.0f %% | ", hum));
+				str.append(String.format(" | %.0f %%", hum));
 			if( temp != null )
-				str.append(String.format("%.1f ºC | ", temp));
-			str.append(String.format(" %.1f~%.1f km/h", med, max));
+				str.append(String.format(" | %.1f ºC", temp));
+			if( med != null )
+				str.append(String.format(" | %.1f", med));
+			if( max != null )
+				str.append(String.format("~%.1f", max));
+			if( med != null || max != null )
+				str.append(" km/h");
 		} else {
-			str.append(String.format("|%dº(%s)|", dir, strDir));
+			if( strDir != null )
+				str.append(String.format("|%dº(%s)", dir.intValue(), strDir));
 			if( hum != null )
-				str.append(String.format("%.0f%%|", hum));
+				str.append(String.format("|%.0f%%", hum));
 			if( temp != null )
-				str.append(String.format("%.1fºC|", temp));
-			str.append(String.format("%.1f~%.1f", med, max));
+				str.append(String.format("|%.1fºC", temp));
+			if( med != null )
+				str.append(String.format("|%.1f", med));
+			if( max != null )
+				str.append(String.format("~%.1f", max));
 		}
 		return str.toString();
 	}

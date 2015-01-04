@@ -46,7 +46,8 @@ public class EuskalmetProvider implements WindProvider {
 
 	@Override
 	public void cancel() {
-		downloader.cancel();
+		if( downloader != null )
+			downloader.cancel();
 	}
 
 	@Override
@@ -69,12 +70,18 @@ public class EuskalmetProvider implements WindProvider {
 	        if( getContent(cells[2]).equals("-") )
 	        	continue;
 	        date = toEpoch(getContent(cells[index.getDate()]));
-	        val = Integer.parseInt(getContent(cells[index.getDir()]));
-	        station.getMeteo().getWindDirection().put(date, val);
-	        val = Float.parseFloat(getContent(cells[index.getMed()]));
-	        station.getMeteo().getWindSpeedMed().put(date, val);
-	        val = Float.parseFloat(getContent(cells[index.getMax()]));
-	        station.getMeteo().getWindSpeedMax().put(date, val);
+	        if( index.getDir() > 0 ) {
+		        val = Integer.parseInt(getContent(cells[index.getDir()]));
+		        station.getMeteo().getWindDirection().put(date, val);
+	        }
+	        if( index.getMed() > 0 ) {
+		        val = Float.parseFloat(getContent(cells[index.getMed()]));
+		        station.getMeteo().getWindSpeedMed().put(date, val);
+	        }
+	        if( index.getMax() > 0 ) {
+		        val = Float.parseFloat(getContent(cells[index.getMax()]));
+		        station.getMeteo().getWindSpeedMax().put(date, val);
+	        }
 	        if( index.getHum() > 0 ) {
 		        val = (float)Integer.parseInt(getContent(cells[index.getHum()]));
 	        	station.getMeteo().getAirHumidity().put(date, val);
