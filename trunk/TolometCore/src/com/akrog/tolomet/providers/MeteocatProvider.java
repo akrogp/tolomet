@@ -21,7 +21,8 @@ public class MeteocatProvider implements WindProvider {
 	
 	@Override
 	public void cancel() {
-		downloader.cancel();	
+		if( downloader != null )
+			downloader.cancel();	
 	}
 
 	protected void updateStation(Station station, String data) {

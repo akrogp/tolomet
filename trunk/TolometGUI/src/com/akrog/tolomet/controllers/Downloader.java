@@ -52,8 +52,10 @@ public class Downloader extends AsyncTask<Void, Void, Void> {
 	
 	@Override
     protected void onPostExecute(Void result) {
-        super.onPostExecute(result);	        
-        progress.dismiss();
+        super.onPostExecute(result);
+        try {
+        	progress.dismiss();
+        } catch( Exception e ) {}
         tolomet.onDownloaded();
     }
 }
