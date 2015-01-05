@@ -74,9 +74,9 @@ public class MyCharts implements Controller {
     	chartAir = (MyPlot)tolomet.findViewById(R.id.chartAir);
     	chartWind = (MyPlot)tolomet.findViewById(R.id.chartWind);
     	simpleMode = settings.isSimpleMode();
-        createCharts();                
-        chartAir.connectXRanges(chartWind);
-        chartWind.connectXRanges(chartAir);             
+        createCharts();
+        chartAir.getXAxis().connect(chartWind.getXAxis());
+        chartWind.getXAxis().connect(chartAir.getXAxis());
     }
 	
 	private void createCharts() {
@@ -92,15 +92,15 @@ public class MyCharts implements Controller {
     
     private void createCompleteCharts() {
         chartAir.setTitle(tolomet.getString(R.string.Air));
-        chartAir.setY1Label("Temp. (ºC)");                        
-        chartAir.setStepsY1(10);
+        chartAir.getY1Axis().setLabel("Temp. (ºC)");                        
+        chartAir.getY1Axis().setSteps(10);
         //chartAir.setTicksPerStepY1(5);
-        chartAir.setY2Label("Hum. (%)");
-        chartAir.setY2Range(10, 110);
-        chartAir.setStepsY2(10);        
-        chartAir.setXLabel(tolomet.getString(R.string.Time));        
-        chartAir.setStepsX(4);
-        chartAir.setTicksPerStepX(6);       
+        chartAir.getY2Axis().setLabel("Hum. (%)");
+        chartAir.getY2Axis().setRange(10, 110);
+        chartAir.getY2Axis().setSteps(10);        
+        chartAir.getXAxis().setLabel(tolomet.getString(R.string.Time));        
+        chartAir.getXAxis().setSteps(4);
+        chartAir.getXAxis().setTicksPerStep(6);       
         
         chartAir.addY1Graph(airTemperature);
         chartAir.addY2Graph(airHumidity);
@@ -112,16 +112,18 @@ public class MyCharts implements Controller {
         //chartAir.addY3Marker(markerHigh);
               
         chartWind.setTitle(tolomet.getString(R.string.Wind));
-        chartWind.setY1Range(0, 360);
-        chartWind.setY1Label("Dir. (º)");
+        //chartWind.getY1Axis().setWrap(360);
+        chartWind.getY1Axis().setRange(0, 360);
+        //chartWind.getY1Axis().setRange(180, 180);
+        chartWind.getY1Axis().setLabel("Dir. (º)");
         //chartWind.setStepsY1(12);
         //chartWind.setStepsY2(12);
-        chartWind.setStepsY1(8);
-        chartWind.setStepsY2(8);
-        chartWind.setY2Label("Vel. (km/h)");     
-        chartWind.setXLabel(tolomet.getString(R.string.Time));        
-        chartWind.setStepsX(4);
-        chartWind.setTicksPerStepX(6); 
+        chartWind.getY1Axis().setSteps(8);
+        chartWind.getY2Axis().setSteps(8);
+        chartWind.getY2Axis().setLabel("Vel. (km/h)");     
+        chartWind.getXAxis().setLabel(tolomet.getString(R.string.Time));        
+        chartWind.getXAxis().setSteps(4);
+        chartWind.getXAxis().setTicksPerStep(6); 
         
         chartWind.addY1Graph(windDirection);    
         chartWind.addY2Graph(windSpeedMed);
@@ -137,16 +139,16 @@ public class MyCharts implements Controller {
 
 	private void createSimpleCharts() {
 		chartAir.setTitle(tolomet.getString(R.string.DirectionHumidity));
-        chartAir.setY1Label("Dir. (ºC)");
-        chartAir.setY1Range(0, 360);
-        chartAir.setStepsY1(8);
+        chartAir.getY1Axis().setLabel("Dir. (ºC)");
+        chartAir.getY1Axis().setRange(0, 360);
+        chartAir.getY1Axis().setSteps(8);
         //chartAir.setTicksPerStepY1(5);
-        chartAir.setY2Label("Hum. (%)");
-        chartAir.setY2Range(30, 110);
-        chartAir.setStepsY2(8);        
-        chartAir.setXLabel(tolomet.getString(R.string.Time));        
-        chartAir.setStepsX(4);
-        chartAir.setTicksPerStepX(6);       
+        chartAir.getY2Axis().setLabel("Hum. (%)");
+        chartAir.getY2Axis().setRange(30, 110);
+        chartAir.getY2Axis().setSteps(8);        
+        chartAir.getXAxis().setLabel(tolomet.getString(R.string.Time));        
+        chartAir.getXAxis().setSteps(4);
+        chartAir.getXAxis().setTicksPerStep(6);       
         
         chartAir.addY1Graph(windDirection);
         chartAir.addY1Marker(markerNorth);
@@ -157,15 +159,15 @@ public class MyCharts implements Controller {
         chartAir.addY2Marker(markerCloudSimple);
               
         chartWind.setTitle(tolomet.getString(R.string.Speed));
-        chartWind.setY1Label("Vel. (km/h)");
-        chartWind.setY2Label("Vel. (km/h)");
+        chartWind.getY1Axis().setLabel("Vel. (km/h)");
+        chartWind.getY2Axis().setLabel("Vel. (km/h)");
         //chartWind.setStepsY1(12);
         //chartWind.setStepsY2(12);        
-        chartWind.setStepsY1(8);
-        chartWind.setStepsY2(8);
-        chartWind.setXLabel(tolomet.getString(R.string.Time));        
-        chartWind.setStepsX(4);
-        chartWind.setTicksPerStepX(6); 
+        chartWind.getY1Axis().setSteps(8);
+        chartWind.getY2Axis().setSteps(8);
+        chartWind.getXAxis().setLabel(tolomet.getString(R.string.Time));        
+        chartWind.getXAxis().setSteps(4);
+        chartWind.getXAxis().setTicksPerStep(6); 
             
         chartWind.addY1Graph(windSpeedMed);
         chartWind.addY2Graph(windSpeedMax);             
@@ -185,26 +187,26 @@ public class MyCharts implements Controller {
 	
 	private void updateBoundariesSimple() {
 		int speedRange = settings.getSpeedRange(meteo.getWindSpeedMax());
-		chartWind.setY1Range(0, speedRange);
-        chartWind.setY2Range(0, speedRange);
-        chartWind.setY2ZoomLimits(0, speedRange);
-        chartWind.setY1ZoomLimits(0, speedRange);
+		chartWind.getY1Axis().setRange(0, speedRange);
+        chartWind.getY2Axis().setRange(0, speedRange);
+        chartWind.getY2Axis().setLimits(0, speedRange);
+        chartWind.getY1Axis().setLimits(0, speedRange);
         //chartWind.setStepsY2(speedRange/5);
 	}
 	
 	private void updateBoundariesComplete() {
 		int speedRange = settings.getSpeedRange(meteo.getWindSpeedMax());
-        chartWind.setY2Range(0, speedRange);
-        chartWind.setY2ZoomLimits(0, speedRange);
+        chartWind.getY2Axis().setRange(0, speedRange);
+        chartWind.getY2Axis().setLimits(0, speedRange);
         //chartWind.setStepsY2(speedRange/5);
         
         int minTemp = settings.getMinTemp(meteo.getAirTemperature());
         int maxTemp = settings.getMaxTemp(meteo.getAirTemperature());
-        chartAir.setY1Range(minTemp, maxTemp);
-        chartAir.setY1ZoomLimits(minTemp, maxTemp);
+        chartAir.getY1Axis().setRange(minTemp, maxTemp);
+        chartAir.getY1Axis().setLimits(minTemp, maxTemp);
         
         // See: http://www.theweatherprediction.com/habyhints2/410/
-        chartAir.setY3Range(settings.getMinPres(meteo.getAirPressure()), settings.getMaxPres(meteo.getAirPressure()));
+        chartAir.getY3Axis().setRange(settings.getMinPres(meteo.getAirPressure()), settings.getMaxPres(meteo.getAirPressure()));
 	}
     
     private void updateTimeRange() {
@@ -216,10 +218,10 @@ public class MyCharts implements Controller {
     	long x1 = x2-hours*60*60*1000;
     	long x0 = x2-24*60*60*1000;
     	
-    	chartAir.setXRange(x1,x2);
-    	chartAir.setXZoomLimits(x0,x2);
-        chartWind.setXRange(x1,x2);
-        chartWind.setXZoomLimits(x0,x2);
+    	chartAir.getXAxis().setRange(x1,x2);
+    	chartAir.getXAxis().setLimits(x0,x2);
+        chartWind.getXAxis().setRange(x1,x2);
+        chartWind.getXAxis().setLimits(x0,x2);
     }
 
     @Override
