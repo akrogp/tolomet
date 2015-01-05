@@ -37,14 +37,12 @@ public class PlotYY extends View {
 	private final Paint paintMarker = new Paint();
 	private final Paint paintLegend = new Paint();
 	private String title = "Title";
-	private String y1label = "y1label";
-	private String y2label = "y2label";
-	private String xlabel = "xlabel";
-	private long minX=0, maxX=1000*60*60;
-	private int stepsX=10, ticksPerStepX=1;
-	private int minY1=0, maxY1=10, stepsY1=10, ticksPerStepY1=1;
-	private int minY2=0, maxY2=100, stepsY2=10, ticksPerStepY2=1;
-	private int minY3=0, maxY3=100;
+	private final Axis xAxis = new Axis(this);
+	private final Axis y1Axis = new Axis(this);
+	private final Axis y2Axis = new Axis(this);
+	private final Axis y3Axis  = new Axis(this);
+	private final List<Axis> axes = new ArrayList<Axis>();
+	private final List<Axis> yAxes = new ArrayList<Axis>();
 	private final List<Graph> graphs = new ArrayList<Graph>();
 	private Bitmap bgBitmap;
 	private final Canvas bgCanvas = new Canvas();
@@ -67,7 +65,13 @@ public class PlotYY extends View {
 		init();
 	}
 	
-	private void init() {
+	private void init() {		
+		yAxes.add(y1Axis);
+		yAxes.add(y2Axis);
+		yAxes.add(y3Axis);
+		axes.addAll(yAxes);
+		axes.add(xAxis);
+		
 		DEFAULT_TITLE_SIZE = sp2px(DEFAULT_TITLE_SIZE);
 		DEFAULT_LABEL_SIZE = sp2px(DEFAULT_LABEL_SIZE);
 		DEFAULT_MARKER_SIZE = sp2px(DEFAULT_MARKER_SIZE);
@@ -153,8 +157,8 @@ public class PlotYY extends View {
 		RectF rect = new RectF();
 		rect.top = BORDER+paintTitle.getTextSize()+paintY1.getTextSize();
 		rect.bottom = h-1-BORDER-paintX.getTextSize()-TICK_SIZE-2*TICK_MARGIN-paintLegend.getTextSize();
-		rect.left = 2*BORDER+paintTitle.getTextSize()+paintY1.measureText(maxY1+"")+TICK_SIZE+TICK_MARGIN;
-		rect.right = w-1-2*BORDER-paintTitle.getTextSize()-paintY2.measureText(maxY2+"")-TICK_SIZE-TICK_MARGIN;
+		rect.left = 2*BORDER+paintTitle.getTextSize()+paintY1.measureText(y1Axis.getMax()+"")+TICK_SIZE+TICK_MARGIN;
+		rect.right = w-1-2*BORDER-paintTitle.getTextSize()-paintY2.measureText(y2Axis.getMax()+"")-TICK_SIZE-TICK_MARGIN;
 		return rect;
 	}
 	
@@ -174,8 +178,8 @@ public class PlotYY extends View {
 		canvas.drawRect(chartLeft, chartTop, chartRight, chartBottom, paintChart);
 		canvas.drawText(title, canvasWidth/2, BORDER+paintTitle.getTextSize(), paintTitle);
 		
-		drawYTicks(canvas, chartLeft-TICK_SIZE-TICK_MARGIN, chartBottom, chartWidth, chartHeight, minY1, maxY1, stepsY1, ticksPerStepY1, paintY1);
-		drawYTicks(canvas, chartRight+TICK_SIZE+TICK_MARGIN, chartBottom, -1, chartHeight, minY2, maxY2, stepsY2, ticksPerStepY2, paintY2);
+		drawYTicks(canvas, chartLeft-TICK_SIZE-TICK_MARGIN, chartBottom, chartWidth, chartHeight, y1Axis, paintY1);
+		drawYTicks(canvas, chartRight+TICK_SIZE+TICK_MARGIN, chartBottom, -1, chartHeight, y2Axis, paintY2);
 		drawXTicks(canvas, chartLeft, chartBottom+TICK_SIZE+TICK_MARGIN+paintX.getTextSize(), chartBottom, chartWidth, chartHeight);
 		drawY1Markers(canvas, chartLeft, chartBottom, chartWidth, chartHeight);
 		drawY2Markers(canvas, chartLeft, chartBottom, chartWidth, chartHeight);
@@ -184,10 +188,10 @@ public class PlotYY extends View {
 		canvas.save();
 		canvas.rotate(-90,0,0);
 		//canvas.drawText(y1label, -canvasHeight/2, BORDER+paintTitle.getTextSize(), paintTitle);
-		canvas.drawText(y1label, -canvasHeight/2, paintTitle.getTextSize(), paintTitle);
-		canvas.drawText(y2label, -canvasHeight/2, canvasWidth-1-BORDER-paintTitle.getTextSize()/3, paintTitle);		
+		canvas.drawText(y1Axis.getLabel(), -canvasHeight/2, paintTitle.getTextSize(), paintTitle);
+		canvas.drawText(y2Axis.getLabel(), -canvasHeight/2, canvasWidth-1-BORDER-paintTitle.getTextSize()/3, paintTitle);		
 		canvas.restore();
-		canvas.drawText(xlabel, chartLeft, chartBottom+TICK_SIZE+TICK_MARGIN+paintX.getTextSize()*2, paintTitle);
+		canvas.drawText(xAxis.getLabel(), chartLeft, chartBottom+TICK_SIZE+TICK_MARGIN+paintX.getTextSize()*2, paintTitle);
 		
 		createBackgroundBuffer(chartWidth, chartHeight);
 		for( int i = 0; i < graphs.size(); i++ ) {
@@ -220,7 +224,7 @@ public class PlotYY extends View {
 	private void drawY1Markers(Canvas canvas, float x, float bottom, float w, float h) {
 		paintMarker.setTextAlign(Align.LEFT);
 		for( Marker marker : y1Markers ) {
-			float y = Math.round(bottom-y1px(marker.getPos(),h));
+			float y = Math.round(bottom-y1Axis.scale(marker.getPos(),h));
 			paintMarker.setColor(marker.getColor());
 			canvas.drawLine(x, y, x+w-1, y, paintMarker);
 			String text = marker.getLabel();
@@ -233,7 +237,7 @@ public class PlotYY extends View {
 	private void drawY2Markers(Canvas canvas, float x, float bottom, float w, float h) {
 		paintMarker.setTextAlign(Align.RIGHT);
 		for( Marker marker : y2Markers ) {
-			float y = Math.round(bottom-y2px(marker.getPos(),h));
+			float y = Math.round(bottom-y2Axis.scale(marker.getPos(),h));
 			paintMarker.setColor(marker.getColor());
 			canvas.drawLine(x, y, x+w-1, y, paintMarker);
 			String text = marker.getLabel();
@@ -246,7 +250,7 @@ public class PlotYY extends View {
 	private void drawY3Markers(Canvas canvas, float x, float bottom, float w, float h) {
 		paintMarker.setTextAlign(Align.LEFT);
 		for( Marker marker : y3Markers ) {
-			float y = Math.round(bottom-y3px(marker.getPos(),h));
+			float y = Math.round(bottom-y3Axis.scale(marker.getPos(),h));
 			paintMarker.setColor(marker.getColor());
 			canvas.drawLine(x, y, x+w-1, y, paintMarker);
 			String text = marker.getLabel();
@@ -300,55 +304,40 @@ public class PlotYY extends View {
 	private float ygpx(float y, int axis) {
 		int h = bgCanvas.getHeight();
 		switch( axis ) {
-			case 0: y = y1px(y,h); break;
-			case 1: y = y2px(y,h); break;
-			case 2: y = y3px(y,h); break;
+			case 0: y = y1Axis.scale(y,h); break;
+			case 1: y = y2Axis.scale(y,h); break;
+			case 2: y = y3Axis.scale(y,h); break;
 		}
 		return Math.round(bgCanvas.getHeight()-1-y);
 	}
 
 	private float xgpx(long x) {
-		return Math.round((double)xpx(x,bgCanvas.getWidth()));
-	}
-
-	private float px(float n, float min, float max, float pixels) {
-		return (n-min)/(max-min)*(pixels-1);
+		return Math.round((double)xAxis.scale(x,bgCanvas.getWidth()));
 	}
 	
-	private float xpx(long n, float w) {
-		return ((float)(n-getMinX()))/(getMaxX()-getMinX())*(w-1);
-	}
-	
-	private float y1px(float n, float h) {
-		return px(n, getMinY1(), getMaxY1(), h);
-	}
-	
-	private float y2px(float n, float h) {
-		return px(n, getMinY2(), getMaxY2(), h);
-	}
-	
-	private float y3px(float n, float h) {
-		return px(n, getMinY3(), getMaxY3(), h);
-	}
-
 	public void redraw() {
 		invalidate();
 	}
 	
-	private void drawYTicks(Canvas canvas, float x1, float y2, float width, float height, float min, float max, int steps, int ticksPerStep, Paint paint) {
+	private void drawYTicks(Canvas canvas, float x1, float y2, float width, float height, Axis axis, Paint paint) {
+		float min = axis.getMin().floatValue();
+		float max = axis.getMax().floatValue();
+		int steps = axis.getSteps();
+		int ticksPerStep = axis.getTicksPerStep();
 		float step = ((float)(max-min))/steps, inter;
 		if( step == 0 )
 			return;
 		float y, yy;
-		for( float i = min; i <= max; i+= step ) {
-			y = Math.round(y2-1-px(i,min,max,height));
-			canvas.drawText((int)i+"", x1, y, paint);
+		float val = min;
+		for( int i = 0; i <= steps; val+=step, i++ ) {
+			y = Math.round(y2-1-axis.scale(val,height));
+			canvas.drawText((int)val+"", x1, y, paint);
 			if( width > 0 ) {
 				canvas.drawLine(x1+TICK_MARGIN, y, x1+TICK_MARGIN+2*TICK_SIZE+width-1, y, paintGrid);
 				inter = step/ticksPerStep;
-				if( i+inter < max )
+				if( val+inter < max )
 					for( float j = 1; j < ticksPerStep; j++ ) {
-						yy = Math.round(y2-px(i+j*inter,min,max,height));
+						yy = Math.round(y2-axis.scale(val+j*inter,height));
 						canvas.drawLine(x1+TICK_MARGIN+TICK_SIZE, yy, x1+TICK_MARGIN+TICK_SIZE+width-1, yy, paintGrid);
 					}
 			}
@@ -356,24 +345,26 @@ public class PlotYY extends View {
 	}
 	
 	private void drawXTicks(Canvas canvas, float x1, float bottom, float y2, float width, float height) {
-		double step = ((double)(maxX-minX))/stepsX; 
+		double maxX = xAxis.getMax().doubleValue();
+		double minX = xAxis.getMin().doubleValue();
+		double step = ((double)(maxX-minX))/xAxis.getSteps(); 
 		long inter, stamp;
 		if( step == 0 )
 			return;
 		Calendar calendar = Calendar.getInstance();
-		float x, xx;
+		float x, xx;		
 		for( double i = minX; i <= maxX; i += step ) {
 			stamp = Math.round(i);
 			calendar.setTimeInMillis(stamp);
-			x = Math.round(x1+xpx(stamp, width));
+			x = Math.round(x1+xAxis.scale(stamp, width));
 			canvas.drawText(
 				String.format("%02d:%02d",calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE)),
 				x, bottom, paintX);
 			canvas.drawLine(x, y2+TICK_SIZE, x, y2-height+1, paintGrid);
-			inter = Math.round(step/ticksPerStepX);
+			inter = Math.round(step/xAxis.getTicksPerStep());
 			if( stamp+inter < maxX )
-				for( int j = 1; j < ticksPerStepX; j++ ) {
-					xx = Math.round(x1+xpx(stamp+j*inter, width));
+				for( int j = 1; j < xAxis.getTicksPerStep(); j++ ) {
+					xx = Math.round(x1+xAxis.scale(stamp+j*inter, width));
 					canvas.drawLine(xx, y2, xx, y2-height+1, paintGrid);
 				}
 		}
@@ -386,163 +377,7 @@ public class PlotYY extends View {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
-	public void setXLabel(String xlabel) {
-		this.xlabel = xlabel;
-	}
-	
-	public String getXLabel() {
-		return xlabel;
-	}
-	
-	public String getY1Label() {
-		return y1label;
-	}
-
-	public void setY1Label(String y1label) {
-		this.y1label = y1label;
-	}
-
-	public String getY2Label() {
-		return y2label;
-	}
-
-	public void setY2Label(String y2label) {
-		this.y2label = y2label;
-	}
-
-	public void setXRange(long minX, long maxX) {
-		setMinX(minX);
-		setMaxX(maxX);
-	};
-
-	public void setY1Range(float minY, float maxY) {
-		setMinY1(Math.round(minY));
-		setMaxY1(Math.round(maxY));
-	};
-	
-	public void setY2Range(float minY, float maxY) {
-		setMinY2(Math.round(minY));
-		setMaxY2(Math.round(maxY));
-	};
-	
-	public void setY3Range(float minY, float maxY) {
-		setMinY3(Math.round(minY));
-		setMaxY3(Math.round(maxY));
-	};
-	
-	public long getMinX() {
-		return minX;
-	}
-
-	public void setMinX(long minX) {
-		this.minX = minX;
-	}
-
-	public long getMaxX() {
-		return maxX;
-	}
-
-	public void setMaxX(long maxX) {
-		this.maxX = maxX;
-	}
-
-	public int getStepsX() {
-		return stepsX;
-	}
-
-	public void setStepsX(int ticksX) {
-		this.stepsX = ticksX;
-	}
-
-	public int getMinY1() {
-		return minY1;
-	}
-
-	public void setMinY1(int minY1) {
-		this.minY1 = minY1;
-	}
-
-	public int getMaxY1() {
-		return maxY1;
-	}
-
-	public void setMaxY1(int maxY1) {
-		this.maxY1 = maxY1;
-	}
-
-	public int getStepsY1() {
-		return stepsY1;
-	}
-
-	public void setStepsY1(int ticksY1) {
-		this.stepsY1 = ticksY1;
-	}
-
-	public int getMinY2() {
-		return minY2;
-	}
-
-	public void setMinY2(int minY2) {
-		this.minY2 = minY2;
-	}
-
-	public int getMaxY2() {
-		return maxY2;
-	}
-
-	public void setMaxY2(int maxY2) {
-		this.maxY2 = maxY2;
-	}
-
-	public int getStepsY2() {
-		return stepsY2;
-	}
-
-	public void setStepsY2(int ticksY2) {
-		this.stepsY2 = ticksY2;
-	}
-	
-	public int getMinY3() {
-		return minY3;
-	}
-
-	public void setMinY3(int minY3) {
-		this.minY3 = minY3;
-	}
-
-	public int getMaxY3() {
-		return maxY3;
-	}
-
-	public void setMaxY3(int maxY3) {
-		this.maxY3 = maxY3;
-	}
-	
-	public int getTicksPerStepX() {
-		return ticksPerStepX;
-	}
-
-	public void setTicksPerStepX(int ticksPerStepX) {
-		this.ticksPerStepX = ticksPerStepX;
-	}
-
-	public int getTicksPerStepY1() {
-		return ticksPerStepY1;
-	}
-
-	public void setTicksPerStepY1(int ticksPerStepY1) {
-		this.ticksPerStepY1 = ticksPerStepY1;
-	}
-
-	public int getTicksPerStepY2() {
-		return ticksPerStepY2;
-	}
-
-	public void setTicksPerStepY2(int ticksPerStepY2) {
-		this.ticksPerStepY2 = ticksPerStepY2;
-	}
-	
+			
 	public void addY1Marker(Marker marker) {
 		y1Markers.add(marker);
 	}
@@ -571,5 +406,29 @@ public class PlotYY extends View {
 	
 	public float pt2px( float pt ) {
 		return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PT, pt, getContext().getResources().getDisplayMetrics());
+	}
+	
+	public Axis getXAxis() {
+		return xAxis;
+	}
+
+	public Axis getY1Axis() {
+		return y1Axis;
+	}
+
+	public Axis getY2Axis() {
+		return y2Axis;
+	}
+
+	public Axis getY3Axis() {
+		return y3Axis;
+	}
+	
+	public List<Axis> getAxes() {
+		return axes;
+	}
+	
+	public List<Axis> getYAxes() {
+		return yAxes;
 	}
 }
