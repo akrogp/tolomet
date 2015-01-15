@@ -217,16 +217,18 @@ public class MyCharts implements Controller {
     	    	
     	long round = minutes*60*1000;
     	long x2 = System.currentTimeMillis()/round*round;
-    	long x1 = x2-hours*60*60*1000;
-    	//long x0 = x2-24*60*60*1000;
+    	long span = hours*60*60*1000;
+    	long x1 = x2-span;
     	Calendar cal = Calendar.getInstance();
     	cal.set(Calendar.HOUR_OF_DAY, 0);
     	cal.set(Calendar.MINUTE, 0);
     	cal.set(Calendar.SECOND, 0);
     	cal.set(Calendar.MILLISECOND, 0);
     	long x0 = cal.getTimeInMillis();
-    	if( x1 < x0 )
-    		x0 = x1;
+    	if( x1 < x0 ) {
+    		x1 = x0;
+    		x2 = x1+span;
+    	}
     	
     	chartAir.getXAxis().setRange(x1,x2);
     	chartAir.getXAxis().setLimits(x0,x2);
