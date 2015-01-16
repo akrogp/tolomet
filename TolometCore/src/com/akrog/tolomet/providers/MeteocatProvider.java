@@ -1,22 +1,23 @@
 package com.akrog.tolomet.providers;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 
+import com.akrog.tolomet.Measurement;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
 
 public class MeteocatProvider implements WindProvider {
 	@Override
 	public void refresh(Station station) {
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 		downloader = new Downloader();
-		downloader.setMethod("POST");
-		downloader.useLineBreak(false);
-		downloader.setUrl("http://www.meteo.cat/xema/AppJava/Detall24Estacio.do");
-		downloader.addParam("idEstacio", station.getCode());
-		downloader.addParam("team", "ObservacioTeledeteccio");
-		downloader.addParam("inputSource", "DadesActualsEstacio");
-		updateStation(station,downloader.download());
+		downloader.setUrl("http://www.meteo.cat/observacions/xema/dades");
+		downloader.addParam("codi", station.getCode());
+		downloader.addParam("dia", String.format("%d-%02d-%02d", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH)));
+		updateStation(station,downloader.download("\"tabs-2\""));
 	}
 	
 	@Override
@@ -27,65 +28,65 @@ public class MeteocatProvider implements WindProvider {
 
 	protected void updateStation(Station station, String data) {
 		if( data == null )
+			return;				
+		int iWind = data.indexOf("renderitzarGraficaVelocitatDireccioVent");
+		if( iWind < 0 )
 			return;
-		
-		long date; 
-		Number val;
-		String fields[] = data.split("<td");
-		if( fields.length < 11 )			
-			return;
+		int iAir = data.indexOf("renderitzarGraficaTemperaturaHumitat");
 		station.clear();
-		for( int i = 1; i < fields.length; i += 10 ) {
-			date = toEpoch(getContent(fields[i],2));
-			val = Integer.parseInt(getContent(fields[i+6],4));
-			station.getMeteo().getWindDirection().put(date, val);
-			val = Float.parseFloat(getContent(fields[i+6],2).replaceAll(" -", ""))*3.6F;
-			station.getMeteo().getWindSpeedMed().put(date, val);
-			val = Float.parseFloat(getContent(fields[i+7],2))*3.6F;
-			station.getMeteo().getWindSpeedMax().put(date, val);
-			try {
-				val = (float)Integer.parseInt(getContent(fields[i+4],2));
-				station.getMeteo().getAirHumidity().put(date, val);
-			} catch( Exception e ) {};
-			try {
-				val = Float.parseFloat(getContent(fields[i+1],2));
-				station.getMeteo().getAirTemperature().put(date, val);
-			} catch( Exception e ) {};
-			try {
-				val = Float.parseFloat(getContent(fields[i+8],2));
-				station.getMeteo().getAirPressure().put(date, val);
-			} catch( Exception e ) {};
+		
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 30);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		long date = cal.getTimeInMillis(); 
+				
+		updateMeasurement(station.getMeteo().getAirTemperature(), date, getValues(data, iAir, "temperatura"));
+		updateMeasurement(station.getMeteo().getAirHumidity(), date, getValues(data, iAir, "humitat"));
+		updateMeasurement(station.getMeteo().getWindDirection(), date, getValues(data, iWind, "direccioVent"));
+		updateMeasurement(station.getMeteo().getWindSpeedMed(), date, getValues(data, iWind, "velocitatVent"));
+	}
+	
+	private void updateMeasurement( Measurement measurement, long stamp, List<Float> values ) {
+		if( values == null )
+			return;
+		for( Float value : values ) {
+			measurement.put(stamp, value);
+			stamp += 30*60*1000;
 		}
+	}
+	
+	private List<Float> getValues( String data, int off, String label ) {
+		String[] fields = data.substring(off).split("\\[");
+		int i;
+		for( i = 0; i < fields.length; i++ )
+			if( fields[i].contains(label) )
+				break;
+		i++;
+		if( i >= fields.length )
+			return null;
+		List<Float> list = new ArrayList<Float>();
+		fields = fields[i].replaceAll("\\].*", "").split(", *");
+		for( i = 0; i < fields.length; i++ ) {
+			try {
+				float num = Float.parseFloat(fields[i]);
+				list.add(num);
+			} catch( Exception e ) {
+				break;
+			}
+		}
+		return list;
 	}
 
 	@Override
 	public int getRefresh( String code ) {
 		return 30;
 	}		
-	
-	private long toEpoch( String str ) {
-		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-		String[] tmp = str.split(" ");
-		String[] date = tmp[0].split("/");
-		String[] time = tmp[1].split("-")[1].replace(")", "").split(":");
-		cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(date[0]));
-		cal.set(Calendar.MONTH, Integer.parseInt(date[1])-1);
-		cal.set(Calendar.YEAR, Integer.parseInt(date[2]));
-		cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time[0]));
-		cal.set(Calendar.MINUTE, Integer.parseInt(time[1]));
-		cal.set(Calendar.SECOND, 0);
-		cal.set(Calendar.MILLISECOND, 0 );
-	    return cal.getTimeInMillis();
-	}
-	
-	private String getContent( String td, int pos ) {
-		String string = td.split(">")[pos].replaceAll("<.*", "").trim();
-		return string;
-	}
-	
+		
 	@Override
 	public String getInfoUrl(String code) {
-		return "http://www.meteo.cat/xema/AppJava/SeleccioPerComarca.do";
+		return String.format("http://www.meteo.cat/observacions/xema/dades?codi=%s", code);
 	}
 	
 	private Downloader downloader; 

@@ -27,6 +27,9 @@ public class Downloader {
 	}
 	
 	public String download( String stop ) {
+		/*CookieManager manager = new CookieManager();
+        manager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+        CookieHandler.setDefault(manager);*/
 		String result = "";
     	try {    		
     		HttpURLConnection con;
