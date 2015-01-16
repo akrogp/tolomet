@@ -20,9 +20,13 @@ XML -> http://www2.meteogalicia.es/servizos/MComunicacion/xml/observacion/estaci
 http://www2.meteogalicia.es/galego/observacion/estacions/contidos/DatosHistoricosXML_dezminutal.asp?est=10124&param=1306,1307,1311,1312&data1=28/4/2013&data2=29/4/2013
 http://www2.meteogalicia.es/galego/observacion/estacions/contidos/sensor_periodo.asp?Nest=10124&periodo=1
 
-MeteoCat:
+MeteoCat (old):
 Datos -> curl -d 'idEstacio=VE&team=ObservacioTeledeteccio&inputSource=DadesActualsEstacio' 'http://www.meteo.cat/xema/AppJava/Detall24Estacio.do'
 Ficha -> curl -e 'http://www.meteo.cat/xema/AppJava/Mapper.do' -d 'team=ObservacioTeledeteccio&id=VE' 'http://www.meteo.cat/xema/AppJava/FitxaEstacio.do'
+
+MeteoCat (new):
+Datos -> http://www.meteo.cat/observacions/xema/dades?codi=VE&dia=2015-01-14
+Datos y ficha -> http://www.meteo.cat/observacions/xema/dades?codi=VE
 
 Red Vigía:
 http://www.redvigia.es/Historico.aspx?codigoBoya=130900414322fa7d&numeroDatos=5&tipo=1&variable=1
