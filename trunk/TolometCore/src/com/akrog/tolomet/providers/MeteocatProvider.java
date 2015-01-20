@@ -8,12 +8,14 @@ import java.util.TimeZone;
 import com.akrog.tolomet.Measurement;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
+import com.akrog.tolomet.io.Downloader.FakeBrowser;
 
 public class MeteocatProvider implements WindProvider {
 	@Override
 	public void refresh(Station station) {
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 		downloader = new Downloader();
+		downloader.setBrowser(FakeBrowser.WGET);
 		downloader.setUrl("http://www.meteo.cat/observacions/xema/dades");
 		downloader.addParam("codi", station.getCode());
 		downloader.addParam("dia", String.format("%d-%02d-%02d", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH)));

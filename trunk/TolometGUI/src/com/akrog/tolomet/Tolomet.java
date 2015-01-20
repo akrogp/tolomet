@@ -48,7 +48,7 @@ public class Tolomet extends Activity {
         if( savedInstanceState != null )
         	Bundler.loadStations(model.getAllStations(), savedInstanceState);
         
-        updateTimer();
+        createTimer();
     }
         
     @Override
@@ -71,21 +71,15 @@ public class Tolomet extends Activity {
     		redraw();
     }
     
-    private void updateTimer() {
+    private void createTimer() {
     	cancelTimer();
     	if( settings.getUpdateMode() != Settings.AUTO_UPDATES )
     		return;	
     	timer = new Runnable() {				
     		@Override
     		public void run() {
-    			if( settings.getUpdateMode() != Settings.AUTO_UPDATES )
-    				cancelTimer();
-    			if( timer == null || timer != this )
-    				return;
     			if( model.checkCurrent() )
     				downloadData();					
-    			else
-    				handler.postDelayed(timer, 60*1000);
     		}
     	};
     	timer.run();
@@ -98,15 +92,17 @@ public class Tolomet extends Activity {
     	}
     }
     
-    private void triggerTimer() {
+    private boolean postTimer() {
     	if( timer == null || settings.getUpdateMode() != Settings.AUTO_UPDATES )
-    		return;
+    		return false;
+    	handler.removeCallbacks(timer);
     	int minutes = 1;
-    	if( !model.getCurrentStation().isEmpty() ) {
+    	if( model.checkCurrent() && !model.getCurrentStation().isEmpty() ) {
 			int dif = (int)((System.currentTimeMillis()-model.getCurrentStation().getStamp())/60/1000L);
 			minutes = dif >= model.getRefresh() ? 1 : model.getRefresh()-dif;
 		}
     	handler.postDelayed(timer, minutes*60*1000);
+    	return true;
     }
     
     // Actions
@@ -189,7 +185,7 @@ public class Tolomet extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	if( requestCode != 0 )
     		return;
-    	updateTimer();
+    	createTimer();
     	redraw();
     }
 
@@ -229,7 +225,7 @@ public class Tolomet extends Activity {
 	
 	public void onDownloaded() {		
 		downloading = false;
-		triggerTimer();
+		postTimer();
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.HOUR_OF_DAY, 0);
 		cal.set(Calendar.MINUTE, 0);
@@ -243,7 +239,7 @@ public class Tolomet extends Activity {
 	
 	public void onCancelled() {		
 		downloading = false;
-		triggerTimer();
+		postTimer();
 		redraw();
 	}	
 	

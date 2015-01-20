@@ -169,32 +169,20 @@ public class Manager {
 		Number temp = currentStation.getMeteo().getAirTemperature().getLast();
 		
 		StringBuilder str = new StringBuilder(getStamp());
-		if( large ) {
-			if( strDir != null )
-				str.append(String.format(" | %dº (%s)", dir.intValue(), strDir));
-			if( hum != null )
-				str.append(String.format(" | %.0f %%", hum));
-			if( temp != null )
-				str.append(String.format(" | %.1f ºC", temp));
-			if( med != null )
-				str.append(String.format(" | %.1f", med));
-			if( max != null )
-				str.append(String.format("~%.1f", max));
-			if( med != null || max != null )
-				str.append(" km/h");
-		} else {
-			if( strDir != null )
-				str.append(String.format("|%dº(%s)", dir.intValue(), strDir));
-			if( hum != null )
-				str.append(String.format("|%.0f%%", hum));
-			if( temp != null )
-				str.append(String.format("|%.1fºC", temp));
-			if( med != null )
-				str.append(String.format("|%.1f", med));
-			if( max != null )
-				str.append(String.format("~%.1f", max));
-		}
-		return str.toString();
+		if( strDir != null )
+			str.append(String.format(" | %dº (%s)", dir.intValue(), strDir));
+		if( hum != null )
+			str.append(String.format(" | %.0f %%", hum));
+		if( temp != null )
+			str.append(String.format(" | %.1f ºC", temp));
+		if( med != null )
+			str.append(String.format(" | %.1f", med));
+		if( max != null )
+			str.append(String.format("~%.1f", max));
+		if( med != null || max != null )
+			str.append(" km/h");
+
+		return large ? str.toString() : str.toString().replaceAll(" ", "");
 	}
 		
 	public String getStamp() {

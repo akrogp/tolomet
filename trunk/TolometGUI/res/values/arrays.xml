@@ -72,15 +72,37 @@
 </string-array>
 <string-array name="pref_minPresEntries">
     <item>Automático</item>
-    <item>870 mb (mínimo histórico)</item>
+    <item>700 mb</item>
+    <item>720 mb</item>
+    <item>740 mb</item>
+    <item>760 mb</item>
+    <item>780 mb</item>
+    <item>800 mb</item>
+    <item>820 mb</item>
+    <item>840 mb</item>
+    <item>860 mb</item>
+    <item>880 mb</item>
+    <item>900 mb</item>
+    <item>920 mb</item>
     <item>940 mb</item>
     <item>960 mb</item>
     <item>980 mb</item>
-    <item>1000 mb (típico baja presión)</item>
+    <item>1000 mb</item>
 </string-array>
 <string-array name="pref_minPresValues">
     <item>-1000</item>
-    <item>870</item>
+    <item>700</item>
+    <item>720</item>
+    <item>740</item>
+    <item>760</item>
+    <item>780</item>
+    <item>800</item>
+    <item>820</item>
+    <item>840</item>
+    <item>860</item>
+    <item>880</item>
+    <item>900</item>
+    <item>920</item>
     <item>940</item>
     <item>960</item>
     <item>980</item>

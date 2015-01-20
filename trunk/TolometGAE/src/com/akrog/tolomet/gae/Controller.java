@@ -20,61 +20,8 @@ public class Controller {
 		
 		// Version
 		Motd motd = new Motd();
-		if( version < 17 ) {			
-			motd.setVersion("0.17");
-			if( version == 16 ) {
-				motd.addChange("Mejorado soporte de AEMET");
-			} else {
-				motd.addChange("Incluidas estaciones de AEMET");
-				motd.addChange("Incluido enlace a datos técnicos de la estación");
-				motd.addChange("Posibilidad de buscar estaciones cercanas");
-				motd.addChange("Posibilidad de buscar estaciones por categorías");
-			}
-		}
-		if( version < 19 ) {
-			motd.setVersion("0.19");
-			motd.addChange("Añadida traducción a Euskera (gracias a Eneko Izquierdo y Fran Echarte)");
-			motd.addChange("Añadida traducción a Inglés");
-			motd.addChange("En el caso de AEMET (pocas lecturas) se muestran las últimas 24 horas");
-		}
-		if( version < 21 ) {
-			motd.setVersion("0.21");
-			if( version == 20 ) {
-				motd.addChange("Ajustado intervalo de tiempo visualizado para La Rioja");
-				motd.addChange("Actualizado enlace a datos de las estaciones de La Rioja");
-			} else {
-				motd.addChange("Añadidas estaciones del Gobierno de La Rioja (Raúl, me debes una caña ;P)");
-				motd.addChange("Mejorado desplazamiento de ejes");
-				motd.addChange("Arreglado fallo al rotar la pantalla mientras descarga");
-			}
-		}
-		if( version < 23 ) {
-			motd.setVersion("0.23");
-			motd.addChange("Añadidas estaciones de MeteoGalicia (César, me debes una caña y una tapa ;P)");
-			motd.addChange("Añadidas estaciones de Red Vigía (Santander y Santoña)");
-		}
-		if( version < 25 ) {
-			motd.setVersion("0.25");
-			if( version == 24 )
-				motd.addChange("Solucionado fallo cuando meteocat no devuelve datos");
-			else
-				motd.addChange("Añadidas estaciones de Meteocat (otra caña/tapa que me deben ... ¿eh Jesus Tomas? ;P)");
-		}
-		if( version < 26 ) {
-			motd.setVersion("0.26");
-			motd.addChange("Soporte de zoom y scroll");
-			motd.addChange("Permite ajustar los ejes de las gráficas");
-		}
-		/*if( version < 27 ) {
-			motd.setVersion("0.27");
-			motd.addChange("Añadida estación de Untzueta, perfecta para la zona de vuelo de Orozko. Eskerrik asko Kato!!");
-		}*/
-		if( version < 28 ) {
-			motd.setVersion("0.28");
-			motd.addChange("Solucionado fallo con la actualización de Euskalmet");
-		}
-		if( version < 200 ) {
-			motd.setVersion("2.0");
+		if( version < 202 ) {
+			motd.setVersion("2.0.2");
 			motd.addChange("Incluidas gráficas de temperatura y presión");
 			motd.addChange("Incluidas nuevas estaciones");
 			motd.addChange("Evitados saltos en gráfica de dirección (gracias Guille!)");
@@ -84,16 +31,12 @@ public class Controller {
 			motd.addChange("Incluido botón de ajustes cuando no está presente en el dispositivo");
 			motd.addChange("Solucionados diferentes fallos");
 		}
-		if( version == 200 ) {
-			motd.setVersion("2.0.1");
-			motd.addChange("Solucionado fallo al migrar preferencias de velocidad a la versión 2.0");
-		}
-		if( version == 200 || version == 201 ) {
-			motd.setVersion("2.0.2");
-			motd.addChange("Visualización simple por defecto");
-			motd.addChange("Optimizada actualización continua");
-			motd.addChange("Terminada traducción a euskera");
-			motd.addChange("Ajustado rango de velocidad");
+		if( version < 210 ) {
+			motd.setVersion("2.1.0");
+			motd.addChange("Recuperadas estaciones de meteocat");
+			motd.addChange("Incluida estación del club naútico de Laredo");
+			motd.addChange("Ajustado dinámicamente tamaño de fuente en últimas lecturas");
+			motd.addChange("Arreglados algunos fallos");
 		}
 		
 		// MOTD

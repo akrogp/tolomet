@@ -15,12 +15,15 @@ import java.util.List;
 import java.util.Map.Entry;
 
 public class Downloader {
+	public enum FakeBrowser { ANDROID, MOZILLA, WGET };
+	
 	private String url;
 	private String query;
 	private String method;
 	private final List<Entry<String,Object>> params = new ArrayList<Entry<String,Object>>();
 	protected boolean usingLinebreak = true;
 	private boolean cancelled = false;
+	private FakeBrowser fakeBrowser = FakeBrowser.ANDROID;
 	
 	public String download() {
 		return download(null);
@@ -47,13 +50,31 @@ public class Downloader {
     			URL url = new URL(this.url+"?"+getQuery());
     			con = (HttpURLConnection)url.openConnection();
     		}
-    		//con.setRequestProperty("User-Agent","Mozilla/5.0 (Linux)");
+    		applyBrowserProperties(con);
     		result = parseInput(con.getInputStream(),stop);
     	} catch( Exception e ) {
     		e.printStackTrace();
     		//onCancelled();
 		}
     	return result;
+	}
+	
+	public void setBrowser( FakeBrowser fakeBrowser ) {
+		this.fakeBrowser = fakeBrowser;
+	}
+	
+	private void applyBrowserProperties( HttpURLConnection con ) {
+		switch( fakeBrowser ) {
+			case WGET:
+				con.setRequestProperty("User-Agent","Wget/1.13.4 (linux-gnu)");
+				break;
+			case MOZILLA:
+				con.setRequestProperty("User-Agent","Mozilla/5.0 (Linux)");
+				break;
+			default: break;
+		}
+		//con.setRequestProperty("Accept", "*/*");
+		//con.setRequestProperty("Accept-Encoding", "");
 	}
 	
 	public void useLineBreak(boolean lb) {
