@@ -41,7 +41,7 @@ public class MyCharts implements Controller {
 	private final Marker markerVmax = new Marker(0.0f, null, POINT_GRAY);
 	private final Marker markerSea = new Marker(1013.0f, "1013 mb", POINT_GRAY);
 	private final Marker markerLow = new Marker(1000.0f, "1000 mb", POINT_GRAY);
-	private final Marker markerHigh = new Marker(1030.0f, "1030 mb", POINT_GRAY);
+	//private final Marker markerHigh = new Marker(1030.0f, "1030 mb", POINT_GRAY);
 	private final Marker markerMountain = new Marker(900.0f, "900 mb", POINT_GRAY);
 	private final Marker markerCloud = new Marker(100.0f, "100% humedad", LINE_BLUE);
 	private final Marker markerCloudSimple = new Marker(100.0f, "100% humedad", POINT_GRAY);
@@ -112,7 +112,7 @@ public class MyCharts implements Controller {
         chartAir.addY2Marker(markerCloud);
         chartAir.addY3Marker(markerSea);
         chartAir.addY3Marker(markerLow);
-        chartAir.addY3Marker(markerHigh);
+        //chartAir.addY3Marker(markerHigh);
         chartAir.addY3Marker(markerMountain);
               
         chartWind.setTitle(tolomet.getString(R.string.Wind));

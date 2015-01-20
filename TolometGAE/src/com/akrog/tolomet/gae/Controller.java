@@ -31,8 +31,8 @@ public class Controller {
 			motd.addChange("Incluido botón de ajustes cuando no está presente en el dispositivo");
 			motd.addChange("Solucionados diferentes fallos");
 		}
-		if( version < 210 ) {
-			motd.setVersion("2.1.0");
+		if( version < 211 ) {
+			motd.setVersion("2.1.1");
 			motd.addChange("Recuperadas estaciones de meteocat");
 			motd.addChange("Incluida estación del club naútico de Laredo");
 			motd.addChange("Ajustado dinámicamente tamaño de fuente en últimas lecturas");
