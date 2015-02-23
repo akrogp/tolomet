@@ -38,6 +38,10 @@ public class Controller {
 			motd.addChange("Ajustado dinámicamente tamaño de fuente en últimas lecturas");
 			motd.addChange("Arreglados algunos fallos");
 		}
+		if( version < 212 ) {
+			motd.setVersion("2.1.2");
+			motd.addChange("Solucionado fallo con algunas estaciones de AEMET");
+		}
 		
 		// MOTD
 		/*Calendar cal = Calendar.getInstance();        
