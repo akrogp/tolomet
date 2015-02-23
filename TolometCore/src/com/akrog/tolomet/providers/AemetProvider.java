@@ -48,7 +48,7 @@ public class AemetProvider implements WindProvider {
 		station.clear();
 		for( int i = lines.length-1; i >= 4; i-- ) {
 			String[] cells = lines[i].split(",");
-			if( cells[index.getDate()].length() == 0 || cells[index.getDir()].length() == 0 )
+			if( cells.length <= index.getDir() || cells[index.getDate()].length() == 0 || cells[index.getDir()].length() == 0 )
 				continue;
 			date = toEpoch(cells[index.getDate()]);
 			num = parseDir(cells[index.getDir()]);
@@ -56,19 +56,23 @@ public class AemetProvider implements WindProvider {
 				num = last;
 			last = num;
 			station.getMeteo().getWindDirection().put(date, num);
-			num = Float.parseFloat(cells[index.getMed()]);
-			station.getMeteo().getWindSpeedMed().put(date, num);
-			num = Float.parseFloat(cells[index.getMax()]);
-			station.getMeteo().getWindSpeedMax().put(date, num);
-			if( index.getHum() > 0 ) {
+			if( index.getMed() < cells.length ) {
+				num = Float.parseFloat(cells[index.getMed()]);
+				station.getMeteo().getWindSpeedMed().put(date, num);
+			}
+			if( index.getMax() < cells.length ) {
+				num = Float.parseFloat(cells[index.getMax()]);
+				station.getMeteo().getWindSpeedMax().put(date, num);
+			}
+			if( index.getHum() > 0 && index.getHum() < cells.length ) {
 				num = (float)(int)(Float.parseFloat(cells[index.getHum()])+0.5F);
 				station.getMeteo().getAirHumidity().put(date, num);
 			}
-			if( index.getTemp() > 0 ) {
+			if( index.getTemp() > 0 && index.getTemp() < cells.length ) {
 				num = Float.parseFloat(cells[index.getTemp()]);
 				station.getMeteo().getAirTemperature().put(date, num);
 			}
-			if( index.getPres() > 0 ) {
+			if( index.getPres() > 0 && index.getPres() < cells.length ) {
 				num = Float.parseFloat(cells[index.getPres()]);
 				station.getMeteo().getAirPressure().put(date, num);
 			}
