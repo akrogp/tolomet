@@ -157,8 +157,10 @@ public class PlotYY extends View {
 		RectF rect = new RectF();
 		rect.top = BORDER+paintTitle.getTextSize()+paintY1.getTextSize();
 		rect.bottom = h-1-BORDER-paintX.getTextSize()-TICK_SIZE-2*TICK_MARGIN-paintLegend.getTextSize();
-		rect.left = 2*BORDER+paintTitle.getTextSize()+paintY1.measureText(y1Axis.getMax()+"")+TICK_SIZE+TICK_MARGIN;
-		rect.right = w-1-2*BORDER-paintTitle.getTextSize()-paintY2.measureText(y2Axis.getMax()+"")-TICK_SIZE-TICK_MARGIN;
+		/*rect.left = 2*BORDER+paintTitle.getTextSize()+paintY1.measureText(y1Axis.getMax()+"")+TICK_SIZE+TICK_MARGIN;
+		rect.right = w-1-2*BORDER-paintTitle.getTextSize()-paintY2.measureText(y2Axis.getMax()+"")-TICK_SIZE-TICK_MARGIN;*/
+		rect.left = 2*BORDER+paintTitle.getTextSize()+paintY1.measureText("999")+TICK_SIZE+TICK_MARGIN;
+		rect.right = w-1-2*BORDER-paintTitle.getTextSize()-paintY2.measureText("999")-TICK_SIZE-TICK_MARGIN;
 		return rect;
 	}
 	

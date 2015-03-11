@@ -190,7 +190,7 @@ public class Manager {
 			return null;
 		
 		Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(currentStation.getMeteo().getWindDirection().getStamp());
+        cal.setTimeInMillis(currentStation.getMeteo().getStamp());
         SimpleDateFormat df = new SimpleDateFormat();
         df.applyPattern("HH:mm");
         return df.format(cal.getTime());

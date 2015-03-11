@@ -57,11 +57,27 @@ public class Meteo {
 	}
 	
 	public boolean isEmpty() {
-		return windDirection.isEmpty();
+		for( Measurement measurement : measurements )
+			if( !measurement.isEmpty() )
+				return false;
+		return true;
 	}
 	
 	public Long getStamp() {
-		return windDirection.getStamp();
+		Long stamp = null;
+		Long tmp;
+		for( Measurement measurement : measurements ) {
+			tmp = measurement.getStamp();
+			if( tmp == null )
+				continue;
+			if( stamp == null ) {
+				stamp = tmp;
+				continue;
+			}
+			if( tmp > stamp )
+				stamp = tmp;
+		}
+		return stamp;
 	}
 
 	private final Measurement windDirection = new Measurement();
