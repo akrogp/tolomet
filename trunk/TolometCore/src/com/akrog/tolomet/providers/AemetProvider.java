@@ -44,36 +44,39 @@ public class AemetProvider implements WindProvider {
 		Header index = getHeaders(lines[3]);
 		
 		long date; 
-		Number num, last = 0;		
+		Number num, last = 0;
+		String cell;
 		station.clear();
 		for( int i = lines.length-1; i >= 4; i-- ) {
 			String[] cells = lines[i].split(",");
-			if( cells.length <= index.getDir() || cells[index.getDate()].length() == 0 || cells[index.getDir()].length() == 0 )
+			if( cells.length <= index.getDate() || (cell=cells[index.getDate()]).isEmpty() )
 				continue;
 			date = toEpoch(cells[index.getDate()]);
-			num = parseDir(cells[index.getDir()]);
-			if( num == null )
-				num = last;
-			last = num;
-			station.getMeteo().getWindDirection().put(date, num);
-			if( index.getMed() < cells.length ) {
-				num = Float.parseFloat(cells[index.getMed()]);
+			if( index.getDir() < cells.length && !(cell=cells[index.getDir()]).isEmpty() ) {
+				num = parseDir(cells[index.getDir()]);
+				if( num == null )
+					num = last;
+				last = num;
+				station.getMeteo().getWindDirection().put(date, num);
+			}
+			if( index.getMed() < cells.length && !(cell=cells[index.getMed()]).isEmpty() ) {
+				num = Float.parseFloat(cell);
 				station.getMeteo().getWindSpeedMed().put(date, num);
 			}
-			if( index.getMax() < cells.length ) {
-				num = Float.parseFloat(cells[index.getMax()]);
+			if( index.getMax() < cells.length && !(cell=cells[index.getMax()]).isEmpty() ) {
+				num = Float.parseFloat(cell);
 				station.getMeteo().getWindSpeedMax().put(date, num);
 			}
-			if( index.getHum() > 0 && index.getHum() < cells.length ) {
-				num = (float)(int)(Float.parseFloat(cells[index.getHum()])+0.5F);
+			if( index.getHum() > 0 && index.getHum() < cells.length && !(cell=cells[index.getHum()]).isEmpty() ) {
+				num = (float)(int)(Float.parseFloat(cell)+0.5F);
 				station.getMeteo().getAirHumidity().put(date, num);
 			}
-			if( index.getTemp() > 0 && index.getTemp() < cells.length ) {
-				num = Float.parseFloat(cells[index.getTemp()]);
+			if( index.getTemp() > 0 && index.getTemp() < cells.length && !(cell=cells[index.getTemp()]).isEmpty() ) {
+				num = Float.parseFloat(cell);
 				station.getMeteo().getAirTemperature().put(date, num);
 			}
-			if( index.getPres() > 0 && index.getPres() < cells.length ) {
-				num = Float.parseFloat(cells[index.getPres()]);
+			if( index.getPres() > 0 && index.getPres() < cells.length && !(cell=cells[index.getPres()]).isEmpty() ) {
+				num = Float.parseFloat(cell);
 				station.getMeteo().getAirPressure().put(date, num);
 			}
 		}
