@@ -6,6 +6,7 @@ import java.util.TimeZone;
 import com.akrog.tolomet.Header;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
+import com.akrog.tolomet.io.Downloader.FakeBrowser;
 
 public class EuskalmetProvider implements WindProvider {
 	
@@ -29,6 +30,7 @@ public class EuskalmetProvider implements WindProvider {
 		}		
 		
 		downloader = new Downloader();
+		downloader.setBrowser(FakeBrowser.WGET);
 		String time1 = String.format("%02d:%02d", past.get(Calendar.HOUR_OF_DAY), past.get(Calendar.MINUTE) );
 		String time2 = String.format("%02d:%02d", now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE) );
 		//downloader.setUrl("http://www.euskalmet.euskadi.net/s07-5853x/es/meteorologia/lectur_fr.apl");

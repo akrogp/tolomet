@@ -42,6 +42,10 @@ public class Controller {
 			motd.setVersion("2.1.3");
 			motd.addChange("Solucionado con estaciones de AEMET que dan lecturas parciales");
 		}
+		if( version < 214 ) {
+			motd.setVersion("2.1.4");
+			motd.addChange("Solucionado fallo en algunos móviles al acceder a Euskalmet");
+		}
 		
 		// MOTD
 		/*Calendar cal = Calendar.getInstance();        
