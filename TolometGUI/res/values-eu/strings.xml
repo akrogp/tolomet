@@ -35,6 +35,10 @@
     <string name="menu_index">Estazioen aurkibidea</string>
     <string name="menu_start">Hasierako menua</string>
     <string name="select">Hautatu</string>
+    <string name="markerNorth">0º (I)</string>
+    <string name="markerSouth">180º (H)</string>
+    <string name="markerEast">90º (E)</string>
+    <string name="markerWest">270º (M)</string>
     <string name="pref_minMarker">1. Markatzailea</string>
     <string name="pref_maxMarker">2. Markatzailea</string>        
     <string name="pref_catWind">Haizearen grafikoa</string>

@@ -1,0 +1,993 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="ldml">
+    <xs:annotation>
+      <xs:documentation>Copyright © 1991-2014 Unicode, Inc.
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+For terms of use, see http://www.unicode.org/copyright.html</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="identity">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="version">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="number"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="generation">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="date"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="language">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="type"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="localeDisplayNames">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="localeDisplayPattern">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="localePattern"/>
+                    <xs:element type="xs:string" name="localeSeparator"/>
+                    <xs:element type="xs:string" name="localeKeyTypePattern"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="languages">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="language" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:string" name="type" use="optional"/>
+                            <xs:attribute type="xs:string" name="alt" use="optional"/>
+                            <xs:attribute type="xs:string" name="draft" use="optional"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="scripts">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="script" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:string" name="type" use="optional"/>
+                            <xs:attribute type="xs:string" name="alt" use="optional"/>
+                            <xs:attribute type="xs:string" name="draft" use="optional"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="territories">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="territory" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:string" name="type" use="optional"/>
+                            <xs:attribute type="xs:string" name="alt" use="optional"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="variants">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="variant" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:string" name="type" use="optional"/>
+                            <xs:attribute type="xs:string" name="draft" use="optional"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="keys">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="key" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:string" name="type" use="optional"/>
+                            <xs:attribute type="xs:string" name="draft" use="optional"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="types">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="type" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:string" name="type" use="optional"/>
+                            <xs:attribute type="xs:string" name="key" use="optional"/>
+                            <xs:attribute type="xs:string" name="draft" use="optional"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="transformNames">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="transformName" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:string" name="type" use="optional"/>
+                            <xs:attribute type="xs:string" name="draft" use="optional"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="measurementSystemNames">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="measurementSystemName" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:string" name="type" use="optional"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="codePatterns">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="codePattern" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:string" name="type" use="optional"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="contextTransforms">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="contextTransformUsage" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="contextTransform" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:string" name="type" use="optional"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute type="xs:string" name="type" use="optional"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="characters">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="exemplarCharacters" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="type" use="optional"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="ellipsis" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="type" use="optional"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element type="xs:string" name="moreInformation"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="delimiters">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="quotationStart"/>
+              <xs:element type="xs:string" name="quotationEnd"/>
+              <xs:element type="xs:string" name="alternateQuotationStart"/>
+              <xs:element type="xs:string" name="alternateQuotationEnd"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="dates">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="calendars">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="calendar" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="months" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="monthContext" maxOccurs="unbounded" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="monthWidth" maxOccurs="unbounded" minOccurs="0">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="month" maxOccurs="unbounded" minOccurs="0">
+                                              <xs:complexType>
+                                                <xs:simpleContent>
+                                                  <xs:extension base="xs:string">
+                                                    <xs:attribute type="xs:byte" name="type" use="optional"/>
+                                                  </xs:extension>
+                                                </xs:simpleContent>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                          <xs:attribute type="xs:string" name="type" use="optional"/>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute type="xs:string" name="type" use="optional"/>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="days" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="dayContext" maxOccurs="unbounded" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="dayWidth" maxOccurs="unbounded" minOccurs="0">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="day" maxOccurs="unbounded" minOccurs="0">
+                                              <xs:complexType>
+                                                <xs:simpleContent>
+                                                  <xs:extension base="xs:string">
+                                                    <xs:attribute type="xs:string" name="type" use="optional"/>
+                                                  </xs:extension>
+                                                </xs:simpleContent>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                          <xs:attribute type="xs:string" name="type" use="optional"/>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute type="xs:string" name="type" use="optional"/>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="quarters" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="quarterContext" maxOccurs="unbounded" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="quarterWidth" maxOccurs="unbounded" minOccurs="0">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="quarter" maxOccurs="unbounded" minOccurs="0">
+                                              <xs:complexType>
+                                                <xs:simpleContent>
+                                                  <xs:extension base="xs:string">
+                                                    <xs:attribute type="xs:byte" name="type" use="optional"/>
+                                                  </xs:extension>
+                                                </xs:simpleContent>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                          <xs:attribute type="xs:string" name="type" use="optional"/>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute type="xs:string" name="type" use="optional"/>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="dayPeriods" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="dayPeriodContext">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="dayPeriodWidth" maxOccurs="unbounded" minOccurs="0">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="dayPeriod" maxOccurs="unbounded" minOccurs="0">
+                                              <xs:complexType>
+                                                <xs:simpleContent>
+                                                  <xs:extension base="xs:string">
+                                                    <xs:attribute type="xs:string" name="type" use="optional"/>
+                                                  </xs:extension>
+                                                </xs:simpleContent>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                          <xs:attribute type="xs:string" name="type" use="optional"/>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute type="xs:string" name="type"/>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="eras" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="eraNames" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="era" maxOccurs="unbounded" minOccurs="0">
+                                        <xs:complexType>
+                                          <xs:simpleContent>
+                                            <xs:extension base="xs:string">
+                                              <xs:attribute type="xs:byte" name="type" use="optional"/>
+                                              <xs:attribute type="xs:string" name="alt" use="optional"/>
+                                            </xs:extension>
+                                          </xs:simpleContent>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="eraAbbr">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="era" maxOccurs="unbounded" minOccurs="0">
+                                        <xs:complexType>
+                                          <xs:simpleContent>
+                                            <xs:extension base="xs:string">
+                                              <xs:attribute type="xs:byte" name="type" use="optional"/>
+                                              <xs:attribute type="xs:string" name="alt" use="optional"/>
+                                              <xs:attribute type="xs:string" name="draft" use="optional"/>
+                                            </xs:extension>
+                                          </xs:simpleContent>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="dateFormats" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>need some non-empty element here to make inheritance work,
+					 this copy of generic dateFormats above is smaller than root japanese eras</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="dateFormatLength" maxOccurs="unbounded" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="dateFormat">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="pattern">
+                                              <xs:complexType>
+                                                <xs:simpleContent>
+                                                  <xs:extension base="xs:string">
+                                                    <xs:attribute type="xs:string" name="draft" use="optional"/>
+                                                  </xs:extension>
+                                                </xs:simpleContent>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute type="xs:string" name="type" use="optional"/>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="timeFormats" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="timeFormatLength" maxOccurs="unbounded" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="timeFormat">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element type="xs:string" name="pattern"/>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute type="xs:string" name="type" use="optional"/>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="dateTimeFormats" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="dateTimeFormatLength" maxOccurs="unbounded" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="dateTimeFormat">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element type="xs:string" name="pattern"/>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute type="xs:string" name="type" use="optional"/>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="availableFormats">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="dateFormatItem" maxOccurs="unbounded" minOccurs="0">
+                                        <xs:complexType>
+                                          <xs:simpleContent>
+                                            <xs:extension base="xs:string">
+                                              <xs:attribute type="xs:string" name="id" use="optional"/>
+                                              <xs:attribute type="xs:string" name="draft" use="optional"/>
+                                            </xs:extension>
+                                          </xs:simpleContent>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="appendItems" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="appendItem">
+                                        <xs:complexType>
+                                          <xs:simpleContent>
+                                            <xs:extension base="xs:string">
+                                              <xs:attribute type="xs:string" name="request"/>
+                                            </xs:extension>
+                                          </xs:simpleContent>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="intervalFormats" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element type="xs:string" name="intervalFormatFallback"/>
+                                      <xs:element name="intervalFormatItem" maxOccurs="unbounded" minOccurs="0">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="greatestDifference" maxOccurs="unbounded" minOccurs="0">
+                                              <xs:complexType>
+                                                <xs:simpleContent>
+                                                  <xs:extension base="xs:string">
+                                                    <xs:attribute type="xs:string" name="id" use="optional"/>
+                                                    <xs:attribute type="xs:string" name="draft" use="optional"/>
+                                                  </xs:extension>
+                                                </xs:simpleContent>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                          <xs:attribute type="xs:string" name="id" use="optional"/>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute type="xs:string" name="type" use="optional"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="fields">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="field" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="displayName" minOccurs="0"/>
+                          <xs:element name="relative" maxOccurs="unbounded" minOccurs="0">
+                            <xs:complexType>
+                              <xs:simpleContent>
+                                <xs:extension base="xs:string">
+                                  <xs:attribute type="xs:byte" name="type" use="optional"/>
+                                </xs:extension>
+                              </xs:simpleContent>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="relativeTime" maxOccurs="unbounded" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="relativeTimePattern" maxOccurs="unbounded" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:extension base="xs:string">
+                                        <xs:attribute type="xs:string" name="count" use="optional"/>
+                                      </xs:extension>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute type="xs:string" name="type" use="optional"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute type="xs:string" name="type" use="optional"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="timeZoneNames">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="hourFormat"/>
+                    <xs:element type="xs:string" name="gmtFormat"/>
+                    <xs:element type="xs:string" name="gmtZeroFormat"/>
+                    <xs:element name="regionFormat" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:string" name="type" use="optional"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element type="xs:string" name="fallbackFormat"/>
+                    <xs:element name="zone" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="long" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="daylight"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element type="xs:string" name="exemplarCity"/>
+                        </xs:sequence>
+                        <xs:attribute type="xs:string" name="type" use="optional"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="metazone" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="long">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="generic" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:extension base="xs:string">
+                                        <xs:attribute type="xs:string" name="draft" use="optional"/>
+                                      </xs:extension>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="standard">
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:extension base="xs:string">
+                                        <xs:attribute type="xs:string" name="draft" use="optional"/>
+                                      </xs:extension>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="daylight" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:extension base="xs:string">
+                                        <xs:attribute type="xs:string" name="draft" use="optional"/>
+                                      </xs:extension>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="short" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="generic" minOccurs="0"/>
+                                <xs:element type="xs:string" name="standard"/>
+                                <xs:element type="xs:string" name="daylight" minOccurs="0"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute type="xs:string" name="type" use="optional"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="numbers">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="defaultNumberingSystem">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="draft"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="otherNumberingSystems">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="native">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:string" name="draft"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="minimumGroupingDigits">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:byte">
+                      <xs:attribute type="xs:string" name="draft"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="symbols">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="decimal"/>
+                    <xs:element type="xs:string" name="group"/>
+                    <xs:element type="xs:string" name="list"/>
+                    <xs:element type="xs:string" name="percentSign"/>
+                    <xs:element type="xs:byte" name="plusSign"/>
+                    <xs:element type="xs:byte" name="minusSign"/>
+                    <xs:element type="xs:string" name="exponential"/>
+                    <xs:element type="xs:string" name="superscriptingExponent"/>
+                    <xs:element type="xs:string" name="perMille"/>
+                    <xs:element type="xs:string" name="infinity"/>
+                    <xs:element type="xs:float" name="nan"/>
+                    <xs:element name="timeSeparator">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:string" name="draft"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute type="xs:string" name="numberSystem"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="decimalFormats">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="decimalFormatLength" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="decimalFormat">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="pattern" maxOccurs="unbounded" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:extension base="xs:string">
+                                        <xs:attribute type="xs:long" name="type" use="optional"/>
+                                        <xs:attribute type="xs:string" name="count" use="optional"/>
+                                      </xs:extension>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute type="xs:string" name="type" use="optional"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute type="xs:string" name="numberSystem"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="scientificFormats">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="scientificFormatLength">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="scientificFormat">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="pattern"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute type="xs:string" name="numberSystem"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="percentFormats">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="percentFormatLength">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="percentFormat">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="pattern"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute type="xs:string" name="numberSystem"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="currencyFormats">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="currencyFormatLength">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="currencyFormat" maxOccurs="unbounded" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="pattern"/>
+                              </xs:sequence>
+                              <xs:attribute type="xs:string" name="type" use="optional"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="unitPattern" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:string" name="count" use="optional"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute type="xs:string" name="numberSystem"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="currencies">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="currency" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="displayName" maxOccurs="unbounded" minOccurs="0">
+                            <xs:complexType>
+                              <xs:simpleContent>
+                                <xs:extension base="xs:string">
+                                  <xs:attribute type="xs:string" name="count" use="optional"/>
+                                  <xs:attribute type="xs:string" name="draft" use="optional"/>
+                                </xs:extension>
+                              </xs:simpleContent>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="symbol" maxOccurs="unbounded" minOccurs="0">
+                            <xs:complexType>
+                              <xs:simpleContent>
+                                <xs:extension base="xs:string">
+                                  <xs:attribute type="xs:string" name="draft" use="optional"/>
+                                  <xs:attribute type="xs:string" name="alt" use="optional"/>
+                                </xs:extension>
+                              </xs:simpleContent>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute type="xs:string" name="type" use="optional"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="miscPatterns">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="pattern" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:string" name="type" use="optional"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute type="xs:string" name="numberSystem"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="units">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="unitLength" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="compoundUnit">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="compoundUnitPattern">
+                            <xs:complexType>
+                              <xs:simpleContent>
+                                <xs:extension base="xs:string">
+                                  <xs:attribute type="xs:string" name="draft" use="optional"/>
+                                </xs:extension>
+                              </xs:simpleContent>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute type="xs:string" name="type" use="optional"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="unit" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="displayName" minOccurs="0"/>
+                          <xs:element name="unitPattern" maxOccurs="unbounded" minOccurs="0">
+                            <xs:complexType>
+                              <xs:simpleContent>
+                                <xs:extension base="xs:string">
+                                  <xs:attribute type="xs:string" name="count" use="optional"/>
+                                  <xs:attribute type="xs:string" name="draft" use="optional"/>
+                                </xs:extension>
+                              </xs:simpleContent>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element type="xs:string" name="perUnitPattern" minOccurs="0"/>
+                        </xs:sequence>
+                        <xs:attribute type="xs:string" name="type" use="optional"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute type="xs:string" name="type" use="optional"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="durationUnit" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="durationUnitPattern"/>
+                  </xs:sequence>
+                  <xs:attribute type="xs:string" name="type" use="optional"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="listPatterns">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="listPattern" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="listPatternPart" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:string" name="type" use="optional"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute type="xs:string" name="type" use="optional"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="posix">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="messages">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="yesstr"/>
+                    <xs:element type="xs:string" name="nostr"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema> 

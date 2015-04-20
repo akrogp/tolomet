@@ -8,6 +8,7 @@ public class Station {
 	private final Meteo meteo = new Meteo();
 	private String name, code;
 	private int region;
+	private String country;
 	private double latitude, longitude;
 	private WindProviderType providerType;
 	private boolean favorite;
@@ -15,17 +16,18 @@ public class Station {
 	private float distance;
 		
 	public Station() {
-		this("none","none",1,false,WindProviderType.Aemet,0,0);
+		this("none","none","none",1,false,WindProviderType.Aemet,0,0);
 	}
 	
 	public Station( String name, int special ) {
-		this(name,"none",1,false,WindProviderType.Aemet,0,0);
+		this(name,"none","none",1,false,WindProviderType.Aemet,0,0);
 		this.special = special;		
 	}
 	
-	public Station( String name, String code, int region, boolean favorite, WindProviderType provider, double lat, double lon ) {
+	public Station( String name, String code, String country, int region, boolean favorite, WindProviderType provider, double lat, double lon ) {
 		this.name = name;
 		this.code = code;
+		this.country = country;
 		this.region = region;
 		this.favorite = favorite;
 		this.providerType = provider;
@@ -36,7 +38,7 @@ public class Station {
 	}
 	
 	public Station( Station station ) {
-		this( station.name, station.code, station.region, station.favorite, station.providerType, station.latitude, station.longitude );
+		this( station.name, station.code, station.country, station.region, station.favorite, station.providerType, station.latitude, station.longitude );
 		replace(station);
 	}
 	
@@ -163,5 +165,13 @@ public class Station {
 
 	public void setDistance(float distance) {
 		this.distance = distance;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
 	}
 }

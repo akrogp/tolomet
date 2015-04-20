@@ -3,6 +3,7 @@ package com.akrog.tolomet;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -250,7 +251,7 @@ public class Tolomet extends Activity {
 	private final MyButtons buttons = new MyButtons();
 	private final MySummary summary = new MySummary();
 	private final GaeManager gaeManager = new GaeManager();
-	private final Manager model = new Manager();
+	private final Manager model = new Manager(Locale.getDefault().getLanguage());
 	private final Settings settings = new Settings();
 	private final Handler handler = new Handler();
 	private Runnable timer;
