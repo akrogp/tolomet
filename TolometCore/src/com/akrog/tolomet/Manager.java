@@ -1,6 +1,7 @@
 package com.akrog.tolomet;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -39,9 +40,9 @@ public class Manager {
 		allStations.clear();
 		selStations.clear();
 		currentStation = null;
-		loadStations("/res/stations.csv");
+		loadStations("/res/stations.dat");
 		if( !filter )
-			loadStations("/res/stations-ko.csv");
+			loadStations("/res/stations-ko.dat");
 	}
 	
 	private void loadDirections(String lang) {
@@ -54,25 +55,26 @@ public class Manager {
 	}
 
 	private void loadStations( String path ) {
-		BufferedReader rd = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(path)));
-		String line;
-		String[] fields;
+		DataInputStream dis = new DataInputStream(getClass().getResourceAsStream(path));
 		Station station;
 		try {
-			while( (line=rd.readLine()) != null ) {
+			while( true ) {
 				station = new Station();
-				fields = line.split(":");
-				station.setCode(fields[0]);
-				station.setName(fields[1]);
-				station.setProviderType(WindProviderType.values()[Integer.parseInt(fields[2])]);
-				station.setRegion(Integer.parseInt(fields[3]));
-				station.setLatitude(Double.parseDouble(fields[4]));
-				station.setLongitude(Double.parseDouble(fields[5]));
-				//station.setCountry(fields[6]);
+				station.setCode(dis.readUTF());
+				station.setName(dis.readUTF());
+				station.setProviderType(WindProviderType.values()[dis.readInt()]);
+				station.setCountry(dis.readUTF());
+				station.setRegion(dis.readInt());
+				station.setLatitude(dis.readDouble());
+				station.setLongitude(dis.readDouble());				
 				allStations.add(station);
-			}
-			rd.close();
+			}		
 		} catch( Exception e ) {
+			if( dis != null )
+				try {
+					dis.close();
+				} catch (IOException e1) {
+				}
 		}
     }
 	
