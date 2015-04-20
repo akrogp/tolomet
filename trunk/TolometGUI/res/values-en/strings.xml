@@ -35,6 +35,10 @@
     <string name="menu_index">Station index</string>
     <string name="menu_start">Start menu</string>
     <string name="select">Select</string>
+    <string name="markerNorth">0º (N)</string>
+    <string name="markerSouth">180º (S)</string>
+    <string name="markerEast">90º (E)</string>
+    <string name="markerWest">270º (W)</string>
     <string name="pref_minMarker">Marker #1</string>
     <string name="pref_maxMarker">Marker #2</string>    
     <string name="pref_catWind">Wind chart</string>

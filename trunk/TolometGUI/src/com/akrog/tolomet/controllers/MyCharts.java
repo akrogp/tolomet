@@ -45,10 +45,7 @@ public class MyCharts implements Controller {
 	private final Marker markerMountain = new Marker(900.0f, "900 mb", POINT_GRAY);
 	private final Marker markerCloud = new Marker(100.0f, "100% humedad", LINE_BLUE);
 	private final Marker markerCloudSimple = new Marker(100.0f, "100% humedad", POINT_GRAY);
-	private final Marker markerNorth = new Marker(0, "0º (N)", LINE_BLUE);
-	private final Marker markerSouth = new Marker(180, "180º (S)", LINE_BLUE);
-	private final Marker markerEast = new Marker(90, "90º (E)", LINE_BLUE);
-	private final Marker markerWest = new Marker(270, "270º (W)", LINE_BLUE);
+	private Marker markerNorth, markerSouth, markerEast, markerWest;
 	private boolean simpleMode;
 
 	@Override
@@ -56,6 +53,10 @@ public class MyCharts implements Controller {
 		this.tolomet = tolomet;
 		model = tolomet.getModel();
 		settings = tolomet.getSettings();
+		markerNorth = new Marker(0, tolomet.getString(R.string.markerNorth), LINE_BLUE);
+		markerSouth = new Marker(180, tolomet.getString(R.string.markerSouth), LINE_BLUE);
+		markerEast = new Marker(90, tolomet.getString(R.string.markerEast), LINE_BLUE);
+		markerWest = new Marker(270, tolomet.getString(R.string.markerWest), LINE_BLUE);
 		initializeCharts();
 	}
 	
