@@ -30,6 +30,7 @@
     <string name="newversion">Bertsio berria eskuragarri duzu!</string>
     <string name="menu_all">Estazio guztiak</string>
     <string name="menu_reg">Autonomia erkidegoak</string>
+    <string name="menu_country">Herrialdeak</string>
     <string name="menu_close">Gertuko estazioak</string>
     <string name="menu_fav">Laster-markak</string>
     <string name="menu_index">Estazioen aurkibidea</string>
