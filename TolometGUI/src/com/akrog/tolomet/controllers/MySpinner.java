@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.akrog.tolomet.Country;
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Region;
@@ -33,9 +34,10 @@ public class MySpinner implements OnItemSelectedListener, Controller {
 	private ArrayAdapter<Station> adapter;
 	private Type spinnerType;
 	private char vowel = '#';
-	private int region = -1;	
+	private int region = -1;
+	private String country;
 	private final List<Station> choices = new ArrayList<Station>();
-	private Station selectItem, startItem, favItem, regItem, nearItem, indexItem, allItem;
+	private Station selectItem, startItem, favItem, regItem, nearItem, indexItem, allItem, countryItem;
 
 	@Override
 	public void initialize(Tolomet tolomet, Bundle bundle) {
@@ -56,6 +58,7 @@ public class MySpinner implements OnItemSelectedListener, Controller {
 		nearItem = new Station(this.tolomet.getString(R.string.menu_close),Type.Nearest.getValue());
 		indexItem = new Station(this.tolomet.getString(R.string.menu_index),Type.Vowels.getValue());
 		allItem = new Station(this.tolomet.getString(R.string.menu_all),Type.All.getValue());
+		countryItem = new Station(this.tolomet.getString(R.string.menu_country),Type.Countries.getValue());
         
         loadState( bundle );        
 	}
@@ -111,6 +114,8 @@ public class MySpinner implements OnItemSelectedListener, Controller {
 			case StartMenu: selectStart(); break;
 			case Vowel: model.selectVowel(vowel); break;
 			case Vowels: selectVowels(); break;
+			case Countries: selectCountries(); break;
+			case Country: selectCountry(); break;
 			default: break;
 		}
 		choices.addAll(model.getSelStations());
@@ -127,9 +132,12 @@ public class MySpinner implements OnItemSelectedListener, Controller {
 			return;
 		
 		clearDistance();
-		if( station.getSpecial() > 200 ) {
-			vowel=(char)(station.getSpecial()-200);
+		if( station.getSpecial() > 500 ) {
+			vowel=(char)(station.getSpecial()-500);
 			spinnerType = Type.Vowel;
+		} else if( station.getSpecial() >= 200 ) {
+			country = model.getCountries().get(station.getSpecial()-200).getCode();
+			spinnerType = Type.Country;
 		} else if( station.getSpecial() < Type.StartMenu.getValue() ) {
 			region=station.getSpecial();
 			spinnerType = Type.Region;
@@ -234,6 +242,7 @@ public class MySpinner implements OnItemSelectedListener, Controller {
 		choices.add(nearItem);
 		choices.add(indexItem);
 		choices.add(allItem);
+		choices.add(countryItem);
 	}
 	
 	private void selectRegions() {
@@ -241,9 +250,26 @@ public class MySpinner implements OnItemSelectedListener, Controller {
 			choices.add(new Station(region.getName(), region.getCode()));
 	}
 	
+	private void selectCountries() {
+		List<Country> list = model.getCountries();
+		int len = list.size();
+		for( int i = 0; i < len; i++ ) {
+			Country country = list.get(i);
+			choices.add(new Station(country.getName(), 200+i));
+		}
+	}
+	
+	private void selectCountry() {
+		model.setCountry(country);
+		if( model.getRegions().isEmpty() )
+			model.selectAll();
+		else
+			selectRegions();
+	}
+	
 	private void selectVowels() {
 		for( char c='A'; c <= 'Z'; c++ )
-    		choices.add(new Station(""+c,200+c));
+    		choices.add(new Station(""+c,500+c));
 	}	
 	
 	public Station getSelectedItem() {
@@ -273,7 +299,9 @@ public class MySpinner implements OnItemSelectedListener, Controller {
 		Regions(104),
 		Vowels(105),
 		Vowel(106),
-		Region(107);
+		Region(107),
+		Country(108),
+		Countries(109);
 		
 		private final int value;
 		

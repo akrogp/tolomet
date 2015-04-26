@@ -11,33 +11,40 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import com.akrog.tolomet.providers.WindProviderType;
 
 public class Manager {
 	private Station currentStation;
 	private final List<Station> allStations = new ArrayList<Station>();
+	private final List<Station> countryStations = new ArrayList<Station>();
 	private final List<Station> selStations = new ArrayList<Station>();
 	private final List<Region> regions = new ArrayList<Region>();
 	private final List<Country> countries = new ArrayList<Country>();
 	private String[] directions;
 	private Boolean filterBroken;
+	private final String lang;
+	private String country;
 	
-	public Manager( String lang ) {
-		this(lang, true);
+	public Manager() {
+		this(Locale.getDefault().getLanguage(), Locale.getDefault().getCountry(), true);
 	}
 	
-	public Manager( String lang, boolean filterBroken ) {
+	public Manager( String lang, String country, boolean filterBroken ) {
+		this.lang = lang;
+		this.country = country;
 		filterBrokenStations(filterBroken);
-		loadDirections(lang);
-		loadRegions(lang);
-		loadCountries(lang);
+		loadDirections();
+		loadRegions();
+		loadCountries();
 	}		
 
 	public void filterBrokenStations( boolean filter ) {
 		if( filterBroken != null && filterBroken.equals(filter) )
 			return;
 		allStations.clear();
+		countryStations.clear();
 		selStations.clear();
 		currentStation = null;
 		loadStations("/res/stations.dat");
@@ -45,8 +52,8 @@ public class Manager {
 			loadStations("/res/stations-ko.dat");
 	}
 	
-	private void loadDirections(String lang) {
-		BufferedReader rd = new BufferedReader(new InputStreamReader(getLocalizedResource(lang, "directions.csv")));
+	private void loadDirections() {
+		BufferedReader rd = new BufferedReader(new InputStreamReader(getLocalizedResource("directions.csv")));
 		try {
 			directions = rd.readLine().split(",");
 			rd.close();
@@ -68,6 +75,8 @@ public class Manager {
 				station.setLatitude(dis.readDouble());
 				station.setLongitude(dis.readDouble());				
 				allStations.add(station);
+				if( station.getCountry().equals(country) )
+					countryStations.add(station);
 			}		
 		} catch( Exception e ) {
 			if( dis != null )
@@ -78,8 +87,8 @@ public class Manager {
 		}
     }
 	
-	private void loadRegions(String lang) {
-		BufferedReader rd = new BufferedReader(new InputStreamReader(getLocalizedResource(lang, "regions.csv")));
+	private void loadRegions() {
+		BufferedReader rd = new BufferedReader(new InputStreamReader(getLocalizedResource("regions.csv")));
 		String line;
 		String[] fields;
 		try {
@@ -92,10 +101,16 @@ public class Manager {
 			}
 			rd.close();
 		} catch (IOException e) {}
+		Collections.sort(regions, new Comparator<Region>() {
+			@Override
+			public int compare(Region o1, Region o2) {
+				return o1.getName().compareTo(o2.getName());
+			}
+		});
 	}
 	
-	private void loadCountries(String lang) {
-		BufferedReader rd = new BufferedReader(new InputStreamReader(getLocalizedResource(lang, "countries.csv")));
+	private void loadCountries() {
+		BufferedReader rd = new BufferedReader(new InputStreamReader(getLocalizedResource("countries.csv")));
 		String line;
 		String[] fields;
 		try {
@@ -107,10 +122,16 @@ public class Manager {
 				countries.add(country);
 			}
 			rd.close();
-		} catch (IOException e) {}		
+		} catch (IOException e) {}
+		Collections.sort(countries, new Comparator<Country>() {
+			@Override
+			public int compare(Country o1, Country o2) {
+				return o1.getName().compareTo(o2.getName());
+			}
+		});
 	}
 	
-	private InputStream getLocalizedResource( String lang, String name ) {
+	private InputStream getLocalizedResource( String name ) {
 		InputStream is = getClass().getResourceAsStream(String.format("/res/%s", name.replaceAll("\\.", String.format("_%s.", lang.toLowerCase()))));
 		if( is == null )
 			is = getClass().getResourceAsStream(String.format("/res/%s", name));
@@ -119,23 +140,32 @@ public class Manager {
 	
 	public void selectAll() {
 		selStations.clear();
-		selStations.addAll(allStations);
+		selStations.addAll(countryStations);
 	}
 	
 	public void selectNone() {
 		selStations.clear();
 	}
 	
+	public void setCountry( String code ) {
+		selStations.clear();
+		countryStations.clear();
+		for( Station station : allStations )
+			if( station.getCountry().equalsIgnoreCase(code) )
+				countryStations.add(station);
+		country = code;
+	}
+	
 	public void selectRegion( int code ) {
 		selStations.clear();
-		for( Station station : allStations )
+		for( Station station : countryStations )
 			if( station.getRegion() == code )
 				selStations.add(station);
 	}
 	
 	public void selectVowel( char vowel ) {
 		selStations.clear();
-		for( Station station : allStations )
+		for( Station station : countryStations )
 			if( station.getName().charAt(0) == vowel )
 				selStations.add(station);
 	}

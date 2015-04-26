@@ -3,14 +3,13 @@ package com.akrog.tolomet.utils;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Locale;
 
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.Station;
 
 public class BrokenStations {
 	public static void main( String[] args ) throws IOException {
-		Manager tolomet = new Manager(Locale.getDefault().getLanguage());
+		Manager tolomet = new Manager();
 		DataOutputStream ok = new DataOutputStream(new FileOutputStream("stations.dat"));
 		DataOutputStream ko = new DataOutputStream(new FileOutputStream("badstations.dat"));
 		boolean broken;
