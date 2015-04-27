@@ -88,7 +88,11 @@ public class Manager {
     }
 	
 	private void loadRegions() {
-		BufferedReader rd = new BufferedReader(new InputStreamReader(getLocalizedResource("regions.csv")));
+		regions.clear();
+		InputStream is = getCountryResource("regions.csv");
+		if( is == null )
+			return;
+		BufferedReader rd = new BufferedReader(new InputStreamReader(is));
 		String line;
 		String[] fields;
 		try {
@@ -138,6 +142,10 @@ public class Manager {
 		return is;
 	}
 	
+	private InputStream getCountryResource( String name ) {
+		return getClass().getResourceAsStream(String.format("/res/%s", name.replaceAll("\\.", String.format("_%s.", country.toUpperCase()))));
+	}
+	
 	public void selectAll() {
 		selStations.clear();
 		selStations.addAll(countryStations);
@@ -154,6 +162,7 @@ public class Manager {
 			if( station.getCountry().equalsIgnoreCase(code) )
 				countryStations.add(station);
 		country = code;
+		loadRegions();
 	}
 	
 	public void selectRegion( int code ) {

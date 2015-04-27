@@ -2,38 +2,22 @@ package com.akrog.tolomet.providers;
 
 
 public enum WindProviderType {
-	Euskalmet("EU"),
-	MeteoNavarra("GN"),
-	Aemet("AE"),
-	LaRioja("RI"),
-	MeteoGalicia("GA"),
-	RedVigia("RV"),
-	Meteocat("CA"),
-	CurrentVantage("RCNL");
+	Euskalmet("EU", new EuskalmetProvider()),
+	MeteoNavarra("GN", new MeteoNavarraProvider()),
+	Aemet("AE", new AemetProvider()),
+	LaRioja("RI", new LaRiojaProvider()),
+	MeteoGalicia("GA", new MeteoGaliciaProvider()),
+	RedVigia("RV", new RedVigiaProvider()),
+	Meteocat("CA", new MeteocatProvider()),
+	CurrentVantage("RCNL", new CurrentVantageProvider()),
+	Metar("MA", new MetarProvider());
 	
 	private final String code;
 	private final WindProvider provider;
 	
-	private WindProviderType(String code) {
+	private WindProviderType(String code, WindProvider provider) {
         this.code = code;
-        if( code.equals("EU") )
-        	provider = new EuskalmetProvider();
-        else if( code.equals("GN") )
-        	provider = new MeteoNavarraProvider();
-        else if( code.equals("AE") )
-        	provider = new AemetProvider();
-        else if( code.equals("RI") )
-        	provider = new LaRiojaProvider();
-        else if( code.equals("GA") )
-        	provider = new MeteoGaliciaProvider();
-        else if( code.equals("RV") )
-        	provider = new RedVigiaProvider();
-        else if( code.equals("CA") )
-        	provider = new MeteocatProvider();
-        else if( code.equals("RCNL") )
-        	provider = new CurrentVantageProvider();
-        else
-        	provider=null;
+        this.provider = provider;        
     }
 	
 	public String getCode() {
