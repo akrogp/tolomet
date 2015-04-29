@@ -5,7 +5,6 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -17,13 +16,11 @@ import com.akrog.tolomet.providers.WindProviderType;
 
 public class Manager {
 	private Station currentStation;
-	private final List<Station> allStations = new ArrayList<Station>();
 	private final List<Station> countryStations = new ArrayList<Station>();
 	private final List<Station> selStations = new ArrayList<Station>();
 	private final List<Region> regions = new ArrayList<Region>();
 	private final List<Country> countries = new ArrayList<Country>();
 	private String[] directions;
-	private Boolean filterBroken;
 	private final String lang;
 	private String country;
 	
@@ -34,23 +31,11 @@ public class Manager {
 	public Manager( String lang, String country, boolean filterBroken ) {
 		this.lang = lang;
 		this.country = country;
-		filterBrokenStations(filterBroken);
+		loadStations();
 		loadDirections();
 		loadRegions();
 		loadCountries();
 	}		
-
-	public void filterBrokenStations( boolean filter ) {
-		if( filterBroken != null && filterBroken.equals(filter) )
-			return;
-		allStations.clear();
-		countryStations.clear();
-		selStations.clear();
-		currentStation = null;
-		loadStations("/res/stations.dat");
-		if( !filter )
-			loadStations("/res/stations-ko.dat");
-	}
 	
 	private void loadDirections() {
 		BufferedReader rd = new BufferedReader(new InputStreamReader(getLocalizedResource("directions.csv")));
@@ -61,10 +46,13 @@ public class Manager {
 		}		
 	}
 
-	private void loadStations( String path ) {
-		DataInputStream dis = new DataInputStream(getClass().getResourceAsStream(path));
+	private void loadStations() {
+		countryStations.clear();				
 		Station station;
+		DataInputStream dis = null;
 		try {
+			dis = new DataInputStream(getCountryResource("stations.dat"));
+			//dis = new DataInputStream(new FileInputStream("/home/gorka/MyProjects/Android/Tolomet/Docs/stations.world.dat"));
 			while( true ) {
 				station = new Station();
 				station.setCode(dis.readUTF());
@@ -74,9 +62,7 @@ public class Manager {
 				station.setRegion(dis.readInt());
 				station.setLatitude(dis.readDouble());
 				station.setLongitude(dis.readDouble());				
-				allStations.add(station);
-				if( station.getCountry().equals(country) )
-					countryStations.add(station);
+				countryStations.add(station);
 			}		
 		} catch( Exception e ) {
 			if( dis != null )
@@ -114,14 +100,18 @@ public class Manager {
 	}
 	
 	private void loadCountries() {
+		countries.clear();
 		BufferedReader rd = new BufferedReader(new InputStreamReader(getLocalizedResource("countries.csv")));
-		String line;
+		String line, code;
 		String[] fields;
 		try {
 			while( (line=rd.readLine()) != null ) {
 				fields = line.split("\\t");
+				code = fields[0];
+				if(getClass().getResource(String.format("/res/stations_%s.dat", code)) == null )
+					continue;
 				Country country = new Country();
-				country.setCode(fields[0]);
+				country.setCode(code);
 				country.setName(fields[1]);
 				countries.add(country);
 			}
@@ -156,12 +146,11 @@ public class Manager {
 	}
 	
 	public void setCountry( String code ) {
+		if( code.equals(country) )
+			return;
 		selStations.clear();
-		countryStations.clear();
-		for( Station station : allStations )
-			if( station.getCountry().equalsIgnoreCase(code) )
-				countryStations.add(station);
 		country = code;
+		loadStations();
 		loadRegions();
 	}
 	
@@ -181,14 +170,14 @@ public class Manager {
 	
 	public void selectFavorites() {
 		selStations.clear();
-		for( Station station : allStations )
+		for( Station station : countryStations )
 			if( station.isFavorite() )
 				selStations.add(station);
 	}
 	
 	public void selectNearest() {
 		selStations.clear();
-		for( Station station : allStations )
+		for( Station station : countryStations )
 			if( station.getDistance() < 50000.0F )
 				selStations.add(station);
 		Collections.sort(selStations, new Comparator<Station>() {
@@ -208,7 +197,7 @@ public class Manager {
 	}
 
 	public List<Station> getAllStations() {
-		return allStations;
+		return countryStations;
 	}
 	
 	public List<Country> getCountries() {
@@ -287,13 +276,10 @@ public class Manager {
 		
 	public String getStamp() {
 		if( !checkCurrent() )
-			return null;
-		
+			return null;		
 		Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(currentStation.getMeteo().getStamp());
-        SimpleDateFormat df = new SimpleDateFormat();
-        df.applyPattern("HH:mm");
-        return df.format(cal.getTime());
+        return String.format("%02d:%02d", cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
 	}
 	
 	public boolean isOutdated() {

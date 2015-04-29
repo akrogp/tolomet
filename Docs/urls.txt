@@ -30,3 +30,8 @@ Datos y ficha -> http://www.meteo.cat/observacions/xema/dades?codi=VE
 
 Red Vigía:
 http://www.redvigia.es/Historico.aspx?codigoBoya=130900414322fa7d&numeroDatos=5&tipo=1&variable=1
+
+Metar:
+Ficha -> http://www.aviationweather.gov/adds/metars?station_ids=PADK&std_trans=translated&chk_metars=on
+HTML -> http://www.aviationweather.gov/adds/metars?station_ids=PADK&std_trans=standard&chk_metars=on&hoursStr=past+24+hours
+CSV -> http://www.aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=csv&fields=raw_text&startTime=1430251000&endTime=1430253421&stationString=PADK

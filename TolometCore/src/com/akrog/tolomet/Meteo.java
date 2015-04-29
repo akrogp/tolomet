@@ -79,6 +79,15 @@ public class Meteo {
 		}
 		return stamp;
 	}
+	
+	public Integer getStep() {
+		for( Measurement measurement : measurements ) {
+			Integer step = measurement.getStep();
+			if( step != null )
+				return step;
+		}
+		return null;
+	}
 
 	private final Measurement windDirection = new Measurement();
 	private final Measurement windSpeedMed = new Measurement();
