@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import android.content.SharedPreferences;
@@ -91,6 +92,7 @@ public class Settings {
     	editor.putInt("spinner-sel", state.getPos());
     	editor.putString("spinner-vowel", ""+state.getVowel());
     	editor.putInt("spinner-region", state.getRegion());
+    	editor.putString("spinner-country", state.getCountry());
 		editor.commit();
 	}
 	
@@ -102,6 +104,7 @@ public class Settings {
 			state.setPos(settings.getInt("spinner-sel", 0));
 			state.setVowel(settings.getString("spinner-vowel", "#").charAt(0));
 			state.setRegion(settings.getInt("spinner-region", 0));
+			state.setCountry(settings.getString("spinner-country", Locale.getDefault().getCountry()));
 		} catch( Exception e ) {
 			e.printStackTrace();
 		}

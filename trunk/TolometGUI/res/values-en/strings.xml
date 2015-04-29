@@ -29,6 +29,7 @@
     <string name="improvements">Improvements</string>
     <string name="newversion">New version available!</string>
     <string name="menu_all">All stations</string>
+    <string name="menu_ccaa">Autonomous communities</string>
     <string name="menu_reg">States</string>
     <string name="menu_country">Countries</string>
     <string name="menu_close">Close stations</string>

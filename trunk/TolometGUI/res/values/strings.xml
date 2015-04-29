@@ -29,7 +29,8 @@
     <string name="improvements">Mejoras</string>
     <string name="newversion">¡Nueva versión disponible!</string>
     <string name="menu_all">Todas las estaciones</string>
-    <string name="menu_reg">Comunidades autónomas</string>
+    <string name="menu_ccaa">Comunidades autónomas</string>
+    <string name="menu_reg">Estados</string>
     <string name="menu_country">Países</string>
     <string name="menu_close">Estaciones cercanas</string>
     <string name="menu_fav">Estaciones favoritas</string>

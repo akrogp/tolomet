@@ -1,5 +1,6 @@
 package com.akrog.tolomet;
 
+import java.util.Calendar;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -20,7 +21,12 @@ public class Measurement {
 	public void put(long time, Number value ) {
 		if( value == null )
 			return;
-		map.put(time, value);
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(time);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		//map.put(time, value);
+		map.put(calendar.getTimeInMillis(), value);
 		clearCache();
 	}
 	
@@ -103,5 +109,12 @@ public class Measurement {
 	public void merge(Measurement data) {
 		map.putAll(data.map);
 		clearCache();
+	}
+	
+	public Integer getStep() {
+		if( size() < 2 )
+			return null;
+		Long[] times = getTimes();
+		return (int)Math.round((times[1]-times[0])/1000.0/60.0);
 	}
 }

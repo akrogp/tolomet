@@ -2,12 +2,15 @@ package com.akrog.tolomet.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -35,7 +38,7 @@ public class MySpinner implements OnItemSelectedListener, Controller {
 	private Type spinnerType;
 	private char vowel = '#';
 	private int region = -1;
-	private String country;
+	private String newCountry, country;
 	private final List<Station> choices = new ArrayList<Station>();
 	private Station selectItem, startItem, favItem, regItem, nearItem, indexItem, allItem, countryItem;
 
@@ -63,17 +66,48 @@ public class MySpinner implements OnItemSelectedListener, Controller {
         loadState( bundle );        
 	}
 	
-	private void loadState( Bundle bundle ) {						
-		Set<String> favs = settings.getFavorites();
-		for( Station station : model.getAllStations() )
-			station.setFavorite(favs.contains(station.getCode()));
-		
+	private void loadState( Bundle bundle ) {										
 		State state = settings.loadSpinner();
 		vowel = state.getVowel();
 		region = state.getRegion();
-		
-		selectMenu(state.getType(), false);
+		String country = state.getCountry();
+		if( country == null )
+			country = guessCountry();
+		setCountry(country);
+		Type type = state.getType();
+		if( type == Type.StartMenu || type == Type.Countries || type == Type.Regions || type == Type.Vowels || type == Type.Nearest ||
+			(type == Type.Region && model.getRegions().isEmpty()) ) {
+			type = Type.StartMenu;
+			state.setPos(0);
+		}
+				
+		selectMenu(type, false);
 		selectItem(state.getPos(), false);
+	}
+	
+	private void setCountry( String country ) {
+		if( country == null || country.equals(this.country) )
+			return;
+		model.setCountry(country);
+		regItem.setName(country.equals("ES")?this.tolomet.getString(R.string.menu_ccaa):this.tolomet.getString(R.string.menu_reg));		
+		Set<String> favs = settings.getFavorites();
+		for( Station station : model.getAllStations() )
+			station.setFavorite(favs.contains(station.getCode()));
+		this.country = country;
+	}
+	
+	private String guessCountry() {
+		Locale locale = Locale.getDefault();
+		String code;
+		try {
+			Location ll = getLocation(false);
+			Geocoder geocoder = new Geocoder(tolomet, locale);
+			List<Address> addresses = geocoder.getFromLocation(ll.getLatitude(), ll.getLongitude(), 1);
+			code = addresses.get(0).getCountryCode();
+		} catch(Exception e) {
+			code = locale.getCountry();
+		}
+		return code;
 	}
 	
 	@Override
@@ -83,6 +117,7 @@ public class MySpinner implements OnItemSelectedListener, Controller {
     	state.setPos(spinner.getSelectedItemPosition());
     	state.setVowel(vowel);
     	state.setRegion(region);
+    	state.setCountry(country);
     	settings.saveSpinner(state);
 	}
 	
@@ -136,7 +171,7 @@ public class MySpinner implements OnItemSelectedListener, Controller {
 			vowel=(char)(station.getSpecial()-500);
 			spinnerType = Type.Vowel;
 		} else if( station.getSpecial() >= 200 ) {
-			country = model.getCountries().get(station.getSpecial()-200).getCode();
+			newCountry = model.getCountries().get(station.getSpecial()-200).getCode();
 			spinnerType = Type.Country;
 		} else if( station.getSpecial() < Type.StartMenu.getValue() ) {
 			region=station.getSpecial();
@@ -163,11 +198,12 @@ public class MySpinner implements OnItemSelectedListener, Controller {
 	}
 	
 	private boolean selectNearest() {
-    	Location ll = getLocation();
+    	Location ll = getLocation(true);
     	if( ll == null ) {
     		Toast.makeText(tolomet,tolomet.getString(R.string.error_gps),Toast.LENGTH_SHORT).show();
     		return false;
     	}
+    	setCountry(guessCountry());
     	float[] dist = new float[1];
     	for( Station station : model.getAllStations() ) {    		
     		Location.distanceBetween(ll.getLatitude(), ll.getLongitude(), station.getLatitude(), station.getLongitude(), dist);
@@ -177,7 +213,7 @@ public class MySpinner implements OnItemSelectedListener, Controller {
 		return true;
 	}
 	
-	private Location getLocation() {
+	private Location getLocation( boolean warning ) {
 		Location locationGps = null;
 		Location locationNet = null;
 	    try {
@@ -188,7 +224,7 @@ public class MySpinner implements OnItemSelectedListener, Controller {
 	        	locationGps = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 	        if( isNet )
 	            locationNet = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-	        else if( !isGps )
+	        else if( !isGps && warning )
 	            showLocationDialog();
 	    } catch (Exception e) {
 	    }
@@ -238,7 +274,8 @@ public class MySpinner implements OnItemSelectedListener, Controller {
 	
 	private void selectStart() {		
 		choices.add(favItem);
-		choices.add(regItem);    	    	   
+		if( !model.getRegions().isEmpty() )
+			choices.add(regItem);    	    	   
 		choices.add(nearItem);
 		choices.add(indexItem);
 		choices.add(allItem);
@@ -260,7 +297,7 @@ public class MySpinner implements OnItemSelectedListener, Controller {
 	}
 	
 	private void selectCountry() {
-		model.setCountry(country);
+		setCountry(newCountry);
 		if( model.getRegions().isEmpty() )
 			model.selectAll();
 		else
@@ -339,9 +376,16 @@ public class MySpinner implements OnItemSelectedListener, Controller {
 		public void setRegion(int region) {
 			this.region = region;
 		}
+		public String getCountry() {
+			return country;
+		}
+		public void setCountry(String country) {
+			this.country = country;
+		}
 		private Type type = Type.StartMenu;
 		private int pos = 0;
 		private char vowel = '#';
 		private int region = -1;
+		private String country;
 	}
 }
