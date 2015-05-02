@@ -12,7 +12,7 @@ public class Controller {
 	
 	@GET	
 	@Produces(MediaType.TEXT_PLAIN)
-	public String getMotd(@QueryParam("version") int version, @QueryParam("stamp") long stamp ) {
+	public String getMotd(@QueryParam("version") int version, @QueryParam("stamp") long stamp, @QueryParam("lang") String lang ) {
 		/*Calendar cal = Calendar.getInstance();
 		cal.setTimeInMillis(stamp);
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -46,6 +46,18 @@ public class Controller {
 			motd.setVersion("2.1.4");
 			motd.addChange("Solucionado fallo en algunos móviles al acceder a Euskalmet");
 		}
+		if( version < 300 ) {
+			motd.setVersion("3.0");
+			if( lang == null || isSpanish(lang) ) {
+				motd.addChange("Incluida opción para cambiar de país");
+				motd.addChange("Incluidos más de 9000 aeropuertos de todo el mundo (gracias a Ale)");
+				motd.addChange("Incluidas estaciones de MeteoPrades (gracias a Eduard y Mario)");
+			} else {
+				motd.addChange("Included option to change country");
+				motd.addChange("Included more than 9000 wolrd-wide airports (thanks Ale)");
+				motd.addChange("Included MeteoPrades (Spain) stations (thanks Eduard & Mario)");
+			}
+		}
 		
 		// MOTD
 		/*Calendar cal = Calendar.getInstance();        
@@ -58,5 +70,11 @@ public class Controller {
         }*/
         
 		return motd.toString();
+	}
+	
+	private boolean isSpanish( String lang ) {
+		if( lang == null )
+			return false;
+		return lang.equalsIgnoreCase("es") || lang.equalsIgnoreCase("eu") || lang.equalsIgnoreCase("ca") || lang.equalsIgnoreCase("gl") || lang.equalsIgnoreCase("ast");
 	}
 }

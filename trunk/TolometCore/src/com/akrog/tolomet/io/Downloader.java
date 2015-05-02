@@ -47,7 +47,7 @@ public class Downloader {
     			wr.close();
     			os.close();
     		} else {
-    			URL url = new URL(this.url+"?"+getQuery());
+    			URL url = new URL(params.isEmpty()?this.url:this.url+"?"+getQuery());
     			con = (HttpURLConnection)url.openConnection();
     		}
     		applyBrowserProperties(con);

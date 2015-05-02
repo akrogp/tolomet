@@ -21,14 +21,19 @@ public class FixStations {
 	public static void main(String[] args) throws IOException {
 		logger.info("Started");
 		List<Station> stations = loadStations();
+		addNewStations(stations);
 		sortStations(stations);
 		for( Station station : stations ) {
 			fixName(station);
 			saveStation(station);
 		}
 		logger.info(String.format("Finished: %d stations",stations.size()));
+	}		
+
+	private static void addNewStations(List<Station> stations) {
+		//stations.addAll(PradesStations.getStations());
 	}
-	
+
 	private static void sortStations(List<Station> stations) {
 		final Collator collator = Collator.getInstance();
 		collator.setStrength(Collator.PRIMARY);

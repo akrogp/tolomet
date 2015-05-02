@@ -115,5 +115,5 @@ public class MetarProvider implements WindProvider {
 	}
 	
 	private Downloader downloader;
-	private Map<String, Integer> mapRefresh = new HashMap<String, Integer>();
+	private final Map<String, Integer> mapRefresh = new HashMap<String, Integer>();
 }

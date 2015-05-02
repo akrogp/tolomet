@@ -72,7 +72,7 @@ public class MySpinner implements OnItemSelectedListener, Controller {
 		region = state.getRegion();
 		String country = state.getCountry();
 		if( country == null )
-			country = guessCountry();
+			country = guessCountry();		
 		setCountry(country);
 		Type type = state.getType();
 		if( type == Type.StartMenu || type == Type.Countries || type == Type.Regions || type == Type.Vowels || type == Type.Nearest ||
@@ -210,6 +210,10 @@ public class MySpinner implements OnItemSelectedListener, Controller {
     		station.setDistance(dist[0]);
     	}
 		model.selectNearest();
+		if( model.getSelStations().isEmpty() ) {
+			Toast.makeText(tolomet,tolomet.getString(R.string.warn_near),Toast.LENGTH_SHORT).show();
+    		return false;
+		}
 		return true;
 	}
 	

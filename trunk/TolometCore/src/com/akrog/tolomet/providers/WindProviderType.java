@@ -10,7 +10,8 @@ public enum WindProviderType {
 	RedVigia("RV", new RedVigiaProvider()),
 	Meteocat("CA", new MeteocatProvider()),
 	CurrentVantage("RCNL", new CurrentVantageProvider()),
-	Metar("MA", new MetarProvider());
+	Metar("MA", new MetarProvider()),
+	Prades("PR", new PradesProvider());
 	
 	private final String code;
 	private final WindProvider provider;

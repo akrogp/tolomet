@@ -31,7 +31,7 @@
     <string name="menu_all">Estazio guztiak</string>
     <string name="menu_ccaa">Autonomia erkidegoak</string>
     <string name="menu_reg">Estatuak</string>
-    <string name="menu_country">Herrialdeak</string>
+    <string name="menu_country">Aldatu herrialdea</string>
     <string name="menu_close">Gertuko estazioak</string>
     <string name="menu_fav">Laster-markak</string>
     <string name="menu_index">Estazioen aurkibidea</string>
@@ -63,6 +63,7 @@
     <string name="error_gps">Lokalizazio ezezaguna</string>
     <string name="warn_fav">Lehenago estazio batzuen laster-markak egin beharko zenituzke</string>
     <string name="fav_ok">Ados</string>
+    <string name="warn_near">No se han encontrado estaciones cercanas</string>
     <string name="pref_modes">Funtzionamendu-modua</string>
     <string name="pref_modeGraphs">Irudikapena</string>
     <string name="pref_modeGraphsDefault">0</string>
