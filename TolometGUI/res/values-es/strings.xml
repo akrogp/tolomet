@@ -31,7 +31,7 @@
     <string name="menu_all">Todas las estaciones</string>
     <string name="menu_ccaa">Comunidades autónomas</string>
     <string name="menu_reg">Estados</string>
-    <string name="menu_country">Países</string>
+    <string name="menu_country">Cambiar de país</string>
     <string name="menu_close">Estaciones cercanas</string>
     <string name="menu_fav">Estaciones favoritas</string>
     <string name="menu_index">Índice de estaciones</string>
@@ -63,6 +63,7 @@
     <string name="error_gps">Localización desconocida</string>
     <string name="warn_fav">Primero deberías marcar algunas estaciones como favoritas</string>
     <string name="fav_ok">OK</string>
+    <string name="warn_near">No se han encontrado estaciones cercanas</string>
     <string name="pref_modes">Modos de funcionamiento</string>
     <string name="pref_modeGraphs">Visualización</string>
     <string name="pref_modeGraphsDefault">0</string>

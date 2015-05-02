@@ -31,7 +31,7 @@
     <string name="menu_all">All stations</string>
     <string name="menu_ccaa">Autonomous communities</string>
     <string name="menu_reg">States</string>
-    <string name="menu_country">Countries</string>
+    <string name="menu_country">Change country</string>
     <string name="menu_close">Close stations</string>
     <string name="menu_fav">Favorite stations</string>
     <string name="menu_index">Station index</string>
@@ -51,7 +51,8 @@
     <string name="cancel">Cancel</string>
     <string name="error_gps">Unknown location</string>
     <string name="warn_fav">First you should mark some stations as starred</string>
-    <string name="fav_ok">OK</string>    
+    <string name="fav_ok">OK</string>
+    <string name="warn_near">No stations found near to your position</string>
     <string name="pref_minMarkerDefault">10</string>
     <string name="pref_maxMarkerDefault">30</string>
     <string name="pref_speedRangeDefault">40</string>    
