@@ -1,6 +1,7 @@
 package com.akrog.tolomet.providers;
 
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import com.akrog.tolomet.Header;
 import com.akrog.tolomet.Station;
@@ -51,7 +52,7 @@ public class AemetProvider implements WindProvider {
 			String[] cells = lines[i].split(",");
 			if( cells.length <= index.getDate() || (cell=cells[index.getDate()]).isEmpty() )
 				continue;
-			date = toEpoch(cells[index.getDate()]);
+			date = toEpoch(station.getRegion() == 12, cells[index.getDate()]);
 			if( index.getDir() < cells.length && !(cell=cells[index.getDir()]).isEmpty() ) {
 				num = parseDir(cells[index.getDir()]);
 				if( num == null )
@@ -115,8 +116,8 @@ public class AemetProvider implements WindProvider {
 		return null; // Calma
 	}
 
-	private long toEpoch( String str ) {
-		Calendar cal = Calendar.getInstance();		
+	private long toEpoch( boolean canary, String str ) {
+		Calendar cal = canary ? Calendar.getInstance(TimeZone.getTimeZone("Atlantic/Canary")) : Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));		
 		cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(str.substring(0,2)));
 		cal.set(Calendar.MONTH, Integer.parseInt(str.substring(3,5))-1);
 		cal.set(Calendar.YEAR, Integer.parseInt(str.substring(6,10)));

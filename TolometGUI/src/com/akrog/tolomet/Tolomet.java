@@ -3,6 +3,7 @@ package com.akrog.tolomet;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -163,7 +164,14 @@ public class Tolomet extends Activity {
     			charts.redraw();
     		else {
 	    		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-				alertDialog.setMessage( getString(R.string.Impatient) + " " + model.getRefresh() + " " + getString(R.string.minutes) );
+	    		int minutes = model.getRefresh();
+	    		String message;
+	    		Locale locale = Locale.getDefault();
+	    		if( minutes > 60 && minutes%60 == 0 )
+	    			message = String.format(locale, "%s %d %s", getString(R.string.Impatient), minutes/60, getString(R.string.hours));
+	    		else
+	    			message = String.format(locale, "%s %d %s", getString(R.string.Impatient), minutes, getString(R.string.minutes));
+	    		alertDialog.setMessage(message);
 				alertDialog.show();
     		}
     	} else

@@ -10,22 +10,23 @@ import java.util.TimeZone;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
 
-public class PradesProvider implements WindProvider {
+public class PradesProvider extends BaseProvider {
 
+	public PradesProvider() {
+		super(5);
+	}
+	
 	@Override
-	public void refresh(Station station) {
+	public void configureDownload(Downloader downloader, Station station) {
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-		downloader = new Downloader();
 		downloader.setUrl(String.format(
 			"http://www.meteoprades.cat/export/tolomet_%04d%02d%02d_%s.txt",
 			cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH),
 			station.getCode() ));
-		updateStation(station,downloader.download());
 	}
 
-	private void updateStation(Station station, String data) {
-		if( data == null )
-			return;
+	@Override
+	public void updateStation(Station station, String data) {
 		String[] lines = data.split("\\n");
 		if( lines.length < 1 )
 			return;
@@ -49,11 +50,7 @@ public class PradesProvider implements WindProvider {
 				station.getMeteo().getAirTemperature().put(date, num);
 			if( (num=getField(6, fields)) != null )
 				station.getMeteo().getAirPressure().put(date, num);
-		}
-		
-		Integer refresh = station.getMeteo().getStep();
-		if( refresh != null )
-			mapRefresh.put(station.getCode(), refresh);
+		}		
 	}
 
 	private long parseDate(String str) {
@@ -109,18 +106,6 @@ public class PradesProvider implements WindProvider {
 	}
 
 	@Override
-	public void cancel() {
-		if( downloader != null )
-			downloader.cancel();		
-	}
-
-	@Override
-	public int getRefresh(String code) {
-		Integer refresh = mapRefresh.get(code);
-		return refresh == null ? 5 : refresh;
-	}
-
-	@Override
 	public String getInfoUrl(String code) {
 		if( mapInfo == null ) {
 			mapInfo = new HashMap<String, String>();
@@ -140,6 +125,4 @@ public class PradesProvider implements WindProvider {
 	}
 
 	private Map<String, String> mapInfo;
-	private Downloader downloader;
-	private final Map<String, Integer> mapRefresh = new HashMap<String, Integer>();
 }

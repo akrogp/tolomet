@@ -19,6 +19,7 @@
     <string name="Degrees">Degrees</string>
     <string name="Impatient">Impatient!, readings are available every</string>
     <string name="minutes">minutes</string>
+    <string name="hours">hours</string>
     <string name="star">favorite</string>
     <string name="NoData">No data available</string>
     <string name="NoNetwork">No internet connection</string>
@@ -69,4 +70,8 @@
     <string name="pref_modeGraphsDefault">0</string>
     <string name="pref_modeUpdate">Readings updates</string>
     <string name="pref_modeUpdateDefault">1</string>
+    <string name="chart_speed">Speed (km/h)</string>
+    <string name="chart_speedMed">Speed Med.</string>
+    <string name="chart_speedMax">Speed Max.</string>
+    <string name="chart_covered">100&#37; humidity</string>
 </resources>

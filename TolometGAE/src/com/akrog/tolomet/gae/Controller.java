@@ -58,6 +58,13 @@ public class Controller {
 				motd.addChange("Included MeteoPrades (Spain) stations (thanks Eduard & Mario)");
 			}
 		}
+		if( version < 301 ) {
+			motd.setVersion("3.0.1");
+			if( lang == null || isSpanish(lang) )
+				motd.addChange("Configurada zona horaria canaria en AEMET");
+			else
+				motd.addChange("Configured canary time zone in AEMET");
+		}
 		
 		// MOTD
 		/*Calendar cal = Calendar.getInstance();        
