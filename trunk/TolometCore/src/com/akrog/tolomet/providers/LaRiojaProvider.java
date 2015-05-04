@@ -122,7 +122,7 @@ public class LaRiojaProvider implements WindProvider {
 	private long toEpoch( String day, String time ) {
 		String[] dayCols = day.split("-");
 		String[] timeCols = time.split(":");
-		Calendar cal = Calendar.getInstance();
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
 		cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dayCols[0]));
 		cal.set(Calendar.MONTH, Integer.parseInt(dayCols[1])-1);
 		cal.set(Calendar.YEAR, Integer.parseInt(dayCols[2]));

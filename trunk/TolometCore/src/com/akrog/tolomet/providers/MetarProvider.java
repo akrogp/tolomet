@@ -1,23 +1,24 @@
 package com.akrog.tolomet.providers;
 
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.TimeZone;
 
 import com.akrog.tolomet.Header;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
 
-public class MetarProvider implements WindProvider {
+public class MetarProvider extends BaseProvider {
+	public MetarProvider() {
+		super(5);
+	}
+
 	@Override
 	public String getInfoUrl(String code) {
 		return "http://www.aviationweather.gov/adds/metars?std_trans=translated&chk_metars=on&station_ids="+code;
 	}
-
+	
 	@Override
-	public void refresh(Station station) {
-		downloader = new Downloader();
+	public void configureDownload(Downloader downloader, Station station) {
 		downloader.setUrl("http://www.aviationweather.gov/adds/dataserver_current/httpparam");
 		downloader.addParam("dataSource","metars");
 		downloader.addParam("requestType","retrieve");
@@ -34,12 +35,10 @@ public class MetarProvider implements WindProvider {
 		downloader.addParam("startTime",stamp/1000);		
 		downloader.addParam("endTime",System.currentTimeMillis()/1000);
 		downloader.addParam("stationString",station.getCode());
-		updateStation(station,downloader.download());
 	}
 
-	private void updateStation(Station station, String data) {
-		if( data == null )
-			return;
+	@Override
+	public void updateStation(Station station, String data) {
 		String[] lines = data.split("\\n");
 		if( lines.length < 7 )
 			return;
@@ -63,10 +62,7 @@ public class MetarProvider implements WindProvider {
 				station.getMeteo().getAirTemperature().put(date, Double.parseDouble(field));
 			if( (field=getField(index.getPres(), fields)) != null )
 				station.getMeteo().getAirPressure().put(date, Double.parseDouble(field));
-		}
-		Integer refresh = station.getMeteo().getStep();
-		if( refresh != null )
-			mapRefresh.put(station.getCode(), refresh);
+		}		
 	}
 	
 	private long parseDate(String field) {
@@ -100,20 +96,5 @@ public class MetarProvider implements WindProvider {
 		index.findTemp("temp_c", cells);
 		index.findPres("sea_level_pressure_mb", cells);
 		return index;
-	}
-
-	@Override
-	public void cancel() {
-		if( downloader != null )
-			downloader.cancel();
-	}
-
-	@Override
-	public int getRefresh(String code) {
-		Integer refresh = mapRefresh.get(code);
-		return refresh == null ? 10 : refresh;
-	}
-	
-	private Downloader downloader;
-	private final Map<String, Integer> mapRefresh = new HashMap<String, Integer>();
+	}	
 }

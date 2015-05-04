@@ -1,6 +1,7 @@
 package com.akrog.tolomet.providers;
 
 import java.util.Calendar;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,7 +55,7 @@ public class CurrentVantageProvider implements WindProvider {
 		String[] sub = field.split(" / ");
 		String[] date = sub[0].split("/");
 		String[] hour = sub[1].split(":");
-		Calendar cal = Calendar.getInstance();
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
 		cal.set(Calendar.YEAR, Integer.parseInt(date[2])+2000);
 		cal.set(Calendar.MONTH, Integer.parseInt(date[1])-1);
 		cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(date[0]));

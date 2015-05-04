@@ -19,6 +19,7 @@
     <string name="Degrees">Graduak</string>
     <string name="Impatient">Zazpiki! Irakurketak</string>
     <string name="minutes">minuturo dira</string>
+    <string name="hours">orduro dira</string>
     <string name="star">Laster-marka</string>
     <string name="NoData">Daturik ez</string>
     <string name="NoNetwork">Internetik ez</string>
@@ -69,4 +70,8 @@
     <string name="pref_modeGraphsDefault">0</string>
     <string name="pref_modeUpdate">Datuen eguneraketa</string>
     <string name="pref_modeUpdateDefault">1</string>
+    <string name="chart_speed">Abi. (km/h)</string>
+    <string name="chart_speedMed">Vel. Med.</string>
+    <string name="chart_speedMax">Vel. Max.</string>
+    <string name="chart_covered">100&#37; hezetasuna</string>
 </resources>

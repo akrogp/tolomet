@@ -3,6 +3,7 @@ package com.akrog.tolomet.gae;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Calendar;
+import java.util.Locale;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -43,7 +44,9 @@ public class GaeManager {
 		} catch( Exception e ) {}				
     	
     	gaeClient = new GaeClient(this);
-    	gaeClient.execute("http://tolomet-gae.appspot.com/rest/motd?version="+version+"&stamp="+stamp);
+    	gaeClient.execute(String.format(
+    		"http://tolomet-gae.appspot.com/rest/motd?version=%s&stamp=%s&lang=%s",
+    		version, stamp, Locale.getDefault().getLanguage()));
 	}
 	
 	public void onMotd(Motd motd) {		

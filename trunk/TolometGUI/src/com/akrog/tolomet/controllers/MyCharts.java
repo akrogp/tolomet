@@ -33,8 +33,7 @@ public class MyCharts implements Controller {
 	private final Graph airHumiditySimple = new Graph(meteo.getAirHumidity(), -1.0f, "% Hum.", LINE_GRAY, POINT_GRAY);
 	private final Graph airPressure = new Graph(meteo.getAirPressure(), -1.0f, "Pres.", LINE_GRAY, POINT_GRAY);
 	private final Graph windDirection = new Graph(meteo.getWindDirection(), 360.0f, "Dir. Med.", LINE_BLUE, POINT_BLUE);
-	private final Graph windSpeedMed = new Graph(meteo.getWindSpeedMed(), -1.0f, "Vel. Med.", LINE_GREEN, POINT_GREEN);
-	private final Graph windSpeedMax = new Graph(meteo.getWindSpeedMax(), -1.0f, "Vel. Máx.", LINE_RED, POINT_RED); 
+	private Graph windSpeedMed, windSpeedMax;
 	private MyPlot chartWind, chartAir;
 	static final float fontSize = 16;
 	private final Marker markerVmin = new Marker(0.0f, null, POINT_GRAY);
@@ -43,8 +42,7 @@ public class MyCharts implements Controller {
 	private final Marker markerLow = new Marker(1000.0f, "1000 mb", POINT_GRAY);
 	//private final Marker markerHigh = new Marker(1030.0f, "1030 mb", POINT_GRAY);
 	private final Marker markerMountain = new Marker(900.0f, "900 mb", POINT_GRAY);
-	private final Marker markerCloud = new Marker(100.0f, "100% humedad", LINE_BLUE);
-	private final Marker markerCloudSimple = new Marker(100.0f, "100% humedad", POINT_GRAY);
+	private Marker markerCloud, markerCloudSimple;
 	private Marker markerNorth, markerSouth, markerEast, markerWest;
 	private boolean simpleMode;
 
@@ -53,6 +51,10 @@ public class MyCharts implements Controller {
 		this.tolomet = tolomet;
 		model = tolomet.getModel();
 		settings = tolomet.getSettings();
+		windSpeedMed = new Graph(meteo.getWindSpeedMed(), -1.0f, tolomet.getString(R.string.chart_speedMed), LINE_GREEN, POINT_GREEN);
+		windSpeedMax = new Graph(meteo.getWindSpeedMax(), -1.0f, tolomet.getString(R.string.chart_speedMax), LINE_RED, POINT_RED);
+		markerCloud = new Marker(100.0f, tolomet.getString(R.string.chart_covered), LINE_BLUE);
+		markerCloudSimple = new Marker(100.0f, tolomet.getString(R.string.chart_covered), POINT_GRAY);
 		markerNorth = new Marker(0, tolomet.getString(R.string.markerNorth), LINE_BLUE);
 		markerSouth = new Marker(180, tolomet.getString(R.string.markerSouth), LINE_BLUE);
 		markerEast = new Marker(90, tolomet.getString(R.string.markerEast), LINE_BLUE);
@@ -125,7 +127,7 @@ public class MyCharts implements Controller {
         //chartWind.setStepsY2(12);
         chartWind.getY1Axis().setSteps(8);
         chartWind.getY2Axis().setSteps(8);
-        chartWind.getY2Axis().setLabel("Vel. (km/h)");     
+        chartWind.getY2Axis().setLabel(tolomet.getString(R.string.chart_speed));     
         chartWind.getXAxis().setLabel(tolomet.getString(R.string.Time));        
         chartWind.getXAxis().setSteps(4);
         chartWind.getXAxis().setTicksPerStep(6); 
@@ -144,7 +146,7 @@ public class MyCharts implements Controller {
 
 	private void createSimpleCharts() {
 		chartAir.setTitle(tolomet.getString(R.string.DirectionHumidity));
-        chartAir.getY1Axis().setLabel("Dir. (ºC)");
+        chartAir.getY1Axis().setLabel("Dir. (º)");
         chartAir.getY1Axis().setRange(0, 360);
         chartAir.getY1Axis().setSteps(8);
         //chartAir.setTicksPerStepY1(5);
@@ -164,8 +166,8 @@ public class MyCharts implements Controller {
         chartAir.addY2Marker(markerCloudSimple);
               
         chartWind.setTitle(tolomet.getString(R.string.Speed));
-        chartWind.getY1Axis().setLabel("Vel. (km/h)");
-        chartWind.getY2Axis().setLabel("Vel. (km/h)");
+        chartWind.getY1Axis().setLabel(tolomet.getString(R.string.chart_speed));
+        chartWind.getY2Axis().setLabel(tolomet.getString(R.string.chart_speed));
         //chartWind.setStepsY1(12);
         //chartWind.setStepsY2(12);        
         chartWind.getY1Axis().setSteps(8);
@@ -217,6 +219,8 @@ public class MyCharts implements Controller {
     private void updateTimeRange() {
     	int minutes = model.getRefresh();
 		int hours = minutes * 24 / 60;
+		if( hours > 24 )
+			hours = 24;
     	    	
     	long round = minutes*60*1000;
     	long x2 = System.currentTimeMillis()/round*round;

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
@@ -80,7 +81,7 @@ public class RedVigiaProvider implements WindProvider {
 	}		
 	
 	private long toEpoch( String str ) {
-		Calendar cal = Calendar.getInstance();
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
 		String[] tmp = str.split(" ");
 		String[] date = tmp[0].split("/");
 		String[] time = tmp[1].split(":");
