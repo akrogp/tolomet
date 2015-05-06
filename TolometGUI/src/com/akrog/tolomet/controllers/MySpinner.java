@@ -183,6 +183,8 @@ public class MySpinner implements OnItemSelectedListener, Controller {
 	}
 	
 	private void selectItem( int pos, boolean popup ) {
+		if( pos >= choices.size() )
+			pos = 0;
 		model.setCurrentStation(choices.get(pos));    	
     	spinner.setSelection(pos);
     	if( popup )
