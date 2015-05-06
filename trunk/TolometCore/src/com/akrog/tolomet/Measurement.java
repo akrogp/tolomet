@@ -106,7 +106,7 @@ public class Measurement {
 		return map.isEmpty();
 	}
 	
-	public void merge(Measurement data) {
+	public synchronized void merge(Measurement data) {
 		map.putAll(data.map);
 		clearCache();
 	}

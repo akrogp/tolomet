@@ -65,6 +65,13 @@ public class Controller {
 			else
 				motd.addChange("Configured canary time zone in AEMET");
 		}
+		if( version < 302 ) {
+			motd.setVersion("3.0.2");
+			if( lang == null || isSpanish(lang) )
+				motd.addChange("Solucionados fallos reportados por usuarios");
+			else
+				motd.addChange("Minor fixes reported by users");
+		}
 		
 		// MOTD
 		/*Calendar cal = Calendar.getInstance();        
