@@ -48,42 +48,44 @@ public class Controller {
 		}
 		if( version < 300 ) {
 			motd.setVersion("3.0");
-			if( lang == null || isSpanish(lang) ) {
-				motd.addChange("Incluida opción para cambiar de país");
-				motd.addChange("Incluidos más de 9000 aeropuertos de todo el mundo (gracias a Ale)");
-				motd.addChange("Incluidas estaciones de MeteoPrades (gracias a Eduard y Mario)");
-			} else {
-				motd.addChange("Included option to change country");
-				motd.addChange("Included more than 9000 wolrd-wide airports (thanks Ale)");
-				motd.addChange("Included MeteoPrades (Spain) stations (thanks Eduard & Mario)");
-			}
+			motd.addChange(tr(lang,"Incluida opción para cambiar de país","Included option to change country"));
+			motd.addChange(tr(lang,"Incluidos más de 9000 aeropuertos de todo el mundo (gracias a Ale)","Included more than 9000 wolrd-wide airports (thanks Ale)"));
+			motd.addChange(tr(lang,"Incluidas estaciones de MeteoPrades (gracias a Eduard y Mario)","Included MeteoPrades (Spain) stations (thanks Eduard & Mario)"));			
 		}
 		if( version < 301 ) {
 			motd.setVersion("3.0.1");
-			if( lang == null || isSpanish(lang) )
-				motd.addChange("Configurada zona horaria canaria en AEMET");
-			else
-				motd.addChange("Configured canary time zone in AEMET");
+			motd.addChange(tr(lang,"Configurada zona horaria canaria en AEMET","Configured canary time zone in AEMET"));
 		}
 		if( version < 302 ) {
 			motd.setVersion("3.0.2");
-			if( lang == null || isSpanish(lang) )
-				motd.addChange("Solucionados fallos reportados por usuarios");
-			else
-				motd.addChange("Minor fixes reported by users");
+			motd.addChange(tr(lang,"Solucionados fallos reportados por usuarios","Minor fixes reported by users"));
+		}
+		if( version < 303 ) {
+			motd.setVersion("3.0.3");
+			motd.addChange(tr(lang,"Incluida estación de Euskalmet para Kanpezu","Included Euskalmet station for Kanpezu"));
 		}
 		
 		// MOTD
-		/*Calendar cal = Calendar.getInstance();        
-        cal.set(2013,8-1,4,0,0);
+		/*Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
+        cal.set(2015,5-1,6,0,0);
         if( stamp < cal.getTimeInMillis() ) {
         	//motd.setMotd("Para que Tolomet funcione bien en todos los móviles, en caso de que os de algún fallo reportadlo junto con una descripción de cuándo ocurre");
         	//motd.setMotd("¡Usa la lista de favoritos, es más cómodo! Puedes añadir y quitar estaciones de favoritos tocando la estrella de arriba.");
-        	motd.setMotd("Parece que AEMET tiene problemas con sus estaciones, esperemos que se solucione pronto");
+        	//motd.setMotd("Parece que AEMET tiene problemas con sus estaciones, esperemos que se solucione pronto");
+        	if( lang == null || isSpanish(lang) )
+        		motd.setMotd("En caso de que Tolomet falle y se cierre ¡da al botón de eviar reporte! Limpiar los datos de la aplicación o reinstalar debería solucionarlo.");
+        	else
+        		motd.setMotd("In case Tolomet crashes, click on send report! Cleaning app data or reinstalling should fix most issues.");
         	motd.setStamp(cal.getTimeInMillis());
         }*/
         
 		return motd.toString();
+	}
+	
+	private String tr(String lang, String es, String en) {
+		if( lang == null || isSpanish(lang) )
+			return es != null ? es : en;
+		return en != null ? en : es;
 	}
 	
 	private boolean isSpanish( String lang ) {

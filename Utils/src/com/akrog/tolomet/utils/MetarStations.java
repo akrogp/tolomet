@@ -1,15 +1,11 @@
 package com.akrog.tolomet.utils;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -17,31 +13,17 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.providers.WindProviderType;
 
-public class MigrateStations {
+public class MetarStations {
 	public static void main( String[] args ) throws IOException {
-		Manager tolomet = new Manager();		
-		List<Station> stations = new ArrayList<Station>(tolomet.getAllStations());
-		stations.addAll(loadMetars());
-		Collections.sort(stations, new Comparator<Station>() {
-			@Override
-			public int compare(Station o1, Station o2) {
-				return o1.getName().toUpperCase().compareTo(o2.getName().toUpperCase());
-			}
-		});
-		DataOutputStream dos = new DataOutputStream(new FileOutputStream("/home/gorka/stations.dat"));
-		for( Station station : stations ) {
+		for( Station station : loadMetars() )
 			System.out.println(String.format("%s ... ", station.toString()));
-			saveStation(dos,station);
-		}
 		System.out.println("finished!");
-		dos.close();
 	}
 	
-	private static List<Station> loadMetars() throws IOException {
+	public static List<Station> loadMetars() throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader("/home/gorka/MyProjects/Android/Tolomet/Docs/metar.txt"));		
 		List<Station> list = new ArrayList<Station>();
 		Map<String, Set<String>> mapRegions = new HashMap<String, Set<String>>();
@@ -103,17 +85,6 @@ public class MigrateStations {
 		double minutes = Integer.parseInt(line.substring(42, 44).trim());
 		double sig = line.charAt(44) == 'N' ? 1 : -1;
 		return sig*(degrees+minutes/60);
-	}
-
-	private static void saveStation( DataOutputStream os, Station station ) throws IOException {
-		os.writeUTF(station.getCode());
-		os.writeUTF(station.getName());
-		os.writeInt(station.getProviderType().ordinal());
-		os.writeUTF(station.getCountry());
-		//os.writeUTF("ES");
-		os.writeInt(station.getRegion());
-		os.writeDouble(station.getLatitude());
-		os.writeDouble(station.getLongitude());
 	}
 	
 	//private static final Logger logger = Logger.getLogger(BrokenStations.class.getName());
