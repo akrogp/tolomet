@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Project.iml" filepath="$PROJECT_DIR$/Project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tolometCore/tolometCore.iml" filepath="$PROJECT_DIR$/tolometCore/tolometCore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tolometGae/tolometGae.iml" filepath="$PROJECT_DIR$/tolometGae/tolometGae.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tolometGui/tolometGui.iml" filepath="$PROJECT_DIR$/tolometGui/tolometGui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tolometUtils/tolometUtils.iml" filepath="$PROJECT_DIR$/tolometUtils/tolometUtils.iml" />
+    </modules>
+  </component>
+</project>

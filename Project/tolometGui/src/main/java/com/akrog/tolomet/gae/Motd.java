@@ -1,0 +1,1 @@
+/home/gorka/MyProjects/Android/Tolomet/Project/tolometGae/src/main/java/com/akrog/tolomet/gae/Motd.java
