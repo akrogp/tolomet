@@ -1,0 +1,2 @@
+# Tolomet
+Aplicación enfocada a pilotos de parapente. Muestra de forma sencilla la evolución del viento en las últimas horas así como la última lectura, usando para ello los datos de las balizas de Euskalmet (cada 10 minutos), Meteo Navarra (cada 10 minutos), Gobierno de La Rioja (cada 15 minutos), MeteoGalicia (cada 10 minutos), Meteocat (cada 30/60 minutos), Red Vigía (cada hora) y AEMET (cada hora).
