@@ -25,7 +25,7 @@ import com.akrog.tolomet.providers.WindProviderType;
 public class FixStations {
 	public static void main(String[] args) throws IOException {
 		logger.info("Started");
-		String inPath = "/home/gorka/MyProjects/Android/Tolomet/TolometCore/src/res/stations_ES.dat";
+		String inPath = "/home/gorka/MyProjects/Android/Tolomet/Project/tolometCore/src/main/resources/res/stations_ES.dat";
 		//String inPath = "/home/gorka/MyProjects/Android/Tolomet/Docs/stations_world.dat";
 		List<Station> stations = loadStations(inPath);
 		addNewStations(stations);
