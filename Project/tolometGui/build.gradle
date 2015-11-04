@@ -7,9 +7,9 @@ android {
     defaultConfig {
         applicationId "com.akrog.tolomet"
         minSdkVersion 7
-        targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion 21
+        versionCode 304
+        versionName "3.0.4"
     }
     buildTypes {
         release {
@@ -22,6 +22,6 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.1.0'
+    //compile 'com.android.support:appcompat-v7:23.1.0'
     compile project(':tolometCore')
 }

@@ -29,6 +29,5 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="tolometCore" exported="" />
     <orderEntry type="library" exported="" name="jcoord-1.0" level="project" />
-    <orderEntry type="library" exported="" name="tolometUtils.tolometUtils" level="project" />
   </component>
 </module>
