@@ -14,6 +14,9 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -27,7 +30,7 @@ import com.akrog.tolomet.data.Bundler;
 import com.akrog.tolomet.data.Settings;
 import com.akrog.tolomet.gae.GaeManager;
 
-public class Tolomet extends Activity {
+public class Tolomet extends AppCompatActivity {
 	
 	// Creation and state
 	
@@ -36,6 +39,12 @@ public class Tolomet extends Activity {
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.activity_tolomet);
+		Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+    	setSupportActionBar(myToolbar);
+		ActionBar ab = getSupportActionBar();
+		ab.setLogo(R.drawable.ic_launcher);
+		ab.setDisplayUseLogoEnabled(true);
+		ab.setDisplayShowTitleEnabled(false);
         
         settings.initialize(this, model);
         gaeManager.initialize(this);
@@ -50,6 +59,13 @@ public class Tolomet extends Activity {
         	Bundler.loadStations(model.getAllStations(), savedInstanceState);
         
         createTimer();
+    }
+
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.actionbar, menu);
+        return true;
     }
         
     @Override
@@ -197,12 +213,12 @@ public class Tolomet extends Activity {
     	redraw();
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu( Menu menu ) {
     	super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.activity_tolomet, menu);
         return true;
-    }
+    }*/
     
     @Override
     public boolean onOptionsItemSelected( MenuItem item ) {

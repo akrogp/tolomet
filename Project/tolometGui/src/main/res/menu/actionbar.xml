@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!--<item
+        android:id="@+id/menuSpinner"
+        android:title="@string/station_prompt"
+        android:actionLayout="@layout/action_spinner"
+        app:showAsAction="ifRoom" />-->
+
+    <item
+        android:id="@+id/test"
+        android:title="@string/station_prompt"
+        android:actionViewClass="android.widget.Spinner"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/favorite_button"
+        android:title="@string/star"
+        android:icon="@android:drawable/btn_star"
+        android:contentDescription="@string/star"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/button1"
+        android:title="@string/Refresh"
+        android:icon="@android:drawable/ic_popup_sync"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/button2"
+        android:title="Info"
+        android:icon="@android:drawable/ic_dialog_info"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/settings_button"
+        android:title="@string/Settings"
+        android:icon="@android:drawable/ic_menu_preferences"
+        app:showAsAction="ifRoom" />
+</menu>

@@ -29,19 +29,19 @@ public class MyButtons implements OnClickListener, OnCheckedChangeListener, Cont
 		settings = tolomet.getSettings();
 		
 		buttonRefresh = (ImageButton)tolomet.findViewById(R.id.button1);
-        buttonRefresh.setOnClickListener(this);
+        //buttonRefresh.setOnClickListener(this);
         buttonInfo = (ImageButton)tolomet.findViewById(R.id.button2);
-        buttonInfo.setOnClickListener(this);
+        //buttonInfo.setOnClickListener(this);
         buttonSettings = (ImageButton)tolomet.findViewById(R.id.settings_button);
-        buttonSettings.setOnClickListener(this);
-        if( android.os.Build.VERSION.SDK_INT < 11 ) {
+        //buttonSettings.setOnClickListener(this);
+        /*if( android.os.Build.VERSION.SDK_INT < 11 ) {
         	((RelativeLayout.LayoutParams)buttonRefresh.getLayoutParams()).addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 1);
         	((ViewGroup)buttonSettings.getParent()).removeView(buttonSettings);
-        }
+        }*/
         
         favorite = (CheckBox)tolomet.findViewById(R.id.favorite_button);
-        favorite.setChecked(false);
-        favorite.setOnCheckedChangeListener(this);		
+        //favorite.setChecked(false);
+        //favorite.setOnCheckedChangeListener(this);
 	}
 
 	@Override
@@ -69,10 +69,10 @@ public class MyButtons implements OnClickListener, OnCheckedChangeListener, Cont
 
 	@Override
 	public void redraw() {
-		buttonRefresh.setEnabled(!model.getCurrentStation().isSpecial());
+		/*buttonRefresh.setEnabled(!model.getCurrentStation().isSpecial());
 		buttonInfo.setEnabled(!model.getCurrentStation().isSpecial());
 		favorite.setChecked(model.getCurrentStation().isFavorite());
-		favorite.setEnabled(!model.getCurrentStation().isSpecial());		
+		favorite.setEnabled(!model.getCurrentStation().isSpecial());*/
 	}
 
 	@Override
