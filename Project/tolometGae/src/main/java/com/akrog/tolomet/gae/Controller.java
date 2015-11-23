@@ -64,6 +64,10 @@ public class Controller {
 			motd.setVersion("3.0.3");
 			motd.addChange(tr(lang,"Incluida estación de Euskalmet para Kanpezu","Included Euskalmet station for Kanpezu"));
 		}
+		if( version < 304 ) {
+			motd.setVersion("3.0.4");
+			motd.addChange(tr(lang,"Incluida estación de Euskalmet para Ilarduia","Included Euskalmet station for Ilarduia"));
+		}
 		
 		// MOTD
 		/*Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
