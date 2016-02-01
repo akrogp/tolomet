@@ -2,16 +2,11 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <!--<item
-        android:id="@+id/menuSpinner"
-        android:title="@string/station_prompt"
-        android:actionLayout="@layout/action_spinner"
-        app:showAsAction="ifRoom" />-->
-
     <item
         android:id="@+id/test"
         android:title="@string/station_prompt"
-        android:actionViewClass="android.widget.Spinner"
+        app:layout_width="match_parent"
+        app:actionViewClass="android.widget.Spinner"
         app:showAsAction="always" />
 
     <item

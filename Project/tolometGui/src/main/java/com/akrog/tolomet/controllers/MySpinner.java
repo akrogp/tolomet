@@ -42,17 +42,23 @@ public class MySpinner implements OnItemSelectedListener, Controller {
 	private final List<Station> choices = new ArrayList<Station>();
 	private Station selectItem, startItem, favItem, regItem, nearItem, indexItem, allItem, countryItem;
 
+	public void setSpinner( Spinner spinner ) {
+		this.spinner = spinner;
+		spinner.setAdapter(adapter);
+		spinner.setOnItemSelectedListener(this);
+	}
+
 	@Override
 	public void initialize(Tolomet tolomet, Bundle bundle) {
 		this.tolomet = tolomet;
 		model = tolomet.getModel();
 		settings = tolomet.getSettings();
 		
-        spinner = (Spinner)tolomet.findViewById(R.id.spinner1);        
+        //spinner = (Spinner)tolomet.findViewById(R.id.spinner1);
         adapter = new ArrayAdapter<Station>(tolomet,android.R.layout.simple_spinner_item,choices);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    	spinner.setAdapter(adapter);
-    	spinner.setOnItemSelectedListener(this);
+    	/*spinner.setAdapter(adapter);
+    	spinner.setOnItemSelectedListener(this);*/
         
         selectItem = new Station("--- " + this.tolomet.getString(R.string.select) + " ---", 0);
         startItem = new Station("["+this.tolomet.getString(R.string.menu_start)+"]", Type.StartMenu.getValue());
@@ -185,7 +191,9 @@ public class MySpinner implements OnItemSelectedListener, Controller {
 	private void selectItem( int pos, boolean popup ) {
 		if( pos >= choices.size() )
 			pos = 0;
-		model.setCurrentStation(choices.get(pos));    	
+		model.setCurrentStation(choices.get(pos));
+		if( spinner == null )
+			return;
     	spinner.setSelection(pos);
     	if( popup )
     		spinner.performClick();
