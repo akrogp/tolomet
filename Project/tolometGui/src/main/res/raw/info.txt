@@ -1,3 +1,3 @@
 <b>Tolomet</b> (v$VER$)<br>
-Copyright 2012-2015, Gorka Prieto<br>
-<b>http://code.google.com/p/tolomet</b>
+Copyright 2012-2016, Gorka Prieto<br>
+<b>https://github.com/akrogp/tolomet</b>

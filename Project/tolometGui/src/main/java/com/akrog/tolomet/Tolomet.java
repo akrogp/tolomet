@@ -109,14 +109,6 @@ public class Tolomet extends AppCompatActivity {
     public void redraw() {
     	for( Presenter presenter : presenters)
     		presenter.updateView();
-    }    
-    
-    public void postRedraw() {
-    	runOnUiThread(new Runnable() {
-            public void run() {
-            	redraw();
-            }
-        });
     }
     
     private void downloadData() {
@@ -175,7 +167,7 @@ public class Tolomet extends AppCompatActivity {
     	} else
     		downloadData();
     }
-    
+
     public void onInfoUrl() {
     	if( alertNetwork() )
 			return;
