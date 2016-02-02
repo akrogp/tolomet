@@ -16,7 +16,7 @@ import com.akrog.tolomet.Measurement;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.Tolomet;
-import com.akrog.tolomet.controllers.MySpinner;
+import com.akrog.tolomet.presenters.MySpinner;
 
 public class Settings {	
 	private SharedPreferences settings;

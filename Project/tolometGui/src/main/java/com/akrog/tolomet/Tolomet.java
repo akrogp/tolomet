@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -14,20 +13,14 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Spinner;
 
-import com.akrog.tolomet.controllers.Controller;
-import com.akrog.tolomet.controllers.Downloader;
-import com.akrog.tolomet.controllers.MyButtons;
-import com.akrog.tolomet.controllers.MyCharts;
-import com.akrog.tolomet.controllers.MySpinner;
-import com.akrog.tolomet.controllers.MySummary;
+import com.akrog.tolomet.presenters.Presenter;
+import com.akrog.tolomet.presenters.Downloader;
+import com.akrog.tolomet.presenters.MyToolbar;
+import com.akrog.tolomet.presenters.MyCharts;
+import com.akrog.tolomet.presenters.MySpinner;
+import com.akrog.tolomet.presenters.MySummary;
 import com.akrog.tolomet.data.Bundler;
 import com.akrog.tolomet.data.Settings;
 import com.akrog.tolomet.gae.GaeManager;
@@ -41,44 +34,27 @@ public class Tolomet extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.activity_tolomet);
-		Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-    	setSupportActionBar(myToolbar);
-		ActionBar ab = getSupportActionBar();
-		ab.setLogo(R.drawable.ic_launcher);
-		ab.setDisplayUseLogoEnabled(true);
-		ab.setDisplayShowTitleEnabled(false);
-        
+
         settings.initialize(this, model);
         gaeManager.initialize(this);
-        controllers.add(spinner);
-        controllers.add(buttons);
-        controllers.add(charts);
-        controllers.add(summary);        
-        for( Controller controller : controllers )
-        	controller.initialize(this, savedInstanceState);
+        presenters.add(spinner);
+        presenters.add(toolbar);
+        presenters.add(charts);
+        presenters.add(summary);
+        for( Presenter presenter : presenters)
+        	presenter.initialize(this, savedInstanceState);
         
         if( savedInstanceState != null )
         	Bundler.loadStations(model.getAllStations(), savedInstanceState);
         
         createTimer();
     }
-
-	@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.actionbar, menu);
-		MenuItem item = menu.findItem(R.id.test);
-		Spinner spinner = (Spinner) MenuItemCompat.getActionView(item);
-		spinner.setLayoutParams(new android.app.ActionBar.LayoutParams());
-		this.spinner.setSpinner(spinner);
-        return true;
-    }
         
     @Override
     protected void onSaveInstanceState(Bundle outState) {
     	super.onSaveInstanceState(outState);
-    	for( Controller controller : controllers )
-    		controller.save(outState);
+    	for( Presenter presenter : presenters)
+    		presenter.save(outState);
     	Bundler.saveStations(model.getAllStations(), outState);
     	cancelTimer();
     	if( downloading )
@@ -131,8 +107,8 @@ public class Tolomet extends AppCompatActivity {
     // Actions
     
     public void redraw() {
-    	for( Controller controller : controllers )
-    		controller.redraw();
+    	for( Presenter presenter : presenters)
+    		presenter.updateView();
     }    
     
     public void postRedraw() {
@@ -183,7 +159,7 @@ public class Tolomet extends AppCompatActivity {
     public void onRefresh() {
     	if( !model.isOutdated() ) {
     		if( charts.getZoomed() )
-    			charts.redraw();
+    			charts.updateView();
     		else {
 	    		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 	    		int minutes = model.getRefresh();
@@ -218,30 +194,6 @@ public class Tolomet extends AppCompatActivity {
     	createTimer();
     	redraw();
     }
-
-    /*@Override
-    public boolean onCreateOptionsMenu( Menu menu ) {
-    	super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.activity_tolomet, menu);
-        return true;
-    }*/
-    
-    @Override
-    public boolean onOptionsItemSelected( MenuItem item ) {
-    	switch( item.getItemId() ) {
-    		case R.id.about:
-    			AboutDialog about = new AboutDialog(this);
-    			about.setTitle(getString(R.string.About));
-    			about.show();
-    			break;
-    		case R.id.menu_settings:
-    			onSettings();
-    			break;
-    		default:
-                return super.onOptionsItemSelected(item);
-    	}
-    	return true;
-    }
     
 	public void onSpinner(Station station) {
 		redraw();		
@@ -274,10 +226,10 @@ public class Tolomet extends AppCompatActivity {
 	}	
 	
 	// Fields
-	private final List<Controller> controllers = new ArrayList<Controller>();
+	private final List<Presenter> presenters = new ArrayList<Presenter>();
 	private final MyCharts charts = new MyCharts();
 	private final MySpinner spinner = new MySpinner();
-	private final MyButtons buttons = new MyButtons();
+	private final MyToolbar toolbar = new MyToolbar();
 	private final MySummary summary = new MySummary();
 	private final GaeManager gaeManager = new GaeManager();
 	private final Manager model = new Manager();

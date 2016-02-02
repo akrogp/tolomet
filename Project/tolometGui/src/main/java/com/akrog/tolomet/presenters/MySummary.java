@@ -1,4 +1,4 @@
-package com.akrog.tolomet.controllers;
+package com.akrog.tolomet.presenters;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Tolomet;
 
-public class MySummary implements Controller {
+public class MySummary implements Presenter {
 	private Tolomet tolomet;
 	private Manager model;
 	private TextView summary;
@@ -25,7 +25,7 @@ public class MySummary implements Controller {
 	}
 	
 	@Override
-	public void redraw() {
+	public void updateView() {
 		if( model.getCurrentStation().isEmpty() )
     		summary.setText(tolomet.getString(R.string.NoData));
     	else

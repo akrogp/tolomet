@@ -1,4 +1,4 @@
-package com.akrog.tolomet.controllers;
+package com.akrog.tolomet.presenters;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;

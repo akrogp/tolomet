@@ -2,35 +2,35 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/test"
-        android:title="@string/station_prompt"
-        app:layout_width="match_parent"
-        app:actionViewClass="android.widget.Spinner"
-        app:showAsAction="always" />
 
     <item
-        android:id="@+id/favorite_button"
+        android:id="@+id/favorite_item"
         android:title="@string/star"
-        android:icon="@android:drawable/btn_star"
+        android:icon="@android:drawable/btn_star_big_off"
         android:contentDescription="@string/star"
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/button1"
+        android:id="@+id/refresh_item"
         android:title="@string/Refresh"
         android:icon="@android:drawable/ic_popup_sync"
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/button2"
+        android:id="@+id/info_item"
         android:title="Info"
         android:icon="@android:drawable/ic_dialog_info"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/settings_button"
+        android:id="@+id/settings_item"
         android:title="@string/Settings"
         android:icon="@android:drawable/ic_menu_preferences"
         app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/about_item"
+        android:title="@string/About"
+        android:icon="@android:drawable/ic_menu_info_details"
+        app:showAsAction="ifRoom" />
+
 </menu>

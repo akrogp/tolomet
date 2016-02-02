@@ -1,11 +1,11 @@
-package com.akrog.tolomet.controllers;
+package com.akrog.tolomet.presenters;
 
 import android.os.Bundle;
 
 import com.akrog.tolomet.Tolomet;
 
-public interface Controller {
+public interface Presenter {
 	void initialize(Tolomet tolomet, Bundle bundle);
-	void redraw();
+	void updateView();
 	void save(Bundle bundle);
 }

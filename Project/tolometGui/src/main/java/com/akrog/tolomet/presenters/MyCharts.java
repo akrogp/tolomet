@@ -1,4 +1,4 @@
-package com.akrog.tolomet.controllers;
+package com.akrog.tolomet.presenters;
 
 import java.util.Calendar;
 
@@ -15,7 +15,7 @@ import com.akrog.tolomet.view.Graph;
 import com.akrog.tolomet.view.Marker;
 import com.akrog.tolomet.view.MyPlot;
 
-public class MyCharts implements Controller {
+public class MyCharts implements Presenter {
 	private static final int LINE_BLUE=Color.rgb(0, 0, 200);
 	private static final int POINT_BLUE=Color.rgb(0, 0, 100);
 	private static final int LINE_RED=Color.rgb(200, 0, 0);
@@ -244,7 +244,7 @@ public class MyCharts implements Controller {
     }
 
     @Override
-    public void redraw() {    	
+    public void updateView() {
     	meteo.clear();
     	if( !model.getCurrentStation().isSpecial() )
     		meteo.merge(model.getCurrentStation().getMeteo());

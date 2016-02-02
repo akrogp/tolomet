@@ -1,4 +1,4 @@
-package com.akrog.tolomet.controllers;
+package com.akrog.tolomet.presenters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ import com.akrog.tolomet.Station;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.Settings;
 
-public class MySpinner implements OnItemSelectedListener, Controller {
+public class MySpinner implements OnItemSelectedListener, Presenter {
 	private Tolomet tolomet;
 	private Manager model;
 	private Settings settings;
@@ -42,23 +42,17 @@ public class MySpinner implements OnItemSelectedListener, Controller {
 	private final List<Station> choices = new ArrayList<Station>();
 	private Station selectItem, startItem, favItem, regItem, nearItem, indexItem, allItem, countryItem;
 
-	public void setSpinner( Spinner spinner ) {
-		this.spinner = spinner;
-		spinner.setAdapter(adapter);
-		spinner.setOnItemSelectedListener(this);
-	}
-
 	@Override
 	public void initialize(Tolomet tolomet, Bundle bundle) {
 		this.tolomet = tolomet;
 		model = tolomet.getModel();
 		settings = tolomet.getSettings();
 		
-        //spinner = (Spinner)tolomet.findViewById(R.id.spinner1);
+        spinner = (Spinner)tolomet.findViewById(R.id.station_spinner);
         adapter = new ArrayAdapter<Station>(tolomet,android.R.layout.simple_spinner_item,choices);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    	/*spinner.setAdapter(adapter);
-    	spinner.setOnItemSelectedListener(this);*/
+    	spinner.setAdapter(adapter);
+    	spinner.setOnItemSelectedListener(this);
         
         selectItem = new Station("--- " + this.tolomet.getString(R.string.select) + " ---", 0);
         startItem = new Station("["+this.tolomet.getString(R.string.menu_start)+"]", Type.StartMenu.getValue());
@@ -192,8 +186,6 @@ public class MySpinner implements OnItemSelectedListener, Controller {
 		if( pos >= choices.size() )
 			pos = 0;
 		model.setCurrentStation(choices.get(pos));
-		if( spinner == null )
-			return;
     	spinner.setSelection(pos);
     	if( popup )
     		spinner.performClick();
@@ -339,7 +331,7 @@ public class MySpinner implements OnItemSelectedListener, Controller {
 	}
 	
 	@Override
-	public void redraw() {		
+	public void updateView() {
 	}
 	
 	public static enum Type {
