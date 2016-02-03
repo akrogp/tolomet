@@ -3,6 +3,8 @@
     <string name="menu_settings">Ajustes</string>
     <string name="title_activity_tolomet">Tolomet</string>
     <string name="Refresh">Actualizar</string>
+    <string name="Info">Información</string>
+    <string name="Map">Ver mapa</string>
     <string name="Settings">Ajustes</string>
     <string name="station_prompt">Estación</string>
     <string name="summary"></string>

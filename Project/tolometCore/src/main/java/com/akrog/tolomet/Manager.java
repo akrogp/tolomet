@@ -243,21 +243,29 @@ public class Manager {
 			return;
 		currentStation.getProvider().cancel();
 	}
-	
+
 	public String getSummary( boolean large ) {
+		return getSummary(null, large);
+	}
+	
+	public String getSummary( Long stamp, boolean large ) {
 		if( !checkCurrent() )
 			return null;
+
+		stamp = currentStation.getMeteo().getStamp(stamp);
+		if( stamp == null )
+			return "";
 		
 		String strDir = null;
-		Number dir = currentStation.getMeteo().getWindDirection().getLast();
+		Number dir = currentStation.getMeteo().getWindDirection().getAt(stamp);
 		if( dir != null )
 			strDir = parseDirection(dir.intValue());
-		Number med = currentStation.getMeteo().getWindSpeedMed().getLast();
-		Number max = currentStation.getMeteo().getWindSpeedMax().getLast();
-		Number hum = currentStation.getMeteo().getAirHumidity().getLast();
-		Number temp = currentStation.getMeteo().getAirTemperature().getLast();
-		
-		StringBuilder str = new StringBuilder(getStamp());
+		Number med = currentStation.getMeteo().getWindSpeedMed().getAt(stamp);
+		Number max = currentStation.getMeteo().getWindSpeedMax().getAt(stamp);
+		Number hum = currentStation.getMeteo().getAirHumidity().getAt(stamp);
+		Number temp = currentStation.getMeteo().getAirTemperature().getAt(stamp);
+
+		StringBuilder str = new StringBuilder(getStamp(stamp));
 		if( strDir != null )
 			str.append(String.format(" | %dº (%s)", dir.intValue(), strDir));
 		if( hum != null )
@@ -273,12 +281,34 @@ public class Manager {
 
 		return large ? str.toString() : str.toString().replaceAll(" ", "");
 	}
-		
+
+	private Number findClosest(Measurement meas, Long stamp) {
+		Number closest = meas.getLast();
+		if( stamp == null )
+			return closest;
+		long diff = Math.abs(stamp-meas.getStamp());
+		long tmp;
+		for( int i = 0; i < meas.size(); i++ ) {
+			tmp = Math.abs(stamp - meas.getTimes()[i]);
+			if( tmp < diff ) {
+				diff = tmp;
+				closest = meas.getValues()[i];
+			}
+		}
+		return closest;
+	}
+
 	public String getStamp() {
+		return getStamp(null);
+	}
+		
+	public String getStamp(Long stamp) {
 		if( !checkCurrent() )
-			return null;		
+			return null;
+		if( stamp == null )
+			stamp = currentStation.getMeteo().getStamp();
 		Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(currentStation.getMeteo().getStamp());
+        cal.setTimeInMillis(stamp);
         return String.format("%02d:%02d", cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
 	}
 	

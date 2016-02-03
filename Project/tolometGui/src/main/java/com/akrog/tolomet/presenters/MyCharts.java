@@ -11,19 +11,20 @@ import com.akrog.tolomet.Meteo;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.Settings;
+import com.akrog.tolomet.view.Axis;
 import com.akrog.tolomet.view.Graph;
 import com.akrog.tolomet.view.Marker;
 import com.akrog.tolomet.view.MyPlot;
 
 public class MyCharts implements Presenter {
-	private static final int LINE_BLUE=Color.rgb(0, 0, 200);
-	private static final int POINT_BLUE=Color.rgb(0, 0, 100);
-	private static final int LINE_RED=Color.rgb(200, 0, 0);
-	private static final int POINT_RED=Color.rgb(100, 0, 0);
-	private static final int LINE_GREEN=Color.rgb(0, 200, 0);
-	private static final int POINT_GREEN=Color.rgb(0, 100, 0);
-	private static final int LINE_GRAY=Color.rgb(200, 200, 200);
-	private static final int POINT_GRAY=Color.rgb(100, 100, 100);
+	private static final int LINE_BLUE = Color.rgb(0, 0, 200);
+	private static final int POINT_BLUE = Color.rgb(0, 0, 100);
+	private static final int LINE_RED = Color.rgb(200, 0, 0);
+	private static final int POINT_RED = Color.rgb(100, 0, 0);
+	private static final int LINE_GREEN = Color.rgb(0, 200, 0);
+	private static final int POINT_GREEN = Color.rgb(0, 100, 0);
+	private static final int LINE_GRAY = Color.rgb(200, 200, 200);
+	private static final int POINT_GRAY = Color.rgb(100, 100, 100);
 	private Tolomet tolomet;
 	private Manager model;
 	private Settings settings;
@@ -45,6 +46,15 @@ public class MyCharts implements Presenter {
 	private Marker markerCloud, markerCloudSimple;
 	private Marker markerNorth, markerSouth, markerEast, markerWest;
 	private boolean simpleMode;
+	private final Axis.ChangeListener axisListener;
+
+	public MyCharts() {
+		this(null);
+	}
+
+	public MyCharts(Axis.ChangeListener axisListener) {
+		this.axisListener = axisListener;
+	}
 
 	@Override
 	public void initialize(Tolomet tolomet, Bundle bundle) {
@@ -72,7 +82,7 @@ public class MyCharts implements Presenter {
 		markerVmin.setLabel(pos+" km/h");
 		pos = settings.getMaxMarker(); 
 		markerVmax.setPos(pos);
-		markerVmax.setLabel(pos+" km/h");
+		markerVmax.setLabel(pos + " km/h");
 	}
 	
 	@SuppressLint("SimpleDateFormat")
@@ -80,6 +90,8 @@ public class MyCharts implements Presenter {
     	chartAir = (MyPlot)tolomet.findViewById(R.id.chartAir);
     	chartWind = (MyPlot)tolomet.findViewById(R.id.chartWind);
     	simpleMode = settings.isSimpleMode();
+		if( axisListener != null )
+			chartAir.getXAxis().addMaxListener(axisListener);
         createCharts();
         chartAir.getXAxis().connect(chartWind.getXAxis());
         chartWind.getXAxis().connect(chartAir.getXAxis());
@@ -98,31 +110,31 @@ public class MyCharts implements Presenter {
     
     private void createCompleteCharts() {
         chartAir.setTitle(tolomet.getString(R.string.Air));
-        chartAir.getY1Axis().setLabel("Temp. (ºC)");                        
-        chartAir.getY1Axis().setSteps(10);
+        chartAir.getY1Axis().setLabel("Temp. (ºC)");
+		chartAir.getY1Axis().setSteps(10);
         //chartAir.setTicksPerStepY1(5);
         chartAir.getY2Axis().setLabel("Hum. (%)");
         chartAir.getY2Axis().setRange(10, 110);
         chartAir.getY2Axis().setSteps(10);        
         chartAir.getXAxis().setLabel(tolomet.getString(R.string.Time));        
         chartAir.getXAxis().setSteps(4);
-        chartAir.getXAxis().setTicksPerStep(6);       
-        
-        chartAir.addY1Graph(airTemperature);
+		chartAir.getXAxis().setTicksPerStep(6);
+
+		chartAir.addY1Graph(airTemperature);
         chartAir.addY2Graph(airHumidity);
         chartAir.addY3Graph(airPressure);
-        
-        chartAir.addY2Marker(markerCloud);
+
+		chartAir.addY2Marker(markerCloud);
         chartAir.addY3Marker(markerSea);
         chartAir.addY3Marker(markerLow);
         //chartAir.addY3Marker(markerHigh);
         chartAir.addY3Marker(markerMountain);
-              
-        chartWind.setTitle(tolomet.getString(R.string.Wind));
+
+		chartWind.setTitle(tolomet.getString(R.string.Wind));
         //chartWind.getY1Axis().setWrap(360);
-        chartWind.getY1Axis().setRange(0, 360);
+		chartWind.getY1Axis().setRange(0, 360);
         //chartWind.getY1Axis().setRange(180, 180);
-        chartWind.getY1Axis().setLabel("Dir. (º)");
+		chartWind.getY1Axis().setLabel("Dir. (º)");
         //chartWind.setStepsY1(12);
         //chartWind.setStepsY2(12);
         chartWind.getY1Axis().setSteps(8);
@@ -130,10 +142,10 @@ public class MyCharts implements Presenter {
         chartWind.getY2Axis().setLabel(tolomet.getString(R.string.chart_speed));     
         chartWind.getXAxis().setLabel(tolomet.getString(R.string.Time));        
         chartWind.getXAxis().setSteps(4);
-        chartWind.getXAxis().setTicksPerStep(6); 
-        
-        chartWind.addY1Graph(windDirection);    
-        chartWind.addY2Graph(windSpeedMed);
+		chartWind.getXAxis().setTicksPerStep(6);
+
+		chartWind.addY1Graph(windDirection);
+		chartWind.addY2Graph(windSpeedMed);
         chartWind.addY2Graph(windSpeedMax);             
         
         //chartWind.addY1Marker(markerSouth);
@@ -197,23 +209,23 @@ public class MyCharts implements Presenter {
 		chartWind.getY1Axis().setRange(0, speedRange);
         chartWind.getY2Axis().setRange(0, speedRange);
         chartWind.getY2Axis().setLimits(0, speedRange);
-        chartWind.getY1Axis().setLimits(0, speedRange);
+		chartWind.getY1Axis().setLimits(0, speedRange);
         //chartWind.setStepsY2(speedRange/5);
 	}
 	
 	private void updateBoundariesComplete() {
 		int speedRange = settings.getSpeedRange(meteo.getWindSpeedMax());
-        chartWind.getY2Axis().setRange(0, speedRange);
-        chartWind.getY2Axis().setLimits(0, speedRange);
+		chartWind.getY2Axis().setRange(0, speedRange);
+		chartWind.getY2Axis().setLimits(0, speedRange);
         //chartWind.setStepsY2(speedRange/5);
-        
-        int minTemp = settings.getMinTemp(meteo.getAirTemperature());
+
+		int minTemp = settings.getMinTemp(meteo.getAirTemperature());
         int maxTemp = settings.getMaxTemp(meteo.getAirTemperature());
-        chartAir.getY1Axis().setRange(minTemp, maxTemp);
-        chartAir.getY1Axis().setLimits(minTemp, maxTemp);
+		chartAir.getY1Axis().setRange(minTemp, maxTemp);
+		chartAir.getY1Axis().setLimits(minTemp, maxTemp);
         
         // See: http://www.theweatherprediction.com/habyhints2/410/
-        chartAir.getY3Axis().setRange(settings.getMinPres(meteo.getAirPressure()), settings.getMaxPres(meteo.getAirPressure()));
+		chartAir.getY3Axis().setRange(settings.getMinPres(meteo.getAirPressure()), settings.getMaxPres(meteo.getAirPressure()));
 	}
     
     private void updateTimeRange() {
@@ -238,9 +250,9 @@ public class MyCharts implements Presenter {
     	}
     	
     	chartAir.getXAxis().setRange(x1,x2);
-    	chartAir.getXAxis().setLimits(x0,x2);
-        chartWind.getXAxis().setRange(x1,x2);
-        chartWind.getXAxis().setLimits(x0,x2);
+    	chartAir.getXAxis().setLimits(x0, x2);
+        chartWind.getXAxis().setRange(x1, x2);
+        chartWind.getXAxis().setLimits(x0, x2);
     }
 
     @Override

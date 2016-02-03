@@ -79,6 +79,26 @@ public class Meteo {
 		}
 		return stamp;
 	}
+
+	public Long getStamp(Long stamp) {
+		Long result = getStamp();
+		if( result == null || stamp == null )
+			return result;
+		long diff = Math.abs(stamp-result);
+		long tmpDiff;
+		Long tmp;
+		for( Measurement measurement : measurements ) {
+			tmp = measurement.getStamp(stamp);
+			if( tmp == null )
+				continue;
+			tmpDiff = Math.abs(stamp-tmp);
+			if( tmpDiff < diff ) {
+				diff = tmpDiff;
+				result = tmp;
+			}
+		}
+		return result;
+	}
 	
 	public Integer getStep() {
 		for( Measurement measurement : measurements ) {

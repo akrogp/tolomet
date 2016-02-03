@@ -4,6 +4,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Axis {
+	public interface ChangeListener {
+		void onNewLimit( Number value );
+	}
+
 	public Axis( PlotYY plot ) {
 		this.plot = plot;
 	}
@@ -12,6 +16,10 @@ public class Axis {
 		if( axis == this )
 			return;
 		syncAxis.add(axis);
+	}
+
+	public void addMaxListener( ChangeListener listener ) {
+		maxListeners.add(listener);
 	}
 	
 	public boolean setRange( Number min, Number max ) {		
@@ -53,6 +61,8 @@ public class Axis {
 	
 	public void setMax(Number max) {
 		this.max = max;
+		for( ChangeListener listener : maxListeners )
+			listener.onNewLimit(max);
 	}
 	
 	public void setLimits( Number minLimit, Number maxLimit ) {
@@ -166,6 +176,7 @@ public class Axis {
 	private String label = "label";
 	private int steps = 10;
 	private int ticksPerStep = 1;
-	private Set<Axis> syncAxis = new HashSet<Axis>();
+	private final Set<Axis> syncAxis = new HashSet<Axis>();
+	private final Set<ChangeListener> maxListeners = new HashSet<ChangeListener>();
 	private final PlotYY plot;
 }

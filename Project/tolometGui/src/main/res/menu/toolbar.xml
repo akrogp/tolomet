@@ -18,8 +18,14 @@
 
     <item
         android:id="@+id/info_item"
-        android:title="Info"
+        android:title="@string/Info"
         android:icon="@android:drawable/ic_dialog_info"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/map_item"
+        android:title="@string/Map"
+        android:icon="@android:drawable/ic_dialog_map"
         app:showAsAction="ifRoom" />
 
     <item
@@ -31,6 +37,6 @@
     <item android:id="@+id/about_item"
         android:title="@string/About"
         android:icon="@android:drawable/ic_menu_info_details"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 
 </menu>

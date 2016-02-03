@@ -24,7 +24,7 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 	private Manager model;
 	private Settings settings;
 	private Toolbar toolbar;
-	private MenuItem itemFavorite, itemRefresh, itemInfo;
+	private MenuItem itemFavorite, itemRefresh, itemInfo, itemMap;
 	private boolean isChecked;
 
 	@Override
@@ -39,6 +39,7 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 		itemFavorite = menu.findItem(R.id.favorite_item);
 		itemRefresh = menu.findItem(R.id.refresh_item);
 		itemInfo = menu.findItem(R.id.info_item);
+		itemMap = menu.findItem(R.id.map_item);
 		setFavorite(false);
 		toolbar.setOnMenuItemClickListener(this);
 	}
@@ -57,6 +58,9 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 			case R.id.settings_item:
 				tolomet.onSettings();
 				return true;
+			case R.id.map_item:
+				tolomet.onMapUrl();
+				return true;
 			case R.id.favorite_item:
 				setFavorite(!isChecked);
 				model.getCurrentStation().setFavorite(isChecked);
@@ -73,10 +77,12 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 
 	@Override
 	public void updateView() {
-		itemRefresh.setEnabled(!model.getCurrentStation().isSpecial());
-		itemInfo.setEnabled(!model.getCurrentStation().isSpecial());
+		boolean enable = !model.getCurrentStation().isSpecial();
+		itemRefresh.setEnabled(enable);
+		itemInfo.setEnabled(enable);
+		itemMap.setEnabled(enable);
 		setFavorite(model.getCurrentStation().isFavorite());
-		itemFavorite.setEnabled(!model.getCurrentStation().isSpecial());
+		itemFavorite.setEnabled(enable);
 	}
 
 	@Override

@@ -41,6 +41,22 @@ public class Measurement {
 			return null;
 		return getTimes()[size()-1];
 	}
+
+	public Long getStamp(Long stamp) {
+		Long result = getStamp();
+		if( stamp == null || result == null )
+			return result;
+		long diff = Math.abs(stamp-result);
+		long tmp;
+		for( int i = 0; i < size(); i++ ) {
+			tmp = Math.abs(stamp - getTimes()[i]);
+			if( tmp < diff ) {
+				diff = tmp;
+				result = getTimes()[i];
+			}
+		}
+		return result;
+	}
 	
 	public Number getFirst() {
 		if( isEmpty() )
@@ -52,6 +68,10 @@ public class Measurement {
 		if( isEmpty() )
 			return null;
 		return getValues()[size()-1];
+	}
+
+	public Number getAt(long time) {
+		return map.get(time);
 	}
 	
 	public Number[] getValues() {

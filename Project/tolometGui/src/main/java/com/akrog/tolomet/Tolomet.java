@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.akrog.tolomet.presenters.Presenter;
 import com.akrog.tolomet.presenters.Downloader;
@@ -24,6 +25,7 @@ import com.akrog.tolomet.presenters.MySummary;
 import com.akrog.tolomet.data.Bundler;
 import com.akrog.tolomet.data.Settings;
 import com.akrog.tolomet.gae.GaeManager;
+import com.akrog.tolomet.view.Axis;
 
 public class Tolomet extends AppCompatActivity {
 	
@@ -173,6 +175,17 @@ public class Tolomet extends AppCompatActivity {
 			return;
 		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(model.getInforUrl())));
     }
+
+	public void onMapUrl() {
+		if( alertNetwork() )
+			return;
+		String url = String.format(
+			Locale.ENGLISH,
+			"http://maps.google.com/maps?q=loc:%f,%f",
+			model.getCurrentStation().getLatitude(), model.getCurrentStation().getLongitude()
+		);
+		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+	}
     
     public void onSettings() {
     	//startActivity(new Intent(Tolomet.this, SettingsActivity.class));
@@ -219,10 +232,10 @@ public class Tolomet extends AppCompatActivity {
 	
 	// Fields
 	private final List<Presenter> presenters = new ArrayList<Presenter>();
-	private final MyCharts charts = new MyCharts();
+	private final MySummary summary = new MySummary();
+	private final MyCharts charts = new MyCharts(summary);
 	private final MySpinner spinner = new MySpinner();
 	private final MyToolbar toolbar = new MyToolbar();
-	private final MySummary summary = new MySummary();
 	private final GaeManager gaeManager = new GaeManager();
 	private final Manager model = new Manager();
 	private final Settings settings = new Settings();
