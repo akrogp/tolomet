@@ -1,5 +1,13 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar"/>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--<item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>-->
+        <!--<item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>-->
+        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
+    </style>
+<!--<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+</style>-->
 
 </resources>
