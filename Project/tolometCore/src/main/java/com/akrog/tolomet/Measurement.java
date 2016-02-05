@@ -42,7 +42,7 @@ public class Measurement {
 		return getTimes()[size()-1];
 	}
 
-	public Long getStamp(Long stamp) {
+	/*public Long getStamp(Long stamp) {
 		Long result = getStamp();
 		if( stamp == null || result == null )
 			return result;
@@ -56,6 +56,32 @@ public class Measurement {
 			}
 		}
 		return result;
+	}*/
+
+	public Long getStamp(Long stamp) {
+		if( stamp == null || isEmpty() )
+			return null;
+		Long[] data = getTimes();
+		int imin = 0;
+		int imax = data.length-1;
+		int imid = 0;
+		while( imin <= imax ) {
+			imid = (imin+imax)/2;
+			if( data[imid] == stamp )
+				return stamp;
+			if( data[imid] < stamp )
+				imin = imid+1;
+			else
+				imax = imid-1;
+		}
+		int inear;
+		if( data[imid] > stamp )
+			inear = imid > 0 ? imid-1 : imid;
+		else
+			inear = imid < data.length-2 ? imid+1 : imid;
+		if( inear == imid )
+			return data[imid];
+		return Math.abs(data[inear]-stamp) < Math.abs(data[imid]-stamp) ? data[inear] : data[imid];
 	}
 	
 	public Number getFirst() {

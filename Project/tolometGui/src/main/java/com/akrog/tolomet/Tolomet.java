@@ -76,8 +76,7 @@ public class Tolomet extends AppCompatActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.toolbar,menu);
-		toolbar.setMenu(menu);
+		toolbar.inflateMenu(menu);
 		return true;
 	}
 

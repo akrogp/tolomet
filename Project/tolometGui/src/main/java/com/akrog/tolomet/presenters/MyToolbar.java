@@ -27,7 +27,7 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 	private Manager model;
 	private Settings settings;
 	private Toolbar toolbar;
-	private MenuItem itemFavorite, itemRefresh, itemInfo, itemMap, itemShare;
+	private MenuItem itemFavorite, itemRefresh, itemInfo, itemMap, itemShare, itemWhatsApp;
 	private boolean isChecked;
 
 	@Override
@@ -45,12 +45,14 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 		toolbar.setOnMenuItemClickListener(this);
 	}
 
-	public void setMenu(Menu menu) {
+	public void inflateMenu(Menu menu) {
+		tolomet.getMenuInflater().inflate(R.menu.toolbar,menu);
 		itemFavorite = menu.findItem(R.id.favorite_item);
 		itemRefresh = menu.findItem(R.id.refresh_item);
 		itemInfo = menu.findItem(R.id.info_item);
 		itemMap = menu.findItem(R.id.map_item);
 		itemShare = menu.findItem(R.id.share_item);
+		itemWhatsApp = menu.findItem(R.id.whatsapp_item);
 	}
 
 	@Override
@@ -117,6 +119,7 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 		itemInfo.setEnabled(enable);
 		itemMap.setEnabled(enable);
 		itemShare.setEnabled(enable);
+		itemWhatsApp.setEnabled(enable);
 		setFavorite(model.getCurrentStation().isFavorite());
 		itemFavorite.setEnabled(enable);
 	}
