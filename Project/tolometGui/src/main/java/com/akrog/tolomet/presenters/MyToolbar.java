@@ -3,6 +3,7 @@ package com.akrog.tolomet.presenters;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,18 +17,22 @@ import android.widget.Toast;
 import com.akrog.tolomet.AboutDialog;
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.R;
+import com.akrog.tolomet.SettingsActivity;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.Settings;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.HashSet;
+import java.util.Locale;
 
 public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 	private Tolomet tolomet;
 	private Manager model;
 	private Settings settings;
 	private Toolbar toolbar;
-	private MenuItem itemFavorite, itemRefresh, itemInfo, itemMap, itemShare, itemWhatsApp;
+	private MenuItem itemFavorite;
+	private final HashSet<MenuItem> stationItems = new HashSet<>();
 	private boolean isChecked;
 
 	@Override
@@ -46,60 +51,99 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 	}
 
 	public void inflateMenu(Menu menu) {
+		stationItems.clear();
 		tolomet.getMenuInflater().inflate(R.menu.toolbar,menu);
 		itemFavorite = menu.findItem(R.id.favorite_item);
-		itemRefresh = menu.findItem(R.id.refresh_item);
-		itemInfo = menu.findItem(R.id.info_item);
-		itemMap = menu.findItem(R.id.map_item);
-		itemShare = menu.findItem(R.id.share_item);
-		itemWhatsApp = menu.findItem(R.id.whatsapp_item);
+		stationItems.add(itemFavorite);
+		stationItems.add(menu.findItem(R.id.refresh_item));
+		stationItems.add(menu.findItem(R.id.info_item));
+		stationItems.add(menu.findItem(R.id.map_item));
+		stationItems.add(menu.findItem(R.id.share_item));
+		stationItems.add(menu.findItem(R.id.whatsapp_item));
 	}
 
 	@Override
 	public boolean onMenuItemClick(MenuItem item) {
 		switch(item.getItemId()) {
+			case R.id.favorite_item:
+				onFavoriteItem();
+				return true;
 			case R.id.refresh_item:
 				tolomet.onRefresh();
 				return true;
 			case R.id.info_item:
-				tolomet.onInfoUrl();
-				return true;
-			case R.id.settings_item:
-				tolomet.onSettings();
+				onInfoItem();
 				return true;
 			case R.id.map_item:
-				tolomet.onMapUrl();
-				return true;
-			case R.id.favorite_item:
-				setFavorite(!isChecked);
-				model.getCurrentStation().setFavorite(isChecked);
-				settings.setFavorite(model.getCurrentStation().getCode(), isChecked);
+				onMapItem();
 				return true;
 			case R.id.share_item:
-				File file = saveScreenShot(getScreenShot());
-				if( file != null )
-					shareScreenShot(file);
+				onShareItem();
 				return true;
 			case R.id.whatsapp_item:
-				File waFile = saveScreenShot(getScreenShot());
-				if( waFile != null )
-					whatsappScreenShot(waFile);
+				onWhatsappItem();
+				return true;
+			case R.id.settings_item:
+				onSettingsItem();
 				return true;
 			case R.id.about_item:
-				AboutDialog about = new AboutDialog(tolomet);
-				about.setTitle(tolomet.getString(R.string.About));
-				about.show();
+				onAboutItem();
 				return true;
 			case R.id.report_item:
-				sendReport();
+				onReportItem();
 				return true;
 		}
 		return false;
 	}
 
-	private void sendReport() {
+	private void onFavoriteItem() {
+		setFavorite(!isChecked);
+		model.getCurrentStation().setFavorite(isChecked);
+		settings.setFavorite(model.getCurrentStation().getCode(), isChecked);
+	}
+
+	private void onInfoItem() {
+		if( !tolomet.alertNetwork() )
+			tolomet.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(model.getInforUrl())));
+	}
+
+	private void onMapItem() {
+		if( tolomet.alertNetwork() )
+			return;
+		String url = String.format(
+				Locale.ENGLISH,
+				"http://maps.google.com/maps?q=loc:%f,%f",
+				model.getCurrentStation().getLatitude(), model.getCurrentStation().getLongitude()
+		);
+		tolomet.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+	}
+
+	private void onShareItem() {
+		File file = saveScreenShot(getScreenShot());
+		if( file != null )
+			shareScreenShot(file);
+	}
+
+	private void onWhatsappItem() {
+		File waFile = saveScreenShot(getScreenShot());
+		if( waFile != null )
+			whatsappScreenShot(waFile);
+	}
+
+	private void onSettingsItem() {
+		tolomet.startActivityForResult(
+				new Intent(tolomet, SettingsActivity.class), Tolomet.SETTINGS_REQUEST);
+	}
+
+	private void onAboutItem() {
+		AboutDialog about = new AboutDialog(tolomet);
+		about.setTitle(tolomet.getString(R.string.About));
+		about.show();
+	}
+
+	private void onReportItem() {
 		Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-			"mailto","akrog.apps@gmail.com", null));
+				"mailto","akrog.apps@gmail.com", null));
 		emailIntent.putExtra(Intent.EXTRA_SUBJECT,
 				tolomet.getString(R.string.ReportSubject));
 		emailIntent.putExtra(Intent.EXTRA_TEXT, String.format(
@@ -114,14 +158,12 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 
 	@Override
 	public void updateView() {
+		if( stationItems.isEmpty() )
+			return;
 		boolean enable = !model.getCurrentStation().isSpecial();
-		itemRefresh.setEnabled(enable);
-		itemInfo.setEnabled(enable);
-		itemMap.setEnabled(enable);
-		itemShare.setEnabled(enable);
-		itemWhatsApp.setEnabled(enable);
+		for( MenuItem item : stationItems )
+			item.setEnabled(enable);
 		setFavorite(model.getCurrentStation().isFavorite());
-		itemFavorite.setEnabled(enable);
 	}
 
 	@Override
@@ -135,17 +177,21 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 	}
 
 	private Bitmap getScreenShot() {
-		return getScreenShot(tolomet.getWindow().getDecorView().findViewById(android.R.id.content));
-		//return getScreenShot(((ViewGroup)tolomet.findViewById(android.R.id.content)).getChildAt(0));
-		//return getScreenShot(tolomet.findViewById(R.id.main_layout));
+		return getScreenShot(tolomet.getWindow().getDecorView());
 	}
 
 	private Bitmap getScreenShot(View view) {
-		View screenView = view.getRootView();
-		boolean cache = screenView.isDrawingCacheEnabled();
-       	screenView.setDrawingCacheEnabled(true);
-       	Bitmap bitmap = Bitmap.createBitmap(screenView.getDrawingCache());
-       	screenView.setDrawingCacheEnabled(cache);
+		boolean cache = view.isDrawingCacheEnabled();
+       	view.setDrawingCacheEnabled(true);
+		Bitmap bmpCache = view.getDrawingCache();
+		Rect frame = new Rect();
+		view.getWindowVisibleDisplayFrame(frame);
+		Bitmap bitmap = Bitmap.createBitmap(
+				bmpCache,
+				0,frame.top,bmpCache.getWidth(),frame.height(),
+				null,true
+		);
+       	view.setDrawingCacheEnabled(cache);
        	return bitmap;
  	}
 

@@ -195,32 +195,10 @@ public class Tolomet extends AppCompatActivity {
     	} else
     		downloadData();
     }
-
-    public void onInfoUrl() {
-    	if( alertNetwork() )
-			return;
-		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(model.getInforUrl())));
-    }
-
-	public void onMapUrl() {
-		if( alertNetwork() )
-			return;
-		String url = String.format(
-			Locale.ENGLISH,
-			"http://maps.google.com/maps?q=loc:%f,%f",
-			model.getCurrentStation().getLatitude(), model.getCurrentStation().getLongitude()
-		);
-		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-	}
-    
-    public void onSettings() {
-    	//startActivity(new Intent(Tolomet.this, SettingsActivity.class));
-    	startActivityForResult(new Intent(Tolomet.this, SettingsActivity.class), 0);
-    }
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    	if( requestCode != 0 )
+    	if( requestCode != SETTINGS_REQUEST )
     		return;
     	createTimer();
     	redraw();
@@ -268,4 +246,6 @@ public class Tolomet extends AppCompatActivity {
 	private final Handler handler = new Handler();
 	private Runnable timer;
 	private boolean downloading = false;
+
+	public static final int SETTINGS_REQUEST = 0;
 }
