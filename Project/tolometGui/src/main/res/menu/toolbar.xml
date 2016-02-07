@@ -6,37 +6,54 @@
     <item
         android:id="@+id/favorite_item"
         android:title="@string/star"
-        android:icon="@android:drawable/btn_star_big_off"
+        android:icon="@drawable/ic_favorite_outline"
         android:contentDescription="@string/star"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/refresh_item"
         android:title="@string/Refresh"
-        android:icon="@android:drawable/ic_popup_sync"
+        android:icon="@drawable/ic_sync"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/info_item"
         android:title="@string/Info"
-        android:icon="@android:drawable/ic_dialog_info"
+        android:icon="@drawable/ic_info_outline"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/map_item"
         android:title="@string/Map"
-        android:icon="@android:drawable/ic_dialog_map"
+        android:icon="@drawable/ic_map"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/share_item"
+        android:title="@string/Share"
+        android:icon="@drawable/ic_share"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/whatsapp_item"
+        android:title="@string/WhatsApp"
+        android:icon="@drawable/ic_whatsapp"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/settings_item"
         android:title="@string/Settings"
-        android:icon="@android:drawable/ic_menu_preferences"
+        android:icon="@drawable/ic_settings"
         app:showAsAction="ifRoom" />
 
     <item android:id="@+id/about_item"
         android:title="@string/About"
-        android:icon="@android:drawable/ic_menu_info_details"
+        android:icon="@drawable/ic_copyright_black"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/report_item"
+        android:title="@string/Report"
+        android:icon="@drawable/ic_mail"
         app:showAsAction="never" />
 
 </menu>

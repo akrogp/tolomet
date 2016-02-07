@@ -76,4 +76,15 @@
     <string name="chart_speedMed">Vel. Med.</string>
     <string name="chart_speedMax">Vel. Máx.</string>
     <string name="chart_covered">100&#37; humedad</string>
+    <string name="Share">Compartir</string>
+    <string name="ShareSubject">¡Mira lo que marca Tolomet!</string>
+    <string name="ShareText">Esto marca Tolomet para</string>
+    <string name="ShareApp">¿Cómo quieres compartir?</string>
+    <string name="Report">Informar</string>
+    <string name="ReportSubject">Tolomet: comentario</string>
+    <string name="ReportInfo">--- No borrar estas líneas ---</string>
+    <string name="ReportGreetings">¡Hola Gorka!</string>
+    <string name="ReportApp">¿Cómo enviar tu comentario?</string>
+    <string name="WhatsApp">WhatsApp</string>
+    <string name="NoWhatsApp">WhatsApp no instalado</string>
 </resources>

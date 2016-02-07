@@ -3,8 +3,10 @@
     <string name="menu_settings">Ezarpenak</string>
     <string name="title_activity_tolomet">Tolomet</string>
     <string name="Refresh">Eguneratu</string>
+    <string name="Info">Informazioa</string>
+    <string name="Map">Mapa ikusi</string>
     <string name="Settings">Ezarpenak</string>
-    <string name="station_prompt">Estazioa </string>
+    <string name="station_prompt">Estazioa</string>
     <string name="summary"></string>
     <string name="Direction">Norabidea</string>
     <string name="DirectionHumidity">Norabidea eta hezetasuna</string>
@@ -74,4 +76,15 @@
     <string name="chart_speedMed">Vel. Med.</string>
     <string name="chart_speedMax">Vel. Max.</string>
     <string name="chart_covered">100&#37; hezetasuna</string>
+    <string name="Share">Partekatu</string>
+    <string name="ShareSubject">Begira zer adierazten duen Tolomet-ek!</string>
+    <string name="ShareText">Tolomet-en emaitzak erabiltzen</string>
+    <string name="ShareApp">Nola partekatu nahi duzu?</string>
+    <string name="Report">Informatu</string>
+    <string name="ReportSubject">Tolomet: iruzkina</string>
+    <string name="ReportInfo">--- Ez ezabatu lerro hauek ---</string>
+    <string name="ReportGreetings">Aupa Gorka!</string>
+    <string name="ReportApp">Nola bidali zure iruzkina?</string>
+    <string name="WhatsApp">WhatsApp</string>
+    <string name="NoWhatsApp">WhatsApp instalatu gabe dago</string>
 </resources>
