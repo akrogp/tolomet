@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -60,6 +61,8 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 		stationItems.add(menu.findItem(R.id.map_item));
 		stationItems.add(menu.findItem(R.id.share_item));
 		stationItems.add(menu.findItem(R.id.whatsapp_item));
+		for( int i = 0; i < menu.size(); i++ )
+			setAlpha(menu.getItem(i));
 	}
 
 	@Override
@@ -161,8 +164,10 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 		if( stationItems.isEmpty() )
 			return;
 		boolean enable = !model.getCurrentStation().isSpecial();
-		for( MenuItem item : stationItems )
+		for( MenuItem item : stationItems ) {
 			item.setEnabled(enable);
+			setAlpha(item);
+		}
 		setFavorite(model.getCurrentStation().isFavorite());
 	}
 
@@ -174,6 +179,7 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 		//itemFavorite.setIcon(checked ? android.R.drawable.btn_star_big_on : android.R.drawable.btn_star_big_off);
 		itemFavorite.setIcon(checked ? R.drawable.ic_favorite : R.drawable.ic_favorite_outline);
 		isChecked = checked;
+		setAlpha(itemFavorite);
 	}
 
 	private Bitmap getScreenShot() {
@@ -188,7 +194,7 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 		view.getWindowVisibleDisplayFrame(frame);
 		Bitmap bitmap = Bitmap.createBitmap(
 				bmpCache,
-				0,frame.top,bmpCache.getWidth(),frame.height(),
+				frame.left,frame.top,frame.width(),frame.height(),
 				null,true
 		);
        	view.setDrawingCacheEnabled(cache);
@@ -249,5 +255,13 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 		} catch (PackageManager.NameNotFoundException e) {
 			Toast.makeText(tolomet, tolomet.getString(R.string.NoWhatsApp), Toast.LENGTH_SHORT).show();
 		}
+	}
+
+	private void setAlpha( MenuItem item ) {
+		setAlpha(item.getIcon(), item.isEnabled());
+	}
+
+	private void setAlpha( Drawable drawable, boolean enabled ) {
+		drawable.setAlpha(enabled?0x8A:0x42);
 	}
 }
