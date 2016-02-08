@@ -199,9 +199,13 @@ public class Tolomet extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	if( requestCode != SETTINGS_REQUEST )
     		return;
-    	createTimer();
-    	redraw();
+		onChangedSettings();
     }
+
+	public void onChangedSettings() {
+		createTimer();
+		redraw();
+	}
     
 	public void onSpinner(Station station) {
 		redraw();		

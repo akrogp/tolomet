@@ -87,4 +87,7 @@
     <string name="ReportApp">Nola bidali zure iruzkina?</string>
     <string name="WhatsApp">WhatsApp</string>
     <string name="NoWhatsApp">WhatsApp instalatu gabe dago</string>
+    <string name="FlyMode">Modo vuelo</string>
+    <string name="Takeoff">Hegaldi modua aktibatuta!</string>
+    <string name="Landed">Hegaldi modua desaktibatuta!</string>
 </resources>

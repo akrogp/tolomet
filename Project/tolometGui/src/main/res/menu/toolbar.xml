@@ -41,6 +41,12 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/fly_item"
+        android:title="@string/FlyMode"
+        android:icon="@drawable/ic_flight_mode"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/settings_item"
         android:title="@string/Settings"
         android:icon="@drawable/ic_settings"

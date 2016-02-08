@@ -192,6 +192,12 @@ public class Settings {
 	public int getUpdateMode() {		
 		return Integer.parseInt(settings.getString("pref_modeUpdate", tolomet.getString(R.string.pref_modeUpdateDefault)));
 	}
+
+	public void setUpdateMode(int mode) {
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putString("pref_modeUpdate",""+mode);
+		editor.commit();
+	}
 	
 	private void migrate() {
 		if( getConfigVersion() == 0 )

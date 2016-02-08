@@ -87,4 +87,7 @@
     <string name="ReportApp">How to send your report?</string>
     <string name="WhatsApp">WhatsApp</string>
     <string name="NoWhatsApp">WhatsApp not installed</string>
+    <string name="FlyMode">Flight mode</string>
+    <string name="Takeoff">Flight mode activated!</string>
+    <string name="Landed">Deactivated flight mode</string>
 </resources>

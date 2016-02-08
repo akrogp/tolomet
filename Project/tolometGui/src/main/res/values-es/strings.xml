@@ -87,4 +87,7 @@
     <string name="ReportApp">¿Cómo enviar tu comentario?</string>
     <string name="WhatsApp">WhatsApp</string>
     <string name="NoWhatsApp">WhatsApp no instalado</string>
+    <string name="FlyMode">Modo vuelo</string>
+    <string name="Takeoff">¡Modo vuelo activado!</string>
+    <string name="Landed">Desactivado modo vuelo</string>
 </resources>

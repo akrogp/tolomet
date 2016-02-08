@@ -1,18 +1,17 @@
 package com.akrog.tolomet.presenters;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.akrog.tolomet.AboutDialog;
@@ -21,9 +20,9 @@ import com.akrog.tolomet.R;
 import com.akrog.tolomet.SettingsActivity;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.Settings;
+import com.akrog.tolomet.view.AndroidUtils;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.HashSet;
 import java.util.Locale;
 
@@ -32,9 +31,9 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 	private Manager model;
 	private Settings settings;
 	private Toolbar toolbar;
-	private MenuItem itemFavorite;
+	private MenuItem itemFavorite, itemMode;
 	private final HashSet<MenuItem> stationItems = new HashSet<>();
-	private boolean isChecked;
+	private boolean isFavorite, isFlying, flyNotified = false;
 
 	@Override
 	public void initialize(Tolomet tolomet, Bundle bundle) {
@@ -53,16 +52,19 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 
 	public void inflateMenu(Menu menu) {
 		stationItems.clear();
-		tolomet.getMenuInflater().inflate(R.menu.toolbar,menu);
+		tolomet.getMenuInflater().inflate(R.menu.toolbar, menu);
 		itemFavorite = menu.findItem(R.id.favorite_item);
+		itemMode = menu.findItem(R.id.fly_item);
 		stationItems.add(itemFavorite);
 		stationItems.add(menu.findItem(R.id.refresh_item));
 		stationItems.add(menu.findItem(R.id.info_item));
 		stationItems.add(menu.findItem(R.id.map_item));
 		stationItems.add(menu.findItem(R.id.share_item));
 		stationItems.add(menu.findItem(R.id.whatsapp_item));
+		stationItems.add(itemMode);
 		for( int i = 0; i < menu.size(); i++ )
 			setAlpha(menu.getItem(i));
+		setScreenMode(false);
 	}
 
 	@Override
@@ -86,6 +88,9 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 			case R.id.whatsapp_item:
 				onWhatsappItem();
 				return true;
+			case R.id.fly_item:
+				setScreenMode(!isFlying);
+				break;
 			case R.id.settings_item:
 				onSettingsItem();
 				return true;
@@ -100,9 +105,9 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 	}
 
 	private void onFavoriteItem() {
-		setFavorite(!isChecked);
-		model.getCurrentStation().setFavorite(isChecked);
-		settings.setFavorite(model.getCurrentStation().getCode(), isChecked);
+		setFavorite(!isFavorite);
+		model.getCurrentStation().setFavorite(isFavorite);
+		settings.setFavorite(model.getCurrentStation().getCode(), isFavorite);
 	}
 
 	private void onInfoItem() {
@@ -178,54 +183,39 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 	private void setFavorite(boolean checked) {
 		//itemFavorite.setIcon(checked ? android.R.drawable.btn_star_big_on : android.R.drawable.btn_star_big_off);
 		itemFavorite.setIcon(checked ? R.drawable.ic_favorite : R.drawable.ic_favorite_outline);
-		isChecked = checked;
+		isFavorite = checked;
 		setAlpha(itemFavorite);
 	}
 
-	private Bitmap getScreenShot() {
-		return getScreenShot(tolomet.getWindow().getDecorView());
+	private void setScreenMode(boolean flying) {
+		itemMode.setIcon(flying ? R.drawable.ic_land_mode : R.drawable.ic_flight_mode);
+		isFlying = flying;
+		if( isFlying ) {
+			tolomet.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+			tolomet.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+			settings.setUpdateMode(Settings.AUTO_UPDATES);
+			Toast.makeText(tolomet,R.string.Takeoff,Toast.LENGTH_SHORT).show();
+			flyNotified = true;
+		} else {
+			tolomet.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+			tolomet.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+			settings.setUpdateMode(Settings.SMART_UPDATES);
+			if( flyNotified == true ) {
+				Toast.makeText(tolomet, R.string.Landed, Toast.LENGTH_SHORT).show();
+				flyNotified = false;
+			}
+		}
+		tolomet.onChangedSettings();
 	}
 
-	private Bitmap getScreenShot(View view) {
-		boolean cache = view.isDrawingCacheEnabled();
-       	view.setDrawingCacheEnabled(true);
-		Bitmap bmpCache = view.getDrawingCache();
-		Rect frame = new Rect();
-		view.getWindowVisibleDisplayFrame(frame);
-		Bitmap bitmap = Bitmap.createBitmap(
-				bmpCache,
-				frame.left,frame.top,frame.width(),frame.height(),
-				null,true
-		);
-       	view.setDrawingCacheEnabled(cache);
-       	return bitmap;
- 	}
+	private Bitmap getScreenShot() {
+		return AndroidUtils.getScreenShot(tolomet.getWindow().getDecorView());
+	}
 
 	private File saveScreenShot(Bitmap bm) {
 		String name = String.format("%s_%d.png", model.getCurrentStation().toString(), System.currentTimeMillis());
-		return saveScreenShot(bm,name);
-	}
-
-	private File saveScreenShot(Bitmap bm, String fileName) {
-		File pix;
-		if( android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.FROYO )
-			pix = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-		else
-			pix = Environment.getExternalStorageDirectory();
-		File dir = new File(pix, "Screenshots");
-		if(!dir.exists())
-			dir.mkdirs();
-		File file = new File(dir, fileName);
-		try {
-			FileOutputStream fOut = new FileOutputStream(file);
-			bm.compress(Bitmap.CompressFormat.PNG, 85, fOut);
-			//bm.compress(Bitmap.CompressFormat.JPEG, 90, fOut);
-			fOut.flush();
-			fOut.close();
-		} catch (Exception e) {
-			return null;
-		}
-		return file;
+		//return saveScreenShot(bm, Bitmap.CompressFormat.JPEG, 90, name);
+		return AndroidUtils.saveScreenShot(bm, Bitmap.CompressFormat.PNG, 85, name);
 	}
 
 	private Intent getScreenShotIntent(File file) {
