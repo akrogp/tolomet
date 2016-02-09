@@ -78,7 +78,8 @@
     <string name="chart_covered">100&#37; humedad</string>
     <string name="Share">Compartir</string>
     <string name="ShareSubject">¡Mira lo que marca Tolomet!</string>
-    <string name="ShareText">Esto marca Tolomet para</string>
+    <string name="ShareTextPre">Esto marca Tolomet para</string>
+    <string name="ShareTextPost">!</string>
     <string name="ShareApp">¿Cómo quieres compartir?</string>
     <string name="Report">Informar</string>
     <string name="ReportSubject">Tolomet: comentario</string>
@@ -88,6 +89,7 @@
     <string name="WhatsApp">WhatsApp</string>
     <string name="NoWhatsApp">WhatsApp no instalado</string>
     <string name="FlyMode">Modo vuelo</string>
+    <string name="LandMode">Aterrizado</string>
     <string name="Takeoff">¡Modo vuelo activado!</string>
     <string name="Landed">Desactivado modo vuelo</string>
 </resources>

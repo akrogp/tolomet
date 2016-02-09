@@ -78,7 +78,8 @@
     <string name="chart_covered">100&#37; hezetasuna</string>
     <string name="Share">Partekatu</string>
     <string name="ShareSubject">Begira zer adierazten duen Tolomet-ek!</string>
-    <string name="ShareText">Tolomet-en emaitzak erabiltzen</string>
+    <string name="ShareTextPre">Tolomet-en emaitzak</string>
+    <string name="ShareTextPost">-(e)ko datuekin</string>
     <string name="ShareApp">Nola partekatu nahi duzu?</string>
     <string name="Report">Informatu</string>
     <string name="ReportSubject">Tolomet: iruzkina</string>
@@ -87,7 +88,8 @@
     <string name="ReportApp">Nola bidali zure iruzkina?</string>
     <string name="WhatsApp">WhatsApp</string>
     <string name="NoWhatsApp">WhatsApp instalatu gabe dago</string>
-    <string name="FlyMode">Modo vuelo</string>
+    <string name="FlyMode">Hegaldi modua</string>
+    <string name="LandMode">Lurreratura</string>
     <string name="Takeoff">Hegaldi modua aktibatuta!</string>
     <string name="Landed">Hegaldi modua desaktibatuta!</string>
 </resources>

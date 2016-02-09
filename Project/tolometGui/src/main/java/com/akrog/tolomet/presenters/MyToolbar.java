@@ -188,15 +188,18 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 	}
 
 	private void setScreenMode(boolean flying) {
-		itemMode.setIcon(flying ? R.drawable.ic_land_mode : R.drawable.ic_flight_mode);
 		isFlying = flying;
 		if( isFlying ) {
+			itemMode.setIcon(R.drawable.ic_land_mode);
+			itemMode.setTitle(R.string.LandMode);
 			tolomet.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 			tolomet.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 			settings.setUpdateMode(Settings.AUTO_UPDATES);
 			Toast.makeText(tolomet,R.string.Takeoff,Toast.LENGTH_SHORT).show();
 			flyNotified = true;
 		} else {
+			itemMode.setIcon(R.drawable.ic_flight_mode);
+			itemMode.setTitle(R.string.FlyMode);
 			tolomet.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 			tolomet.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 			settings.setUpdateMode(Settings.SMART_UPDATES);
@@ -224,7 +227,7 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 		intent.setType("image/*");
 		intent.putExtra(android.content.Intent.EXTRA_SUBJECT, tolomet.getString(R.string.ShareSubject));
 		intent.putExtra(android.content.Intent.EXTRA_TEXT, String.format(
-			"%s %s!", tolomet.getString(R.string.ShareText), model.getCurrentStation().getName()));
+			"%s %s%s", tolomet.getString(R.string.ShareTextPre), model.getCurrentStation().getName(), tolomet.getString(R.string.ShareTextPost)));
 		intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
 		intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		return intent;

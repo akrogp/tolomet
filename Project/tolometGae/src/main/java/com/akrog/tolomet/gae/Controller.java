@@ -20,6 +20,64 @@ public class Controller {
 		
 		// Version
 		Motd motd = new Motd();
+		//changesv2(version, motd);
+		//changesv3(version, lang, motd);
+		changesv4(version, lang, motd);
+		
+		// MOTD
+		/*Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
+        cal.set(2015,5-1,6,0,0);
+        if( stamp < cal.getTimeInMillis() ) {
+        	//motd.setMotd("Para que Tolomet funcione bien en todos los móviles, en caso de que os de algún fallo reportadlo junto con una descripción de cuándo ocurre");
+        	//motd.setMotd("¡Usa la lista de favoritos, es más cómodo! Puedes añadir y quitar estaciones de favoritos tocando la estrella de arriba.");
+        	//motd.setMotd("Parece que AEMET tiene problemas con sus estaciones, esperemos que se solucione pronto");
+        	if( lang == null || isSpanish(lang) )
+        		motd.setMotd("En caso de que Tolomet falle y se cierre ¡da al botón de eviar reporte! Limpiar los datos de la aplicación o reinstalar debería solucionarlo.");
+        	else
+        		motd.setMotd("In case Tolomet crashes, click on send report! Cleaning app data or reinstalling should fix most issues.");
+        	motd.setStamp(cal.getTimeInMillis());
+        }*/
+        
+		return motd.toString();
+	}
+
+	private void changesv4(int version, String lang, Motd motd) {
+		if( version < 400 ) {
+			motd.setVersion("4.0");
+			motd.addChange(tr(lang,"Nueva interfaz de usuario", "New user interface"));
+			motd.addChange(tr(lang,"Opciones para compartir lecturas","Support for sharing readings"));
+			motd.addChange(tr(lang,"Añadido modo vuelo","Added a flight mode"));
+			motd.addChange(tr(lang,"Localización en mapa","Location in map"));
+			motd.addChange(tr(lang,"Desplazarse por lecturas","Scroll of readings"));
+		}
+	}
+
+	private void changesv3(int version, String lang, Motd motd) {
+		if( version < 300 ) {
+			motd.setVersion("3.0");
+			motd.addChange(tr(lang,"Incluida opción para cambiar de país","Included option to change country"));
+			motd.addChange(tr(lang,"Incluidos más de 9000 aeropuertos de todo el mundo (gracias a Ale)","Included more than 9000 wolrd-wide airports (thanks Ale)"));
+			motd.addChange(tr(lang,"Incluidas estaciones de MeteoPrades (gracias a Eduard y Mario)","Included MeteoPrades (Spain) stations (thanks Eduard & Mario)"));
+		}
+		if( version < 301 ) {
+			motd.setVersion("3.0.1");
+			motd.addChange(tr(lang,"Configurada zona horaria canaria en AEMET","Configured canary time zone in AEMET"));
+		}
+		if( version < 302 ) {
+			motd.setVersion("3.0.2");
+			motd.addChange(tr(lang,"Solucionados fallos reportados por usuarios","Minor fixes reported by users"));
+		}
+		if( version < 303 ) {
+			motd.setVersion("3.0.3");
+			motd.addChange(tr(lang,"Incluida estación de Euskalmet para Kanpezu","Included Euskalmet station for Kanpezu"));
+		}
+		if( version < 304 ) {
+			motd.setVersion("3.0.4");
+			motd.addChange(tr(lang,"Incluida estación de Euskalmet para Ilarduia","Included Euskalmet station for Ilarduia"));
+		}
+	}
+
+	private void changesv2(int version, Motd motd) {
 		if( version < 202 ) {
 			motd.setVersion("2.0.2");
 			motd.addChange("Incluidas gráficas de temperatura y presión");
@@ -46,44 +104,6 @@ public class Controller {
 			motd.setVersion("2.1.4");
 			motd.addChange("Solucionado fallo en algunos móviles al acceder a Euskalmet");
 		}
-		if( version < 300 ) {
-			motd.setVersion("3.0");
-			motd.addChange(tr(lang,"Incluida opción para cambiar de país","Included option to change country"));
-			motd.addChange(tr(lang,"Incluidos más de 9000 aeropuertos de todo el mundo (gracias a Ale)","Included more than 9000 wolrd-wide airports (thanks Ale)"));
-			motd.addChange(tr(lang,"Incluidas estaciones de MeteoPrades (gracias a Eduard y Mario)","Included MeteoPrades (Spain) stations (thanks Eduard & Mario)"));			
-		}
-		if( version < 301 ) {
-			motd.setVersion("3.0.1");
-			motd.addChange(tr(lang,"Configurada zona horaria canaria en AEMET","Configured canary time zone in AEMET"));
-		}
-		if( version < 302 ) {
-			motd.setVersion("3.0.2");
-			motd.addChange(tr(lang,"Solucionados fallos reportados por usuarios","Minor fixes reported by users"));
-		}
-		if( version < 303 ) {
-			motd.setVersion("3.0.3");
-			motd.addChange(tr(lang,"Incluida estación de Euskalmet para Kanpezu","Included Euskalmet station for Kanpezu"));
-		}
-		if( version < 304 ) {
-			motd.setVersion("3.0.4");
-			motd.addChange(tr(lang,"Incluida estación de Euskalmet para Ilarduia","Included Euskalmet station for Ilarduia"));
-		}
-		
-		// MOTD
-		/*Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
-        cal.set(2015,5-1,6,0,0);
-        if( stamp < cal.getTimeInMillis() ) {
-        	//motd.setMotd("Para que Tolomet funcione bien en todos los móviles, en caso de que os de algún fallo reportadlo junto con una descripción de cuándo ocurre");
-        	//motd.setMotd("¡Usa la lista de favoritos, es más cómodo! Puedes añadir y quitar estaciones de favoritos tocando la estrella de arriba.");
-        	//motd.setMotd("Parece que AEMET tiene problemas con sus estaciones, esperemos que se solucione pronto");
-        	if( lang == null || isSpanish(lang) )
-        		motd.setMotd("En caso de que Tolomet falle y se cierre ¡da al botón de eviar reporte! Limpiar los datos de la aplicación o reinstalar debería solucionarlo.");
-        	else
-        		motd.setMotd("In case Tolomet crashes, click on send report! Cleaning app data or reinstalling should fix most issues.");
-        	motd.setStamp(cal.getTimeInMillis());
-        }*/
-        
-		return motd.toString();
 	}
 	
 	private String tr(String lang, String es, String en) {
