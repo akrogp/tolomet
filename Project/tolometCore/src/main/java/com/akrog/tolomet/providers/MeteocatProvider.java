@@ -18,7 +18,7 @@ public class MeteocatProvider implements WindProvider {
 		downloader.setBrowser(FakeBrowser.WGET);
 		downloader.setUrl("http://www.meteo.cat/observacions/xema/dades");
 		downloader.addParam("codi", station.getCode());
-		downloader.addParam("dia", String.format("%d-%02d-%02d", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH)));
+		downloader.addParam("dia", String.format("%d-%02d-%02dT00:00Z", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH)));
 		updateStation(station,downloader.download("\"tabs-2\""));
 	}
 	

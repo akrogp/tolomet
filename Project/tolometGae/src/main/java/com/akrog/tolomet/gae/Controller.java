@@ -50,6 +50,10 @@ public class Controller {
 			motd.addChange(tr(lang,"Localización en mapa","Location in map"));
 			motd.addChange(tr(lang,"Desplazarse por lecturas","Scroll of readings"));
 		}
+		if( version == 400 ) {
+			motd.setVersion("4.0.1");
+			motd.addChange(tr(lang,"Solucionado problema con estaciones de Meteocat", "Solved problem with Meteocat stations"));
+		}
 	}
 
 	private void changesv3(int version, String lang, Motd motd) {
