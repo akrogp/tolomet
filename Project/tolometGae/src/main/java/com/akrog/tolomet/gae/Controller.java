@@ -51,8 +51,12 @@ public class Controller {
 			motd.addChange(tr(lang,"Desplazarse por lecturas","Scroll of readings"));
 		}
 		if( version == 400 ) {
-			motd.setVersion("4.0.1");
+			motd.setVersion("4.0.2");
 			motd.addChange(tr(lang,"Solucionado problema con estaciones de Meteocat", "Solved problem with Meteocat stations"));
+		}
+		if( version == 401 ) {
+			motd.setVersion("4.0.2");
+			motd.addChange(tr(lang,"Añadida gráfica de vel. máx. en Meteocat", "Included speed max. chart in Meteocat"));
 		}
 	}
 

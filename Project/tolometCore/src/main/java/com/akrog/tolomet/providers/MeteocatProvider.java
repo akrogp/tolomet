@@ -1,8 +1,12 @@
 package com.akrog.tolomet.providers;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import com.akrog.tolomet.Measurement;
@@ -18,8 +22,10 @@ public class MeteocatProvider implements WindProvider {
 		downloader.setBrowser(FakeBrowser.WGET);
 		downloader.setUrl("http://www.meteo.cat/observacions/xema/dades");
 		downloader.addParam("codi", station.getCode());
-		downloader.addParam("dia", String.format("%d-%02d-%02dT00:00Z", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH)));
-		updateStation(station,downloader.download("\"tabs-2\""));
+		downloader.addParam("dia", String.format("%d-%02d-%02dT00:00Z", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH)));
+		updateStationV2(station, downloader.download("taronja"));
+		if( station.isEmpty() )
+			updateStationV1(station, downloader.download("\"tabs-2\""));
 	}
 	
 	@Override
@@ -28,13 +34,13 @@ public class MeteocatProvider implements WindProvider {
 			downloader.cancel();	
 	}
 
-	protected void updateStation(Station station, String data) {
+	protected void updateStationV1(Station station, String data) {
 		if( data == null )
 			return;				
 		int iWind = data.indexOf("renderitzarGraficaVelocitatDireccioVent");
-		if( iWind < 0 )
-			return;
 		int iAir = data.indexOf("renderitzarGraficaTemperaturaHumitat");
+		if( iWind < 0 && iAir < 0 )
+			return;
 		station.clear();
 		
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
@@ -44,13 +50,13 @@ public class MeteocatProvider implements WindProvider {
 		cal.set(Calendar.MILLISECOND, 0);
 		long date = cal.getTimeInMillis(); 
 				
-		updateMeasurement(station.getMeteo().getAirTemperature(), date, getValues(data, iAir, "temperatura"));
-		updateMeasurement(station.getMeteo().getAirHumidity(), date, getValues(data, iAir, "humitat"));
-		updateMeasurement(station.getMeteo().getWindDirection(), date, getValues(data, iWind, "direccioVent"));
-		updateMeasurement(station.getMeteo().getWindSpeedMed(), date, getValues(data, iWind, "velocitatVent"));
+		updateMeasurementV1(station.getMeteo().getAirTemperature(), date, getValuesV1(data, iAir, "temperatura"));
+		updateMeasurementV1(station.getMeteo().getAirHumidity(), date, getValuesV1(data, iAir, "humitat"));
+		updateMeasurementV1(station.getMeteo().getWindDirection(), date, getValuesV1(data, iWind, "direccioVent"));
+		updateMeasurementV1(station.getMeteo().getWindSpeedMed(), date, getValuesV1(data, iWind, "velocitatVent"));
 	}
 	
-	private void updateMeasurement( Measurement measurement, long stamp, List<Float> values ) {
+	private void updateMeasurementV1(Measurement measurement, long stamp, List<Float> values) {
 		if( values == null )
 			return;
 		for( Float value : values ) {
@@ -59,7 +65,9 @@ public class MeteocatProvider implements WindProvider {
 		}
 	}
 	
-	private List<Float> getValues( String data, int off, String label ) {
+	private List<Float> getValuesV1(String data, int off, String label) {
+		if( off < 0 )
+			return null;
 		String[] fields = data.substring(off).split("\\[");
 		int i;
 		for( i = 0; i < fields.length; i++ )
@@ -79,6 +87,74 @@ public class MeteocatProvider implements WindProvider {
 			}
 		}
 		return list;
+	}
+
+	protected void updateStationV2(Station station, String data) {
+		if( data == null )
+			return;
+
+		String table = data.substring(data.indexOf("tblperiode"));
+		String[] rows = table.split("</tr>");
+
+		int iStamp = findCol(rows[0], "TU");
+		if( iStamp != 0 )
+			return;
+
+		station.clear();
+		int iTemp = findCol(rows[0], "TM");
+		int iHum = findCol(rows[0], "HRM");
+		int iMed = findCol(rows[0], "VVM");
+		int iMax = findCol(rows[0], "VVX");
+		int iDir = findCol(rows[0], "DVM");
+
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		NumberFormat format = DecimalFormat.getInstance(Locale.ENGLISH);
+
+		for( int i = 1; i < rows.length-1; i++ ) {
+			String[] cols = getCols(rows[i]);
+			getStamp(cols[iStamp], cal);
+			addMeasurementV2(station.getMeteo().getAirTemperature(), cal, cols, iTemp, format);
+			addMeasurementV2(station.getMeteo().getAirHumidity(), cal, cols, iHum, format);
+			addMeasurementV2(station.getMeteo().getWindSpeedMed(), cal, cols, iMed, format);
+			addMeasurementV2(station.getMeteo().getWindSpeedMax(), cal, cols, iMax, format);
+			addMeasurementV2(station.getMeteo().getWindDirection(), cal, cols, iDir, format);
+		}
+	}
+
+	int findCol(String header, String name) {
+		int off = header.indexOf(name);
+		if( off < 0 )
+			return -1;
+		return header.substring(0,off).split("</th>").length-1;
+	}
+
+	String[] getCols(String row) {
+		String[] fields = row.split("</");
+		String[] cols = new String[fields.length-1];
+		for( int i = 0; i < cols.length; i++ )
+			cols[i] = fields[i].substring(fields[i].lastIndexOf('>')+1).trim();
+		return cols;
+	}
+
+	void getStamp(String str, Calendar cal) {
+		String[] fields = str.split(" - ");
+		fields = fields[1].split(":");
+		cal.set(Calendar.HOUR_OF_DAY,Integer.parseInt(fields[0]));
+		cal.set(Calendar.MINUTE,Integer.parseInt(fields[1]));
+	}
+
+	void addMeasurementV2(Measurement measurement, Calendar stamp, String[] cols, int index, NumberFormat format) {
+		if( index < 0 || index > cols.length )
+			return;
+		try {
+			Number value = format.parse(cols[index]);
+			measurement.put(stamp.getTimeInMillis(), value.floatValue());
+		} catch (ParseException e) {
+		}
 	}
 
 	@Override
