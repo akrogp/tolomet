@@ -29,6 +29,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="jxl-2.6.12" level="project" />
     <orderEntry type="library" exported="" name="log4j-1.2.14" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="junit-4.12" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="hamcrest-core-1.3" level="project" />
     <orderEntry type="library" exported="" name="tolometCore.tolometCore" level="project" />
   </component>
 </module>

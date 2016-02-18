@@ -32,6 +32,7 @@ public class FixStations {
 		sortStations(stations);
 		for( Station station : stations ) {
 			fixName(station);
+			showStation(station);
 			saveStation(station);
 		}
 		logger.info(String.format("Finished: %d stations",stations.size()));
