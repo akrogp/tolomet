@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Tolomet</string>
+    <string name="app_name">ParaWind</string>
     <string name="menu_settings">Ajustes</string>
-    <string name="title_activity_tolomet">Tolomet</string>
+    <string name="title_activity_tolomet">ParaWind</string>
     <string name="Refresh">Actualizar</string>
     <string name="Info">Información</string>
     <string name="Map">Ver mapa</string>
@@ -77,12 +77,12 @@
     <string name="chart_speedMax">Vel. Máx.</string>
     <string name="chart_covered">100&#37; humedad</string>
     <string name="Share">Compartir</string>
-    <string name="ShareSubject">¡Mira lo que marca Tolomet!</string>
-    <string name="ShareTextPre">Esto marca Tolomet para</string>
+    <string name="ShareSubject">¡Mira lo que marca ParaWind!</string>
+    <string name="ShareTextPre">Esto marca ParaWind para</string>
     <string name="ShareTextPost">!</string>
     <string name="ShareApp">¿Cómo quieres compartir?</string>
     <string name="Report">Informar</string>
-    <string name="ReportSubject">Tolomet: comentario</string>
+    <string name="ReportSubject">ParaWind: comentario</string>
     <string name="ReportInfo">--- No borrar estas líneas ---</string>
     <string name="ReportGreetings">¡Hola Gorka!</string>
     <string name="ReportApp">¿Cómo enviar tu comentario?</string>

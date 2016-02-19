@@ -1,3 +1,2 @@
-<b>Tolomet</b> (v$VER$)<br>
-Copyright 2012-2016, Gorka Prieto<br>
-<b>https://github.com/akrogp/tolomet</b>
+<b>ParaWind</b> (v$VER$)<br>
+Copyright 2012-2016, Gorka Prieto

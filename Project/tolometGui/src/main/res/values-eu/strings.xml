@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Tolomet</string>
+    <string name="app_name">ParaWind</string>
     <string name="menu_settings">Ezarpenak</string>
-    <string name="title_activity_tolomet">Tolomet</string>
+    <string name="title_activity_tolomet">ParaWind</string>
     <string name="Refresh">Eguneratu</string>
     <string name="Info">Informazioa</string>
     <string name="Map">Mapa ikusi</string>
@@ -16,7 +16,7 @@
     <string name="Wind">Haizea</string>
     <string name="Downloading">Deskargatzen</string>
     <string name="Progress">Aurrerapena</string>
-    <string name="About">Tolomet-i buruz &#8230;</string>
+    <string name="About">ParaWind-i buruz &#8230;</string>
     <string name="Time">Ordua</string>
     <string name="Degrees">Graduak</string>
     <string name="Impatient">Zazpiki! Irakurketak</string>
@@ -77,12 +77,12 @@
     <string name="chart_speedMax">Vel. Max.</string>
     <string name="chart_covered">100&#37; hezetasuna</string>
     <string name="Share">Partekatu</string>
-    <string name="ShareSubject">Begira zer adierazten duen Tolomet-ek!</string>
-    <string name="ShareTextPre">Tolomet-en emaitzak</string>
+    <string name="ShareSubject">Begira zer adierazten duen ParaWind-ek!</string>
+    <string name="ShareTextPre">ParaWind-en emaitzak</string>
     <string name="ShareTextPost">-(e)ko datuekin</string>
     <string name="ShareApp">Nola partekatu nahi duzu?</string>
     <string name="Report">Informatu</string>
-    <string name="ReportSubject">Tolomet: iruzkina</string>
+    <string name="ReportSubject">ParaWind: iruzkina</string>
     <string name="ReportInfo">--- Ez ezabatu lerro hauek ---</string>
     <string name="ReportGreetings">Aupa Gorka!</string>
     <string name="ReportApp">Nola bidali zure iruzkina?</string>
