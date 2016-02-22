@@ -14,9 +14,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.akrog.tolomet.R;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 public class AboutDialog extends Dialog {
 	private static Context context = null;
@@ -38,6 +40,7 @@ public class AboutDialog extends Dialog {
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
+		Log.i("Tolomet",GoogleApiAvailability.getInstance().getOpenSourceSoftwareLicenseInfo(context));
 		tv.setText(Html.fromHtml(readRawTextFile(R.raw.info).replaceAll("\\$VER\\$", versionName)));
 		tv.setLinkTextColor(Color.WHITE);
 		Linkify.addLinks(tv, Linkify.ALL);

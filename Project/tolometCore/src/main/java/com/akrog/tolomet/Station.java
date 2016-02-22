@@ -74,6 +74,10 @@ public class Station {
 		this.longitude = station.longitude;
 		this.special = station.special;
 	}
+
+	public int getRefresh() {
+		return  getProvider().getRefresh(getCode());
+	}
 	
 	public boolean isEmpty() {
 		return meteo.isEmpty();

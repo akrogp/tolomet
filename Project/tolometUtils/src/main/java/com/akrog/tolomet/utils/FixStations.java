@@ -32,7 +32,12 @@ public class FixStations {
 		sortStations(stations);
 		for( Station station : stations ) {
 			fixName(station);
-			showStation(station);
+			/*if( station.getCode().equals("10203") ) {
+				station.setLatitude(43.09);
+				station.setLongitude(-7.13);
+			}*/
+			if( station.getLatitude() == 0 )
+				showStation(station);
 			saveStation(station);
 		}
 		logger.info(String.format("Finished: %d stations",stations.size()));

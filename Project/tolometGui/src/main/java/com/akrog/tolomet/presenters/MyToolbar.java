@@ -16,10 +16,13 @@ import android.widget.Toast;
 
 import com.akrog.tolomet.AboutDialog;
 import com.akrog.tolomet.Manager;
+import com.akrog.tolomet.MapActivity;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.SettingsActivity;
+import com.akrog.tolomet.Station;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.Settings;
+import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolomet.view.AndroidUtils;
 
 import java.io.File;
@@ -118,12 +121,18 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 	private void onMapItem() {
 		if( tolomet.alertNetwork() )
 			return;
-		String url = String.format(
+		/*String url = String.format(
 				Locale.ENGLISH,
 				"http://maps.google.com/maps?q=loc:%f,%f",
 				model.getCurrentStation().getLatitude(), model.getCurrentStation().getLongitude()
 		);
-		tolomet.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+		tolomet.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));*/
+		Station station = model.getCurrentStation();
+		Intent intent = new Intent(tolomet, MapActivity.class);
+		intent.putExtra(MapActivity.EXTRA_COUNTRY, station.getCountry());
+		intent.putExtra(MapActivity.EXTRA_PROVIDER, station.getProviderType().name());
+		intent.putExtra(MapActivity.EXTRA_STATION, station.getCode());
+		tolomet.startActivity(intent);
 	}
 
 	private void onShareItem() {
