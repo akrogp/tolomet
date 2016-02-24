@@ -1,9 +1,7 @@
 package com.akrog.tolomet;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.akrog.tolomet.providers.WindProviderType;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -15,20 +13,22 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MapActivity extends ToolbarActivity implements OnMapReadyCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
+        createView(R.layout.activity_map);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setLogo(R.drawable.ic_launcher);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
     }
-
 
     /**
      * Manipulates the map once available.
@@ -81,6 +81,22 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         LatLng cam = new LatLng(current.getLatitude(), current.getLongitude());
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cam, 10));
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+    }
+
+    @Override
+    public void redraw() {
+    }
+
+    @Override
+    public void onRefresh() {
+    }
+
+    @Override
+    public void onChangedSettings() {
+    }
+
+    @Override
+    public void onSelected(Station station) {
     }
 
     public static final String EXTRA_COUNTRY = "com.akrog.tolomet.MapActivity.country";

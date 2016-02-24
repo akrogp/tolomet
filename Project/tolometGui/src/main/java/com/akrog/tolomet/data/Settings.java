@@ -1,5 +1,16 @@
 package com.akrog.tolomet.data;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.util.SparseArray;
+
+import com.akrog.tolomet.Manager;
+import com.akrog.tolomet.Measurement;
+import com.akrog.tolomet.ModelActivity;
+import com.akrog.tolomet.R;
+import com.akrog.tolomet.Station;
+import com.akrog.tolomet.presenters.MySpinner;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -7,26 +18,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.util.SparseArray;
-
-import com.akrog.tolomet.Manager;
-import com.akrog.tolomet.Measurement;
-import com.akrog.tolomet.R;
-import com.akrog.tolomet.Station;
-import com.akrog.tolomet.Tolomet;
-import com.akrog.tolomet.presenters.MySpinner;
-
 public class Settings {	
 	private SharedPreferences settings;
-	private Tolomet tolomet;
+	private ModelActivity activity;
 	private Manager model;
 	
-	public void initialize( Tolomet tolomet, Manager model ) {
-		this.tolomet = tolomet;
+	public void initialize( ModelActivity activity, Manager model ) {
+		this.activity = activity;
 		this.model = model;
-		settings = PreferenceManager.getDefaultSharedPreferences(tolomet);
+		settings = PreferenceManager.getDefaultSharedPreferences(activity);
 		
 		migrate();
 		fixValues();
@@ -122,16 +122,16 @@ public class Settings {
 	}
 	
 	private int getPrefValue( String key, int idDefault, int idArray, boolean max, Measurement meas ) {
-		int res = Integer.parseInt(settings.getString(key, tolomet.getString(idDefault)));
+		int res = Integer.parseInt(settings.getString(key, activity.getString(idDefault)));
 		if( res != INVALID )
 			return res;
 		if( meas.isEmpty() )
-			return Integer.parseInt(tolomet.getString(idDefault));
+			return Integer.parseInt(activity.getString(idDefault));
 		
 		List<Integer> values = mapArrays.get(idArray);
 		if( values == null ) {
 			values = new ArrayList<Integer>();
-			String[] strings = tolomet.getResources().getStringArray(idArray);
+			String[] strings = activity.getResources().getStringArray(idArray);
 			for( int i = 0; i < strings.length; i++ ) {
 				int value = Integer.parseInt(strings[i]);
 				if( value != INVALID )
@@ -162,11 +162,11 @@ public class Settings {
 	}
 	
 	public int getMinMarker() {		
-		return Integer.parseInt(settings.getString("pref_minMarker", tolomet.getString(R.string.pref_minMarkerDefault)));
+		return Integer.parseInt(settings.getString("pref_minMarker", activity.getString(R.string.pref_minMarkerDefault)));
 	}
 	
 	public int getMaxMarker() {
-		return Integer.parseInt(settings.getString("pref_maxMarker", tolomet.getString(R.string.pref_maxMarkerDefault)));
+		return Integer.parseInt(settings.getString("pref_maxMarker", activity.getString(R.string.pref_maxMarkerDefault)));
 	}
 	
 	public int getMinTemp(Measurement meas) {
@@ -186,11 +186,11 @@ public class Settings {
 	}
 	
 	public boolean isSimpleMode() {		
-		return settings.getString("pref_modeGraphs", tolomet.getString(R.string.pref_modeGraphsDefault)).equals("0");
+		return settings.getString("pref_modeGraphs", activity.getString(R.string.pref_modeGraphsDefault)).equals("0");
 	}
 	
 	public int getUpdateMode() {		
-		return Integer.parseInt(settings.getString("pref_modeUpdate", tolomet.getString(R.string.pref_modeUpdateDefault)));
+		return Integer.parseInt(settings.getString("pref_modeUpdate", activity.getString(R.string.pref_modeUpdateDefault)));
 	}
 
 	public void setUpdateMode(int mode) {
@@ -220,7 +220,7 @@ public class Settings {
 		String pref = settings.getString(key, null);
 		if( pref == null )
 			return;
-		String[] values = tolomet.getResources().getStringArray(idArray);
+		String[] values = activity.getResources().getStringArray(idArray);
 		for( String value : values )
 			if( pref.equals(value) )
 				return;

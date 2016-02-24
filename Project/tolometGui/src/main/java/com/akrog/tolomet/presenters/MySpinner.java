@@ -23,14 +23,14 @@ import android.widget.Toast;
 
 import com.akrog.tolomet.Country;
 import com.akrog.tolomet.Manager;
+import com.akrog.tolomet.ModelActivity;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Region;
 import com.akrog.tolomet.Station;
-import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.Settings;
 
 public class MySpinner implements OnItemSelectedListener, Presenter {
-	private Tolomet tolomet;
+	private ModelActivity activity;
 	private Manager model;
 	private Settings settings;
 	private Spinner spinner;
@@ -43,25 +43,25 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 	private Station selectItem, startItem, favItem, regItem, nearItem, indexItem, allItem, countryItem;
 
 	@Override
-	public void initialize(Tolomet tolomet, Bundle bundle) {
-		this.tolomet = tolomet;
-		model = tolomet.getModel();
-		settings = tolomet.getSettings();
+	public void initialize(ModelActivity activity, Bundle bundle) {
+		this.activity = activity;
+		model = activity.getModel();
+		settings = activity.getSettings();
 		
-        spinner = (Spinner)tolomet.findViewById(R.id.station_spinner);
-        adapter = new ArrayAdapter<Station>(tolomet,android.R.layout.simple_spinner_item,choices);
+        spinner = (Spinner)activity.findViewById(R.id.station_spinner);
+        adapter = new ArrayAdapter<Station>(activity,android.R.layout.simple_spinner_item,choices);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     	spinner.setAdapter(adapter);
     	spinner.setOnItemSelectedListener(this);
         
-        selectItem = new Station("--- " + this.tolomet.getString(R.string.select) + " ---", 0);
-        startItem = new Station("["+this.tolomet.getString(R.string.menu_start)+"]", Type.StartMenu.getValue());
-        favItem = new Station(this.tolomet.getString(R.string.menu_fav), Type.Favorite.getValue());
-		regItem = new Station(this.tolomet.getString(R.string.menu_reg),Type.Regions.getValue());    	    	   
-		nearItem = new Station(this.tolomet.getString(R.string.menu_close),Type.Nearest.getValue());
-		indexItem = new Station(this.tolomet.getString(R.string.menu_index),Type.Vowels.getValue());
-		allItem = new Station(this.tolomet.getString(R.string.menu_all),Type.All.getValue());
-		countryItem = new Station(this.tolomet.getString(R.string.menu_country),Type.Countries.getValue());
+        selectItem = new Station("--- " + this.activity.getString(R.string.select) + " ---", 0);
+        startItem = new Station("["+this.activity.getString(R.string.menu_start)+"]", Type.StartMenu.getValue());
+        favItem = new Station(this.activity.getString(R.string.menu_fav), Type.Favorite.getValue());
+		regItem = new Station(this.activity.getString(R.string.menu_reg),Type.Regions.getValue());
+		nearItem = new Station(this.activity.getString(R.string.menu_close),Type.Nearest.getValue());
+		indexItem = new Station(this.activity.getString(R.string.menu_index),Type.Vowels.getValue());
+		allItem = new Station(this.activity.getString(R.string.menu_all),Type.All.getValue());
+		countryItem = new Station(this.activity.getString(R.string.menu_country),Type.Countries.getValue());
         
         loadState( bundle );        
 	}
@@ -89,7 +89,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		if( country == null || country.equals(this.country) )
 			return;
 		model.setCountry(country);
-		regItem.setName(country.equals("ES")?this.tolomet.getString(R.string.menu_ccaa):this.tolomet.getString(R.string.menu_reg));		
+		regItem.setName(country.equals("ES") ? this.activity.getString(R.string.menu_ccaa) : this.activity.getString(R.string.menu_reg));
 		Set<String> favs = settings.getFavorites();
 		for( Station station : model.getAllStations() )
 			station.setFavorite(favs.contains(station.getCode()));
@@ -101,7 +101,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		String code;
 		try {
 			Location ll = getLocation(false);
-			Geocoder geocoder = new Geocoder(tolomet, locale);
+			Geocoder geocoder = new Geocoder(activity, locale);
 			List<Address> addresses = geocoder.getFromLocation(ll.getLatitude(), ll.getLongitude(), 1);
 			code = addresses.get(0).getCountryCode();
 		} catch(Exception e) {
@@ -202,7 +202,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 	private boolean selectNearest() {
     	Location ll = getLocation(true);
     	if( ll == null ) {
-    		Toast.makeText(tolomet,tolomet.getString(R.string.error_gps),Toast.LENGTH_SHORT).show();
+    		Toast.makeText(activity, activity.getString(R.string.error_gps),Toast.LENGTH_SHORT).show();
     		return false;
     	}
     	setCountry(guessCountry());
@@ -213,7 +213,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
     	}
 		model.selectNearest();
 		if( model.getSelStations().isEmpty() ) {
-			Toast.makeText(tolomet,tolomet.getString(R.string.warn_near),Toast.LENGTH_SHORT).show();
+			Toast.makeText(activity, activity.getString(R.string.warn_near),Toast.LENGTH_SHORT).show();
     		return false;
 		}
 		return true;
@@ -223,7 +223,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		Location locationGps = null;
 		Location locationNet = null;
 	    try {
-	    	LocationManager locationManager = (LocationManager)tolomet.getSystemService(Context.LOCATION_SERVICE);
+	    	LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
 	    	boolean isGps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 	    	boolean isNet = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER); 
 	        if( isGps )
@@ -243,16 +243,16 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 	}
 
 	private void showLocationDialog() {
-		AlertDialog.Builder dialog = new AlertDialog.Builder(tolomet);
-        dialog.setMessage(tolomet.getString(R.string.warn_gps));
-        dialog.setPositiveButton(tolomet.getString(R.string.gps_ok), new DialogInterface.OnClickListener() {
+		AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
+        dialog.setMessage(activity.getString(R.string.warn_gps));
+        dialog.setPositiveButton(activity.getString(R.string.gps_ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface paramDialogInterface, int paramInt) {
                 Intent myIntent = new Intent( android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS );
-                tolomet.startActivity(myIntent);
+                activity.startActivity(myIntent);
             }
         });
-        dialog.setNegativeButton(tolomet.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+        dialog.setNegativeButton(activity.getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface paramDialogInterface, int paramInt) {
             }
@@ -262,9 +262,9 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 	}
 	
 	private void showFavoriteDialog() {
-		AlertDialog.Builder dialog = new AlertDialog.Builder(tolomet);
-        dialog.setMessage(tolomet.getString(R.string.warn_fav));
-        dialog.setPositiveButton(tolomet.getString(R.string.fav_ok), new DialogInterface.OnClickListener() {
+		AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
+        dialog.setMessage(activity.getString(R.string.warn_fav));
+        dialog.setPositiveButton(activity.getString(R.string.fav_ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface paramDialogInterface, int paramInt) {
             }
@@ -323,7 +323,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 		Station station = getSelectedItem();
 		select(station);
-		tolomet.onSpinner(station);
+		activity.onSelected(station);
 	}
 
 	@Override

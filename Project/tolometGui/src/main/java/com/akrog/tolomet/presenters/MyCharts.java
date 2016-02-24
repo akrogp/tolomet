@@ -8,8 +8,8 @@ import android.os.Bundle;
 
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.Meteo;
+import com.akrog.tolomet.ModelActivity;
 import com.akrog.tolomet.R;
-import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.Settings;
 import com.akrog.tolomet.view.Axis;
 import com.akrog.tolomet.view.Graph;
@@ -25,7 +25,7 @@ public class MyCharts implements Presenter {
 	private static final int POINT_GREEN = Color.rgb(0, 100, 0);
 	private static final int LINE_GRAY = Color.rgb(200, 200, 200);
 	private static final int POINT_GRAY = Color.rgb(100, 100, 100);
-	private Tolomet tolomet;
+	private ModelActivity activity;
 	private Manager model;
 	private Settings settings;
 	private final Meteo meteo = new Meteo();
@@ -57,18 +57,18 @@ public class MyCharts implements Presenter {
 	}
 
 	@Override
-	public void initialize(Tolomet tolomet, Bundle bundle) {
-		this.tolomet = tolomet;
-		model = tolomet.getModel();
-		settings = tolomet.getSettings();
-		windSpeedMed = new Graph(meteo.getWindSpeedMed(), -1.0f, tolomet.getString(R.string.chart_speedMed), LINE_GREEN, POINT_GREEN);
-		windSpeedMax = new Graph(meteo.getWindSpeedMax(), -1.0f, tolomet.getString(R.string.chart_speedMax), LINE_RED, POINT_RED);
-		markerCloud = new Marker(100.0f, tolomet.getString(R.string.chart_covered), LINE_BLUE);
-		markerCloudSimple = new Marker(100.0f, tolomet.getString(R.string.chart_covered), POINT_GRAY);
-		markerNorth = new Marker(0, tolomet.getString(R.string.markerNorth), LINE_BLUE);
-		markerSouth = new Marker(180, tolomet.getString(R.string.markerSouth), LINE_BLUE);
-		markerEast = new Marker(90, tolomet.getString(R.string.markerEast), LINE_BLUE);
-		markerWest = new Marker(270, tolomet.getString(R.string.markerWest), LINE_BLUE);
+	public void initialize(ModelActivity activity, Bundle bundle) {
+		this.activity = activity;
+		model = activity.getModel();
+		settings = activity.getSettings();
+		windSpeedMed = new Graph(meteo.getWindSpeedMed(), -1.0f, activity.getString(R.string.chart_speedMed), LINE_GREEN, POINT_GREEN);
+		windSpeedMax = new Graph(meteo.getWindSpeedMax(), -1.0f, activity.getString(R.string.chart_speedMax), LINE_RED, POINT_RED);
+		markerCloud = new Marker(100.0f, activity.getString(R.string.chart_covered), LINE_BLUE);
+		markerCloudSimple = new Marker(100.0f, activity.getString(R.string.chart_covered), POINT_GRAY);
+		markerNorth = new Marker(0, activity.getString(R.string.markerNorth), LINE_BLUE);
+		markerSouth = new Marker(180, activity.getString(R.string.markerSouth), LINE_BLUE);
+		markerEast = new Marker(90, activity.getString(R.string.markerEast), LINE_BLUE);
+		markerWest = new Marker(270, activity.getString(R.string.markerWest), LINE_BLUE);
 		initializeCharts();
 	}
 	
@@ -87,8 +87,8 @@ public class MyCharts implements Presenter {
 	
 	@SuppressLint("SimpleDateFormat")
 	private void initializeCharts() {				
-    	chartAir = (MyPlot)tolomet.findViewById(R.id.chartAir);
-    	chartWind = (MyPlot)tolomet.findViewById(R.id.chartWind);
+    	chartAir = (MyPlot) activity.findViewById(R.id.chartAir);
+    	chartWind = (MyPlot) activity.findViewById(R.id.chartWind);
     	simpleMode = settings.isSimpleMode();
 		if( axisListener != null )
 			chartAir.getXAxis().addMaxListener(axisListener);
@@ -109,14 +109,14 @@ public class MyCharts implements Presenter {
 	}
     
     private void createCompleteCharts() {
-        chartAir.setTitle(tolomet.getString(R.string.Air));
+        chartAir.setTitle(activity.getString(R.string.Air));
         chartAir.getY1Axis().setLabel("Temp. (ºC)");
 		chartAir.getY1Axis().setSteps(10);
         //chartAir.setTicksPerStepY1(5);
         chartAir.getY2Axis().setLabel("Hum. (%)");
         chartAir.getY2Axis().setRange(10, 110);
         chartAir.getY2Axis().setSteps(10);        
-        chartAir.getXAxis().setLabel(tolomet.getString(R.string.Time));        
+        chartAir.getXAxis().setLabel(activity.getString(R.string.Time));
         chartAir.getXAxis().setSteps(4);
 		chartAir.getXAxis().setTicksPerStep(6);
 
@@ -130,7 +130,7 @@ public class MyCharts implements Presenter {
         //chartAir.addY3Marker(markerHigh);
         chartAir.addY3Marker(markerMountain);
 
-		chartWind.setTitle(tolomet.getString(R.string.Wind));
+		chartWind.setTitle(activity.getString(R.string.Wind));
         //chartWind.getY1Axis().setWrap(360);
 		chartWind.getY1Axis().setRange(0, 360);
         //chartWind.getY1Axis().setRange(180, 180);
@@ -139,8 +139,8 @@ public class MyCharts implements Presenter {
         //chartWind.setStepsY2(12);
         chartWind.getY1Axis().setSteps(8);
         chartWind.getY2Axis().setSteps(8);
-        chartWind.getY2Axis().setLabel(tolomet.getString(R.string.chart_speed));     
-        chartWind.getXAxis().setLabel(tolomet.getString(R.string.Time));        
+        chartWind.getY2Axis().setLabel(activity.getString(R.string.chart_speed));
+        chartWind.getXAxis().setLabel(activity.getString(R.string.Time));
         chartWind.getXAxis().setSteps(4);
 		chartWind.getXAxis().setTicksPerStep(6);
 
@@ -157,7 +157,7 @@ public class MyCharts implements Presenter {
 	}
 
 	private void createSimpleCharts() {
-		chartAir.setTitle(tolomet.getString(R.string.DirectionHumidity));
+		chartAir.setTitle(activity.getString(R.string.DirectionHumidity));
         chartAir.getY1Axis().setLabel("Dir. (º)");
         chartAir.getY1Axis().setRange(0, 360);
         chartAir.getY1Axis().setSteps(8);
@@ -165,7 +165,7 @@ public class MyCharts implements Presenter {
         chartAir.getY2Axis().setLabel("Hum. (%)");
         chartAir.getY2Axis().setRange(30, 110);
         chartAir.getY2Axis().setSteps(8);        
-        chartAir.getXAxis().setLabel(tolomet.getString(R.string.Time));        
+        chartAir.getXAxis().setLabel(activity.getString(R.string.Time));
         chartAir.getXAxis().setSteps(4);
         chartAir.getXAxis().setTicksPerStep(6);       
         
@@ -177,14 +177,14 @@ public class MyCharts implements Presenter {
         chartAir.addY2Graph(airHumiditySimple);        
         chartAir.addY2Marker(markerCloudSimple);
               
-        chartWind.setTitle(tolomet.getString(R.string.Speed));
-        chartWind.getY1Axis().setLabel(tolomet.getString(R.string.chart_speed));
-        chartWind.getY2Axis().setLabel(tolomet.getString(R.string.chart_speed));
+        chartWind.setTitle(activity.getString(R.string.Speed));
+        chartWind.getY1Axis().setLabel(activity.getString(R.string.chart_speed));
+        chartWind.getY2Axis().setLabel(activity.getString(R.string.chart_speed));
         //chartWind.setStepsY1(12);
         //chartWind.setStepsY2(12);        
         chartWind.getY1Axis().setSteps(8);
         chartWind.getY2Axis().setSteps(8);
-        chartWind.getXAxis().setLabel(tolomet.getString(R.string.Time));        
+        chartWind.getXAxis().setLabel(activity.getString(R.string.Time));
         chartWind.getXAxis().setSteps(4);
         chartWind.getXAxis().setTicksPerStep(6); 
             

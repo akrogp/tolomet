@@ -17,20 +17,19 @@ import android.widget.Toast;
 import com.akrog.tolomet.AboutDialog;
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.MapActivity;
+import com.akrog.tolomet.ModelActivity;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.SettingsActivity;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.Settings;
-import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolomet.view.AndroidUtils;
 
 import java.io.File;
 import java.util.HashSet;
-import java.util.Locale;
 
 public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
-	private Tolomet tolomet;
+	private ModelActivity activity;
 	private Manager model;
 	private Settings settings;
 	private Toolbar toolbar;
@@ -39,23 +38,19 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 	private boolean isFavorite, isFlying, flyNotified = false;
 
 	@Override
-	public void initialize(Tolomet tolomet, Bundle bundle) {
-		this.tolomet = tolomet;
-		model = tolomet.getModel();
-		settings = tolomet.getSettings();
+	public void initialize(ModelActivity activity, Bundle bundle) {
+		this.activity = activity;
+		model = activity.getModel();
+		settings = activity.getSettings();
 
-		toolbar = (Toolbar)tolomet.findViewById(R.id.my_toolbar);
-		tolomet.setSupportActionBar(toolbar);
-		tolomet.getSupportActionBar().setDisplayShowTitleEnabled(false);
-		/*toolbar.inflateMenu(R.menu.toolbar);
-		setMenu(toolbar.getMenu());
-		setFavorite(false);*/
+		toolbar = (Toolbar)activity.findViewById(R.id.my_toolbar);
+		activity.setSupportActionBar(toolbar);
 		toolbar.setOnMenuItemClickListener(this);
 	}
 
 	public void inflateMenu(Menu menu) {
 		stationItems.clear();
-		tolomet.getMenuInflater().inflate(R.menu.toolbar, menu);
+		activity.getMenuInflater().inflate(R.menu.toolbar, menu);
 		itemFavorite = menu.findItem(R.id.favorite_item);
 		itemMode = menu.findItem(R.id.fly_item);
 		stationItems.add(itemFavorite);
@@ -77,7 +72,7 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 				onFavoriteItem();
 				return true;
 			case R.id.refresh_item:
-				tolomet.onRefresh();
+				activity.onRefresh();
 				return true;
 			case R.id.info_item:
 				onInfoItem();
@@ -114,25 +109,25 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 	}
 
 	private void onInfoItem() {
-		if( !tolomet.alertNetwork() )
-			tolomet.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(model.getInforUrl())));
+		if( !activity.alertNetwork() )
+			activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(model.getInforUrl())));
 	}
 
 	private void onMapItem() {
-		if( tolomet.alertNetwork() )
+		if( activity.alertNetwork() )
 			return;
 		/*String url = String.format(
 				Locale.ENGLISH,
 				"http://maps.google.com/maps?q=loc:%f,%f",
 				model.getCurrentStation().getLatitude(), model.getCurrentStation().getLongitude()
 		);
-		tolomet.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));*/
+		activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));*/
 		Station station = model.getCurrentStation();
-		Intent intent = new Intent(tolomet, MapActivity.class);
+		Intent intent = new Intent(activity, MapActivity.class);
 		intent.putExtra(MapActivity.EXTRA_COUNTRY, station.getCountry());
 		intent.putExtra(MapActivity.EXTRA_PROVIDER, station.getProviderType().name());
 		intent.putExtra(MapActivity.EXTRA_STATION, station.getCode());
-		tolomet.startActivity(intent);
+		activity.startActivity(intent);
 	}
 
 	private void onShareItem() {
@@ -148,13 +143,13 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 	}
 
 	private void onSettingsItem() {
-		tolomet.startActivityForResult(
-				new Intent(tolomet, SettingsActivity.class), Tolomet.SETTINGS_REQUEST);
+		activity.startActivityForResult(
+				new Intent(activity, SettingsActivity.class), Tolomet.SETTINGS_REQUEST);
 	}
 
 	private void onAboutItem() {
-		AboutDialog about = new AboutDialog(tolomet);
-		about.setTitle(tolomet.getString(R.string.About));
+		AboutDialog about = new AboutDialog(activity);
+		about.setTitle(activity.getString(R.string.About));
 		about.show();
 	}
 
@@ -162,15 +157,15 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 		Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
 				"mailto","akrog.apps@gmail.com", null));
 		emailIntent.putExtra(Intent.EXTRA_SUBJECT,
-				tolomet.getString(R.string.ReportSubject));
+				activity.getString(R.string.ReportSubject));
 		emailIntent.putExtra(Intent.EXTRA_TEXT, String.format(
 				"%s\n\n%s\nAndroid %s (%d)\nPhone %s (%s)",
-				tolomet.getString(R.string.ReportGreetings),
-				tolomet.getString(R.string.ReportInfo),
+				activity.getString(R.string.ReportGreetings),
+				activity.getString(R.string.ReportInfo),
 				Build.VERSION.RELEASE, Build.VERSION.SDK_INT,
 				Build.MANUFACTURER, Build.MODEL
 		));
-		tolomet.startActivity(Intent.createChooser(emailIntent, tolomet.getString(R.string.ReportApp)));
+		activity.startActivity(Intent.createChooser(emailIntent, activity.getString(R.string.ReportApp)));
 	}
 
 	@Override
@@ -201,27 +196,27 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 		if( isFlying ) {
 			itemMode.setIcon(R.drawable.ic_land_mode);
 			itemMode.setTitle(R.string.LandMode);
-			tolomet.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-			tolomet.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+			activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+			activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 			settings.setUpdateMode(Settings.AUTO_UPDATES);
-			Toast.makeText(tolomet,R.string.Takeoff,Toast.LENGTH_SHORT).show();
+			Toast.makeText(activity,R.string.Takeoff,Toast.LENGTH_SHORT).show();
 			flyNotified = true;
 		} else {
 			itemMode.setIcon(R.drawable.ic_flight_mode);
 			itemMode.setTitle(R.string.FlyMode);
-			tolomet.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-			tolomet.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+			activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+			activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 			settings.setUpdateMode(Settings.SMART_UPDATES);
 			if( flyNotified == true ) {
-				Toast.makeText(tolomet, R.string.Landed, Toast.LENGTH_SHORT).show();
+				Toast.makeText(activity, R.string.Landed, Toast.LENGTH_SHORT).show();
 				flyNotified = false;
 			}
 		}
-		tolomet.onChangedSettings();
+		activity.onChangedSettings();
 	}
 
 	private Bitmap getScreenShot() {
-		return AndroidUtils.getScreenShot(tolomet.getWindow().getDecorView());
+		return AndroidUtils.getScreenShot(activity.getWindow().getDecorView());
 	}
 
 	private File saveScreenShot(Bitmap bm) {
@@ -234,9 +229,9 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 		Intent intent = new Intent();
 		intent.setAction(Intent.ACTION_SEND);
 		intent.setType("image/*");
-		intent.putExtra(android.content.Intent.EXTRA_SUBJECT, tolomet.getString(R.string.ShareSubject));
+		intent.putExtra(android.content.Intent.EXTRA_SUBJECT, activity.getString(R.string.ShareSubject));
 		intent.putExtra(android.content.Intent.EXTRA_TEXT, String.format(
-			"%s %s%s", tolomet.getString(R.string.ShareTextPre), model.getCurrentStation().getName(), tolomet.getString(R.string.ShareTextPost)));
+			"%s %s%s", activity.getString(R.string.ShareTextPre), model.getCurrentStation().getName(), activity.getString(R.string.ShareTextPost)));
 		intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
 		intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		return intent;
@@ -244,18 +239,18 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 
 	private void shareScreenShot(File file) {
 		Intent intent = getScreenShotIntent(file);
-		tolomet.startActivity(Intent.createChooser(intent, tolomet.getString(R.string.ShareApp)));
+		activity.startActivity(Intent.createChooser(intent, activity.getString(R.string.ShareApp)));
 	}
 
 	private void whatsappScreenShot(File file) {
-		PackageManager pm = tolomet.getPackageManager();
+		PackageManager pm = activity.getPackageManager();
 		try {
 			Intent waIntent = getScreenShotIntent(file);
 			pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
 			waIntent.setPackage("com.whatsapp");
-			tolomet.startActivity(Intent.createChooser(waIntent, tolomet.getString(R.string.ShareApp)));
+			activity.startActivity(Intent.createChooser(waIntent, activity.getString(R.string.ShareApp)));
 		} catch (PackageManager.NameNotFoundException e) {
-			Toast.makeText(tolomet, tolomet.getString(R.string.NoWhatsApp), Toast.LENGTH_SHORT).show();
+			Toast.makeText(activity, activity.getString(R.string.NoWhatsApp), Toast.LENGTH_SHORT).show();
 		}
 	}
 
