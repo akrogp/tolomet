@@ -53,13 +53,11 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback {
         float hueMi = BitmapDescriptorFactory.HUE_YELLOW;
         float hueLo = BitmapDescriptorFactory.HUE_RED;
 
-        Manager manager = new Manager();
-        manager.setCountry(country);
-        Station current = null;
+        model.setCountry(country);
         Marker currentMarker = null;
-        for( Station station : manager.getAllStations() ) {
-            if( current == null && station.getProviderType() == provider && station.getCode().equals(code) )
-                current = station;
+        for( Station station : model.getAllStations() ) {
+            if( model.getCurrentStation() == null && station.getProviderType() == provider && station.getCode().equals(code) )
+                model.setCurrentStation(station);
             float hue;
             switch( station.getProviderType().getQuality() ) {
                 case Good: hue = hueHi; break;
@@ -72,19 +70,17 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback {
                             .title(station.getName())
                             .snippet(String.format("%s", station.getProviderType().name()))
             );
-            if( station == current )
+            if( station == model.getCurrentStation() )
                 currentMarker = marker;
         }
         if( currentMarker != null )
             currentMarker.showInfoWindow();
 
-        LatLng cam = new LatLng(current.getLatitude(), current.getLongitude());
+        LatLng cam = new LatLng(model.getCurrentStation().getLatitude(), model.getCurrentStation().getLongitude());
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cam, 10));
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-    }
 
-    @Override
-    public void redraw() {
+        redraw();
     }
 
     @Override

@@ -206,7 +206,7 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 	public void updateView() {
 		if( stationItems.isEmpty() )
 			return;
-		boolean enable = !model.getCurrentStation().isSpecial();
+		boolean enable = model.getCurrentStation() != null && !model.getCurrentStation().isSpecial();
 		for( MenuItem item : stationItems ) {
 			item.setEnabled(enable);
 			setAlpha(item);
