@@ -50,7 +50,7 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback {
         String code = intent.getStringExtra(MapActivity.EXTRA_STATION);
 
         float hueHi = BitmapDescriptorFactory.HUE_GREEN;
-        float hueMi = BitmapDescriptorFactory.HUE_ORANGE;
+        float hueMi = BitmapDescriptorFactory.HUE_YELLOW;
         float hueLo = BitmapDescriptorFactory.HUE_RED;
 
         Manager manager = new Manager();
@@ -61,12 +61,11 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback {
             if( current == null && station.getProviderType() == provider && station.getCode().equals(code) )
                 current = station;
             float hue;
-            if( station.getRefresh() <= 15 )
-                hue = hueHi;
-            else if( station.getRefresh() <= 30 )
-                hue = hueMi;
-            else
-                hue = hueLo;
+            switch( station.getProviderType().getQuality() ) {
+                case Good: hue = hueHi; break;
+                case Medium: hue = hueMi; break;
+                default: hue = hueLo; break;
+            }
             Marker marker = mMap.addMarker(new MarkerOptions()
                             .position(new LatLng(station.getLatitude(), station.getLongitude()))
                             .icon(BitmapDescriptorFactory.defaultMarker(hue))
