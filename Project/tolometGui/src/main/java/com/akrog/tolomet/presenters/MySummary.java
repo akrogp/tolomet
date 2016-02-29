@@ -5,18 +5,18 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.akrog.tolomet.Manager;
-import com.akrog.tolomet.ModelActivity;
+import com.akrog.tolomet.BaseActivity;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.view.Axis;
 
 public class MySummary implements Presenter, Axis.ChangeListener {
-	private ModelActivity activity;
+	private BaseActivity activity;
 	private Manager model;
 	private TextView summary;
 	private Long stamp = null;
 	
 	@Override
-	public void initialize(ModelActivity activity, Bundle bundle) {
+	public void initialize(BaseActivity activity, Bundle bundle) {
 		this.activity = activity;
 		model = activity.getModel();
 		summary = (TextView)activity.findViewById(R.id.textView1);

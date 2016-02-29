@@ -23,14 +23,14 @@ import android.widget.Toast;
 
 import com.akrog.tolomet.Country;
 import com.akrog.tolomet.Manager;
-import com.akrog.tolomet.ModelActivity;
+import com.akrog.tolomet.BaseActivity;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Region;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.data.Settings;
 
 public class MySpinner implements OnItemSelectedListener, Presenter {
-	private ModelActivity activity;
+	private BaseActivity activity;
 	private Manager model;
 	private Settings settings;
 	private Spinner spinner;
@@ -43,7 +43,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 	private Station selectItem, startItem, favItem, regItem, nearItem, indexItem, allItem, countryItem;
 
 	@Override
-	public void initialize(ModelActivity activity, Bundle bundle) {
+	public void initialize(BaseActivity activity, Bundle bundle) {
 		this.activity = activity;
 		model = activity.getModel();
 		settings = activity.getSettings();

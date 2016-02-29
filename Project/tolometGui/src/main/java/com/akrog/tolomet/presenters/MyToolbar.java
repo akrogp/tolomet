@@ -15,9 +15,9 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.akrog.tolomet.AboutDialog;
+import com.akrog.tolomet.BaseActivity;
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.MapActivity;
-import com.akrog.tolomet.ModelActivity;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.SettingsActivity;
 import com.akrog.tolomet.Station;
@@ -26,19 +26,23 @@ import com.akrog.tolomet.data.Settings;
 import com.akrog.tolomet.view.AndroidUtils;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
-	private ModelActivity activity;
+	private BaseActivity activity;
 	private Manager model;
 	private Settings settings;
 	private Toolbar toolbar;
 	private MenuItem itemFavorite, itemMode;
 	private final HashSet<MenuItem> stationItems = new HashSet<>();
 	private boolean isFavorite, isFlying, flyNotified = false;
+	private Set<Integer> enabledButtons;
 
 	@Override
-	public void initialize(ModelActivity activity, Bundle bundle) {
+	public void initialize(BaseActivity activity, Bundle bundle) {
 		this.activity = activity;
 		model = activity.getModel();
 		settings = activity.getSettings();
@@ -48,21 +52,51 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 		toolbar.setOnMenuItemClickListener(this);
 	}
 
+	public void setButtons(int... enabledButtons) {
+		this.enabledButtons = new HashSet<>();
+		for( int i = 0; i < enabledButtons.length; i++ )
+			this.enabledButtons.add(enabledButtons[i]);
+	}
+
 	public void inflateMenu(Menu menu) {
+		updateMenuItems(menu);
+
 		stationItems.clear();
-		activity.getMenuInflater().inflate(R.menu.toolbar, menu);
-		itemFavorite = menu.findItem(R.id.favorite_item);
-		itemMode = menu.findItem(R.id.fly_item);
-		stationItems.add(itemFavorite);
-		stationItems.add(menu.findItem(R.id.refresh_item));
-		stationItems.add(menu.findItem(R.id.info_item));
-		stationItems.add(menu.findItem(R.id.map_item));
-		stationItems.add(menu.findItem(R.id.share_item));
-		stationItems.add(menu.findItem(R.id.whatsapp_item));
-		stationItems.add(itemMode);
+		addStationItem(menu, R.id.favorite_item);
+		addStationItem(menu, R.id.refresh_item);
+		addStationItem(menu, R.id.info_item);
+		addStationItem(menu, R.id.map_item);
+		addStationItem(menu, R.id.share_item);
+		addStationItem(menu, R.id.whatsapp_item);
+		addStationItem(menu, R.id.fly_item);
+
 		for( int i = 0; i < menu.size(); i++ )
 			setAlpha(menu.getItem(i));
+
+		itemFavorite = menu.findItem(R.id.favorite_item);
+		itemMode = menu.findItem(R.id.fly_item);
 		setScreenMode(false);
+	}
+
+	private void updateMenuItems(Menu menu) {
+		activity.getMenuInflater().inflate(R.menu.toolbar, menu);
+		if( enabledButtons != null ) {
+			List<Integer> items = new ArrayList<>();
+			for (int i = 0; i < menu.size(); i++) {
+				int item = menu.getItem(i).getItemId();
+				if( !enabledButtons.contains(item) )
+					items.add(item);
+			}
+			for( Integer item : items )
+				menu.removeItem(item);
+		}
+	}
+
+	private void addStationItem(Menu menu, int id) {
+		MenuItem item = menu.findItem(id);
+		if( item == null )
+			return;
+		stationItems.add(item);
 	}
 
 	@Override
@@ -185,6 +219,8 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 	}
 
 	private void setFavorite(boolean checked) {
+		if( itemFavorite == null )
+			return;
 		//itemFavorite.setIcon(checked ? android.R.drawable.btn_star_big_on : android.R.drawable.btn_star_big_off);
 		itemFavorite.setIcon(checked ? R.drawable.ic_favorite : R.drawable.ic_favorite_outline);
 		isFavorite = checked;
@@ -192,6 +228,8 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 	}
 
 	private void setScreenMode(boolean flying) {
+		if( itemMode == null )
+			return;
 		isFlying = flying;
 		if( isFlying ) {
 			itemMode.setIcon(R.drawable.ic_land_mode);
@@ -229,9 +267,8 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 		Intent intent = new Intent();
 		intent.setAction(Intent.ACTION_SEND);
 		intent.setType("image/*");
-		intent.putExtra(android.content.Intent.EXTRA_SUBJECT, activity.getString(R.string.ShareSubject));
-		intent.putExtra(android.content.Intent.EXTRA_TEXT, String.format(
-			"%s %s%s", activity.getString(R.string.ShareTextPre), model.getCurrentStation().getName(), activity.getString(R.string.ShareTextPost)));
+		intent.putExtra(android.content.Intent.EXTRA_SUBJECT, activity.getScreenShotSubject());
+		intent.putExtra(android.content.Intent.EXTRA_TEXT, activity.getScreenShotText());
 		intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
 		intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		return intent;

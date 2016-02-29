@@ -6,7 +6,7 @@ import android.util.SparseArray;
 
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.Measurement;
-import com.akrog.tolomet.ModelActivity;
+import com.akrog.tolomet.BaseActivity;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.presenters.MySpinner;
@@ -20,10 +20,10 @@ import java.util.Set;
 
 public class Settings {	
 	private SharedPreferences settings;
-	private ModelActivity activity;
+	private BaseActivity activity;
 	private Manager model;
 	
-	public void initialize( ModelActivity activity, Manager model ) {
+	public void initialize( BaseActivity activity, Manager model ) {
 		this.activity = activity;
 		this.model = model;
 		settings = PreferenceManager.getDefaultSharedPreferences(activity);

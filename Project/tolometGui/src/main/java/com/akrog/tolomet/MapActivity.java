@@ -13,12 +13,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapActivity extends ToolbarActivity implements OnMapReadyCallback {
+public class MapActivity extends BaseActivity implements OnMapReadyCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         createView(R.layout.activity_map);
+        toolbar.setButtons(R.id.favorite_item, R.id.share_item, R.id.whatsapp_item, R.id.about_item, R.id.report_item);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -97,6 +98,16 @@ public class MapActivity extends ToolbarActivity implements OnMapReadyCallback {
 
     @Override
     public void onSelected(Station station) {
+    }
+
+    @Override
+    public String getScreenShotSubject() {
+        return null;
+    }
+
+    @Override
+    public String getScreenShotText() {
+        return null;
     }
 
     public static final String EXTRA_COUNTRY = "com.akrog.tolomet.MapActivity.country";

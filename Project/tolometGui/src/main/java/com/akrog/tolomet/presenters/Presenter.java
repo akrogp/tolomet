@@ -2,11 +2,10 @@ package com.akrog.tolomet.presenters;
 
 import android.os.Bundle;
 
-import com.akrog.tolomet.ModelActivity;
-import com.akrog.tolomet.Tolomet;
+import com.akrog.tolomet.BaseActivity;
 
 public interface Presenter {
-	void initialize(ModelActivity activity, Bundle bundle);
+	void initialize(BaseActivity activity, Bundle bundle);
 	void updateView();
 	void save(Bundle bundle);
 }

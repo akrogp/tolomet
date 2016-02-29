@@ -8,7 +8,7 @@ import android.os.Bundle;
 
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.Meteo;
-import com.akrog.tolomet.ModelActivity;
+import com.akrog.tolomet.BaseActivity;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.data.Settings;
 import com.akrog.tolomet.view.Axis;
@@ -25,7 +25,7 @@ public class MyCharts implements Presenter {
 	private static final int POINT_GREEN = Color.rgb(0, 100, 0);
 	private static final int LINE_GRAY = Color.rgb(200, 200, 200);
 	private static final int POINT_GRAY = Color.rgb(100, 100, 100);
-	private ModelActivity activity;
+	private BaseActivity activity;
 	private Manager model;
 	private Settings settings;
 	private final Meteo meteo = new Meteo();
@@ -57,7 +57,7 @@ public class MyCharts implements Presenter {
 	}
 
 	@Override
-	public void initialize(ModelActivity activity, Bundle bundle) {
+	public void initialize(BaseActivity activity, Bundle bundle) {
 		this.activity = activity;
 		model = activity.getModel();
 		settings = activity.getSettings();

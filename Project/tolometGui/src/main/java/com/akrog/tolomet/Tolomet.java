@@ -19,7 +19,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class Tolomet extends ToolbarActivity {
+public class Tolomet extends BaseActivity {
 	
 	// Creation and state
 	
@@ -107,16 +107,14 @@ public class Tolomet extends ToolbarActivity {
     }
     
     private void downloadData() {
-    	if( downloading )
-    		return;
-    	if( alertNetwork() )
+		if (downloading)
 			return;
-    	Downloader downloader = new Downloader(this, model);
-    	downloader.execute();
-    	downloading = true;
-    }
-    
-    // Events
+		if (alertNetwork())
+			return;
+		Downloader downloader = new Downloader(this, model);
+		downloader.execute();
+		downloading = true;
+	}
 
 	@Override
     public void onRefresh() {
@@ -162,7 +160,18 @@ public class Tolomet extends ToolbarActivity {
 		else
 			redraw();
 	}
-	
+
+	@Override
+	public String getScreenShotSubject() {
+		return getString(R.string.ShareSubject);
+	}
+
+	@Override
+	public String getScreenShotText() {
+		return String.format("%s %s%s",
+				getString(R.string.ShareTextPre), model.getCurrentStation().getName(), getString(R.string.ShareTextPost));
+	}
+
 	public void onDownloaded() {		
 		downloading = false;
 		postTimer();
