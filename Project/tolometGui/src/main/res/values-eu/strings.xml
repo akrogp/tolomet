@@ -79,7 +79,10 @@
     <string name="Share">Partekatu</string>
     <string name="ShareSubject">Begira zer adierazten duen Tolomet-ek!</string>
     <string name="ShareTextPre">Tolomet-en emaitzak</string>
-    <string name="ShareTextPost">-(e)ko datuekin</string>
+    <string name="ShareTextPost"> estazioan</string>
+    <string name="ShareMapSubject">Look at Tolomet station map!</string>
+    <string name="ShareMapPre">Tolomet estazioak</string>
+    <string name="ShareMapPost"> ondoan</string>
     <string name="ShareApp">Nola partekatu nahi duzu?</string>
     <string name="Report">Informatu</string>
     <string name="ReportSubject">Tolomet: iruzkina</string>

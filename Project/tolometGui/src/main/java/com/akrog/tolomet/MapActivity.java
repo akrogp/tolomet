@@ -2,6 +2,7 @@ package com.akrog.tolomet;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.akrog.tolomet.providers.WindProviderType;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -13,7 +14,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapActivity extends BaseActivity implements OnMapReadyCallback {
+public class MapActivity extends BaseActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +24,7 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        Log.i("Tolomet", "onCreate");
     }
 
     /**
@@ -37,6 +39,9 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        mMap.setMyLocationEnabled(true);
+        mMap.setOnMarkerClickListener(this);
 
         Intent intent = getIntent();
         String country = intent.getStringExtra(MapActivity.EXTRA_COUNTRY);
@@ -48,7 +53,6 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback {
         float hueLo = BitmapDescriptorFactory.HUE_RED;
 
         model.setCountry(country);
-        Marker currentMarker = null;
         for( Station station : model.getAllStations() ) {
             if( model.getCurrentStation() == null && station.getProviderType() == provider && station.getCode().equals(code) )
                 model.setCurrentStation(station);
@@ -64,17 +68,25 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback {
                             .title(station.getName())
                             .snippet(String.format("%s", station.getProviderType().name()))
             );
-            if( station == model.getCurrentStation() )
-                currentMarker = marker;
+            station.setExtra(marker);
         }
-        if( currentMarker != null )
-            currentMarker.showInfoWindow();
+        showStation();
+        redraw();
+    }
 
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        lastStation = marker.getTitle();
+        return false;
+    }
+
+    private void showStation() {
+        if( model.getCurrentStation() == null || model.getCurrentStation().getExtra() == null )
+            return;
+        lastStation = model.getCurrentStation().getName();
+        ((Marker)model.getCurrentStation().getExtra()).showInfoWindow();
         LatLng cam = new LatLng(model.getCurrentStation().getLatitude(), model.getCurrentStation().getLongitude());
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cam, 10));
-        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-
-        redraw();
     }
 
     @Override
@@ -87,20 +99,41 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback {
 
     @Override
     public void onSelected(Station station) {
+        redraw();
+        if( station.isSpecial() || station.getExtra() == null )
+            return;
+        showStation();
+    }
+
+    @Override
+    public void getScreenShot(GoogleMap.SnapshotReadyCallback callback) {
+        mMap.snapshot(callback);
     }
 
     @Override
     public String getScreenShotSubject() {
-        return null;
+        return getString(R.string.ShareMapSubject);
     }
 
     @Override
     public String getScreenShotText() {
-        return null;
+        return String.format("%s %s%s",
+                getString(R.string.ShareMapPre),
+                lastStation,
+                getString(R.string.ShareMapPost)
+        );
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK);
+        super.onBackPressed();
     }
 
     public static final String EXTRA_COUNTRY = "com.akrog.tolomet.MapActivity.country";
     public static final String EXTRA_PROVIDER = "com.akrog.tolomet.MapActivity.provider";
     public static final String EXTRA_STATION = "com.akrog.tolomet.MapActivity.station";
+
     private GoogleMap mMap;
+    private String lastStation;
 }

@@ -1,10 +1,5 @@
 package com.akrog.tolomet.presenters;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,13 +16,18 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.akrog.tolomet.BaseActivity;
 import com.akrog.tolomet.Country;
 import com.akrog.tolomet.Manager;
-import com.akrog.tolomet.BaseActivity;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Region;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.data.Settings;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 public class MySpinner implements OnItemSelectedListener, Presenter {
 	private BaseActivity activity;
@@ -66,7 +66,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
         loadState( bundle );        
 	}
 	
-	private void loadState( Bundle bundle ) {										
+	public void loadState( Bundle bundle ) {
 		State state = settings.loadSpinner();
 		vowel = state.getVowel();
 		region = state.getRegion();

@@ -14,6 +14,7 @@ public class Station {
 	private boolean favorite;
 	private int special;
 	private float distance;
+	private Object extra;
 		
 	public Station() {
 		this("none","none","none",1,false,WindProviderType.Aemet,0,0);
@@ -177,5 +178,13 @@ public class Station {
 
 	public void setCountry(String country) {
 		this.country = country;
+	}
+
+	public void setExtra( Object extra ) {
+		this.extra = extra;
+	}
+
+	public Object getExtra() {
+		return extra;
 	}
 }

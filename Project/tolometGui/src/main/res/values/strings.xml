@@ -80,7 +80,10 @@
     <string name="ShareSubject">Look at Tolomet readings!</string>
     <string name="ShareTextPre">Tolomet readings for</string>
     <string name="ShareTextPost">!</string>
-    <string name="ShareApp">How you want to share?</string>
+    <string name="ShareMapSubject">Look at Tolomet station map!</string>
+    <string name="ShareMapPre">Tolomet stations near</string>
+    <string name="ShareMapPost"></string>
+    <string name="ShareApp">How do you want to share?</string>
     <string name="Report">Report</string>
     <string name="ReportSubject">Tolomet: report</string>
     <string name="ReportInfo">--- Do not remove the following lines ---</string>

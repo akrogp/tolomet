@@ -2,6 +2,7 @@ package com.akrog.tolomet;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -13,6 +14,8 @@ import android.view.View;
 import com.akrog.tolomet.data.Settings;
 import com.akrog.tolomet.presenters.MySpinner;
 import com.akrog.tolomet.presenters.MyToolbar;
+import com.akrog.tolomet.view.AndroidUtils;
+import com.google.android.gms.maps.GoogleMap;
 
 import java.lang.reflect.Method;
 
@@ -65,6 +68,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         return super.onPrepareOptionsPanel(view, menu);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if( resultCode == RESULT_OK )
+            spinner.loadState(null);
+    }
+
     public Settings getSettings() {
         return settings;
     }
@@ -93,6 +103,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void redraw() {
         toolbar.updateView();
         spinner.updateView();
+    }
+
+    public void getScreenShot(GoogleMap.SnapshotReadyCallback callback) {
+        callback.onSnapshotReady(AndroidUtils.getScreenShot(getWindow().getDecorView()));
     }
 
     public abstract void onRefresh();

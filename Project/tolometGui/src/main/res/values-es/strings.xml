@@ -80,6 +80,9 @@
     <string name="ShareSubject">¡Mira lo que marca Tolomet!</string>
     <string name="ShareTextPre">Esto marca Tolomet para</string>
     <string name="ShareTextPost">!</string>
+    <string name="ShareMapSubject">¡Mira el mapa de estaciones de Tolomet!</string>
+    <string name="ShareMapPre">Estaciones cerca de</string>
+    <string name="ShareMapPost"></string>
     <string name="ShareApp">¿Cómo quieres compartir?</string>
     <string name="Report">Informar</string>
     <string name="ReportSubject">Tolomet: comentario</string>

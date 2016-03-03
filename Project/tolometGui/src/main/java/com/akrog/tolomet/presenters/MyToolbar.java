@@ -24,6 +24,7 @@ import com.akrog.tolomet.Station;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.Settings;
 import com.akrog.tolomet.view.AndroidUtils;
+import com.google.android.gms.maps.GoogleMap;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,15 +32,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
-	private BaseActivity activity;
-	private Manager model;
-	private Settings settings;
-	private Toolbar toolbar;
-	private MenuItem itemFavorite, itemMode;
-	private final HashSet<MenuItem> stationItems = new HashSet<>();
-	private boolean isFavorite, isFlying, flyNotified = false;
-	private Set<Integer> enabledButtons;
+public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, GoogleMap.SnapshotReadyCallback {
+	private enum ShareOptions {GENERIC, WHATSAPP};
 
 	@Override
 	public void initialize(BaseActivity activity, Bundle bundle) {
@@ -117,10 +111,12 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 				onMapItem();
 				return true;
 			case R.id.share_item:
-				onShareItem();
+				shareOption = ShareOptions.GENERIC;
+				activity.getScreenShot(this);
 				return true;
 			case R.id.whatsapp_item:
-				onWhatsappItem();
+				shareOption = ShareOptions.WHATSAPP;
+				activity.getScreenShot(this);
 				return true;
 			case R.id.fly_item:
 				setScreenMode(!isFlying);
@@ -163,19 +159,7 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 		intent.putExtra(MapActivity.EXTRA_COUNTRY, station.getCountry());
 		intent.putExtra(MapActivity.EXTRA_PROVIDER, station.getProviderType().name());
 		intent.putExtra(MapActivity.EXTRA_STATION, station.getCode());
-		activity.startActivity(intent);
-	}
-
-	private void onShareItem() {
-		File file = saveScreenShot(getScreenShot());
-		if( file != null )
-			shareScreenShot(file);
-	}
-
-	private void onWhatsappItem() {
-		File waFile = saveScreenShot(getScreenShot());
-		if( waFile != null )
-			whatsappScreenShot(waFile);
+		activity.startActivityForResult(intent,Tolomet.MAP_REQUEST);
 	}
 
 	private void onSettingsItem() {
@@ -255,14 +239,16 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 		activity.onChangedSettings();
 	}
 
-	private Bitmap getScreenShot() {
-		return AndroidUtils.getScreenShot(activity.getWindow().getDecorView());
-	}
-
-	private File saveScreenShot(Bitmap bm) {
+	@Override
+	public void onSnapshotReady(Bitmap bitmap) {
 		String name = String.format("%s_%d.png", model.getCurrentStation().toString(), System.currentTimeMillis());
-		//return saveScreenShot(bm, Bitmap.CompressFormat.JPEG, 90, name);
-		return AndroidUtils.saveScreenShot(bm, Bitmap.CompressFormat.PNG, 85, name);
+		//File file = saveScreenShot(bitmap, Bitmap.CompressFormat.JPEG, 90, name);
+		File file = AndroidUtils.saveScreenShot(bitmap, Bitmap.CompressFormat.PNG, 85, name);
+		if( file != null )
+			switch( shareOption ) {
+				case WHATSAPP: whatsappScreenShot(file); break;
+				default: shareScreenShot(file); break;
+			}
 	}
 
 	private Intent getScreenShotIntent(File file) {
@@ -300,4 +286,14 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 	private void setAlpha( Drawable drawable, boolean enabled ) {
 		drawable.setAlpha(enabled?0x8A:0x42);
 	}
+
+	private BaseActivity activity;
+	private Manager model;
+	private Settings settings;
+	private Toolbar toolbar;
+	private MenuItem itemFavorite, itemMode;
+	private final HashSet<MenuItem> stationItems = new HashSet<>();
+	private boolean isFavorite, isFlying, flyNotified = false;
+	private Set<Integer> enabledButtons;
+	private ShareOptions shareOption;
 }

@@ -136,6 +136,7 @@ public class Tolomet extends BaseActivity {
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode,resultCode,data);
     	if( requestCode != SETTINGS_REQUEST )
     		return;
 		onChangedSettings();
@@ -154,8 +155,6 @@ public class Tolomet extends BaseActivity {
 			return;
 		if( settings.getUpdateMode() >= Settings.SMART_UPDATES && model.isOutdated() )
 			downloadData();
-		else
-			redraw();
 	}
 
 	@Override
@@ -199,4 +198,5 @@ public class Tolomet extends BaseActivity {
 	private boolean downloading = false;
 
 	public static final int SETTINGS_REQUEST = 0;
+	public static final int MAP_REQUEST = 1;
 }
