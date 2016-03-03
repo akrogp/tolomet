@@ -53,6 +53,8 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter {
 	}
 
 	public void setButtons(int... enabledButtons) {
+		if( enabledButtons.length == 0 )
+			return;
 		this.enabledButtons = new HashSet<>();
 		for( int i = 0; i < enabledButtons.length; i++ )
 			this.enabledButtons.add(enabledButtons[i]);

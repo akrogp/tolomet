@@ -1,18 +1,15 @@
-<LinearLayout
+<?xml version="1.0" encoding="utf-8"?>
+<merge
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/my_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:contentInsetStart="0dp"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp">
+    android:id="@+id/my_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    app:contentInsetStart="0dp"
+    android:background="?attr/colorPrimary"
+    android:elevation="4dp">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,10 +27,4 @@
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
-    <fragment android:id="@+id/map"
-          android:name="com.google.android.gms.maps.SupportMapFragment"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          tools:context="com.akrog.tolomet.MapActivity"/>
-
-</LinearLayout>
+</merge>

@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.View;
 
 import com.akrog.tolomet.data.Settings;
+import com.akrog.tolomet.presenters.MySpinner;
 import com.akrog.tolomet.presenters.MyToolbar;
 
 import java.lang.reflect.Method;
@@ -25,10 +26,19 @@ public abstract class BaseActivity extends AppCompatActivity {
         settings.initialize(this, model);
     }
 
+    public void createView(Bundle savedInstanceState, int layoutResId, int... buttonIds ) {
+        setContentView(layoutResId);
+        toolbar.initialize(this, savedInstanceState);
+        toolbar.setButtons(buttonIds);
+        spinner.initialize(this, savedInstanceState);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         toolbar.save(outState);
+        spinner.save(outState);
     }
 
     @Override
@@ -53,11 +63,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
         }
         return super.onPrepareOptionsPanel(view, menu);
-    }
-
-    public void createView(int layoutResId, int... buttonIds ) {
-        setContentView(layoutResId);
-        toolbar.initialize(this, null);
     }
 
     public Settings getSettings() {
@@ -87,6 +92,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void redraw() {
         toolbar.updateView();
+        spinner.updateView();
     }
 
     public abstract void onRefresh();
@@ -102,4 +108,5 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected final Manager model = new Manager();
     protected final Settings settings = new Settings();
     protected final MyToolbar toolbar = new MyToolbar();
+    private final MySpinner spinner = new MySpinner();
 }

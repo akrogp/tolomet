@@ -10,7 +10,6 @@ import com.akrog.tolomet.data.Settings;
 import com.akrog.tolomet.gae.GaeManager;
 import com.akrog.tolomet.presenters.Downloader;
 import com.akrog.tolomet.presenters.MyCharts;
-import com.akrog.tolomet.presenters.MySpinner;
 import com.akrog.tolomet.presenters.MySummary;
 import com.akrog.tolomet.presenters.Presenter;
 
@@ -27,11 +26,9 @@ public class Tolomet extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {		
         super.onCreate(savedInstanceState);
 
-        createView(R.layout.activity_tolomet);
-		getSupportActionBar().setDisplayShowTitleEnabled(false);
+        createView(savedInstanceState, R.layout.activity_tolomet);
 
         gaeManager.initialize(this);
-        presenters.add(spinner);
         presenters.add(charts);
         presenters.add(summary);
         for( Presenter presenter : presenters)
@@ -196,7 +193,6 @@ public class Tolomet extends BaseActivity {
 	private final List<Presenter> presenters = new ArrayList<Presenter>();
 	private final MySummary summary = new MySummary();
 	private final MyCharts charts = new MyCharts(summary);
-	private final MySpinner spinner = new MySpinner();
 	private final GaeManager gaeManager = new GaeManager();
 	private final Handler handler = new Handler();
 	private Runnable timer;
