@@ -56,8 +56,6 @@ public class Tolomet extends BaseActivity {
     	super.onResume();
     	if( settings.getUpdateMode() >= Settings.SMART_UPDATES && model.isOutdated() )
     		downloadData();
-    	else
-    		redraw();
     }
     
     private void createTimer() {

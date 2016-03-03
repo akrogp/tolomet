@@ -2,7 +2,6 @@ package com.akrog.tolomet;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.akrog.tolomet.providers.WindProviderType;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -14,6 +13,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MapActivity extends BaseActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     @Override
@@ -21,10 +23,11 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
         super.onCreate(savedInstanceState);
         createView(savedInstanceState, R.layout.activity_map,
                 R.id.favorite_item, R.id.share_item, R.id.whatsapp_item, R.id.about_item, R.id.report_item);
+        /*createView(savedInstanceState, R.layout.activity_map,
+                R.id.share_item, R.id.whatsapp_item, R.id.about_item, R.id.report_item);*/
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        Log.i("Tolomet", "onCreate");
     }
 
     /**
@@ -69,6 +72,7 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
                             .snippet(String.format("%s", station.getProviderType().name()))
             );
             station.setExtra(marker);
+            mapMarker.put(marker,station);
         }
         showStation();
         redraw();
@@ -76,8 +80,12 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        lastStation = marker.getTitle();
-        return false;
+        Station station = mapMarker.get(marker);
+        if( station == null )
+            return false;
+        spinner.changeStation(station);
+        marker.hideInfoWindow();
+        return true;
     }
 
     private void showStation() {
@@ -136,4 +144,5 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
 
     private GoogleMap mMap;
     private String lastStation;
+    private final Map<Marker,Station> mapMarker = new HashMap<>();
 }

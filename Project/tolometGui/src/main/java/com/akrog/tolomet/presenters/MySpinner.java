@@ -63,7 +63,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		allItem = new Station(this.activity.getString(R.string.menu_all),Type.All.getValue());
 		countryItem = new Station(this.activity.getString(R.string.menu_country),Type.Countries.getValue());
         
-        loadState( bundle );        
+        loadState( bundle );
 	}
 	
 	public void loadState( Bundle bundle ) {
@@ -73,7 +73,8 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		String country = state.getCountry();
 		if( country == null )
 			country = guessCountry();		
-		setCountry(country);
+		if( !setCountry(country) )
+			updateFavorites();
 		Type type = state.getType();
 		if( type == Type.StartMenu || type == Type.Countries || type == Type.Regions || type == Type.Vowels || type == Type.Nearest ||
 			(type == Type.Region && model.getRegions().isEmpty()) ) {
@@ -84,16 +85,39 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		selectMenu(type, false);
 		selectItem(state.getPos(), false);
 	}
+
+	public void changeStation( Station station ) {
+		selectMenu(station.isFavorite() ? Type.Favorite : Type.All, false);
+		spinner.setSelection(adapter.getPosition(station));
+	}
 	
-	private void setCountry( String country ) {
+	private boolean setCountry( String country ) {
 		if( country == null || country.equals(this.country) )
-			return;
+			return false;
 		model.setCountry(country);
 		regItem.setName(country.equals("ES") ? this.activity.getString(R.string.menu_ccaa) : this.activity.getString(R.string.menu_reg));
+		updateFavorites();
+		this.country = country;
+		return true;
+	}
+
+	private void updateFavorites() {
 		Set<String> favs = settings.getFavorites();
 		for( Station station : model.getAllStations() )
 			station.setFavorite(favs.contains(station.getCode()));
-		this.country = country;
+	}
+
+	public void setFavorite(boolean fav) {
+		Station station = model.getCurrentStation();
+		if( station.isSpecial() )
+			return;
+		station.setFavorite(fav);
+		settings.setFavorite(station.getCode(), fav);
+		if( fav )
+			selectMenu(Type.Favorite, false);
+		else if( getType() == Type.Favorite )
+			selectMenu(Type.All, false);
+		spinner.setSelection(adapter.getPosition(station));
 	}
 	
 	private String guessCountry() {
@@ -125,12 +149,13 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		return spinnerType;
 	}
 	
-	public void selectMenu( Type type, boolean popup ) {
+	private void selectMenu( Type type, boolean popup ) {
 		spinnerType = type;
 		resetChoices(type!=Type.StartMenu);
 		switch( type ) {
 			case All: model.selectAll(); break;
 			case Favorite:
+				updateFavorites();
 				model.selectFavorites();
 				if( model.getSelStations().isEmpty() ) {
 					showFavoriteDialog();
@@ -158,7 +183,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		selectItem(0, popup);
 	}
 	
-	public void select( Station station ) {
+	private void select( Station station ) {
 		if( station == model.getCurrentStation() )
 			return;		
 		model.setCurrentStation(station);

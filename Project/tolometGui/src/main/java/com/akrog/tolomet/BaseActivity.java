@@ -38,6 +38,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        redraw();
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         toolbar.save(outState);
@@ -109,6 +115,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         callback.onSnapshotReady(AndroidUtils.getScreenShot(getWindow().getDecorView()));
     }
 
+    public void onFavorite(boolean fav) {
+        spinner.setFavorite(fav);
+    }
+
     public abstract void onRefresh();
 
     public abstract void onChangedSettings();
@@ -122,5 +132,5 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected final Manager model = new Manager();
     protected final Settings settings = new Settings();
     protected final MyToolbar toolbar = new MyToolbar();
-    private final MySpinner spinner = new MySpinner();
+    protected final MySpinner spinner = new MySpinner();
 }

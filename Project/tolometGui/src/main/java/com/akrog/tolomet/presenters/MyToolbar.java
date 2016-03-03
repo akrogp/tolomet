@@ -136,8 +136,7 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 
 	private void onFavoriteItem() {
 		setFavorite(!isFavorite);
-		model.getCurrentStation().setFavorite(isFavorite);
-		settings.setFavorite(model.getCurrentStation().getCode(), isFavorite);
+		activity.onFavorite(isFavorite);
 	}
 
 	private void onInfoItem() {
@@ -213,6 +212,7 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 		setAlpha(itemFavorite);
 	}
 
+
 	private void setScreenMode(boolean flying) {
 		if( itemMode == null )
 			return;
@@ -285,6 +285,7 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 
 	private void setAlpha( Drawable drawable, boolean enabled ) {
 		drawable.setAlpha(enabled?0x8A:0x42);
+		//drawable.setAlpha(enabled?0xFF:0x42);
 	}
 
 	private BaseActivity activity;
