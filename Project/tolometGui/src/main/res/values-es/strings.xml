@@ -96,4 +96,5 @@
     <string name="Takeoff">¡Modo vuelo activado!</string>
     <string name="Landed">Desactivado modo vuelo</string>
     <string name="Charts">Gráficas</string>
+    <string name="Loading">Cargando</string>
 </resources>

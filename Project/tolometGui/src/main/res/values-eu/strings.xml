@@ -96,4 +96,5 @@
     <string name="Takeoff">Hegaldi modua aktibatuta!</string>
     <string name="Landed">Hegaldi modua desaktibatuta!</string>
     <string name="Charts">Grafikoak</string>
+    <string name="Loading">Kargatzen</string>
 </resources>

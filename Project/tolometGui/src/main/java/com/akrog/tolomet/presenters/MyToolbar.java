@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.akrog.tolomet.AboutDialog;
 import com.akrog.tolomet.BaseActivity;
+import com.akrog.tolomet.InfoActivity;
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.MapActivity;
 import com.akrog.tolomet.R;
@@ -152,7 +153,8 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 
 	private void onInfoItem() {
 		if( !activity.alertNetwork() )
-			activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(model.getInforUrl())));
+			//activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(model.getInforUrl())));
+			activity.startActivity(new Intent(activity, InfoActivity.class));
 	}
 
 	private void onMapItem() {

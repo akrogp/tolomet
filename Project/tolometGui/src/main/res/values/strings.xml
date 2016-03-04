@@ -96,4 +96,5 @@
     <string name="Takeoff">Flight mode activated!</string>
     <string name="Landed">Deactivated flight mode</string>
     <string name="Charts">Charts</string>
+    <string name="Loading">Loading</string>
 </resources>
