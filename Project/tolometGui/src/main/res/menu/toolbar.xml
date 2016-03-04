@@ -17,6 +17,12 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/charts_item"
+        android:title="@string/Charts"
+        android:icon="@drawable/ic_charts"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/info_item"
         android:title="@string/Info"
         android:icon="@drawable/ic_info_outline"

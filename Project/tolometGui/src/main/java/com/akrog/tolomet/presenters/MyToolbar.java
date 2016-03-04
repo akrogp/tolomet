@@ -104,6 +104,9 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 			case R.id.refresh_item:
 				activity.onRefresh();
 				return true;
+			case R.id.charts_item:
+				onChartsItem();
+				return true;
 			case R.id.info_item:
 				onInfoItem();
 				return true;
@@ -137,6 +140,14 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 	private void onFavoriteItem() {
 		setFavorite(!isFavorite);
 		activity.onFavorite(isFavorite);
+	}
+
+	private void onChartsItem() {
+		Intent intent = new Intent(activity, Tolomet.class);
+		//intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		//intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		//intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		activity.startActivity(intent);
 	}
 
 	private void onInfoItem() {

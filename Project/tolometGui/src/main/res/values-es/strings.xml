@@ -4,7 +4,7 @@
     <string name="title_activity_tolomet">Tolomet</string>
     <string name="Refresh">Actualizar</string>
     <string name="Info">Información</string>
-    <string name="Map">Ver mapa</string>
+    <string name="Map">Mapa</string>
     <string name="Settings">Ajustes</string>
     <string name="station_prompt">Estación</string>
     <string name="summary"></string>
@@ -95,4 +95,5 @@
     <string name="LandMode">Aterrizado</string>
     <string name="Takeoff">¡Modo vuelo activado!</string>
     <string name="Landed">Desactivado modo vuelo</string>
+    <string name="Charts">Gráficas</string>
 </resources>

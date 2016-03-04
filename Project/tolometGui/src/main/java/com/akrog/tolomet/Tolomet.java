@@ -26,7 +26,10 @@ public class Tolomet extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {		
         super.onCreate(savedInstanceState);
 
-        createView(savedInstanceState, R.layout.activity_tolomet);
+        createView(savedInstanceState, R.layout.activity_tolomet,
+				R.id.favorite_item, R.id.refresh_item, R.id.info_item,
+				R.id.map_item, R.id.share_item, R.id.whatsapp_item,
+				R.id.fly_item, R.id.settings_item, R.id.about_item, R.id.info_item);
 
         gaeManager.initialize(this);
         presenters.add(charts);

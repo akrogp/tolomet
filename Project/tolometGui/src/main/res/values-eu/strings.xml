@@ -4,7 +4,7 @@
     <string name="title_activity_tolomet">Tolomet</string>
     <string name="Refresh">Eguneratu</string>
     <string name="Info">Informazioa</string>
-    <string name="Map">Mapa ikusi</string>
+    <string name="Map">Mapa</string>
     <string name="Settings">Ezarpenak</string>
     <string name="station_prompt">Estazioa</string>
     <string name="summary"></string>
@@ -95,4 +95,5 @@
     <string name="LandMode">Lurreratura</string>
     <string name="Takeoff">Hegaldi modua aktibatuta!</string>
     <string name="Landed">Hegaldi modua desaktibatuta!</string>
+    <string name="Charts">Grafikoak</string>
 </resources>

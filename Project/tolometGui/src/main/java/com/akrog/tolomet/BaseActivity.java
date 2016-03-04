@@ -33,13 +33,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(layoutResId);
         toolbar.initialize(this, savedInstanceState);
         toolbar.setButtons(buttonIds);
-        spinner.initialize(this, savedInstanceState);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        spinner.initialize(this, null);
         redraw();
     }
 
