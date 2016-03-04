@@ -15,7 +15,7 @@ public class InfoActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         createView(savedInstanceState, R.layout.activity_info,
-                R.id.favorite_item, R.id.charts_item, R.id.map_item, R.id.about_item, R.id.report_item);
+                R.id.favorite_item, R.id.refresh_item, R.id.charts_item, R.id.map_item, R.id.about_item, R.id.report_item);
         createProgress();
         createWeb();
     }
@@ -64,12 +64,12 @@ public class InfoActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if( model.getCurrentStation() != null )
-            onSelected(model.getCurrentStation());
+        reload();
     }
 
     @Override
     public void onRefresh() {
+        reload();
     }
 
     @Override
@@ -78,6 +78,15 @@ public class InfoActivity extends BaseActivity {
 
     @Override
     public void onSelected(Station station) {
+        reload(station);
+    }
+
+    private void reload() {
+        if( model.getCurrentStation() != null )
+            reload(model.getCurrentStation());
+    }
+
+    private void reload( Station station ) {
         if( station == last )
             return;
         web.loadUrl(model.getInforUrl());
