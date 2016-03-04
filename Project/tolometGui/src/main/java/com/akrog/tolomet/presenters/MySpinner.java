@@ -76,19 +76,16 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		if( !setCountry(country) )
 			updateFavorites();
 		Type type = state.getType();
-		if( type == Type.StartMenu || type == Type.Countries || type == Type.Regions || type == Type.Vowels || type == Type.Nearest ||
-			(type == Type.Region && model.getRegions().isEmpty()) ) {
+		if( type == Type.StartMenu
+				|| type == Type.Countries || type == Type.Regions || type == Type.Vowels
+				//|| type == Type.Nearest
+				|| (type == Type.Region && model.getRegions().isEmpty()) ) {
 			type = Type.StartMenu;
 			state.setPos(0);
 		}
 				
 		selectMenu(type, false);
 		selectItem(state.getPos(), false);
-	}
-
-	public void changeStation( Station station ) {
-		selectMenu(station.isFavorite() ? Type.Favorite : Type.All, false);
-		spinner.setSelection(adapter.getPosition(station));
 	}
 	
 	private boolean setCountry( String country ) {
@@ -182,31 +179,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		adapter.notifyDataSetChanged();
 		selectItem(0, popup);
 	}
-	
-	private void select( Station station ) {
-		if( station == model.getCurrentStation() )
-			return;		
-		model.setCurrentStation(station);
-		save(null);
-		if( !station.isSpecial() )			
-			return;
-		
-		clearDistance();
-		if( station.getSpecial() > 500 ) {
-			vowel=(char)(station.getSpecial()-500);
-			spinnerType = Type.Vowel;
-		} else if( station.getSpecial() >= 200 ) {
-			newCountry = model.getCountries().get(station.getSpecial()-200).getCode();
-			spinnerType = Type.Country;
-		} else if( station.getSpecial() < Type.StartMenu.getValue() ) {
-			region=station.getSpecial();
-			spinnerType = Type.Region;
-		} else
-			spinnerType = Type.values()[station.getSpecial()-Type.StartMenu.getValue()];
-		
-		selectMenu(spinnerType, true);
-	}
-	
+
 	private void selectItem( int pos, boolean popup ) {
 		if( pos >= choices.size() )
 			pos = 0;
@@ -214,6 +187,18 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
     	spinner.setSelection(pos);
     	if( popup )
     		spinner.performClick();
+	}
+
+	public void selectStation(Station station) {
+		Type type = Type.All;
+		if( station.isFavorite() )
+			type = Type.Favorite;
+		else if( !model.getRegions().isEmpty() ) {
+			region = station.getRegion();
+			type = Type.Region;
+		}
+		selectMenu(type, false);
+		spinner.setSelection(adapter.getPosition(station));
 	}
 
 	private void resetChoices( boolean showStart ) {
@@ -347,8 +332,27 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 		Station station = getSelectedItem();
-		select(station);
+		if( station == model.getCurrentStation() )
+			return;
+		model.setCurrentStation(station);
+		save(null);
 		activity.onSelected(station);
+		if( !station.isSpecial() )
+			return;
+
+		clearDistance();
+		if( station.getSpecial() > 500 ) {
+			vowel=(char)(station.getSpecial()-500);
+			spinnerType = Type.Vowel;
+		} else if( station.getSpecial() >= 200 ) {
+			newCountry = model.getCountries().get(station.getSpecial()-200).getCode();
+			spinnerType = Type.Country;
+		} else if( station.getSpecial() < Type.StartMenu.getValue() ) {
+			region=station.getSpecial();
+			spinnerType = Type.Region;
+		} else
+			spinnerType = Type.values()[station.getSpecial()-Type.StartMenu.getValue()];
+		selectMenu(spinnerType, true);
 	}
 
 	@Override

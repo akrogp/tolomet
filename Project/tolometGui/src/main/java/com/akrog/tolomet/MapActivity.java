@@ -55,7 +55,6 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
         float hueMi = BitmapDescriptorFactory.HUE_YELLOW;
         float hueLo = BitmapDescriptorFactory.HUE_RED;
 
-        model.setCountry(country);
         for( Station station : model.getAllStations() ) {
             if( model.getCurrentStation() == null && station.getProviderType() == provider && station.getCode().equals(code) )
                 model.setCurrentStation(station);
@@ -83,7 +82,7 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
         Station station = mapMarker.get(marker);
         if( station == null )
             return false;
-        spinner.changeStation(station);
+        spinner.selectStation(station);
         marker.hideInfoWindow();
         return true;
     }

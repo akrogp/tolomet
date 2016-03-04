@@ -53,6 +53,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         toolbar.inflateMenu(menu);
+        redraw();
         return true;
     }
 
