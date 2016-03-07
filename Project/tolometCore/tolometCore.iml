@@ -27,8 +27,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="jxl-2.6.12" level="project" />
-    <orderEntry type="library" exported="" name="log4j-1.2.14" level="project" />
+    <orderEntry type="library" exported="" name="jxl-2.4.2" level="project" />
     <orderEntry type="library" exported="" name="tolometCore.tolometCore" level="project" />
   </component>
 </module>
