@@ -165,11 +165,16 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 		if( activity.alertNetwork() )
 			return;
 		Station station = model.getCurrentStation();
-		Intent intent = new Intent(activity, MapActivity.class);
-		intent.putExtra(MapActivity.EXTRA_COUNTRY, station.getCountry());
-		intent.putExtra(MapActivity.EXTRA_PROVIDER, station.getProviderType().name());
-		intent.putExtra(MapActivity.EXTRA_STATION, station.getCode());
-		activity.startActivityForResult(intent,Tolomet.MAP_REQUEST);
+		if( Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH ) {
+			String url = MapActivity.getUrl(station.getLatitude(),station.getLongitude());
+			activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+		} else {
+			Intent intent = new Intent(activity, MapActivity.class);
+			intent.putExtra(MapActivity.EXTRA_COUNTRY, station.getCountry());
+			intent.putExtra(MapActivity.EXTRA_PROVIDER, station.getProviderType().name());
+			intent.putExtra(MapActivity.EXTRA_STATION, station.getCode());
+			activity.startActivityForResult(intent, Tolomet.MAP_REQUEST);
+		}
 	}
 
 	private void onSettingsItem() {
@@ -295,7 +300,7 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 	}
 
 	private void setAlpha( Drawable drawable, boolean enabled ) {
-		drawable.setAlpha(enabled?0x8A:0x42);
+		drawable.setAlpha(enabled ? 0x8A : 0x42);
 		//drawable.setAlpha(enabled?0xFF:0x42);
 	}
 

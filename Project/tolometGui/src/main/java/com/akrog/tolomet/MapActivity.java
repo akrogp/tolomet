@@ -119,9 +119,13 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
             lat = mMap.getCameraPosition().target.latitude;
             lon = mMap.getCameraPosition().target.longitude;
         }
-        String url = String.format(Locale.ENGLISH,
-				"http://maps.google.com/maps?q=loc:%f,%f", lat, lon);
+        String url = getUrl(lat,lon);
 		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+    }
+
+    public static String getUrl( double lat, double lon ) {
+        return String.format(Locale.ENGLISH,
+                "http://maps.google.com/maps?q=loc:%f,%f", lat, lon);
     }
 
     @Override
