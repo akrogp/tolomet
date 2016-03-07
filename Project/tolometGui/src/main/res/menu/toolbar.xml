@@ -35,6 +35,12 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/browser_item"
+        android:title="@string/Browser"
+        android:icon="@drawable/ic_external"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/share_item"
         android:title="@string/Share"
         android:icon="@drawable/ic_share"

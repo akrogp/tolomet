@@ -97,4 +97,8 @@
     <string name="Landed">Desactivado modo vuelo</string>
     <string name="Charts">Gráficas</string>
     <string name="Loading">Cargando</string>
+    <string name="Browser">Ver en navegador</string>
+    <string name="ShareWebPre">Información de</string>
+    <string name="ShareWebMid">para</string>
+    <string name="ShareWebPost"></string>
 </resources>

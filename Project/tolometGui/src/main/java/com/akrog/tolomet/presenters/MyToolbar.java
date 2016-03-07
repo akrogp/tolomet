@@ -111,6 +111,9 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 			case R.id.info_item:
 				onInfoItem();
 				return true;
+			case R.id.browser_item:
+				onBrowserItem();
+				return true;
 			case R.id.map_item:
 				onMapItem();
 				return true;
@@ -145,27 +148,22 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 
 	private void onChartsItem() {
 		Intent intent = new Intent(activity, Tolomet.class);
-		//intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-		//intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		//intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		activity.startActivity(intent);
 	}
 
 	private void onInfoItem() {
 		if( !activity.alertNetwork() )
-			//activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(model.getInforUrl())));
 			activity.startActivity(new Intent(activity, InfoActivity.class));
+	}
+
+	private void onBrowserItem() {
+		if( !activity.alertNetwork() )
+			activity.onBrowser();
 	}
 
 	private void onMapItem() {
 		if( activity.alertNetwork() )
 			return;
-		/*String url = String.format(
-				Locale.ENGLISH,
-				"http://maps.google.com/maps?q=loc:%f,%f",
-				model.getCurrentStation().getLatitude(), model.getCurrentStation().getLongitude()
-		);
-		activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));*/
 		Station station = model.getCurrentStation();
 		Intent intent = new Intent(activity, MapActivity.class);
 		intent.putExtra(MapActivity.EXTRA_COUNTRY, station.getCountry());

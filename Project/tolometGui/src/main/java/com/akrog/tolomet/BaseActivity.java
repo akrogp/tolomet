@@ -122,6 +122,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public abstract void onRefresh();
 
+    public abstract void onBrowser();
+
     public abstract void onChangedSettings();
 
     public abstract void onSelected(Station station);

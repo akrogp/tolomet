@@ -2,8 +2,11 @@ package com.akrog.tolomet;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -15,7 +18,9 @@ public class InfoActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         createView(savedInstanceState, R.layout.activity_info,
-                R.id.favorite_item, R.id.refresh_item, R.id.charts_item, R.id.map_item, R.id.about_item, R.id.report_item);
+                R.id.favorite_item, R.id.refresh_item, R.id.browser_item, R.id.charts_item, R.id.map_item,
+                R.id.share_item, R.id.whatsapp_item,
+                R.id.about_item, R.id.report_item);
         createProgress();
         createWeb();
     }
@@ -57,8 +62,11 @@ public class InfoActivity extends BaseActivity {
             }
 
         });
-        web.getSettings().setUserAgentString("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36");
-        web.getSettings().setJavaScriptEnabled(true);
+        WebSettings settings = web.getSettings();
+        settings.setUserAgentString("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36");
+        settings.setJavaScriptEnabled(true);
+        settings.setBuiltInZoomControls(true);
+        //settings.setDisplayZoomControls(false);
     }
 
     @Override
@@ -70,6 +78,11 @@ public class InfoActivity extends BaseActivity {
     @Override
     public void onRefresh() {
         reload();
+    }
+
+    @Override
+    public void onBrowser() {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(model.getInforUrl())));
     }
 
     @Override
@@ -95,12 +108,18 @@ public class InfoActivity extends BaseActivity {
 
     @Override
     public String getScreenShotSubject() {
-        return null;
+        return model.getCurrentStation().getName();
     }
 
     @Override
     public String getScreenShotText() {
-        return null;
+        return String.format("%s %s %s %s%s",
+                getString(R.string.ShareWebPre),
+                model.getCurrentStation().getProviderType().name(),
+                getString(R.string.ShareWebMid),
+                model.getCurrentStation().getName(),
+                getString(R.string.ShareWebPost)
+        );
     }
 
     private WebView web;

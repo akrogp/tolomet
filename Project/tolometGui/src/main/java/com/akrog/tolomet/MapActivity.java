@@ -1,6 +1,7 @@
 package com.akrog.tolomet;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.akrog.tolomet.providers.WindProviderType;
@@ -14,6 +15,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class MapActivity extends BaseActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -22,7 +24,9 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         createView(savedInstanceState, R.layout.activity_map,
-                R.id.favorite_item, R.id.charts_item, R.id.info_item, R.id.share_item, R.id.whatsapp_item, R.id.about_item, R.id.report_item);
+                R.id.favorite_item, R.id.browser_item, R.id.charts_item, R.id.info_item,
+                R.id.share_item, R.id.whatsapp_item,
+                R.id.about_item, R.id.report_item);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -103,6 +107,21 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
 
     @Override
     public void onRefresh() {
+    }
+
+    @Override
+    public void onBrowser() {
+        double lat, lon;
+        if( model.getCurrentStation() != null && !model.getCurrentStation().isSpecial() ) {
+            lat = model.getCurrentStation().getLatitude();
+            lon = model.getCurrentStation().getLongitude();
+        } else {
+            lat = mMap.getCameraPosition().target.latitude;
+            lon = mMap.getCameraPosition().target.longitude;
+        }
+        String url = String.format(Locale.ENGLISH,
+				"http://maps.google.com/maps?q=loc:%f,%f", lat, lon);
+		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
     }
 
     @Override

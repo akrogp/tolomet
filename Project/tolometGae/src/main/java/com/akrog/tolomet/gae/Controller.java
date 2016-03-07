@@ -58,6 +58,11 @@ public class Controller {
 			motd.setVersion("4.0.2");
 			motd.addChange(tr(lang,"Añadida gráfica de vel. máx. en Meteocat", "Included speed max. chart in Meteocat"));
 		}
+		if( version < 410 ) {
+			motd.setVersion("4.1");
+			motd.addChange(tr(lang,"Mejorado mapa", "Map improved"));
+			motd.addChange(tr(lang,"Integrado navegador", "Web browser embedded"));
+		}
 	}
 
 	private void changesv3(int version, String lang, Motd motd) {

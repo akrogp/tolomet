@@ -97,4 +97,8 @@
     <string name="Landed">Deactivated flight mode</string>
     <string name="Charts">Charts</string>
     <string name="Loading">Loading</string>
+    <string name="Browser">External browser</string>
+    <string name="ShareWebPre">Information from</string>
+    <string name="ShareWebMid">for</string>
+    <string name="ShareWebPost"></string>
 </resources>

@@ -97,4 +97,8 @@
     <string name="Landed">Hegaldi modua desaktibatuta!</string>
     <string name="Charts">Grafikoak</string>
     <string name="Loading">Kargatzen</string>
+    <string name="Browser">Ver en navegador</string>
+    <string name="ShareWebPre">Información de</string>
+    <string name="ShareWebMid">para</string>
+    <string name="ShareWebPost"></string>
 </resources>
