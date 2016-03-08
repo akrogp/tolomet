@@ -7,7 +7,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 @Path("/motd")
-public class Controller {
+public class RestApi {
 	//private Logger logger = Logger.getLogger("com.akrog.tolomet.gae");
 	
 	@GET	
@@ -62,6 +62,11 @@ public class Controller {
 			motd.setVersion("4.1");
 			motd.addChange(tr(lang,"Mejorado mapa", "Map improved"));
 			motd.addChange(tr(lang,"Integrado navegador", "Web browser embedded"));
+		}
+		if( version == 414 ) {
+			motd.setVersion("4.1.5");
+			motd.addChange(tr(lang,"Solucionado problema con el mapa", "Map bug solved"));
+			motd.addChange(tr(lang,"Recuperados iconos de la barra", "Recovered toolbar icons"));
 		}
 	}
 

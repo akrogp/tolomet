@@ -49,7 +49,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		settings = activity.getSettings();
 		
         spinner = (Spinner)activity.findViewById(R.id.station_spinner);
-        adapter = new ArrayAdapter<Station>(activity,android.R.layout.simple_spinner_item,choices);
+        adapter = new ArrayAdapter<>(activity,android.R.layout.simple_spinner_item,choices);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     	spinner.setAdapter(adapter);
     	spinner.setOnItemSelectedListener(this);
@@ -92,7 +92,6 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		if( country == null || country.equals(this.country) )
 			return false;
 		model.setCountry(country);
-		regItem.setName(country.equals("ES") ? this.activity.getString(R.string.menu_ccaa) : this.activity.getString(R.string.menu_reg));
 		updateFavorites();
 		this.country = country;
 		return true;
@@ -149,6 +148,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 	private void selectMenu( Type type, boolean popup ) {
 		spinnerType = type;
 		resetChoices(type!=Type.StartMenu);
+		regItem.setName(country.equals("ES") ? this.activity.getString(R.string.menu_ccaa) : this.activity.getString(R.string.menu_reg));
 		switch( type ) {
 			case All: model.selectAll(); break;
 			case Favorite:
@@ -377,7 +377,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		
 		private final int value;
 		
-		private Type(int value) {
+		Type(int value) {
 	        this.value = value;
 	    }
 		
