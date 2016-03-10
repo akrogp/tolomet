@@ -68,6 +68,10 @@ public class RestApi {
 			motd.addChange(tr(lang,"Solucionado problema con el mapa", "Map bug solved"));
 			motd.addChange(tr(lang,"Recuperados iconos de la barra", "Recovered toolbar icons"));
 		}
+		if( version == 415 ) {
+			motd.setVersion("4.1.6");
+			motd.addChange(tr(lang,"Recuperada opción de reportar", "Report button recovered"));
+		}
 	}
 
 	private void changesv3(int version, String lang, Motd motd) {
