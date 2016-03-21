@@ -1,19 +1,19 @@
 package com.akrog.tolomet.providers;
 
+import com.akrog.tolomet.Meteo;
+import com.akrog.tolomet.Station;
+import com.akrog.tolomet.io.Downloader;
+
 import java.util.Calendar;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.akrog.tolomet.Meteo;
-import com.akrog.tolomet.Station;
-import com.akrog.tolomet.io.Downloader;
-
 public class CurrentVantageProvider implements WindProvider {
 	@Override
 	public void refresh(Station station) {
 		downloader = new Downloader();
-		downloader.setUrl("http://www.rcnlaredo.es/~meteorcnl/meteo/Current_Vantage_Pro.html");
+		downloader.setUrl(URL);
 		String data = downloader.download("Lluvia");
 		if( data == null )
 			return;
@@ -90,10 +90,16 @@ public class CurrentVantageProvider implements WindProvider {
 
 	@Override
 	public String getInfoUrl(String code) {
-		return "http://www.rcnlaredo.es/~meteorcnl/meteo/Current_Vantage_Pro.html";
+		return URL;
+	}
+
+	@Override
+	public String getUserUrl(String code) {
+		return URL;
 	}
 
 	private Downloader downloader;
 	private final Pattern patternField = Pattern.compile(".*>([^<>]+)<.*");
 	private final Pattern patternDir = Pattern.compile(".*\\((.+).\\).*");
+	private final static String URL = "http://www.rcnlaredo.es/~meteorcnl/meteo/Current_Vantage_Pro.html";
 }

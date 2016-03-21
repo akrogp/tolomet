@@ -1,14 +1,14 @@
 package com.akrog.tolomet.providers;
 
+import com.akrog.tolomet.Station;
+import com.akrog.tolomet.io.Downloader;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
-
-import com.akrog.tolomet.Station;
-import com.akrog.tolomet.io.Downloader;
 
 public class PradesProvider extends BaseProvider {
 
@@ -122,6 +122,11 @@ public class PradesProvider extends BaseProvider {
 			}
 		}
 		return mapInfo.get(code);
+	}
+
+	@Override
+	public String getUserUrl(String code) {
+		return getInfoUrl(code);
 	}
 
 	private Map<String, String> mapInfo;

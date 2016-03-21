@@ -1,12 +1,12 @@
 package com.akrog.tolomet.providers;
 
-import java.util.Calendar;
-import java.util.TimeZone;
-
 import com.akrog.tolomet.Header;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
 import com.akrog.tolomet.io.Downloader.FakeBrowser;
+
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class EuskalmetProvider implements WindProvider {
 	
@@ -14,7 +14,12 @@ public class EuskalmetProvider implements WindProvider {
 	public String getInfoUrl(String code) {
 		return "http://www.euskalmet.euskadi.net/s07-5853x/es/meteorologia/estacion.apl?e=5&campo="+code;
 	}
-	
+
+	@Override
+	public String getUserUrl(String code) {
+		return "http://www.euskalmet.euskadi.eus/s07-5853x/es/meteorologia/lectur.apl?e=5&campo="+code;
+	}
+
 	@Override
 	public void refresh(Station station) {
 		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("GMT"));

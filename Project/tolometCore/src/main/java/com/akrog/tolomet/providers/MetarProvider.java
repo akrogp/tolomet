@@ -1,11 +1,11 @@
 package com.akrog.tolomet.providers;
 
-import java.util.Calendar;
-import java.util.TimeZone;
-
 import com.akrog.tolomet.Header;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
+
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class MetarProvider extends BaseProvider {
 	public MetarProvider() {
@@ -16,7 +16,12 @@ public class MetarProvider extends BaseProvider {
 	public String getInfoUrl(String code) {
 		return "http://www.aviationweather.gov/adds/metars?std_trans=translated&chk_metars=on&station_ids="+code;
 	}
-	
+
+	@Override
+	public String getUserUrl(String code) {
+		return getInfoUrl(code);
+	}
+
 	@Override
 	public void configureDownload(Downloader downloader, Station station) {
 		downloader.setUrl("http://www.aviationweather.gov/adds/dataserver_current/httpparam");

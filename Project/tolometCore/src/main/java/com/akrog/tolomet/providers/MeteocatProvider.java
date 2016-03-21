@@ -1,5 +1,10 @@
 package com.akrog.tolomet.providers;
 
+import com.akrog.tolomet.Measurement;
+import com.akrog.tolomet.Station;
+import com.akrog.tolomet.io.Downloader;
+import com.akrog.tolomet.io.Downloader.FakeBrowser;
+
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -8,11 +13,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
-
-import com.akrog.tolomet.Measurement;
-import com.akrog.tolomet.Station;
-import com.akrog.tolomet.io.Downloader;
-import com.akrog.tolomet.io.Downloader.FakeBrowser;
 
 public class MeteocatProvider implements WindProvider {
 	@Override
@@ -166,6 +166,11 @@ public class MeteocatProvider implements WindProvider {
 	public String getInfoUrl(String code) {
 		return String.format("http://www.meteo.cat/observacions/xema/dades?codi=%s", code);
 	}
-	
+
+	@Override
+	public String getUserUrl(String code) {
+		return getInfoUrl(code);
+	}
+
 	private Downloader downloader; 
 }

@@ -1,13 +1,13 @@
 package com.akrog.tolomet.providers;
 
+import com.akrog.tolomet.Station;
+import com.akrog.tolomet.io.Downloader;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Calendar;
 import java.util.TimeZone;
-
-import com.akrog.tolomet.Station;
-import com.akrog.tolomet.io.Downloader;
 
 public class RedVigiaProvider implements WindProvider {	
 	@Override
@@ -15,9 +15,9 @@ public class RedVigiaProvider implements WindProvider {
 		downloader = new Downloader();
 		downloader.setUrl("http://www.redvigia.es/Historico.aspx");
 		downloader.addParam("codigoBoya", station.getCode());
-		downloader.addParam("numeroDatos", "5");
+		downloader.addParam("numeroDatos", "24");
 		downloader.addParam("tipo", "1");
-		downloader.addParam("variable", "1");
+		//downloader.addParam("variable", "1");
 		updateStation(station, downloader.download());
 	}
 	
@@ -51,12 +51,18 @@ public class RedVigiaProvider implements WindProvider {
 				if( fields.length != 11 )
 					continue;
 				date = toEpoch(getContent(fields[1],false));
-				val = Integer.parseInt(getContent(fields[4],true).replaceAll("\\..*", ""));
-		        station.getMeteo().getWindDirection().put(date, val);
-		        val = Float.parseFloat(getContent(fields[2],true))*3.6F;
-		        station.getMeteo().getWindSpeedMed().put(date, val);
-		        val = Float.parseFloat(getContent(fields[3],true))*3.6F;
-		        station.getMeteo().getWindSpeedMax().put(date, val);
+				try {
+					val = Integer.parseInt(getContent(fields[4],true).replaceAll("\\..*", ""));
+					station.getMeteo().getWindDirection().put(date, val);
+				} catch( Exception e ) {}
+				try {
+					val = Float.parseFloat(getContent(fields[2],true))*3.6F;
+					station.getMeteo().getWindSpeedMed().put(date, val);
+				} catch( Exception e ) {}
+				try {
+					val = Float.parseFloat(getContent(fields[3],true))*3.6F;
+					station.getMeteo().getWindSpeedMax().put(date, val);
+				} catch( Exception e ) {}
 		        try {
 			        val = Float.parseFloat(getContent(fields[5],true));
 		        	station.getMeteo().getAirHumidity().put(date, val);
@@ -107,7 +113,12 @@ public class RedVigiaProvider implements WindProvider {
 	public String getInfoUrl(String code) {
 		return "http://www.redvigia.es/DetalleBoya.aspx?codigoBoya="+code;
 	}
-	
+
+	@Override
+	public String getUserUrl(String code) {
+		return getInfoUrl(code);
+	}
+
 	private final char separator = '.';
 	private Downloader downloader;
 }

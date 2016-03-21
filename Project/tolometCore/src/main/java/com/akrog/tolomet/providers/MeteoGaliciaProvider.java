@@ -1,5 +1,10 @@
 package com.akrog.tolomet.providers;
 
+import com.akrog.tolomet.Station;
+import com.akrog.tolomet.io.Downloader;
+import com.akrog.tolomet.io.XmlElement;
+import com.akrog.tolomet.io.XmlParser;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,11 +14,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
-
-import com.akrog.tolomet.Station;
-import com.akrog.tolomet.io.Downloader;
-import com.akrog.tolomet.io.XmlElement;
-import com.akrog.tolomet.io.XmlParser;
 
 public class MeteoGaliciaProvider implements WindProvider {
 	public MeteoGaliciaProvider() {
@@ -146,7 +146,12 @@ public class MeteoGaliciaProvider implements WindProvider {
 	public String getInfoUrl(String code) {
 		return "http://www2.meteogalicia.es/galego/observacion/estacions/estacionsinfo.asp?Nest="+code;
 	}
-	
+
+	@Override
+	public String getUserUrl(String code) {
+		return "http://www2.meteogalicia.es/galego/observacion/estacions/estacions.asp?idEst="+code;
+	}
+
 	private Map<String,String> urlParams;
 	private final char separator = '.';
 	private Downloader downloader;	

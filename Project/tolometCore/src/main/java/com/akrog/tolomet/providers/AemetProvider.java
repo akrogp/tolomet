@@ -1,17 +1,22 @@
 package com.akrog.tolomet.providers;
 
-import java.util.Calendar;
-import java.util.TimeZone;
-
 import com.akrog.tolomet.Header;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
+
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class AemetProvider implements WindProvider {
 	
 	@Override
 	public String getInfoUrl(String code) {
 		return "http://www.aemet.es/es/eltiempo/observacion/ultimosdatos?l="+code+"&datos=det";
+	}
+
+	@Override
+	public String getUserUrl(String code) {
+		return getInfoUrl(code);
 	}
 
 	@Override

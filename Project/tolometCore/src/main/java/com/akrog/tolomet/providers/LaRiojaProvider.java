@@ -1,11 +1,11 @@
 package com.akrog.tolomet.providers;
 
-import java.util.Calendar;
-import java.util.TimeZone;
-
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
 import com.akrog.tolomet.io.ExcelDownloader;
+
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class LaRiojaProvider implements WindProvider {
 	@Override
@@ -38,7 +38,12 @@ public class LaRiojaProvider implements WindProvider {
 	public String getInfoUrl(String code) {
 		return "http://ias1.larioja.org/estaciones/estaciones/mapa/consulta/consulta.jsp?codOrg=1&codigo="+code;
 	}
-	
+
+	@Override
+	public String getUserUrl(String code) {
+		return "http://www.larioja.org/emergencias-112/es/meteorologia/datos-estaciones-gobierno";
+	}
+
 	private String download(String code, Calendar now, int codigoP ) {
 		downloader = new ExcelDownloader();
 		downloader.setUrl("http://ias1.larioja.org/estaciones/estaciones/mapa/informes/ExportarDatosServlet");

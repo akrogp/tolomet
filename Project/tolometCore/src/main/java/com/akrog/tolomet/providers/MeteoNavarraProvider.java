@@ -1,10 +1,10 @@
 package com.akrog.tolomet.providers;
 
-import java.util.Calendar;
-import java.util.TimeZone;
-
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
+
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class MeteoNavarraProvider implements WindProvider {
 	@Override
@@ -71,7 +71,12 @@ public class MeteoNavarraProvider implements WindProvider {
 	@Override
 	public String getInfoUrl(String code) {
 		return "http://meteo.navarra.es/estaciones/estacion_detalle.cfm?idestacion="+code.substring(2);
-	}	
+	}
+
+	@Override
+	public String getUserUrl(String code) {
+		return "http://meteo.navarra.es/estaciones/estacion.cfm?IDEstacion="+code.substring(2);
+	}
 
 	private long toEpoch( String str ) {
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));

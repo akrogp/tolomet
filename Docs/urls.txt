@@ -1,24 +1,29 @@
 Euskalmet:
-http://www.euskalmet.euskadi.net/s07-5853x/es/meteorologia/lectur_fr.apl?e=5&anyo=2012&mes=8&dia=22&hora=00:00%2023:50&CodigoEstacion=C072&pagina=1&R01HNoPortal=true
+Datos -> http://www.euskalmet.euskadi.net/s07-5853x/es/meteorologia/lectur_fr.apl?e=5&anyo=2012&mes=8&dia=22&hora=00:00%2023:50&CodigoEstacion=C072&pagina=1&R01HNoPortal=true
+Usuario -> http://www.euskalmet.euskadi.eus/s07-5853x/es/meteorologia/lectur.apl?e=5&campo=C072
 
 Meteo Navarra:
-http://meteo.navarra.es/download/estacion_datos.cfm?IDEstacion=22&p_10=7&p_10=2&p_10=9&p_10=6&fecha_desde=2%2F4%2F2013&fecha_hasta=3%2F4%2F2013&dl=csv
+Datos -> http://meteo.navarra.es/download/estacion_datos.cfm?IDEstacion=22&p_10=7&p_10=2&p_10=9&p_10=6&fecha_desde=2%2F4%2F2013&fecha_hasta=3%2F4%2F2013&dl=csv
+Usuario -> http://meteo.navarra.es/estaciones/estacion.cfm?IDEstacion=8
 
 AEMET:
 http://www.aemet.es/es/eltiempo/observacion/ultimosdatos_bilbao-aeropuerto_20130225213202.csv?k=pva&l=1082&datos=det&w=0&f=temperatura&x=h24
 http://www.aemet.es/es/eltiempo/observacion/ultimosdatos.csv?l=1082&datos=det&x=h24
+Usuario -> http://www.aemet.es/es/eltiempo/observacion/ultimosdatos?l=1083L&datos=det&x=
 
 La Rioja:
-http://ias1.larioja.org/estaciones/estaciones/mapa/informes/ExportarDatosServlet?direccion=/opt/tomcat/webapps/estaciones/estaciones&codOrg=1&codigo=12&codigoP=7&Seleccion=D&Ano=2013&Mes=4&DiaD=6&DiaH=6&Informe=Y&extension=csv
-http://ias1.larioja.org/estaciones/estaciones/mapa/consulta/consulta.jsp?codOrg=1&codigo=1
+Datos -> http://ias1.larioja.org/estaciones/estaciones/mapa/informes/ExportarDatosServlet?direccion=/opt/tomcat/webapps/estaciones/estaciones&codOrg=1&codigo=12&codigoP=7&Seleccion=D&Ano=2013&Mes=4&DiaD=6&DiaH=6&Informe=Y&extension=csv
+Ficha -> http://ias1.larioja.org/estaciones/estaciones/mapa/consulta/consulta.jsp?codOrg=1&codigo=1
 - Sólo devuelve en Excel (aunque le pidas CSV)
 - Hay que hacer varias peticiones -> Velocidad (codigoP=7), Dirección (codigoP=8), Humedad (codigoP=2), temperatura (codigoP=6), presión (codigoP=15)
+Usuario -> http://www.larioja.org/emergencias-112/es/meteorologia/datos-estaciones-gobierno/ezcaray
 
 Galicia:
 Gráfica -> http://www2.meteogalicia.es/NovoXeollador/accesograficas/graficashoxe.asp?est=10143&Nest=%20Cari%F1o
 XML -> http://www2.meteogalicia.es/servizos/MComunicacion/xml/observacion/estacions/estado_actual_p.asp?idEst=10064
 http://www2.meteogalicia.es/galego/observacion/estacions/contidos/DatosHistoricosXML_dezminutal.asp?est=10124&param=1306,1307,1311,1312&data1=28/4/2013&data2=29/4/2013
 http://www2.meteogalicia.es/galego/observacion/estacions/contidos/sensor_periodo.asp?Nest=10124&periodo=1
+Usuario -> http://www2.meteogalicia.es/galego/observacion/estacions/estacions.asp?idEst=10091
 
 MeteoCat (old):
 Datos -> curl -d 'idEstacio=VE&team=ObservacioTeledeteccio&inputSource=DadesActualsEstacio' 'http://www.meteo.cat/xema/AppJava/Detall24Estacio.do'
@@ -27,11 +32,16 @@ Ficha -> curl -e 'http://www.meteo.cat/xema/AppJava/Mapper.do' -d 'team=Observac
 MeteoCat (new):
 Datos -> http://www.meteo.cat/observacions/xema/dades?codi=VE&dia=2015-01-14
 Datos y ficha -> http://www.meteo.cat/observacions/xema/dades?codi=VE
+Usuario -> http://www.meteo.cat/observacions/xema/dades?codi=X4
 
 Red Vigía:
 http://www.redvigia.es/Historico.aspx?codigoBoya=130900414322fa7d&numeroDatos=5&tipo=1&variable=1
+Datos -> http://www.redvigia.es/Historico.aspx?codigoBoya=130900414322fa7d&numeroDatos=24&tipo=1
 
 Metar:
 Ficha -> http://www.aviationweather.gov/adds/metars?station_ids=PADK&std_trans=translated&chk_metars=on
 HTML -> http://www.aviationweather.gov/adds/metars?station_ids=PADK&std_trans=standard&chk_metars=on&hoursStr=past+24+hours
 CSV -> http://www.aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=csv&fields=raw_text&startTime=1430251000&endTime=1430253421&stationString=PADK
+
+RCNL:
+Todo -> http://www.rcnlaredo.es/~meteorcnl/meteo/Current_Vantage_Pro.html
