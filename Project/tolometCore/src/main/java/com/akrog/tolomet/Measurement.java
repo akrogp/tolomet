@@ -8,18 +8,31 @@ public class Measurement {
 	private final Map<Long, Number> map = new TreeMap<Long, Number>();
 	private Long[] times;
 	private Number[] values;
-	private Number minimum;
-	private Number maximum;
+	private Number cachedMinimum, cachedMaximum;
+	private final Float validMinimum, validMaximum;
+
+	public Measurement() {
+		this(null,null);
+	}
+
+	public Measurement(Float validMinimum, Float validMaximum) {
+		this.validMinimum = validMinimum;
+		this.validMaximum = validMaximum;
+	}
 	
 	private void clearCache() {
 		times = null;
 		values = null;
-		minimum = null;
-		maximum = null;
+		cachedMinimum = null;
+		cachedMaximum = null;
 	}
 	
 	public void put(long time, Number value ) {
 		if( value == null )
+			return;
+		if( validMinimum != null && value.floatValue() < validMinimum )
+			return;
+		if( validMaximum != null && value.floatValue() > validMaximum )
 			return;
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(time);
@@ -41,22 +54,6 @@ public class Measurement {
 			return null;
 		return getTimes()[size()-1];
 	}
-
-	/*public Long getStamp(Long stamp) {
-		Long result = getStamp();
-		if( stamp == null || result == null )
-			return result;
-		long diff = Math.abs(stamp-result);
-		long tmp;
-		for( int i = 0; i < size(); i++ ) {
-			tmp = Math.abs(stamp - getTimes()[i]);
-			if( tmp < diff ) {
-				diff = tmp;
-				result = getTimes()[i];
-			}
-		}
-		return result;
-	}*/
 
 	public Long getStamp(Long stamp) {
 		if( stamp == null || isEmpty() )
@@ -109,27 +106,27 @@ public class Measurement {
 	public Number getMinimum() {
 		if( isEmpty() )
 			return null;
-		if( minimum == null ) {
+		if( cachedMinimum == null ) {
 			Number[] values = getValues();
-			minimum = values[0];
+			cachedMinimum = values[0];
 			for(int i = 1; i < values.length; i++ )
-				if( values[i].doubleValue() < minimum.doubleValue() )
-					minimum = values[i];
+				if( values[i].doubleValue() < cachedMinimum.doubleValue() )
+					cachedMinimum = values[i];
 		}
-		return minimum;		
+		return cachedMinimum;
 	}
 	
 	public Number getMaximum() {
 		if( isEmpty() )
 			return null;
-		if( maximum == null ) {
+		if( cachedMaximum == null ) {
 			Number[] values = getValues();
-			maximum = values[0];
+			cachedMaximum = values[0];
 			for(int i = 1; i < values.length; i++ )
-				if( values[i].doubleValue() > maximum.doubleValue() )
-					maximum = values[i];
+				if( values[i].doubleValue() > cachedMaximum.doubleValue() )
+					cachedMaximum = values[i];
 		}
-		return maximum;
+		return cachedMaximum;
 	}
 	
 	public int size() {

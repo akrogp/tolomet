@@ -35,6 +35,12 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/origin_item"
+        android:title="@string/Origin"
+        android:icon="@drawable/ic_origin"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/browser_item"
         android:title="@string/Browser"
         android:icon="@drawable/ic_external"

@@ -19,6 +19,7 @@ import com.akrog.tolomet.BaseActivity;
 import com.akrog.tolomet.InfoActivity;
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.MapActivity;
+import com.akrog.tolomet.ProviderActivity;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.SettingsActivity;
 import com.akrog.tolomet.Station;
@@ -63,6 +64,7 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 		addStationItem(menu, R.id.refresh_item);
 		addStationItem(menu, R.id.info_item);
 		addStationItem(menu, R.id.map_item);
+		addStationItem(menu, R.id.origin_item);
 		addStationItem(menu, R.id.share_item);
 		addStationItem(menu, R.id.whatsapp_item);
 		addStationItem(menu, R.id.fly_item);
@@ -111,6 +113,9 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 			case R.id.info_item:
 				onInfoItem();
 				return true;
+			case R.id.origin_item:
+				onOriginItem();
+				return true;
 			case R.id.browser_item:
 				onBrowserItem();
 				return true;
@@ -154,6 +159,11 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 	private void onInfoItem() {
 		if( !activity.alertNetwork() )
 			activity.startActivity(new Intent(activity, InfoActivity.class));
+	}
+
+	private void onOriginItem() {
+		if( !activity.alertNetwork() )
+			activity.startActivity(new Intent(activity, ProviderActivity.class));
 	}
 
 	private void onBrowserItem() {

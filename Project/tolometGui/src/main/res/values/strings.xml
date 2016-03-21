@@ -101,4 +101,5 @@
     <string name="ShareWebPre">Information from</string>
     <string name="ShareWebMid">for</string>
     <string name="ShareWebPost"></string>
+    <string name="Origin">Provider site</string>
 </resources>

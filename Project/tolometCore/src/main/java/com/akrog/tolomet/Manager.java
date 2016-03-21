@@ -1,5 +1,7 @@
 package com.akrog.tolomet;
 
+import com.akrog.tolomet.providers.WindProviderType;
+
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -11,8 +13,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
-
-import com.akrog.tolomet.providers.WindProviderType;
 
 public class Manager {
 	private Station currentStation;
@@ -222,6 +222,12 @@ public class Manager {
 		if( !checkCurrent() )
 			return null;
 		return currentStation.getProvider().getInfoUrl(currentStation.getCode());
+	}
+
+	public String getUserUrl() {
+		if( !checkCurrent() )
+			return null;
+		return currentStation.getProvider().getUserUrl(currentStation.getCode());
 	}
 	
 	public boolean refresh() {

@@ -109,11 +109,11 @@ public class Meteo {
 		return null;
 	}
 
-	private final Measurement windDirection = new Measurement();
-	private final Measurement windSpeedMed = new Measurement();
-	private final Measurement windSpeedMax = new Measurement();
-	private final Measurement airTemperature = new Measurement();
-	private final Measurement airPressure = new Measurement();
-	private final Measurement airHumidity = new Measurement();
+	private final Measurement windDirection = new Measurement(0F,360F);
+	private final Measurement windSpeedMed = new Measurement(0F,1000F);
+	private final Measurement windSpeedMax = new Measurement(0F,1000F);
+	private final Measurement airTemperature = new Measurement(-100F,100F);
+	private final Measurement airPressure = new Measurement(0F,10000F);
+	private final Measurement airHumidity = new Measurement(0F,110F);
 	private final List<Measurement> measurements = new ArrayList<Measurement>();
 }
