@@ -72,6 +72,11 @@ public class RestApi {
 			motd.setVersion("4.1.6");
 			motd.addChange(tr(lang,"Recuperada opción de reportar", "Report button recovered"));
 		}
+		if( version < 420 ) {
+			motd.setVersion("4.2");
+			motd.addChange(tr(lang,"Integrada web original", "Provider site access"));
+			motd.addChange(tr(lang,"Pequeñas mejoras", "Small improvements"));
+		}
 	}
 
 	private void changesv3(int version, String lang, Motd motd) {
