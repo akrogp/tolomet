@@ -60,7 +60,7 @@ public class RestApi {
 		}
 		if( version < 410 ) {
 			motd.setVersion("4.1");
-			motd.addChange(tr(lang,"Mejorado mapa", "Map improved"));
+			motd.addChange(tr(lang, "Mejorado mapa", "Map improved"));
 			motd.addChange(tr(lang,"Integrado navegador", "Web browser embedded"));
 		}
 		if( version == 414 ) {
@@ -74,8 +74,14 @@ public class RestApi {
 		}
 		if( version < 420 ) {
 			motd.setVersion("4.2");
-			motd.addChange(tr(lang,"Integrada web original", "Provider site access"));
+			motd.addChange(tr(lang, "Integrada web original", "Provider site access"));
 			motd.addChange(tr(lang,"Pequeñas mejoras", "Small improvements"));
+		}
+		if( version < 430 ) {
+			motd.setVersion("4.3");
+			motd.addChange(tr(lang,"Soporte de estaciones Holfuy", "Holfuy stations support"));
+			motd.addChange(tr(lang,"Estación de Aloña (Holfuy)", "Aloña station (Holfuy)"));
+			motd.addChange(tr(lang,"Reorganizadas lecturas del resumen", "Reordered summary readings"));
 		}
 	}
 
