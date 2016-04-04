@@ -272,12 +272,12 @@ public class Manager {
 		Number temp = currentStation.getMeteo().getAirTemperature().getAt(stamp);
 
 		StringBuilder str = new StringBuilder(getStamp(stamp));
-		if( strDir != null )
-			str.append(String.format(" | %dº (%s)", dir.intValue(), strDir));
-		if( hum != null )
-			str.append(String.format(" | %.0f %%", hum));
 		if( temp != null )
 			str.append(String.format(" | %.1f ºC", temp));
+		if( hum != null )
+			str.append(String.format(" | %.0f %%", hum));
+		if( strDir != null )
+			str.append(String.format(" | %dº (%s)", dir.intValue(), strDir));
 		if( med != null )
 			str.append(String.format(" | %.1f", med));
 		if( max != null )

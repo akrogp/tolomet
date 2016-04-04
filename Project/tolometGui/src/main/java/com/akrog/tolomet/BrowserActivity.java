@@ -73,7 +73,10 @@ public abstract class BrowserActivity extends BaseActivity {
 
     @Override
     public void onRefresh() {
-        reload();
+        if( model.getCurrentStation() != null ) {
+            last = null;
+            reload(model.getCurrentStation());
+        }
     }
 
     @Override

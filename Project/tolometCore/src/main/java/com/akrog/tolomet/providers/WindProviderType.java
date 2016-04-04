@@ -11,7 +11,8 @@ public enum WindProviderType {
 	Meteocat("CA", new MeteocatProvider(), WindProviderQuality.Medium),
 	CurrentVantage("RCNL", new CurrentVantageProvider(), WindProviderQuality.Poor),
 	Metar("MA", new MetarProvider(), WindProviderQuality.Poor),
-	Prades("PR", new PradesProvider(), WindProviderQuality.Medium);
+	Prades("PR", new PradesProvider(), WindProviderQuality.Medium),
+	Holfuy("HO", new HolfuyProvider(), WindProviderQuality.Good.Good);
 	
 	private final String code;
 	private final WindProvider provider;
