@@ -1,20 +1,20 @@
 package com.akrog.tolomet.presenters;
 
-import java.util.Calendar;
-
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import com.akrog.tolomet.BaseActivity;
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.Meteo;
-import com.akrog.tolomet.BaseActivity;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.data.Settings;
 import com.akrog.tolomet.view.Axis;
 import com.akrog.tolomet.view.Graph;
 import com.akrog.tolomet.view.Marker;
 import com.akrog.tolomet.view.MyPlot;
+
+import java.util.Calendar;
 
 public class MyCharts implements Presenter {
 	private static final int LINE_BLUE = Color.rgb(0, 0, 200);
@@ -230,6 +230,8 @@ public class MyCharts implements Presenter {
     
     private void updateTimeRange() {
     	int minutes = model.getRefresh();
+		if( minutes < 5 )
+			minutes = 5;
 		int hours = minutes * 24 / 60;
 		if( hours > 24 )
 			hours = 24;

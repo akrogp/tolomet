@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+   <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+         <!-- XML Schema Generated from XML Document on Tue Apr 05 2016 15:51:18 GMT+0200 (CEST) -->
+         <!-- with XmlGrid.net Free Online Service http://xmlgrid.net -->
+         <xs:element name="STATIONS">
+               <xs:complexType>
+                     <xs:sequence>
+                           <xs:element name="STATION" maxOccurs="unbounded">
+                                 <xs:complexType>
+                                       <xs:sequence>
+                                             <xs:element name="ID" type="xs:string"></xs:element>
+                                             <xs:element name="NAME" type="xs:string"></xs:element>
+                                             <xs:element name="LOCATION">
+                                                   <xs:complexType>
+                                                         <xs:sequence>
+                                                               <xs:element name="LAT" type="xs:double"></xs:element>
+                                                               <xs:element name="LONG" type="xs:double"></xs:element>
+                                                               <xs:element name="ALT" type="xs:int"></xs:element>
+                                                               <xs:element name="COUNTRY" type="xs:string"></xs:element>
+                                                               <xs:element name="COUNTRY_NAME" type="xs:string"></xs:element>
+                                                         </xs:sequence>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="DIRECTIONS">
+                                                   <xs:complexType>
+                                                         <xs:sequence>
+                                                               <xs:element name="OK">
+                                                                     <xs:complexType>
+                                                                           <xs:sequence>
+                                                                                 <xs:element name="START" type="xs:int"></xs:element>
+                                                                                 <xs:element name="STOP" type="xs:int"></xs:element>
+                                                                           </xs:sequence>
+                                                                     </xs:complexType>
+                                                               </xs:element>
+                                                               <xs:element name="GOOD">
+                                                                     <xs:complexType>
+                                                                           <xs:sequence>
+                                                                                 <xs:element name="STARTG" type="xs:int"></xs:element>
+                                                                                 <xs:element name="STOPG" type="xs:int"></xs:element>
+                                                                           </xs:sequence>
+                                                                     </xs:complexType>
+                                                               </xs:element>
+                                                         </xs:sequence>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="INFO"></xs:element>
+                                       </xs:sequence>
+                                 </xs:complexType>
+                           </xs:element>
+                     </xs:sequence>
+               </xs:complexType>
+         </xs:element>
+   </xs:schema>

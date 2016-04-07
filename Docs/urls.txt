@@ -45,3 +45,9 @@ CSV -> http://www.aviationweather.gov/adds/dataserver_current/httpparam?dataSour
 
 RCNL:
 Todo -> http://www.rcnlaredo.es/~meteorcnl/meteo/Current_Vantage_Pro.html
+
+Holfuy:
+Data -> http://holfuy.hu/en/takeit/getdata.php
+History -> http://www.holfuy.hu/en/takeit/gethistory.php
+Stations* -> http://holfuy.hu/en/takeit/xml/dezso/stations.xml
+Data* -> http://holfuy.hu/en/takeit/xml/dezso/data.php?station=s310&cnt=200

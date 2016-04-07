@@ -79,9 +79,9 @@ public class RestApi {
 		}
 		if( version < 430 ) {
 			motd.setVersion("4.3");
-			motd.addChange(tr(lang,"Soporte de estaciones Holfuy", "Holfuy stations support"));
-			motd.addChange(tr(lang,"Estación de Aloña (Holfuy)", "Aloña station (Holfuy)"));
+			motd.addChange(tr(lang,"Incluidas estaciones Holfuy (ej: Aloña)", "Included Holfuy stations"));
 			motd.addChange(tr(lang,"Reorganizadas lecturas del resumen", "Reordered summary readings"));
+			motd.addChange(tr(lang,"Mejorado soporte internacional", "Improved international support"));
 		}
 	}
 

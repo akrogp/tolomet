@@ -3,53 +3,45 @@ package com.akrog.tolomet.providers;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.IOException;
+import java.io.StringReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- * Created by gorka on 4/04/16.
+ * Created by gorka on 7/04/16.
  */
 public class HolfuyProvider extends BaseProvider {
-
     public HolfuyProvider() {
         super(REFRESH);
     }
 
     @Override
     public String getInfoUrl(String code) {
-        return "http://holfuy.com/en/camera/"+code;
+        return "http://holfuy.com/en/camera/"+code.substring(1);
     }
 
     @Override
     public String getUserUrl(String code) {
-        return "http://holfuy.com/en/data/"+code;
+        return "http://holfuy.com/en/data/"+code.substring(1);
     }
 
     @Override
     public void configureDownload(Downloader downloader, Station station) {
-        downloader.setUrl("http://holfuy.com/en/takeit/gethistory.php");
-        downloader.addParam("s", station.getCode());
-        if( passwd == null )
-            loadPasswd();
-        String pw = passwd.get(station.getCode());
-        if( pw != null )
-            downloader.addParam("pw", pw);
-        downloader.addParam("type", REFRESH_TYPE);
+        downloader.setUrl("http://holfuy.hu/en/takeit/xml/dezso/data.php");
+        downloader.addParam("station", station.getCode());
         Long stamp = station.getStamp();
         long cnt;
         if( stamp == null ) {
-            Calendar midnight = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
+            Calendar midnight = Calendar.getInstance(TIME_ZONE);
             midnight.set(Calendar.HOUR_OF_DAY, 0);
             midnight.set(Calendar.MINUTE, 0);
             midnight.set(Calendar.SECOND, 0);
@@ -63,54 +55,52 @@ public class HolfuyProvider extends BaseProvider {
 
     @Override
     public void updateStation(Station station, String data) {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        df.setTimeZone(TimeZone.getTimeZone("Europe/Madrid"));
         try {
-            JSONObject json = new JSONObject(data);
-            JSONArray array = json.getJSONArray("measurements");
-            for( int i = 0; i < array.length(); i++ ) {
-                JSONObject item = array.getJSONObject(i);
-                long date = df.parse(item.getString("dateTime")).getTime();
-                JSONObject wind = item.getJSONObject("wind");
-                try {
-                    station.getMeteo().getAirTemperature().put(date,(float)item.getDouble("temperature"));
-                } catch (Exception e ) {};
-                try {
-                    station.getMeteo().getWindDirection().put(date, (float)wind.getInt("direction"));
-                } catch (Exception e ) {};
-                try {
-                    station.getMeteo().getWindSpeedMed().put(date, (float)wind.getDouble("speed"));
-                } catch (Exception e ) {};
-                try {
-                    station.getMeteo().getWindSpeedMax().put(date, (float)wind.getDouble("gust"));
-                } catch (Exception e ) {};
+            DateFormat df = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss", Locale.ENGLISH);
+            df.setTimeZone(TIME_ZONE);
+
+            XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();
+            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+            parser.setInput(new StringReader(data));
+
+            int event = parser.getEventType();
+            String date = null;
+            Long stamp = null;
+            String text = null;
+            while( event != XmlPullParser.END_DOCUMENT ) {
+                String tag = parser.getName();
+                switch( event ) {
+                    case XmlPullParser.START_TAG:
+                        if( tag.equals("WeatherMeasurement") ) {
+                            stamp = null;
+                            text = null;
+                        }
+                        break;
+                    case XmlPullParser.TEXT:
+                        text = parser.getText();
+                        break;
+                    case XmlPullParser.END_TAG:
+                        if( tag.equals("date") )
+                            date = text;
+                        else if( tag.equals("time") )
+                            stamp = df.parse(String.format("%s %s",date,text)).getTime();
+                        else if( tag.equals("dir") )
+                            station.getMeteo().getWindDirection().put(stamp,Float.parseFloat(text));
+                        else if( tag.equals("gust") )
+                            station.getMeteo().getWindSpeedMax().put(stamp, Float.parseFloat(text));
+                        else if( tag.equals("speed") )
+                            station.getMeteo().getWindSpeedMed().put(stamp, Float.parseFloat(text));
+                        else if( tag.equals("temp") )
+                            station.getMeteo().getAirTemperature().put(stamp, Float.parseFloat(text));
+                        break;
+                }
+                event = parser.next();
             }
-        } catch (JSONException e) {
-        } catch (ParseException e) {
+        } catch (XmlPullParserException | IOException | ParseException e) {
+            e.printStackTrace();
         }
     }
 
-    private void loadPasswd() {
-        passwd = new HashMap<>();
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/res/holfuy.csv")));
-            String line;
-            String[] fields;
-            while( (line=br.readLine()) != null ) {
-                fields = line.split(",");
-                passwd.put(fields[0], fields[1]);
-            }
-            br.close();
-        } catch( Exception e ) {
-        }
-    }
-
-    /*private static final int REFRESH = 2;
-    private static final int REFRESH_TYPE = 0;*/
-    private static final int REFRESH = 15;
-    private static final int REFRESH_TYPE = 1;
-    /*private static final int REFRESH = 60;
-    private static final int REFRESH_TYPE = 2;*/
-
-    private Map<String,String> passwd;
+    private static final int REFRESH = 2;
+    private static final TimeZone TIME_ZONE = TimeZone.getTimeZone("CET");
 }

@@ -1,0 +1,4031 @@
+<STATIONS>
+		         <STATION>
+		         <ID>s101</ID>
+				 <NAME>TestStation</NAME>
+		         <LOCATION>
+				        <LAT>47.562289</LAT>
+						<LONG>19.014066</LONG>
+						<ALT>225</ALT>
+						<COUNTRY>HU</COUNTRY>
+						<COUNTRY_NAME>Hungary</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>1</START>
+					   <STOP>90</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>20</STARTG>
+					   <STOPG>70</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s112</ID>
+				 <NAME>Voss, Vikafjellet GD</NAME>
+		         <LOCATION>
+				        <LAT>60.936354</LAT>
+						<LONG>6.427961</LONG>
+						<ALT>1150</ALT>
+						<COUNTRY>Voss</COUNTRY>
+						<COUNTRY_NAME>Voss (Norway)</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>45</START>
+					   <STOP>180</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>100</STARTG>
+					   <STOPG>130</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s197</ID>
+				 <NAME>OPK Solbergåsen</NAME>
+		         <LOCATION>
+				        <LAT>59.769362</LAT>
+						<LONG>10.049658</LONG>
+						<ALT>410</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>40</START>
+					   <STOP>180</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>60</STARTG>
+					   <STOPG>160</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s103</ID>
+				 <NAME>400kV</NAME>
+		         <LOCATION>
+				        <LAT>47.07926</LAT>
+						<LONG>17.76598</LONG>
+						<ALT>477</ALT>
+						<COUNTRY>HU</COUNTRY>
+						<COUNTRY_NAME>Hungary</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>0</START>
+					   <STOP>0</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>0</STARTG>
+					   <STOPG>0</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s187</ID>
+				 <NAME>Lemberg</NAME>
+		         <LOCATION>
+				        <LAT>49.781721</LAT>
+						<LONG>7.764856</LONG>
+						<ALT>495</ALT>
+						<COUNTRY>DE</COUNTRY>
+						<COUNTRY_NAME>Deutschland</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>80</START>
+					   <STOP>230</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>230</STARTG>
+					   <STOPG>90</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s188</ID>
+				 <NAME>Hof PGK, Stokkelia</NAME>
+		         <LOCATION>
+				        <LAT>59.557590</LAT>
+						<LONG>10.039287</LONG>
+						<ALT>450</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>30</START>
+					   <STOP>110</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>45</STARTG>
+					   <STOPG>100</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s104</ID>
+				 <NAME>Scheveningen</NAME>
+		         <LOCATION>
+				        <LAT>52.100635</LAT>
+						<LONG>4.261296</LONG>
+						<ALT>0</ALT>
+						<COUNTRY>NL</COUNTRY>
+						<COUNTRY_NAME>Netherlands</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>20</START>
+					   <STOP>180</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>180</STARTG>
+					   <STOPG>20</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s113</ID>
+				 <NAME>SBK</NAME>
+		         <LOCATION>
+				        <LAT></LAT>
+						<LONG></LONG>
+						<ALT>0</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>200</START>
+					   <STOP>290</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>220</STARTG>
+					   <STOPG>270</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s107</ID>
+				 <NAME>Voss, Horgaletten</NAME>
+		         <LOCATION>
+				        <LAT>60.6694</LAT>
+						<LONG>6.3870</LONG>
+						<ALT>950</ALT>
+						<COUNTRY>Voss</COUNTRY>
+						<COUNTRY_NAME>Voss (Norway)</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>0</START>
+					   <STOP>0</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>90</STARTG>
+					   <STOPG>180</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s111</ID>
+				 <NAME>Moirs Hill</NAME>
+		         <LOCATION>
+				        <LAT>-36.471107</LAT>
+						<LONG>174.585769</LONG>
+						<ALT>0</ALT>
+						<COUNTRY>NZ</COUNTRY>
+						<COUNTRY_NAME>New Zealand</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>160</START>
+					   <STOP>290</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>180</STARTG>
+					   <STOPG>270</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s114</ID>
+				 <NAME>Bergön</NAME>
+		         <LOCATION>
+				        <LAT></LAT>
+						<LONG></LONG>
+						<ALT>0</ALT>
+						<COUNTRY>OFIN</COUNTRY>
+						<COUNTRY_NAME>Finland</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>70</START>
+					   <STOP>150</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>90</STARTG>
+					   <STOPG>130</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s115</ID>
+				 <NAME>Freikollen</NAME>
+		         <LOCATION>
+				        <LAT>63.05109</LAT>
+						<LONG>7.76828</LONG>
+						<ALT>0</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>0</START>
+					   <STOP>270</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>30</STARTG>
+					   <STOPG>250</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s116</ID>
+				 <NAME>Bergen, Skåldalsnipa</NAME>
+		         <LOCATION>
+				        <LAT>60.383383</LAT>
+						<LONG>5.489036</LONG>
+						<ALT>605</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>160</START>
+					   <STOP>20</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>180</STARTG>
+					   <STOPG>360</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s119</ID>
+				 <NAME>HLSK Brudeberget</NAME>
+		         <LOCATION>
+				        <LAT>59.494</LAT>
+						<LONG>9.8244</LONG>
+						<ALT>560</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>315</START>
+					   <STOP>30</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>315</STARTG>
+					   <STOPG>30</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s118</ID>
+				 <NAME>Voss, Rokne, GD</NAME>
+		         <LOCATION>
+				        <LAT>60.6105115</LAT>
+						<LONG>6.4446289</LONG>
+						<ALT>470</ALT>
+						<COUNTRY>Voss</COUNTRY>
+						<COUNTRY_NAME>Voss (Norway)</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>280</START>
+					   <STOP>350</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>290</STARTG>
+					   <STOPG>340</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s312</ID>
+				 <NAME>Berettyóújfalu</NAME>
+		         <LOCATION>
+				        <LAT>47.229361</LAT>
+						<LONG>21.556549</LONG>
+						<ALT>0</ALT>
+						<COUNTRY>HU</COUNTRY>
+						<COUNTRY_NAME>Hungary</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>0</START>
+					   <STOP>0</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>0</STARTG>
+					   <STOPG>0</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s117</ID>
+				 <NAME>Bergen, Unnelandstop</NAME>
+		         <LOCATION>
+				        <LAT>60.368305</LAT>
+						<LONG>5.484985</LONG>
+						<ALT>289</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>180</START>
+					   <STOP>270</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>195</STARTG>
+					   <STOPG>255</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s120</ID>
+				 <NAME>Ringerudkollen, Ådal</NAME>
+		         <LOCATION>
+				        <LAT>60.389455</LAT>
+						<LONG>10.032084</LONG>
+						<ALT>0</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>340</START>
+					   <STOP>220</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>350</STARTG>
+					   <STOPG>200</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s121</ID>
+				 <NAME>Voss, Bavallstoppen</NAME>
+		         <LOCATION>
+				        <LAT>60.646278</LAT>
+						<LONG>6.402208</LONG>
+						<ALT>820</ALT>
+						<COUNTRY>Voss</COUNTRY>
+						<COUNTRY_NAME>Voss (Norway)</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>20</START>
+					   <STOP>150</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>30</STARTG>
+					   <STOPG>120</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s124</ID>
+				 <NAME>HLSK Grøtterud</NAME>
+		         <LOCATION>
+				        <LAT>59.504</LAT>
+						<LONG>9.9996</LONG>
+						<ALT>435</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>135</START>
+					   <STOP>225</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>135</STARTG>
+					   <STOPG>225</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s126</ID>
+				 <NAME>Ravlunda O</NAME>
+		         <LOCATION>
+				        <LAT>55.705740</LAT>
+						<LONG>14.202039</LONG>
+						<ALT>30</ALT>
+						<COUNTRY>SE</COUNTRY>
+						<COUNTRY_NAME>Sweden</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>50</START>
+					   <STOP>125</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>65</STARTG>
+					   <STOPG>110</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s127</ID>
+				 <NAME>Brandstad Vinsch</NAME>
+		         <LOCATION>
+				        <LAT>55.673697</LAT>
+						<LONG>13.732315</LONG>
+						<ALT>0</ALT>
+						<COUNTRY>SE</COUNTRY>
+						<COUNTRY_NAME>Sweden</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>0</START>
+					   <STOP>0</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>0</STARTG>
+					   <STOPG>360</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s128</ID>
+				 <NAME>Höganäs NW</NAME>
+		         <LOCATION>
+				        <LAT>56.208924</LAT>
+						<LONG>12.541060</LONG>
+						<ALT>5</ALT>
+						<COUNTRY>SE</COUNTRY>
+						<COUNTRY_NAME>Sweden</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>265</START>
+					   <STOP>320</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>280</STARTG>
+					   <STOPG>310</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s133</ID>
+				 <NAME>OPK Sundvollen</NAME>
+		         <LOCATION>
+				        <LAT>60.053938</LAT>
+						<LONG>10.323179</LONG>
+						<ALT>0</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>220</START>
+					   <STOP>20</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>240</STARTG>
+					   <STOPG>0</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s134</ID>
+				 <NAME>OPK  Grøndalen</NAME>
+		         <LOCATION>
+				        <LAT>60.937271</LAT>
+						<LONG>8.432543</LONG>
+						<ALT>1220</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>150</START>
+					   <STOP>280</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>160</STARTG>
+					   <STOPG>270</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s135</ID>
+				 <NAME>OPK Solfjellstua</NAME>
+		         <LOCATION>
+				        <LAT>59.937644</LAT>
+						<LONG>10.468935</LONG>
+						<ALT>314</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>120</START>
+					   <STOP>260</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>130</STARTG>
+					   <STOPG>250</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s136</ID>
+				 <NAME>Ebden, Lake Hume</NAME>
+		         <LOCATION>
+				        <LAT>-36.152179</LAT>
+						<LONG>147.029112</LONG>
+						<ALT>200</ALT>
+						<COUNTRY>AU</COUNTRY>
+						<COUNTRY_NAME>Australia</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>180</START>
+					   <STOP>0</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>270</STARTG>
+					   <STOPG>180</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s137</ID>
+				 <NAME>Nordfjellet, Husnes</NAME>
+		         <LOCATION>
+				        <LAT>59.845844</LAT>
+						<LONG>5.795293</LONG>
+						<ALT>520</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>160</START>
+					   <STOP>360</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>180</STARTG>
+					   <STOPG>340</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s105</ID>
+				 <NAME>Pilis-tető</NAME>
+		         <LOCATION>
+				        <LAT>47.688803</LAT>
+						<LONG>18.872980</LONG>
+						<ALT>750</ALT>
+						<COUNTRY>HU</COUNTRY>
+						<COUNTRY_NAME>Hungary</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>55</START>
+					   <STOP>255</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>65</STARTG>
+					   <STOPG>125</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s138</ID>
+				 <NAME>Ulriksmast</NAME>
+		         <LOCATION>
+				        <LAT>60.3740782</LAT>
+						<LONG>5.3639845</LONG>
+						<ALT>500</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>195</START>
+					   <STOP>255</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>20</STARTG>
+					   <STOPG>80</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s142</ID>
+				 <NAME>THPK</NAME>
+		         <LOCATION>
+				        <LAT>69.671404</LAT>
+						<LONG>18.944550</LONG>
+						<ALT>270</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>180</START>
+					   <STOP>360</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>200</STARTG>
+					   <STOPG>340</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s139</ID>
+				 <NAME>Agent Zero,s139</NAME>
+		         <LOCATION>
+				        <LAT>60.7380441</LAT>
+						<LONG>14.9780876</LONG>
+						<ALT>0</ALT>
+						<COUNTRY>SE</COUNTRY>
+						<COUNTRY_NAME>Sweden</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>230</START>
+					   <STOP>310</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>250</STARTG>
+					   <STOPG>290</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s140</ID>
+				 <NAME>Hestelegda, STRATUS</NAME>
+		         <LOCATION>
+				        <LAT>62.3257003</LAT>
+						<LONG>5.8911110</LONG>
+						<ALT>460</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>245</START>
+					   <STOP>360</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>280</STARTG>
+					   <STOPG>360</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s141</ID>
+				 <NAME>s141</NAME>
+		         <LOCATION>
+				        <LAT></LAT>
+						<LONG></LONG>
+						<ALT>0</ALT>
+						<COUNTRY>ES</COUNTRY>
+						<COUNTRY_NAME>Spain</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>70</START>
+					   <STOP>150</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>90</STARTG>
+					   <STOPG>130</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s144</ID>
+				 <NAME>Glidflyg(off-line)</NAME>
+		         <LOCATION>
+				        <LAT></LAT>
+						<LONG></LONG>
+						<ALT>1000</ALT>
+						<COUNTRY>SE</COUNTRY>
+						<COUNTRY_NAME>Sweden</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>80</START>
+					   <STOP>290</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>90</STARTG>
+					   <STOPG>280</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s146</ID>
+				 <NAME>Treskavec</NAME>
+		         <LOCATION>
+				        <LAT>41.398743</LAT>
+						<LONG>21.533667</LONG>
+						<ALT>1200</ALT>
+						<COUNTRY>MK</COUNTRY>
+						<COUNTRY_NAME>Macedonia</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>70</START>
+					   <STOP>150</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>90</STARTG>
+					   <STOPG>130</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s147</ID>
+				 <NAME>Kruševo</NAME>
+		         <LOCATION>
+				        <LAT>41.3432</LAT>
+						<LONG>21.2569</LONG>
+						<ALT>1411</ALT>
+						<COUNTRY>MK</COUNTRY>
+						<COUNTRY_NAME>Macedonia</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>30</START>
+					   <STOP>150</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>50</STARTG>
+					   <STOPG>130</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s148</ID>
+				 <NAME>Gostivar</NAME>
+		         <LOCATION>
+				        <LAT>41.785457</LAT>
+						<LONG>20.953803</LONG>
+						<ALT>700</ALT>
+						<COUNTRY>MK</COUNTRY>
+						<COUNTRY_NAME>Macedonia</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>270</START>
+					   <STOP>10</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>300</STARTG>
+					   <STOPG>340</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s149</ID>
+				 <NAME>Blåfjell,Nordvest PG</NAME>
+		         <LOCATION>
+				        <LAT>62.431392</LAT>
+						<LONG>6.164660</LONG>
+						<ALT>375</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>280</START>
+					   <STOP>75</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>300</STARTG>
+					   <STOPG>55</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s151</ID>
+				 <NAME>Burma Rd HB</NAME>
+		         <LOCATION>
+				        <LAT>-39.771236</LAT>
+						<LONG>176.650972</LONG>
+						<ALT>414</ALT>
+						<COUNTRY>NZ</COUNTRY>
+						<COUNTRY_NAME>New Zealand</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>90</START>
+					   <STOP>180</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>112</STARTG>
+					   <STOPG>157</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s152</ID>
+				 <NAME>Coronet Peak Tandems</NAME>
+		         <LOCATION>
+				        <LAT>-44.915389</LAT>
+						<LONG>168.739177</LONG>
+						<ALT>1620</ALT>
+						<COUNTRY>NZ</COUNTRY>
+						<COUNTRY_NAME>New Zealand</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>260</START>
+					   <STOP>80</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>80</STARTG>
+					   <STOPG>260</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s237</ID>
+				 <NAME>Zeltingen-Rachtig Mf</NAME>
+		         <LOCATION>
+				        <LAT>49.961742</LAT>
+						<LONG>6.992667</LONG>
+						<ALT>254</ALT>
+						<COUNTRY>DE</COUNTRY>
+						<COUNTRY_NAME>Deutschland</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>30</START>
+					   <STOP>140</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>50</STARTG>
+					   <STOPG>120</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s238</ID>
+				 <NAME>Burgen Moselfalken</NAME>
+		         <LOCATION>
+				        <LAT>49.8755691</LAT>
+						<LONG>7.0179084</LONG>
+						<ALT>380</ALT>
+						<COUNTRY>DE</COUNTRY>
+						<COUNTRY_NAME>Deutschland</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>260</START>
+					   <STOP>60</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>290</STARTG>
+					   <STOPG>30</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s239</ID>
+				 <NAME>Omarama</NAME>
+		         <LOCATION>
+				        <LAT>-44.483226</LAT>
+						<LONG>169.984801</LONG>
+						<ALT>421</ALT>
+						<COUNTRY>NZ</COUNTRY>
+						<COUNTRY_NAME>New Zealand</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>0</START>
+					   <STOP>0</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>0</STARTG>
+					   <STOPG>360</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s154</ID>
+				 <NAME>G Lykjelen, Andvik</NAME>
+		         <LOCATION>
+				        <LAT>60.809100</LAT>
+						<LONG>5.367280</LONG>
+						<ALT>410</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>270</START>
+					   <STOP>0</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>290</STARTG>
+					   <STOPG>344</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s155</ID>
+				 <NAME>Kåseberga S</NAME>
+		         <LOCATION>
+				        <LAT>55.384627</LAT>
+						<LONG>14.064260</LONG>
+						<ALT>30</ALT>
+						<COUNTRY>SE</COUNTRY>
+						<COUNTRY_NAME>Sweden</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>115</START>
+					   <STOP>205</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>120</STARTG>
+					   <STOPG>200</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s156</ID>
+				 <NAME>FlyStanwell</NAME>
+		         <LOCATION>
+				        <LAT>-34.226650</LAT>
+						<LONG>150.998664</LONG>
+						<ALT>175</ALT>
+						<COUNTRY>AU</COUNTRY>
+						<COUNTRY_NAME>Australia</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>75</START>
+					   <STOP>220</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>90</STARTG>
+					   <STOPG>202</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s301</ID>
+				 <NAME>Forbordsfjellet</NAME>
+		         <LOCATION>
+				        <LAT>63.526866</LAT>
+						<LONG>10.888395</LONG>
+						<ALT>600</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>145</START>
+					   <STOP>30</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>180</STARTG>
+					   <STOPG>360</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s157</ID>
+				 <NAME>s157</NAME>
+		         <LOCATION>
+				        <LAT></LAT>
+						<LONG></LONG>
+						<ALT>0</ALT>
+						<COUNTRY>XX</COUNTRY>
+						<COUNTRY_NAME>Other</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>70</START>
+					   <STOP>150</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>90</STARTG>
+					   <STOPG>130</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s158</ID>
+				 <NAME>THPK Ersfjord</NAME>
+		         <LOCATION>
+				        <LAT>69.699712</LAT>
+						<LONG>18.638649</LONG>
+						<ALT>130</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>50</START>
+					   <STOP>160</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>70</STARTG>
+					   <STOPG>140</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s242</ID>
+				 <NAME>Klüsserath</NAME>
+		         <LOCATION>
+				        <LAT>49.847773</LAT>
+						<LONG>6.871240</LONG>
+						<ALT>285</ALT>
+						<COUNTRY>DE</COUNTRY>
+						<COUNTRY_NAME>Deutschland</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>112</START>
+					   <STOP>270</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>135</STARTG>
+					   <STOPG>247</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s159</ID>
+				 <NAME>RHMFK Flyplass</NAME>
+		         <LOCATION>
+				        <LAT>59.628680</LAT>
+						<LONG>10.497506</LONG>
+						<ALT>0</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>225</START>
+					   <STOP>45</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>45</STARTG>
+					   <STOPG>225</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s160</ID>
+				 <NAME>Spjelkavik Heisa</NAME>
+		         <LOCATION>
+				        <LAT>62.452448</LAT>
+						<LONG>6.381587</LONG>
+						<ALT>306</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>270</START>
+					   <STOP>90</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>300</STARTG>
+					   <STOPG>60</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s162</ID>
+				 <NAME>Asker Modellklubb</NAME>
+		         <LOCATION>
+				        <LAT>59.797501</LAT>
+						<LONG>10.383786</LONG>
+						<ALT>0</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>180</START>
+					   <STOP>0</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>0</STARTG>
+					   <STOPG>180</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s163</ID>
+				 <NAME>Hustadvika</NAME>
+		         <LOCATION>
+				        <LAT>62.986072</LAT>
+						<LONG>7.116637</LONG>
+						<ALT>10</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>150</START>
+					   <STOP>180</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>180</STARTG>
+					   <STOPG>45</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s167</ID>
+				 <NAME>Inwoods</NAME>
+		         <LOCATION>
+				        <LAT>-41.342044</LAT>
+						<LONG>172.561244</LONG>
+						<ALT>0</ALT>
+						<COUNTRY>NZ</COUNTRY>
+						<COUNTRY_NAME>New Zealand</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>310</START>
+					   <STOP>30</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>325</STARTG>
+					   <STOPG>20</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s164</ID>
+				 <NAME>Allandale</NAME>
+		         <LOCATION>
+				        <LAT>-43.636246</LAT>
+						<LONG>172.623754</LONG>
+						<ALT>1500</ALT>
+						<COUNTRY>NZ</COUNTRY>
+						<COUNTRY_NAME>New Zealand</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>0</START>
+					   <STOP>90</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>15</STARTG>
+					   <STOPG>70</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s165</ID>
+				 <NAME>OPK Eggekollen</NAME>
+		         <LOCATION>
+				        <LAT>59.826146 </LAT>
+						<LONG>10.191557</LONG>
+						<ALT>460</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>110</START>
+					   <STOP>230</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>120</STARTG>
+					   <STOPG>210</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s166</ID>
+				 <NAME>Takaka</NAME>
+		         <LOCATION>
+				        <LAT>172.861129</LAT>
+						<LONG>41.022703 </LONG>
+						<ALT>600</ALT>
+						<COUNTRY>NZ</COUNTRY>
+						<COUNTRY_NAME>New Zealand</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>210</START>
+					   <STOP>330</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>230</STARTG>
+					   <STOPG>310</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s169</ID>
+				 <NAME>Dills Hill</NAME>
+		         <LOCATION>
+				        <LAT>-36.457514</LAT>
+						<LONG>174.548667</LONG>
+						<ALT>246</ALT>
+						<COUNTRY>NZ</COUNTRY>
+						<COUNTRY_NAME>New Zealand</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>0</START>
+					   <STOP>90</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>22</STARTG>
+					   <STOPG>67</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s170</ID>
+				 <NAME>Skyline Gondola</NAME>
+		         <LOCATION>
+				        <LAT>-45.024099</LAT>
+						<LONG>168.644278</LONG>
+						<ALT>1000</ALT>
+						<COUNTRY>NZ</COUNTRY>
+						<COUNTRY_NAME>New Zealand</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>25</START>
+					   <STOP>85</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>210</STARTG>
+					   <STOPG>270</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s171</ID>
+				 <NAME>Wathba Hill</NAME>
+		         <LOCATION>
+				        <LAT>24.166176</LAT>
+						<LONG>54.694576</LONG>
+						<ALT>70</ALT>
+						<COUNTRY>AE</COUNTRY>
+						<COUNTRY_NAME>U. Arab Emirates</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>120</START>
+					   <STOP>60</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>150</STARTG>
+					   <STOPG>30</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s172</ID>
+				 <NAME>Hohwacht</NAME>
+		         <LOCATION>
+				        <LAT>47.375987</LAT>
+						<LONG>7.673607</LONG>
+						<ALT>1060</ALT>
+						<COUNTRY>CH</COUNTRY>
+						<COUNTRY_NAME>Switzerland</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>320</START>
+					   <STOP>55</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>340</STARTG>
+					   <STOPG>35</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s173</ID>
+				 <NAME>Skydive Skåne</NAME>
+		         <LOCATION>
+				        <LAT>55.920450</LAT>
+						<LONG>14.087648</LONG>
+						<ALT>23</ALT>
+						<COUNTRY>SE</COUNTRY>
+						<COUNTRY_NAME>Sweden</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>70</START>
+					   <STOP>150</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>90</STARTG>
+					   <STOPG>130</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s174</ID>
+				 <NAME>Storwartz</NAME>
+		         <LOCATION>
+				        <LAT>62.629903</LAT>
+						<LONG>11.537061</LONG>
+						<ALT>0</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>120</START>
+					   <STOP>250</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>300</STARTG>
+					   <STOPG>45</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s176</ID>
+				 <NAME>HooleyDooley</NAME>
+		         <LOCATION>
+				        <LAT>-32.505274</LAT>
+						<LONG>151.500778</LONG>
+						<ALT>375</ALT>
+						<COUNTRY>AU</COUNTRY>
+						<COUNTRY_NAME>Australia</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>20</START>
+					   <STOP>160</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>30</STARTG>
+					   <STOPG>150</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s179</ID>
+				 <NAME>Crackneck Bateau Bay</NAME>
+		         <LOCATION>
+				        <LAT>-33.39441</LAT>
+						<LONG>151.48297</LONG>
+						<ALT>128</ALT>
+						<COUNTRY>AU</COUNTRY>
+						<COUNTRY_NAME>Australia</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>68</START>
+					   <STOP>135</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>75</STARTG>
+					   <STOPG>120</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s180</ID>
+				 <NAME>Mt.Blackheath</NAME>
+		         <LOCATION>
+				        <LAT>-33.641911</LAT>
+						<LONG>150.245301</LONG>
+						<ALT>1050</ALT>
+						<COUNTRY>AU</COUNTRY>
+						<COUNTRY_NAME>Australia</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>210</START>
+					   <STOP>340</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>230</STARTG>
+					   <STOPG>320</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s183</ID>
+				 <NAME>Lake St.Clair</NAME>
+		         <LOCATION>
+				        <LAT>-32.3544</LAT>
+						<LONG>151.3120</LONG>
+						<ALT>595</ALT>
+						<COUNTRY>AU</COUNTRY>
+						<COUNTRY_NAME>Australia</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>240</START>
+					   <STOP>320</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>250</STARTG>
+					   <STOPG>310</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s185</ID>
+				 <NAME>SILAA</NAME>
+		         <LOCATION>
+				        <LAT>23.982145</LAT>
+						<LONG>51.848484</LONG>
+						<ALT>15</ALT>
+						<COUNTRY>AE</COUNTRY>
+						<COUNTRY_NAME>U. Arab Emirates</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>0</START>
+					   <STOP>0</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>0</STARTG>
+					   <STOPG>360</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s186</ID>
+				 <NAME>Nesna Middagstuva</NAME>
+		         <LOCATION>
+				        <LAT>66.199757</LAT>
+						<LONG>13.064911</LONG>
+						<ALT>390</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>210</START>
+					   <STOP>30</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>250</STARTG>
+					   <STOPG>5</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s195</ID>
+				 <NAME>Quad, Nevis Range</NAME>
+		         <LOCATION>
+				        <LAT>56.826931</LAT>
+						<LONG>-4.976017</LONG>
+						<ALT>900</ALT>
+						<COUNTRY>UK</COUNTRY>
+						<COUNTRY_NAME>United Kingdom</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>293</START>
+					   <STOP>23</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>315</STARTG>
+					   <STOPG>0</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s198</ID>
+				 <NAME>Salen</NAME>
+		         <LOCATION>
+				        <LAT>62.966285</LAT>
+						<LONG>8.747917</LONG>
+						<ALT>490</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>290</START>
+					   <STOP>70</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>300</STARTG>
+					   <STOPG>60</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s199</ID>
+				 <NAME>Haksåsen</NAME>
+		         <LOCATION>
+				        <LAT>63.0501823</LAT>
+						<LONG>9.7182438</LONG>
+						<ALT>490</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>120</START>
+					   <STOP>245</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>135</STARTG>
+					   <STOPG>235</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s200</ID>
+				 <NAME>OPK Brandbukampen </NAME>
+		         <LOCATION>
+				        <LAT>60.443566</LAT>
+						<LONG>10.491686</LONG>
+						<ALT>460</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>180</START>
+					   <STOP>270</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>200</STARTG>
+					   <STOPG>250</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s204</ID>
+				 <NAME>Finse Skisenter</NAME>
+		         <LOCATION>
+				        <LAT>60.60666</LAT>
+						<LONG>7.51158</LONG>
+						<ALT>1380</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>0</START>
+					   <STOP>0</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>0</STARTG>
+					   <STOPG>0</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s205</ID>
+				 <NAME>Tusten,Molde</NAME>
+		         <LOCATION>
+				        <LAT>62.78181</LAT>
+						<LONG>7.25157</LONG>
+						<ALT>705</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>0</START>
+					   <STOP>1</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>90</STARTG>
+					   <STOPG>360</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s206</ID>
+				 <NAME>THPK Andsfjellet</NAME>
+		         <LOCATION>
+				        <LAT>69.114223</LAT>
+						<LONG>18.536355</LONG>
+						<ALT>550</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>20</START>
+					   <STOP>155</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>30</STARTG>
+					   <STOPG>145</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s207</ID>
+				 <NAME>THPK Finnvikdalen</NAME>
+		         <LOCATION>
+				        <LAT>69.76084</LAT>
+						<LONG>18.854170</LONG>
+						<ALT>270</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>180</START>
+					   <STOP>360</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>200</STARTG>
+					   <STOPG>340</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s208</ID>
+				 <NAME>Jablanica-Tri Shilka</NAME>
+		         <LOCATION>
+				        <LAT>41.166433</LAT>
+						<LONG>20.585795</LONG>
+						<ALT>1560</ALT>
+						<COUNTRY>MK</COUNTRY>
+						<COUNTRY_NAME>Macedonia</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>45</START>
+					   <STOP>135</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>65</STARTG>
+					   <STOPG>115</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s209</ID>
+				 <NAME>Galicica-Velestovo</NAME>
+		         <LOCATION>
+				        <LAT>41.092130</LAT>
+						<LONG>20.835176</LONG>
+						<ALT>1210</ALT>
+						<COUNTRY>MK</COUNTRY>
+						<COUNTRY_NAME>Macedonia</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>250</START>
+					   <STOP>320</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>260</STARTG>
+					   <STOPG>310</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s210</ID>
+				 <NAME>Galicica-Baba, Ohrid</NAME>
+		         <LOCATION>
+				        <LAT>40.954055</LAT>
+						<LONG>20.812598</LONG>
+						<ALT>1560</ALT>
+						<COUNTRY>MK</COUNTRY>
+						<COUNTRY_NAME>Macedonia</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>255</START>
+					   <STOP>330</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>265</STARTG>
+					   <STOPG>315</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s211</ID>
+				 <NAME>FLK  PG/HG klubb</NAME>
+		         <LOCATION>
+				        <LAT>61.437454</LAT>
+						<LONG>5.856829</LONG>
+						<ALT>700</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>20</START>
+					   <STOP>90</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>90</STARTG>
+					   <STOPG>380</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s212</ID>
+				 <NAME>Flemma</NAME>
+		         <LOCATION>
+				        <LAT>62.935401</LAT>
+						<LONG>8.078862</LONG>
+						<ALT>10</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>120</START>
+					   <STOP>150</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>300</STARTG>
+					   <STOPG>330</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s213</ID>
+				 <NAME>Kario</NAME>
+		         <LOCATION>
+				        <LAT>-37.262969</LAT>
+						<LONG>174.656448</LONG>
+						<ALT>174</ALT>
+						<COUNTRY>NZ</COUNTRY>
+						<COUNTRY_NAME>New Zealand</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>180</START>
+					   <STOP>337</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>202</STARTG>
+					   <STOPG>315</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s214</ID>
+				 <NAME>Hammars backar SV</NAME>
+		         <LOCATION>
+				        <LAT>55.401901</LAT>
+						<LONG>14.014564</LONG>
+						<ALT>30</ALT>
+						<COUNTRY>SE</COUNTRY>
+						<COUNTRY_NAME>Sweden</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>190</START>
+					   <STOP>260</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>200</STARTG>
+					   <STOPG>250</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s215</ID>
+				 <NAME>Hovs hallar NW</NAME>
+		         <LOCATION>
+				        <LAT>56.456361</LAT>
+						<LONG>12.681237</LONG>
+						<ALT>4</ALT>
+						<COUNTRY>SE</COUNTRY>
+						<COUNTRY_NAME>Sweden</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>275</START>
+					   <STOP>355</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>290</STARTG>
+					   <STOPG>350</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s216</ID>
+				 <NAME>Ålis SV</NAME>
+		         <LOCATION>
+				        <LAT>55.942703</LAT>
+						<LONG>12.771115</LONG>
+						<ALT>5</ALT>
+						<COUNTRY>SE</COUNTRY>
+						<COUNTRY_NAME>Sweden</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>220</START>
+					   <STOP>265</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>225</STARTG>
+					   <STOPG>255</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s217</ID>
+				 <NAME>Hässleholm PM</NAME>
+		         <LOCATION>
+				        <LAT>56.184009</LAT>
+						<LONG>13.747222</LONG>
+						<ALT>100</ALT>
+						<COUNTRY>SE</COUNTRY>
+						<COUNTRY_NAME>Sweden</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>0</START>
+					   <STOP>360</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>0</STARTG>
+					   <STOPG>360</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s218</ID>
+				 <NAME>SPGK Fennefoss</NAME>
+		         <LOCATION>
+				        <LAT>58.584994</LAT>
+						<LONG>7.781577</LONG>
+						<ALT>455</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>70</START>
+					   <STOP>220</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>90</STARTG>
+					   <STOPG>180</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s219</ID>
+				 <NAME>SPGK Hillestadheia</NAME>
+		         <LOCATION>
+				        <LAT>58.818250</LAT>
+						<LONG>8.179799</LONG>
+						<ALT>606</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>190</START>
+					   <STOP>260</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>200</STARTG>
+					   <STOPG>250</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s221</ID>
+				 <NAME>Delta-Club</NAME>
+		         <LOCATION>
+				        <LAT>50.781384</LAT>
+						<LONG>7.377148 </LONG>
+						<ALT>228</ALT>
+						<COUNTRY>DE</COUNTRY>
+						<COUNTRY_NAME>Deutschland</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>155</START>
+					   <STOP>235</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>175</STARTG>
+					   <STOPG>215</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s231</ID>
+				 <NAME>Rörtången</NAME>
+		         <LOCATION>
+				        <LAT>57.915756</LAT>
+						<LONG>11.760605</LONG>
+						<ALT>50</ALT>
+						<COUNTRY>SE</COUNTRY>
+						<COUNTRY_NAME>Sweden</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>210</START>
+					   <STOP>20</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>225</STARTG>
+					   <STOPG>360</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s232</ID>
+				 <NAME>Mittagong</NAME>
+		         <LOCATION>
+				        <LAT>-34.4205786</LAT>
+						<LONG>150.372076</LONG>
+						<ALT>747</ALT>
+						<COUNTRY>AU</COUNTRY>
+						<COUNTRY_NAME>Australia</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>0</START>
+					   <STOP>0</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>0</STARTG>
+					   <STOPG>0</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s222</ID>
+				 <NAME>Rana, Røssåauren</NAME>
+		         <LOCATION>
+				        <LAT>66.149824</LAT>
+						<LONG>13.828268</LONG>
+						<ALT>0</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>90</START>
+					   <STOP>180</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>280</STARTG>
+					   <STOPG>45</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s223</ID>
+				 <NAME>Vuelo Libre León 1</NAME>
+		         <LOCATION>
+				        <LAT>42.884941</LAT>
+						<LONG>-5.353685</LONG>
+						<ALT>1500</ALT>
+						<COUNTRY>ES</COUNTRY>
+						<COUNTRY_NAME>Spain</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>110</START>
+					   <STOP>270</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>150</STARTG>
+					   <STOPG>260</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s224</ID>
+				 <NAME>Alsodh, Sport Flying</NAME>
+		         <LOCATION>
+				        <LAT>18.271198</LAT>
+						<LONG>42.364078</LONG>
+						<ALT>2940</ALT>
+						<COUNTRY>SA</COUNTRY>
+						<COUNTRY_NAME>Saudi Arabia</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>220</START>
+					   <STOP>320</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>240</STARTG>
+					   <STOPG>300</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s225</ID>
+				 <NAME>Hafrafell</NAME>
+		         <LOCATION>
+				        <LAT>64.1364</LAT>
+						<LONG>-21.6548</LONG>
+						<ALT>180</ALT>
+						<COUNTRY>IS</COUNTRY>
+						<COUNTRY_NAME>Iceland</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>180</START>
+					   <STOP>320</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>200</STARTG>
+					   <STOPG>300</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s226</ID>
+				 <NAME>Háfell</NAME>
+		         <LOCATION>
+				        <LAT>63.4429</LAT>
+						<LONG>-18.8670</LONG>
+						<ALT>280</ALT>
+						<COUNTRY>IS</COUNTRY>
+						<COUNTRY_NAME>Iceland</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>320</START>
+					   <STOP>5</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>5</STARTG>
+					   <STOPG>320</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s227</ID>
+				 <NAME>BJFF Leinavatn,Troms</NAME>
+		         <LOCATION>
+				        <LAT>68.4411375</LAT>
+						<LONG>19.78280527</LONG>
+						<ALT>505</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>0</START>
+					   <STOP>0</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>0</STARTG>
+					   <STOPG>0</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s228</ID>
+				 <NAME>Sponsheimer Berg</NAME>
+		         <LOCATION>
+				        <LAT>49.91800</LAT>
+						<LONG>7.893484</LONG>
+						<ALT>160</ALT>
+						<COUNTRY>DE</COUNTRY>
+						<COUNTRY_NAME>Deutschland</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>90</START>
+					   <STOP>40</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>30</STARTG>
+					   <STOPG>100</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s229</ID>
+				 <NAME>G Nuten Dalsøyra</NAME>
+		         <LOCATION>
+				        <LAT>60.938042</LAT>
+						<LONG>5.192206</LONG>
+						<ALT>550</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>170</START>
+					   <STOP>340</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>190</STARTG>
+					   <STOPG>315</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s230</ID>
+				 <NAME>G Skausnøya</NAME>
+		         <LOCATION>
+				        <LAT>60.70926</LAT>
+						<LONG>5.24734</LONG>
+						<ALT>350</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>40</START>
+					   <STOP>110</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>200</STARTG>
+					   <STOPG>275</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s233</ID>
+				 <NAME>s233/Dalmåsarna</NAME>
+		         <LOCATION>
+				        <LAT>60.87826</LAT>
+						<LONG>14.51812</LONG>
+						<ALT>436</ALT>
+						<COUNTRY>SE</COUNTRY>
+						<COUNTRY_NAME>Sweden</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>70</START>
+					   <STOP>150</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>90</STARTG>
+					   <STOPG>130</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s234</ID>
+				 <NAME>Herdla</NAME>
+		         <LOCATION>
+				        <LAT>60.575053</LAT>
+						<LONG>4.959515</LONG>
+						<ALT>0</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>130</START>
+					   <STOP>190</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>310</STARTG>
+					   <STOPG>360</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s235</ID>
+				 <NAME>Laubberg</NAME>
+		         <LOCATION>
+				        <LAT>47.542850</LAT>
+						<LONG>8.149191</LONG>
+						<ALT>640</ALT>
+						<COUNTRY>CH</COUNTRY>
+						<COUNTRY_NAME>Switzerland</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>0</START>
+					   <STOP>0</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>0</STARTG>
+					   <STOPG>0</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s236</ID>
+				 <NAME>Grünberg FlyingSwans</NAME>
+		         <LOCATION>
+				        <LAT>47.898658</LAT>
+						<LONG>13.818388</LONG>
+						<ALT>990</ALT>
+						<COUNTRY>AT</COUNTRY>
+						<COUNTRY_NAME>Austria</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>220</START>
+					   <STOP>310</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>235</STARTG>
+					   <STOPG>295</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s240</ID>
+				 <NAME>Springfield</NAME>
+		         <LOCATION>
+				        <LAT>-43.384488</LAT>
+						<LONG>171.910766</LONG>
+						<ALT>375</ALT>
+						<COUNTRY>NZ</COUNTRY>
+						<COUNTRY_NAME>New Zealand</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>0</START>
+					   <STOP>0</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>0</STARTG>
+					   <STOPG>0</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s241</ID>
+				 <NAME>Hororata</NAME>
+		         <LOCATION>
+				        <LAT>-43.550189</LAT>
+						<LONG>172.009552</LONG>
+						<ALT>190</ALT>
+						<COUNTRY>NZ</COUNTRY>
+						<COUNTRY_NAME>New Zealand</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>0</START>
+					   <STOP>0</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>0</STARTG>
+					   <STOPG>360</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s243</ID>
+				 <NAME>Rimetea</NAME>
+		         <LOCATION>
+				        <LAT>46.4545151</LAT>
+						<LONG>23.5372229</LONG>
+						<ALT>1200</ALT>
+						<COUNTRY>RO</COUNTRY>
+						<COUNTRY_NAME>Romania</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>45</START>
+					   <STOP>160</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>90</STARTG>
+					   <STOPG>150</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s246</ID>
+				 <NAME>Wengi</NAME>
+		         <LOCATION>
+				        <LAT>47.325960</LAT>
+						<LONG>7.626985</LONG>
+						<ALT>960</ALT>
+						<COUNTRY>CH</COUNTRY>
+						<COUNTRY_NAME>Switzerland</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>100</START>
+					   <STOP>235</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>115</STARTG>
+					   <STOPG>215</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s248</ID>
+				 <NAME>Muhail, Sport Flying</NAME>
+		         <LOCATION>
+				        <LAT>18.556443</LAT>
+						<LONG>42.050713</LONG>
+						<ALT>610</ALT>
+						<COUNTRY>SA</COUNTRY>
+						<COUNTRY_NAME>Saudi Arabia</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>240</START>
+					   <STOP>320</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>260</STARTG>
+					   <STOPG>300</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s249</ID>
+				 <NAME>Jeddahfalkon</NAME>
+		         <LOCATION>
+				        <LAT>21.629418</LAT>
+						<LONG>39.114891</LONG>
+						<ALT>10</ALT>
+						<COUNTRY>SA</COUNTRY>
+						<COUNTRY_NAME>Saudi Arabia</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>140</START>
+					   <STOP>190</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>315</STARTG>
+					   <STOPG>20</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s251</ID>
+				 <NAME>Alqssim Flying Club </NAME>
+		         <LOCATION>
+				        <LAT></LAT>
+						<LONG></LONG>
+						<ALT>2100</ALT>
+						<COUNTRY>SA</COUNTRY>
+						<COUNTRY_NAME>Saudi Arabia</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>90</START>
+					   <STOP>180</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>2</STARTG>
+					   <STOPG>360</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s252</ID>
+				 <NAME>SPGK Åraksbø</NAME>
+		         <LOCATION>
+				        <LAT>58.913689</LAT>
+						<LONG>7.746616</LONG>
+						<ALT>0</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>270</START>
+					   <STOP>360</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>290</STARTG>
+					   <STOPG>340</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s253</ID>
+				 <NAME>SPGK Reddal</NAME>
+		         <LOCATION>
+				        <LAT>58.343308</LAT>
+						<LONG>8.438809</LONG>
+						<ALT>0</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>80</START>
+					   <STOP>200</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>130</STARTG>
+					   <STOPG>170</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s254</ID>
+				 <NAME>Wenholthausen</NAME>
+		         <LOCATION>
+				        <LAT>51.302943</LAT>
+						<LONG>8.190584</LONG>
+						<ALT>571</ALT>
+						<COUNTRY>DE</COUNTRY>
+						<COUNTRY_NAME>Deutschland</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>180</START>
+					   <STOP>260</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>190</STARTG>
+					   <STOPG>240</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s256</ID>
+				 <NAME>Coronet Express Lift</NAME>
+		         <LOCATION>
+				        <LAT>-44.918341</LAT>
+						<LONG>168.738142</LONG>
+						<ALT>1544</ALT>
+						<COUNTRY>NZ</COUNTRY>
+						<COUNTRY_NAME>New Zealand</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>70</START>
+					   <STOP>150</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>90</STARTG>
+					   <STOPG>130</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s255</ID>
+				 <NAME>Gadji</NAME>
+		         <LOCATION>
+				        <LAT>-22.193186</LAT>
+						<LONG>166.356289</LONG>
+						<ALT>200</ALT>
+						<COUNTRY>NC</COUNTRY>
+						<COUNTRY_NAME>New Caledonia</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>90</START>
+					   <STOP>180</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>110</STARTG>
+					   <STOPG>160</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s257</ID>
+				 <NAME>Övertorneå Paramotor</NAME>
+		         <LOCATION>
+				        <LAT>66.397992</LAT>
+						<LONG>23.614790</LONG>
+						<ALT>52</ALT>
+						<COUNTRY>SE</COUNTRY>
+						<COUNTRY_NAME>Sweden</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>0</START>
+					   <STOP>0</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>0</STARTG>
+					   <STOPG>360</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s258</ID>
+				 <NAME>Ålleberg V</NAME>
+		         <LOCATION>
+				        <LAT>58.141545</LAT>
+						<LONG>13.584766</LONG>
+						<ALT>260</ALT>
+						<COUNTRY>SE</COUNTRY>
+						<COUNTRY_NAME>Sweden</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>47</START>
+					   <STOP>120</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>237</STARTG>
+					   <STOPG>335</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s259</ID>
+				 <NAME>Liteni </NAME>
+		         <LOCATION>
+				        <LAT>46.612769</LAT>
+						<LONG>23.434990</LONG>
+						<ALT>900</ALT>
+						<COUNTRY>RO</COUNTRY>
+						<COUNTRY_NAME>Romania</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>70</START>
+					   <STOP>150</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>90</STARTG>
+					   <STOPG>130</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s268</ID>
+				 <NAME>Brunsberg DGFCHöxter</NAME>
+		         <LOCATION>
+				        <LAT>51.7475</LAT>
+						<LONG>9.3495</LONG>
+						<ALT>300</ALT>
+						<COUNTRY>DE</COUNTRY>
+						<COUNTRY_NAME>Deutschland</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>60</START>
+					   <STOP>160</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>80</STARTG>
+					   <STOPG>135</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s260</ID>
+				 <NAME>Boppard - nur RML</NAME>
+		         <LOCATION>
+				        <LAT>50.243875</LAT>
+						<LONG>7.572886</LONG>
+						<ALT>265</ALT>
+						<COUNTRY>DE</COUNTRY>
+						<COUNTRY_NAME>Deutschland</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>40</START>
+					   <STOP>140</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>50</STARTG>
+					   <STOPG>120</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s261</ID>
+				 <NAME>Bremm - RML</NAME>
+		         <LOCATION>
+				        <LAT>50.106910</LAT>
+						<LONG>7.114815</LONG>
+						<ALT>355</ALT>
+						<COUNTRY>DE</COUNTRY>
+						<COUNTRY_NAME>Deutschland</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>110</START>
+					   <STOP>200</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>140</STARTG>
+					   <STOPG>190</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s263</ID>
+				 <NAME>Kobern-Gondorf - RML</NAME>
+		         <LOCATION>
+				        <LAT>50.317923</LAT>
+						<LONG>7.461157</LONG>
+						<ALT>250</ALT>
+						<COUNTRY>DE</COUNTRY>
+						<COUNTRY_NAME>Deutschland</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>120</START>
+					   <STOP>220</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>130</STARTG>
+					   <STOPG>200</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s290</ID>
+				 <NAME>Etne</NAME>
+		         <LOCATION>
+				        <LAT></LAT>
+						<LONG></LONG>
+						<ALT>0</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>1</START>
+					   <STOP>2</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>1</STARTG>
+					   <STOPG>360</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s265</ID>
+				 <NAME>Ise - Bjønnåsen</NAME>
+		         <LOCATION>
+				        <LAT>59.300932</LAT>
+						<LONG>11.243992</LONG>
+						<ALT>124</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>180</START>
+					   <STOP>290</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>190</STARTG>
+					   <STOPG>270</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s266</ID>
+				 <NAME>s266</NAME>
+		         <LOCATION>
+				        <LAT>24.885380</LAT>
+						<LONG>51.523685</LONG>
+						<ALT>0</ALT>
+						<COUNTRY>QA</COUNTRY>
+						<COUNTRY_NAME>Qatar</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>30</START>
+					   <STOP>180</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>70</STARTG>
+					   <STOPG>130</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s267</ID>
+				 <NAME>Greengates Twr10</NAME>
+		         <LOCATION>
+				        <LAT></LAT>
+						<LONG></LONG>
+						<ALT>0</ALT>
+						<COUNTRY>NZ</COUNTRY>
+						<COUNTRY_NAME>New Zealand</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>70</START>
+					   <STOP>150</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>90</STARTG>
+					   <STOPG>130</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s269</ID>
+				 <NAME>THPK Aglapsvika</NAME>
+		         <LOCATION>
+				        <LAT>69.469717</LAT>
+						<LONG>18.234100</LONG>
+						<ALT>115</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>270</START>
+					   <STOP>0</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>290</STARTG>
+					   <STOPG>340</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s271</ID>
+				 <NAME>Para2</NAME>
+		         <LOCATION>
+				        <LAT></LAT>
+						<LONG></LONG>
+						<ALT>0</ALT>
+						<COUNTRY>HU</COUNTRY>
+						<COUNTRY_NAME>Hungary</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>0</START>
+					   <STOP>0</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>0</STARTG>
+					   <STOPG>0</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s273</ID>
+				 <NAME>Brunstorp SV</NAME>
+		         <LOCATION>
+				        <LAT>57.824486</LAT>
+						<LONG>14.273987</LONG>
+						<ALT>200</ALT>
+						<COUNTRY>SE</COUNTRY>
+						<COUNTRY_NAME>Sweden</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>190</START>
+					   <STOP>280</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>210</STARTG>
+					   <STOPG>270</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s274</ID>
+				 <NAME>Stord, Fossabrekko</NAME>
+		         <LOCATION>
+				        <LAT>59.839985</LAT>
+						<LONG> 5.462265</LONG>
+						<ALT>600</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>60</START>
+					   <STOP>180</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>80</STARTG>
+					   <STOPG>150</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s276</ID>
+				 <NAME>FETZENFLIEGER</NAME>
+		         <LOCATION>
+				        <LAT>47.287228</LAT>
+						<LONG>10.852148</LONG>
+						<ALT>1200</ALT>
+						<COUNTRY>AT</COUNTRY>
+						<COUNTRY_NAME>Austria</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>220</START>
+					   <STOP>340</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>240</STARTG>
+					   <STOPG>320</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s278</ID>
+				 <NAME>Glenorchy</NAME>
+		         <LOCATION>
+				        <LAT>-44.870675</LAT>
+						<LONG>168.398079</LONG>
+						<ALT>370</ALT>
+						<COUNTRY>NZ</COUNTRY>
+						<COUNTRY_NAME>New Zealand</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>320</START>
+					   <STOP>40</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>340</STARTG>
+					   <STOPG>20</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s277</ID>
+				 <NAME>s277 webcam Voss</NAME>
+		         <LOCATION>
+				        <LAT>60.617603</LAT>
+						<LONG>6.433471</LONG>
+						<ALT>220</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>0</START>
+					   <STOP>0</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>0</STARTG>
+					   <STOPG>0</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s279</ID>
+				 <NAME>PG Oresany</NAME>
+		         <LOCATION>
+				        <LAT>48.458096</LAT>
+						<LONG>17.412509</LONG>
+						<ALT>545</ALT>
+						<COUNTRY>SK</COUNTRY>
+						<COUNTRY_NAME>Slovakia</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>80</START>
+					   <STOP>180</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>100</STARTG>
+					   <STOPG>160</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s281</ID>
+				 <NAME>Flugschule Jura Thal</NAME>
+		         <LOCATION>
+				        <LAT>47.298456</LAT>
+						<LONG>7.568319</LONG>
+						<ALT>1030</ALT>
+						<COUNTRY>CH</COUNTRY>
+						<COUNTRY_NAME>Switzerland</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>45</START>
+					   <STOP>210</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>65</STARTG>
+					   <STOPG>190</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s283</ID>
+				 <NAME>Langrune sur Mer</NAME>
+		         <LOCATION>
+				        <LAT>49.325149</LAT>
+						<LONG>-0.368275</LONG>
+						<ALT>10</ALT>
+						<COUNTRY>FR</COUNTRY>
+						<COUNTRY_NAME>France</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>0</START>
+					   <STOP>0</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>0</STARTG>
+					   <STOPG>0</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s284</ID>
+				 <NAME>Glesvær</NAME>
+		         <LOCATION>
+				        <LAT>60.202863</LAT>
+						<LONG>5.042424</LONG>
+						<ALT>0</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>150</START>
+					   <STOP>320</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>180</STARTG>
+					   <STOPG>280</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s287</ID>
+				 <NAME>Medina</NAME>
+		         <LOCATION>
+				        <LAT>24.650430</LAT>
+						<LONG>39.166903</LONG>
+						<ALT>600</ALT>
+						<COUNTRY>SA</COUNTRY>
+						<COUNTRY_NAME>Saudi Arabia</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>70</START>
+					   <STOP>150</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>90</STARTG>
+					   <STOPG>130</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s292</ID>
+				 <NAME>Le Poiane d`Oltrepo</NAME>
+		         <LOCATION>
+				        <LAT>44.817262</LAT>
+						<LONG>9.071998</LONG>
+						<ALT>700</ALT>
+						<COUNTRY>IT</COUNTRY>
+						<COUNTRY_NAME>Italy</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>180</START>
+					   <STOP>340</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>204</STARTG>
+					   <STOPG>315</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s293</ID>
+				 <NAME>s293</NAME>
+		         <LOCATION>
+				        <LAT>33.645555</LAT>
+						<LONG>-117.397043</LONG>
+						<ALT>850</ALT>
+						<COUNTRY>US</COUNTRY>
+						<COUNTRY_NAME>USA</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>70</START>
+					   <STOP>150</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>90</STARTG>
+					   <STOPG>130</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s294</ID>
+				 <NAME>s294</NAME>
+		         <LOCATION>
+				        <LAT>47.1832</LAT>
+						<LONG>-1.4591</LONG>
+						<ALT>30</ALT>
+						<COUNTRY>FR</COUNTRY>
+						<COUNTRY_NAME>France</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>70</START>
+					   <STOP>150</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>90</STARTG>
+					   <STOPG>130</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s295</ID>
+				 <NAME>Sarn</NAME>
+		         <LOCATION>
+				        <LAT>52°30 21.0</LAT>
+						<LONG>3°07 53.1</LONG>
+						<ALT>350</ALT>
+						<COUNTRY>UK</COUNTRY>
+						<COUNTRY_NAME>United Kingdom</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>340</START>
+					   <STOP>35</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>345</STARTG>
+					   <STOPG>25</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s296</ID>
+				 <NAME>T17, Nevis Range</NAME>
+		         <LOCATION>
+				        <LAT>56.836676</LAT>
+						<LONG>-4.972861</LONG>
+						<ALT>650</ALT>
+						<COUNTRY>UK</COUNTRY>
+						<COUNTRY_NAME>United Kingdom</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>305</START>
+					   <STOP>30</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>290</STARTG>
+					   <STOPG>70</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s298</ID>
+				 <NAME>Pattaya</NAME>
+		         <LOCATION>
+				        <LAT>12.843551</LAT>
+						<LONG>100.903526</LONG>
+						<ALT>0</ALT>
+						<COUNTRY>TH</COUNTRY>
+						<COUNTRY_NAME>Thailand</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>160</START>
+					   <STOP>340</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>180</STARTG>
+					   <STOPG>310</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s300</ID>
+				 <NAME>Eschbach - DGLC</NAME>
+		         <LOCATION>
+				        <LAT>50.353754</LAT>
+						<LONG>8.522427</LONG>
+						<ALT>389</ALT>
+						<COUNTRY>DE</COUNTRY>
+						<COUNTRY_NAME>Deutschland</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>115</START>
+					   <STOP>165</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>125</STARTG>
+					   <STOPG>155</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s310</ID>
+				 <NAME>Aloña (Oñati) s310</NAME>
+		         <LOCATION>
+				        <LAT>43.004572</LAT>
+						<LONG>-2.422076</LONG>
+						<ALT>920</ALT>
+						<COUNTRY>ES</COUNTRY>
+						<COUNTRY_NAME>Spain</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>310</START>
+					   <STOP>30</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>330</STARTG>
+					   <STOPG>15</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s302</ID>
+				 <NAME>Draklanda</NAME>
+		         <LOCATION>
+				        <LAT>63.402870</LAT>
+						<LONG>13.053453</LONG>
+						<ALT>382</ALT>
+						<COUNTRY>SE</COUNTRY>
+						<COUNTRY_NAME>Sweden</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>0</START>
+					   <STOP>0</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>0</STARTG>
+					   <STOPG>0</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s305</ID>
+				 <NAME>Auf dem Mergesfeld</NAME>
+		         <LOCATION>
+				        <LAT>49.872093</LAT>
+						<LONG>7.787506</LONG>
+						<ALT>246</ALT>
+						<COUNTRY>DE</COUNTRY>
+						<COUNTRY_NAME>Deutschland</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>0</START>
+					   <STOP>360</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>200</STARTG>
+					   <STOPG>250</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s306</ID>
+				 <NAME>Neuberg in Odernheim</NAME>
+		         <LOCATION>
+				        <LAT>49.768243</LAT>
+						<LONG>7.691822</LONG>
+						<ALT>270</ALT>
+						<COUNTRY>DE</COUNTRY>
+						<COUNTRY_NAME>Deutschland</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>0</START>
+					   <STOP>360</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>55</STARTG>
+					   <STOPG>125</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s309</ID>
+				 <NAME>Molde</NAME>
+		         <LOCATION>
+				        <LAT>62.744390</LAT>
+						<LONG>7.146156</LONG>
+						<ALT>0</ALT>
+						<COUNTRY>NO</COUNTRY>
+						<COUNTRY_NAME>Norway</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>70</START>
+					   <STOP>200</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>90</STARTG>
+					   <STOPG>180</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 
+		         <STATION>
+		         <ID>s311</ID>
+				 <NAME>Siófok</NAME>
+		         <LOCATION>
+				        <LAT>46.889645</LAT>
+						<LONG>18.007536</LONG>
+						<ALT>129</ALT>
+						<COUNTRY>HU</COUNTRY>
+						<COUNTRY_NAME>Hungary</COUNTRY_NAME>
+				 </LOCATION>
+				 <DIRECTIONS>
+				 <OK>
+					   <START>70</START>
+					   <STOP>150</STOP>
+				 </OK>
+				 <GOOD>
+					   <STARTG>90</STARTG>
+					   <STOPG>130</STOPG>
+				 </GOOD>
+				 </DIRECTIONS>
+				 <INFO>
+					
+				 </INFO>
+				 </STATION>
+				 
+				 </STATIONS>

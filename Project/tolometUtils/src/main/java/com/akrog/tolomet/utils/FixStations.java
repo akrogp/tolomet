@@ -1,52 +1,51 @@
 package com.akrog.tolomet.utils;
 
+import com.akrog.tolomet.Station;
+import com.akrog.tolomet.providers.WindProviderType;
+
 import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.Collator;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Logger;
 
 import uk.me.jstott.jcoord.LatLng;
 import uk.me.jstott.jcoord.UTMRef;
 
-import com.akrog.tolomet.Station;
-import com.akrog.tolomet.providers.WindProviderType;
-
 public class FixStations {
 	public static void main(String[] args) throws IOException {
 		logger.info("Started");
-		String inPath = "/home/gorka/MyProjects/Android/Tolomet/Project/tolometCore/src/main/resources/res/stations_ES.dat";
-		//String inPath = "/home/gorka/MyProjects/Android/Tolomet/Docs/stations_world.dat";
-		List<Station> stations = loadStations(inPath);
+		List<Station> stations = ResourceManager.loadCountryStations("ES");
+		//List<Station> stations = ResourceManager.loadAllStations();
 		addNewStations(stations);
 		sortStations(stations);
 		for( Station station : stations ) {
 			fixName(station);
-			/*if( station.getCode().equals("10203") ) {
-				station.setLatitude(43.09);
-				station.setLongitude(-7.13);
-			}*/
+            fixMetarCountry(station);
 			if( station.getLatitude() == 0 )
-				showStation(station);
-			saveStation(station);
+				ResourceManager.showStation(station);
+            ResourceManager.saveStation(station);
 		}
 		logger.info(String.format("Finished: %d stations",stations.size()));
-	}		
+	}
+
+    private static void fixMetarCountry( Station station ) {
+        if( station.getName().equals("Temuco") || station.getName().equals("Monopulli") )
+            station.setCountry("CL");
+        if( station.getName().equals("St Pierre-France"))
+            station.setCountry("CA");
+        if( station.getName().startsWith("Enewetak") || station.getName().startsWith("Ujae Atoll") )
+            station.setCode("MH");
+    }
 
 	private static void addNewStations(List<Station> stations) {
 		try {
 			//stations.addAll(MetarStations.loadMetars());
 			//stations.addAll(PradesStations.getStations());
+            //stations.addAll(new HolfuyStations().getStations());
 			Station station;
 			while( (station=askNew()) != null )
 				stations.add(station);
@@ -79,18 +78,8 @@ public class FixStations {
 			station.setLatitude(ll.getLat());
 			station.setLongitude(ll.getLng());
 		}
-		showStation(station);
+		ResourceManager.showStation(station);
 		return askParameter("¿OK? (s/n)").equalsIgnoreCase("s") ? station : null;
-	}
-	
-	private static void showStation(Station station) {
-		System.out.println(station.getCode());
-		System.out.println(station.getName());
-		System.out.println(station.getProviderType());
-		System.out.println(station.getCountry());
-		System.out.println(station.getRegion());
-		System.out.println(station.getLatitude());
-		System.out.println(station.getLongitude());		
 	}
 
 	private static String askParameter( String msg, Object... opts ) throws IOException {
@@ -126,6 +115,8 @@ public class FixStations {
 	}
 
 	private static void fixName(Station station) {
+        if( !station.getName().toUpperCase().equals(station.getName()) )
+            return;
 		char[] name = station.getName().toCharArray();
 		boolean toUpper = true;
 		for( int i = 0; i < name.length; i++ ) {
@@ -141,52 +132,6 @@ public class FixStations {
 		if( !station.getName().equals(newName) )
 			logger.warning(String.format("Station '%s' renamed to '%s'", station.getName(), newName));
 		station.setName(newName);
-	}
-	
-	private static List<Station> loadStations(String path) {
-		List<Station> stations = new ArrayList<Station>();
-		Set<String> names = new HashSet<String>();
-		Station station;
-		DataInputStream dis = null;
-		try {
-			dis = new DataInputStream(new FileInputStream(path));		
-			while (true) {
-				station = new Station();
-				station.setCode(dis.readUTF());
-				station.setName(dis.readUTF());
-				station.setProviderType(WindProviderType.values()[dis.readInt()]);
-				station.setCountry(dis.readUTF());
-				station.setRegion(dis.readInt());
-				station.setLatitude(dis.readDouble());
-				station.setLongitude(dis.readDouble());				
-				if( names.add(station.getCode()) )
-					if( station.getLatitude() == 99.0+99.0/60.0 )
-						logger.warning(String.format("Invalid coordinates for '%s'", station));
-					else
-						stations.add(station);
-				else
-					logger.warning(String.format("Filtered duplicated station '%s'", station));
-			}
-		} catch (Exception e) {
-			if (dis != null)
-				try {
-					dis.close();
-				} catch (IOException e1) {
-				}
-		}
-		return stations;
-	}
-
-	private static void saveStation( Station station ) throws IOException {
-		DataOutputStream dos = new DataOutputStream(new FileOutputStream(String.format("/home/gorka/stations_%s.dat", station.getCountry()),true));
-		dos.writeUTF(station.getCode());
-		dos.writeUTF(station.getName());
-		dos.writeInt(station.getProviderType().ordinal());
-		dos.writeUTF(station.getCountry());
-		dos.writeInt(station.getRegion());
-		dos.writeDouble(station.getLatitude());
-		dos.writeDouble(station.getLongitude());
-		dos.close();
 	}
 
 	private final static Logger logger = Logger.getLogger(FixStations.class.getName());
