@@ -51,3 +51,8 @@ Data -> http://holfuy.hu/en/takeit/getdata.php
 History -> http://www.holfuy.hu/en/takeit/gethistory.php
 Stations* -> http://holfuy.hu/en/takeit/xml/dezso/stations.xml
 Data* -> http://holfuy.hu/en/takeit/xml/dezso/data.php?station=s310&cnt=200
+
+Piou:
+Stations -> http://api.pioupiou.fr/v1/live-with-meta/all
+Ficha -> https://pioupiou.fr/fr/336
+Data -> http://api.pioupiou.fr/v1/archive/{station_id}?start={start}&stop={stop}&format={format}

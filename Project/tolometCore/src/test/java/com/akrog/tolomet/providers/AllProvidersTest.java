@@ -18,7 +18,8 @@ import org.junit.runners.Suite;
         MeteoNavarraProviderTest.class,
         PradesProviderTest.class,
         RedVigiaProviderTest.class,
-        HolfuyProviderTest.class
+        HolfuyProviderTest.class,
+        PiouProviderTest.class
 })
 public class AllProvidersTest {
 }

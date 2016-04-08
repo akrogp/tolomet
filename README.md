@@ -1,2 +1,2 @@
 # Tolomet
-Aplicación enfocada a pilotos de parapente. Muestra de forma sencilla la evolución del viento en las últimas horas así como la última lectura, usando para ello los datos de las estaciones de Euskalmet (cada 10 minutos), Meteo Navarra (cada 10 minutos), Gobierno de La Rioja (cada 15 minutos), MeteoGalicia (cada 10 minutos), Meteocat (cada 30/60 minutos), Red Vigía (cada hora) y AEMET (cada hora).
+App designed for air sport lovers, specially paragliding pilots. Shows in a simple way the wind progress during the past hours using actual wind readings. Initially focused on Spanish stations (>1000), at version 4 more than 10000 world-wide airports have also been included.

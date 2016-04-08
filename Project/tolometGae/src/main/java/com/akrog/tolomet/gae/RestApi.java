@@ -79,9 +79,13 @@ public class RestApi {
 		}
 		if( version < 430 ) {
 			motd.setVersion("4.3");
-			motd.addChange(tr(lang,"Incluidas estaciones Holfuy (ej: Aloña)", "Included Holfuy stations"));
+			motd.addChange(tr(lang, "Incluidas estaciones Holfuy (ej: Aloña)", "Included Holfuy stations"));
 			motd.addChange(tr(lang,"Reorganizadas lecturas del resumen", "Reordered summary readings"));
 			motd.addChange(tr(lang,"Mejorado soporte internacional", "Improved international support"));
+		}
+		if( version < 440 ) {
+			motd.setVersion("4.4");
+			motd.addChange(tr(lang,"Incluidas estaciones PiouPiou", "Included PiouPiou stations"));
 		}
 	}
 

@@ -18,16 +18,17 @@ import uk.me.jstott.jcoord.UTMRef;
 public class FixStations {
 	public static void main(String[] args) throws IOException {
 		logger.info("Started");
-		List<Station> stations = ResourceManager.loadCountryStations("ES");
-		//List<Station> stations = ResourceManager.loadAllStations();
+		//List<Station> stations = ResourceManager.loadCountryStations("ES");
+		List<Station> stations = ResourceManager.loadAllStations();
 		addNewStations(stations);
 		sortStations(stations);
 		for( Station station : stations ) {
 			fixName(station);
             fixMetarCountry(station);
-			if( station.getLatitude() == 0 )
+			if( station.getLatitude() == 0.0 )
 				ResourceManager.showStation(station);
-            ResourceManager.saveStation(station);
+			else
+            	ResourceManager.saveStation(station);
 		}
 		logger.info(String.format("Finished: %d stations",stations.size()));
 	}
@@ -46,6 +47,7 @@ public class FixStations {
 			//stations.addAll(MetarStations.loadMetars());
 			//stations.addAll(PradesStations.getStations());
             //stations.addAll(new HolfuyStations().getStations());
+			//stations.addAll(PiouStations.getStations());
 			Station station;
 			while( (station=askNew()) != null )
 				stations.add(station);
