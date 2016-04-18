@@ -18,8 +18,8 @@ import uk.me.jstott.jcoord.UTMRef;
 public class FixStations {
 	public static void main(String[] args) throws IOException {
 		logger.info("Started");
-		//List<Station> stations = ResourceManager.loadCountryStations("ES");
-		List<Station> stations = ResourceManager.loadAllStations();
+		List<Station> stations = ResourceManager.loadCountryStations("ES");
+		//List<Station> stations = ResourceManager.loadAllStations();
 		addNewStations(stations);
 		sortStations(stations);
 		for( Station station : stations ) {

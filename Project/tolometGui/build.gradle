@@ -8,8 +8,8 @@ android {
         applicationId "com.akrog.tolomet"
         minSdkVersion 9
         targetSdkVersion 22
-        versionCode 440
-        versionName "4.4"
+        versionCode 441
+        versionName "4.4.1"
     }
     buildTypes {
         release {

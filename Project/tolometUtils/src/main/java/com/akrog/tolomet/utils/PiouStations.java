@@ -36,6 +36,8 @@ public class PiouStations {
         //for( int i = 0; i < 50; i++ ) {
             JSONObject item = array.getJSONObject(i);
             String id = item.getString("id");
+            /*if( !id.equals("229") )
+                continue;*/
             if( id.equals("null") )
                 continue;
             JSONObject status = item.getJSONObject("status");
