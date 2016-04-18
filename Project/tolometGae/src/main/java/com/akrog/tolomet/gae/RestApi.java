@@ -87,6 +87,10 @@ public class RestApi {
 			motd.setVersion("4.4");
 			motd.addChange(tr(lang,"Incluidas estaciones PiouPiou", "Included PiouPiou stations"));
 		}
+		if( version == 440 ) {
+			motd.setVersion("4.4.1");
+			motd.addChange(tr(lang,"Incluida estación PiouPiou 229 (Navarra)", "Included PiouPiou station 229 (Navarra)"));
+		}
 	}
 
 	private void changesv3(int version, String lang, Motd motd) {
