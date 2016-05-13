@@ -52,6 +52,17 @@ public class Station {
 			str = String.format("%s @ %.1f km", str, distance/1000.0F);
 		return str;
 	}
+
+	public static String buildId(WindProviderType type, String code) {
+		StringBuilder sb = new StringBuilder(type.getCode());
+		sb.append('-');
+		sb.append(code);
+		return sb.toString();
+	}
+
+	public String getId() {
+		return buildId(providerType,code);
+	}
 	
 	public void clear() {
 		meteo.clear();

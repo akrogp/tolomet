@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class Manager {
 	private Station currentStation;
@@ -23,6 +25,7 @@ public class Manager {
 	private String[] directions;
 	private final String lang;
 	private String country;
+	private Map<String,Station> mapStations;
 	
 	public Manager() {
 		this(Locale.getDefault().getLanguage(), Locale.getDefault().getCountry(), true);
@@ -47,7 +50,8 @@ public class Manager {
 	}
 
 	private void loadStations() {
-		countryStations.clear();				
+		mapStations = null;
+		countryStations.clear();
 		Station station;
 		DataInputStream dis = null;
 		try {
@@ -134,6 +138,15 @@ public class Manager {
 	
 	private InputStream getCountryResource( String name ) {
 		return getClass().getResourceAsStream(String.format("/res/%s", name.replaceAll("\\.", String.format("_%s.", country.toUpperCase()))));
+	}
+
+	public Station findStation( WindProviderType type, String code ) {
+		if( mapStations == null ) {
+			mapStations = new HashMap<>(countryStations.size());
+			for( Station station : countryStations )
+				mapStations.put(station.getId(), station);
+		}
+		return mapStations.get(Station.buildId(type,code));
 	}
 	
 	public void selectAll() {
