@@ -101,6 +101,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		Set<String> favs = settings.getFavorites();
 		for( Station station : model.getAllStations() )
 			station.setFavorite(favs.contains(station.getCode()));
+			//station.setFavorite(favs.contains(station.getId()));
 	}
 
 	public void setFavorite(boolean fav) {
@@ -108,7 +109,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		if( station.isSpecial() )
 			return;
 		station.setFavorite(fav);
-		settings.setFavorite(station.getCode(), fav);
+		settings.setFavorite(station, fav);
 		if( fav )
 			selectMenu(Type.Favorite, false);
 		else if( getType() == Type.Favorite )

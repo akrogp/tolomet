@@ -140,15 +140,19 @@ public class Manager {
 		return getClass().getResourceAsStream(String.format("/res/%s", name.replaceAll("\\.", String.format("_%s.", country.toUpperCase()))));
 	}
 
-	public Station findStation( WindProviderType type, String code ) {
+	public Station findStation( String id ) {
 		if( mapStations == null ) {
 			mapStations = new HashMap<>(countryStations.size());
 			for( Station station : countryStations )
 				mapStations.put(station.getId(), station);
 		}
-		return mapStations.get(Station.buildId(type,code));
+		return mapStations.get(id);
 	}
-	
+
+	public Station findStation( WindProviderType type, String code ) {
+		return findStation(Station.buildId(type,code));
+	}
+
 	public void selectAll() {
 		selStations.clear();
 		selStations.addAll(countryStations);
