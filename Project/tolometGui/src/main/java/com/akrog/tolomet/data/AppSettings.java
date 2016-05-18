@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-public class Settings {	
+public class AppSettings {
 	private SharedPreferences settings;
 	private Activity activity;
 	private Manager model;
@@ -191,6 +191,10 @@ public class Settings {
 	
 	public int getUpdateMode() {		
 		return Integer.parseInt(settings.getString("pref_modeUpdate", activity.getString(R.string.pref_modeUpdateDefault)));
+	}
+
+	public WindSpot getSpot() {
+		return WidgetSettings.getSpot(settings);
 	}
 
 	public void setUpdateMode(int mode) {

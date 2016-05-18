@@ -6,22 +6,22 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.ListPreference;
-import android.preference.PreferenceActivity;
 
-import com.akrog.tolomet.data.Settings;
+import com.akrog.tolomet.data.AppSettings;
+import com.akrog.tolomet.data.WidgetSettings;
+import com.akrog.tolomet.data.WindSpot;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class WidgetSettingsActivity extends PreferenceActivity {
+public class WidgetSettingsActivity extends SettingsActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setResult(RESULT_CANCELED);
-        addPreferencesFromResource(R.xml.widget_preferences);
-        settings.initialize(this, model);
+        onCreate(savedInstanceState,R.xml.widget_preferences);
+        appSettings.initialize(this, model);
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -30,7 +30,7 @@ public class WidgetSettingsActivity extends PreferenceActivity {
         if( appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID )
             finish();
         else {
-            Set<String> favs = settings.getFavorites();
+            Set<String> favs = appSettings.getFavorites();
             List<String> entries = new ArrayList<>();
             List<String> values = new ArrayList<>();
             for( String fav : favs ) {
@@ -40,13 +40,10 @@ public class WidgetSettingsActivity extends PreferenceActivity {
                     values.add(station.getId());
                 }
             }
-            if( entries.isEmpty() )
+            if( entries.isEmpty() ) {
                 showFavoriteDialog();
-            else {
-                Intent result = new Intent();
-                result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-                setResult(RESULT_OK, result);
-
+                finish();
+            } else {
                 ListPreference listPreference = (ListPreference) findPreference(STATION_KEY);
                 listPreference.setEntries(entries.toArray(new String[0]));
                 listPreference.setEntryValues(values.toArray(new String[0]));
@@ -68,14 +65,24 @@ public class WidgetSettingsActivity extends PreferenceActivity {
 
     @Override
     public void onBackPressed() {
-        if( appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID )
-            sendBroadcast(new Intent(WidgetProvider.FORCE_WIDGET_UPDATE));
+        if( appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID ) {
+            WindSpot spot = appSettings.getSpot();
+            if( spot.isValid() ) {
+                WidgetSettings widgetSettings = new WidgetSettings(this, appWidgetId);
+                widgetSettings.setSpot(spot);
+                Intent result = new Intent();
+                result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                setResult(RESULT_OK, result);
+                sendBroadcast(new Intent(WidgetProvider.FORCE_WIDGET_UPDATE));
+            } else
+                setResult(RESULT_CANCELED);
+        }
         super.onBackPressed();
     }
 
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     private final Manager model = new Manager();
-    private final Settings settings = new Settings();
+    private final AppSettings appSettings = new AppSettings();
 
-    public static String STATION_KEY = "wpref_station";
+    public static String STATION_KEY = "wstation0";
 }

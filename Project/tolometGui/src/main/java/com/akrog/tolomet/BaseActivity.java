@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
-import com.akrog.tolomet.data.Settings;
+import com.akrog.tolomet.data.AppSettings;
 import com.akrog.tolomet.presenters.MySpinner;
 import com.akrog.tolomet.presenters.MyToolbar;
 import com.akrog.tolomet.view.AndroidUtils;
@@ -82,7 +82,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             spinner.loadState(null);
     }
 
-    public Settings getSettings() {
+    public AppSettings getSettings() {
         return settings;
     }
 
@@ -133,7 +133,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public abstract String getScreenShotText();
 
     protected final Manager model = new Manager();
-    protected final Settings settings = new Settings();
+    protected final AppSettings settings = new AppSettings();
     protected final MyToolbar toolbar = new MyToolbar();
     protected final MySpinner spinner = new MySpinner();
 }

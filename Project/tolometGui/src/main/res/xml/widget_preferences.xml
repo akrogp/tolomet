@@ -1,8 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <ListPreference
-        android:key="wpref_station"
-        android:title="@string/station_prompt"
-        android:dialogTitle="@string/station_prompt"
-        />
+    <PreferenceCategory android:title="@string/wpref_place">
+        <EditTextPreference
+            android:key="wspot"
+            android:maxLines="1"
+            android:title="@string/spot_prompt"
+            android:dialogTitle="@string/spot_prompt"/>
+        <ListPreference
+            android:key="wstation0"
+            android:title="@string/station_prompt"
+            android:dialogTitle="@string/station_prompt"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/wpref_conditions">
+        <EditTextPreference
+            android:key="wminDir0"
+            android:inputType="number"
+            android:maxLines="1"
+            android:title="@string/min_dir_prompt"
+            android:dialogTitle="@string/spot_prompt"/>
+        <EditTextPreference
+            android:key="wmaxDir0"
+            android:inputType="number"
+            android:maxLines="1"
+            android:title="@string/max_dir_prompt"
+            android:dialogTitle="@string/spot_prompt"/>
+        <EditTextPreference
+            android:key="wminWind0"
+            android:inputType="number"
+            android:maxLines="1"
+            android:title="@string/min_wind_prompt"
+            android:dialogTitle="@string/spot_prompt"/>
+        <EditTextPreference
+            android:key="wmaxWind0"
+            android:inputType="number"
+            android:maxLines="1"
+            android:title="@string/max_wind_prompt"
+            android:dialogTitle="@string/spot_prompt"/>
+    </PreferenceCategory>
 </PreferenceScreen>
