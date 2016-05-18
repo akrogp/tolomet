@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:text="Configure"
+            android:lines="1"
             android:layout_toRightOf="@id/widget_icon"/>
 
         <TextView
@@ -27,6 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
+            android:lines="1"
             android:layout_alignLeft="@id/widget_station"
             android:layout_below="@id/widget_station"/>
 
@@ -35,6 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
+            android:lines="1"
             android:layout_alignLeft="@id/widget_station"
             android:layout_below="@id/widget_direction"/>
 

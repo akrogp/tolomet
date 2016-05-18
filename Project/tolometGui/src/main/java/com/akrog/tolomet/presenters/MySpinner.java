@@ -22,7 +22,7 @@ import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Region;
 import com.akrog.tolomet.Station;
-import com.akrog.tolomet.data.Settings;
+import com.akrog.tolomet.data.AppSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ import java.util.Set;
 public class MySpinner implements OnItemSelectedListener, Presenter {
 	private BaseActivity activity;
 	private Manager model;
-	private Settings settings;
+	private AppSettings settings;
 	private Spinner spinner;
 	private ArrayAdapter<Station> adapter;
 	private Type spinnerType;
@@ -100,8 +100,8 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 	private void updateFavorites() {
 		Set<String> favs = settings.getFavorites();
 		for( Station station : model.getAllStations() )
-			station.setFavorite(favs.contains(station.getCode()));
-			//station.setFavorite(favs.contains(station.getId()));
+			//station.setFavorite(favs.contains(station.getCode()));
+			station.setFavorite(favs.contains(station.getId()));
 	}
 
 	public void setFavorite(boolean fav) {

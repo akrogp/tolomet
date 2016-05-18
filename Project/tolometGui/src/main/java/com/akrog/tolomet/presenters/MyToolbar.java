@@ -21,10 +21,10 @@ import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.MapActivity;
 import com.akrog.tolomet.ProviderActivity;
 import com.akrog.tolomet.R;
-import com.akrog.tolomet.SettingsActivity;
+import com.akrog.tolomet.AppSettingsActivity;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.Tolomet;
-import com.akrog.tolomet.data.Settings;
+import com.akrog.tolomet.data.AppSettings;
 import com.akrog.tolomet.view.AndroidUtils;
 import com.google.android.gms.maps.GoogleMap;
 
@@ -189,7 +189,7 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 
 	private void onSettingsItem() {
 		activity.startActivityForResult(
-				new Intent(activity, SettingsActivity.class), Tolomet.SETTINGS_REQUEST);
+				new Intent(activity, AppSettingsActivity.class), Tolomet.SETTINGS_REQUEST);
 	}
 
 	private void onAboutItem() {
@@ -248,7 +248,7 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 			itemMode.setTitle(R.string.LandMode);
 			activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 			activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-			settings.setUpdateMode(Settings.AUTO_UPDATES);
+			settings.setUpdateMode(AppSettings.AUTO_UPDATES);
 			Toast.makeText(activity,R.string.Takeoff,Toast.LENGTH_SHORT).show();
 			flyNotified = true;
 		} else {
@@ -256,7 +256,7 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 			itemMode.setTitle(R.string.FlyMode);
 			activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 			activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-			settings.setUpdateMode(Settings.SMART_UPDATES);
+			settings.setUpdateMode(AppSettings.SMART_UPDATES);
 			if( flyNotified == true ) {
 				Toast.makeText(activity, R.string.Landed, Toast.LENGTH_SHORT).show();
 				flyNotified = false;
@@ -316,7 +316,7 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 
 	private BaseActivity activity;
 	private Manager model;
-	private Settings settings;
+	private AppSettings settings;
 	private Toolbar toolbar;
 	private MenuItem itemFavorite, itemMode;
 	private final HashSet<MenuItem> stationItems = new HashSet<>();

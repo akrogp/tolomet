@@ -102,4 +102,11 @@
     <string name="ShareWebMid">for</string>
     <string name="ShareWebPost"></string>
     <string name="Origin">Provider site</string>
+    <string name="wpref_place">Fly spot</string>
+    <string name="spot_prompt">Name</string>
+    <string name="wpref_conditions">Flying constraints</string>
+    <string name="min_dir_prompt">Direction from</string>
+    <string name="max_dir_prompt">Direction to</string>
+    <string name="min_wind_prompt">Minimum speed</string>
+    <string name="max_wind_prompt">Maximum speed</string>
 </resources>
