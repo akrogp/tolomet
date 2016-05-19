@@ -193,7 +193,15 @@ public class AppSettings {
 		return Integer.parseInt(settings.getString("pref_modeUpdate", activity.getString(R.string.pref_modeUpdateDefault)));
 	}
 
+    public String getCountry() {
+        return settings.getString("spinner-country",model.getCountry());
+    }
+
 	public WindSpot getSpot() {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("wcountry",getCountry());
+        editor.putString("wconstraints","1");
+        editor.commit();
 		return WidgetSettings.getSpot(settings);
 	}
 

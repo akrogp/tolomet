@@ -170,7 +170,11 @@ public class Manager {
 		loadStations();
 		loadRegions();
 	}
-	
+
+	public String getCountry() {
+		return country;
+	}
+
 	public void selectRegion( int code ) {
 		selStations.clear();
 		for( Station station : countryStations )

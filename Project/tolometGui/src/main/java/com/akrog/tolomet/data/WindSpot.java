@@ -8,6 +8,7 @@ import java.util.List;
  */
 public class WindSpot {
     private String name;
+    private String country;
     private final List<WindConstraint> constraints = new ArrayList<>();
 
     public String getName() {
@@ -18,12 +19,20 @@ public class WindSpot {
         this.name = name;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
     public List<WindConstraint> getConstraints() {
         return constraints;
     }
 
     public boolean isValid() {
-        if( name == null || name.isEmpty() )
+        if( name == null || name.isEmpty() || country == null || country.isEmpty() )
             return false;
         for( WindConstraint constraint : constraints )
             if( !constraint.isValid() )
