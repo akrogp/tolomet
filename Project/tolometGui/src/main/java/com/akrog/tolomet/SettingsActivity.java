@@ -34,7 +34,8 @@ public abstract class SettingsActivity extends PreferenceActivity implements Sha
             summary = ((ListPreference)pref).getEntry();
         else if( pref instanceof EditTextPreference )
             summary = ((EditTextPreference)pref).getText();
-        pref.setSummary(summary);
+        if( summary != null )
+            pref.setSummary(summary);
     }
 
     public void onSharedPreferenceChanged(SharedPreferences sp, String key) {

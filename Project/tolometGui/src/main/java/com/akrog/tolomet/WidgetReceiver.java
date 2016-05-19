@@ -11,8 +11,8 @@ import android.content.Intent;
 /**
  * Created by gorka on 11/05/16.
  */
-public class WidgetProvider extends AppWidgetProvider {
-    public static String FORCE_WIDGET_UPDATE = "com.akrog.tolomet.FORCE_WIDGET_UPDATE";
+public class WidgetReceiver extends AppWidgetProvider {
+    public static String FORCE_WIDGET_UPDATE = "com.akrog.tolomet.FORCE_APPWIDGET_UPDATE";
 
     @Override
     public void onEnabled(Context context) {
@@ -46,7 +46,7 @@ public class WidgetProvider extends AppWidgetProvider {
         super.onReceive(context, intent);
         if( FORCE_WIDGET_UPDATE.equals(intent.getAction()) ) {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-            ComponentName thisWidget = new ComponentName(context, WidgetProvider.class);
+            ComponentName thisWidget = new ComponentName(context, WidgetReceiver.class);
             int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
             startService(context,appWidgetIds);
         }

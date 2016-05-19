@@ -22,6 +22,7 @@ public class WidgetSettingsActivity extends SettingsActivity {
         super.onCreate(savedInstanceState);
         onCreate(savedInstanceState,R.xml.widget_preferences);
         appSettings.initialize(this, model);
+        model.setCountry(appSettings.getCountry());
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -73,7 +74,7 @@ public class WidgetSettingsActivity extends SettingsActivity {
                 Intent result = new Intent();
                 result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
                 setResult(RESULT_OK, result);
-                sendBroadcast(new Intent(WidgetProvider.FORCE_WIDGET_UPDATE));
+                sendBroadcast(new Intent(WidgetReceiver.FORCE_WIDGET_UPDATE));
             } else
                 setResult(RESULT_CANCELED);
         }
