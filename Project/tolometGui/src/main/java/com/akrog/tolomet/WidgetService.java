@@ -34,6 +34,7 @@ public class WidgetService extends Service {
     public int onStartCommand(Intent intent, int flags, final int startId) {
         final AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this.getApplicationContext());
         final int[] allWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
+        final int widgetSize = intent.getIntExtra(WidgetReceiver.EXTRA_WIDGET_SIZE, WidgetReceiver.WIDGET_SIZE_MEDIUM);
         new AsyncTask<Void, Void, WidgetData>() {
             @Override
             protected WidgetData doInBackground(Void... params) {
@@ -71,6 +72,9 @@ public class WidgetService extends Service {
                         data.fly = num.intValue() >= constraint.getMinDir() || num.intValue() <= constraint.getMaxDir() ? FlyCondition.GOOD : FlyCondition.BAD;
                 }
                 data.direction = sb.toString();
+                num = station.getMeteo().getAirHumidity().getAt(stamp);
+                if( num != null && num.floatValue() >= 98.0 )
+                    data.fly = FlyCondition.BAD;
                 num = station.getMeteo().getWindSpeedMed().getAt(stamp);
                 if( num != null ) {
                     sb = new StringBuilder(String.format("%.1f", num));
@@ -90,9 +94,10 @@ public class WidgetService extends Service {
 
             @Override
             protected void onPostExecute(WidgetData widgetData) {
+                int[] layouts = {R.layout.widget_layout_small, R.layout.widget_layout_middle, R.layout.widget_layout_large};
                 int i = 0;
                 for (int widgetId : allWidgetIds) {
-                    RemoteViews remoteViews = new RemoteViews(getApplicationContext().getPackageName(), R.layout.widget_layout);
+                    RemoteViews remoteViews = new RemoteViews(getApplicationContext().getPackageName(), layouts[widgetSize]);
                     StationData data = widgetData.stations[i++];
                     if( data == null )
                         continue;

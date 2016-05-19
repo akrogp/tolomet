@@ -50,7 +50,7 @@
         </activity>
 
         <receiver
-            android:name=".WidgetReceiver"
+            android:name=".MediumWidgetReceiver"
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_name">
             <intent-filter>
@@ -62,7 +62,39 @@
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget_info"/>
+                android:resource="@xml/medium_widget_provider"/>
+        </receiver>
+
+        <receiver
+            android:name=".SmallWidgetReceiver"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.akrog.tolomet.FORCE_APPWIDGET_UPDATE"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/small_widget_provider"/>
+        </receiver>
+
+        <receiver
+            android:name=".LargeWidgetReceiver"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.akrog.tolomet.FORCE_APPWIDGET_UPDATE"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/large_widget_provider"/>
         </receiver>
 
         <service android:name=".WidgetService"/>

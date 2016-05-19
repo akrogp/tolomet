@@ -11,8 +11,14 @@ import android.content.Intent;
 /**
  * Created by gorka on 11/05/16.
  */
-public class WidgetReceiver extends AppWidgetProvider {
+public abstract class WidgetReceiver extends AppWidgetProvider {
     public static String FORCE_WIDGET_UPDATE = "com.akrog.tolomet.FORCE_APPWIDGET_UPDATE";
+    public static String EXTRA_WIDGET_SIZE = "widgetSize";
+    public static int WIDGET_SIZE_SMALL = 0;
+    public static int WIDGET_SIZE_MEDIUM = 1;
+    public static int WIDGET_SIZE_LARGE = 2;
+
+    protected abstract int getWidgetSize();
 
     @Override
     public void onEnabled(Context context) {
@@ -55,6 +61,7 @@ public class WidgetReceiver extends AppWidgetProvider {
     private void startService(Context context, int[] appWidgetIds) {
         Intent intent = new Intent(context.getApplicationContext(), WidgetService.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+        intent.putExtra(EXTRA_WIDGET_SIZE, getWidgetSize());
         context.startService(intent);
     }
 }
