@@ -1,4 +1,4 @@
-package com.akrog.tolomet;
+package com.akrog.tolomet.widget;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -14,9 +14,9 @@ import android.content.Intent;
 public abstract class WidgetReceiver extends AppWidgetProvider {
     public static String FORCE_WIDGET_UPDATE = "com.akrog.tolomet.FORCE_APPWIDGET_UPDATE";
     public static String EXTRA_WIDGET_SIZE = "widgetSize";
-    public static int WIDGET_SIZE_SMALL = 0;
-    public static int WIDGET_SIZE_MEDIUM = 1;
-    public static int WIDGET_SIZE_LARGE = 2;
+    public static final int WIDGET_SIZE_SMALL = 0;
+    public static final int WIDGET_SIZE_MEDIUM = 1;
+    public static final int WIDGET_SIZE_LARGE = 2;
 
     protected abstract int getWidgetSize();
 
@@ -32,7 +32,9 @@ public abstract class WidgetReceiver extends AppWidgetProvider {
     }
 
     private PendingIntent getUpdateIntent(Context context) {
-        return PendingIntent.getBroadcast(context,0,new Intent(FORCE_WIDGET_UPDATE),PendingIntent.FLAG_CANCEL_CURRENT);
+        Intent intent = new Intent(FORCE_WIDGET_UPDATE);
+        intent.putExtra(EXTRA_WIDGET_SIZE, getWidgetSize());
+        return PendingIntent.getBroadcast(context,0,intent,PendingIntent.FLAG_CANCEL_CURRENT);
     }
 
     @Override
@@ -44,15 +46,29 @@ public abstract class WidgetReceiver extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        startService(context, appWidgetIds);
+        //startService(context, appWidgetIds);
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        if( FORCE_WIDGET_UPDATE.equals(intent.getAction()) ) {
+        int widgetSize = getWidgetSize();
+        if( FORCE_WIDGET_UPDATE.equals(intent.getAction()) && intent.getIntExtra(EXTRA_WIDGET_SIZE,-1) == widgetSize) {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-            ComponentName thisWidget = new ComponentName(context, WidgetReceiver.class);
+            ComponentName thisWidget;
+            switch( widgetSize ) {
+                case WidgetReceiver.WIDGET_SIZE_SMALL:
+                    thisWidget = new ComponentName(context, SmallWidgetReceiver.class);
+                    break;
+                case WidgetReceiver.WIDGET_SIZE_MEDIUM:
+                    thisWidget = new ComponentName(context, MediumWidgetReceiver.class);
+                    break;
+                case WidgetReceiver.WIDGET_SIZE_LARGE:
+                    thisWidget = new ComponentName(context, LargeWidgetReceiver.class);
+                    break;
+                default:
+                    return;
+            }
             int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
             startService(context,appWidgetIds);
         }

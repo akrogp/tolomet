@@ -42,7 +42,21 @@
             android:launchMode="singleInstance">
         </activity>
         <activity
-            android:name=".WidgetSettingsActivity"
+            android:name=".widget.SmallWidgetSettingsActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".widget.MediumWidgetSettingsActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".widget.LargeWidgetSettingsActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
@@ -50,7 +64,7 @@
         </activity>
 
         <receiver
-            android:name=".MediumWidgetReceiver"
+            android:name=".widget.MediumWidgetReceiver"
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_name">
             <intent-filter>
@@ -66,7 +80,7 @@
         </receiver>
 
         <receiver
-            android:name=".SmallWidgetReceiver"
+            android:name=".widget.SmallWidgetReceiver"
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_name">
             <intent-filter>
@@ -82,7 +96,7 @@
         </receiver>
 
         <receiver
-            android:name=".LargeWidgetReceiver"
+            android:name=".widget.LargeWidgetReceiver"
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_name">
             <intent-filter>
@@ -97,7 +111,7 @@
                 android:resource="@xml/large_widget_provider"/>
         </receiver>
 
-        <service android:name=".WidgetService"/>
+        <service android:name=".widget.WidgetService"/>
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
