@@ -1,12 +1,18 @@
-package com.akrog.tolomet;
+package com.akrog.tolomet.widget;
 
 import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 
+import com.akrog.tolomet.Manager;
+import com.akrog.tolomet.R;
+import com.akrog.tolomet.SettingsActivity;
+import com.akrog.tolomet.Station;
 import com.akrog.tolomet.data.AppSettings;
 import com.akrog.tolomet.data.WidgetSettings;
 import com.akrog.tolomet.data.WindSpot;
@@ -15,12 +21,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class WidgetSettingsActivity extends SettingsActivity {
+public abstract class WidgetSettingsActivity extends SettingsActivity {
+
+    protected abstract int getWidgetSize();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        onCreate(savedInstanceState,R.xml.widget_preferences);
+        onCreate(savedInstanceState, R.xml.widget_preferences);
         appSettings.initialize(this, model);
         model.setCountry(appSettings.getCountry());
 
@@ -48,6 +56,19 @@ public class WidgetSettingsActivity extends SettingsActivity {
                 ListPreference listPreference = (ListPreference) findPreference(STATION_KEY);
                 listPreference.setEntries(entries.toArray(new String[0]));
                 listPreference.setEntryValues(values.toArray(new String[0]));
+                onSharedPreferenceChanged(null,listPreference.getKey());
+            }
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
+        super.onSharedPreferenceChanged(sp, key);
+        if( key.equals(STATION_KEY) ) {
+            EditTextPreference name = (EditTextPreference)findPreference(SPOT_KEY);
+            if( name.getText().isEmpty() ) {
+                name.setText(((ListPreference) findPreference(STATION_KEY)).getEntry().toString());
+                onSharedPreferenceChanged(sp, SPOT_KEY);
             }
         }
     }
@@ -74,7 +95,9 @@ public class WidgetSettingsActivity extends SettingsActivity {
                 Intent result = new Intent();
                 result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
                 setResult(RESULT_OK, result);
-                sendBroadcast(new Intent(WidgetReceiver.FORCE_WIDGET_UPDATE));
+                Intent intent = new Intent(WidgetReceiver.FORCE_WIDGET_UPDATE);
+                intent.putExtra(WidgetReceiver.EXTRA_WIDGET_SIZE, getWidgetSize());
+                sendBroadcast(intent);
             } else
                 setResult(RESULT_CANCELED);
         }
@@ -86,4 +109,5 @@ public class WidgetSettingsActivity extends SettingsActivity {
     private final AppSettings appSettings = new AppSettings();
 
     public static String STATION_KEY = "wstation0";
+    public static String SPOT_KEY = "wspot";
 }

@@ -10,8 +10,9 @@
 
         <ImageView
             android:id="@+id/widget_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginRight="8dp"
             android:src="@drawable/ic_wind_unknown"/>
 
         <TextView
@@ -23,7 +24,7 @@
             android:layout_toRightOf="@id/widget_icon"/>
 
         <TextView
-            android:id="@+id/widget_direction"
+            android:id="@+id/widget_air"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
@@ -32,13 +33,13 @@
             android:layout_below="@id/widget_station"/>
 
         <TextView
-            android:id="@+id/widget_speed"
+            android:id="@+id/widget_wind"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:lines="1"
             android:layout_alignLeft="@id/widget_station"
-            android:layout_below="@id/widget_direction"/>
+            android:layout_below="@id/widget_air"/>
 
     </RelativeLayout>
 </FrameLayout>

@@ -1,4 +1,4 @@
-package com.akrog.tolomet;
+package com.akrog.tolomet.widget;
 
 /**
  * Created by gorka on 19/05/16.
