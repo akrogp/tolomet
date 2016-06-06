@@ -25,6 +25,8 @@ public class FixStations {
 		for( Station station : stations ) {
 			fixName(station);
             fixMetarCountry(station);
+			/*if( station.getProviderType().equals(WindProviderType.RedVigia) )
+				continue;*/
 			if( station.getLatitude() == 0.0 )
 				ResourceManager.showStation(station);
 			else

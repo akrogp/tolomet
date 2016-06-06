@@ -14,6 +14,6 @@ public class RedVigiaProviderTest extends BaseProviderTest {
 
     @Test
     public void downloadData() {
-        assertTrue(testDownload("130900414322fa7d"));
+        assertTrue(testDownload("Santoña"));
     }
 }
