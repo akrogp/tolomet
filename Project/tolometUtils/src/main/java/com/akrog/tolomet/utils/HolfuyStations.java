@@ -36,6 +36,8 @@ public class HolfuyStations {
         Stations stations = (Stations)um.unmarshal(url);
         List<Station> result = new ArrayList<>();
         for(Stations.Station holfuy : stations.getSTATION() ) {
+            if( !holfuy.getID().equals("s351") )
+                continue;
             Station station = new Station();
             station.setCode(holfuy.getID());
             station.setName(holfuy.getNAME());

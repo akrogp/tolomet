@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '23.0.2'
+    buildToolsVersion '23.0.3'
 
     defaultConfig {
         applicationId "com.akrog.tolomet"
         minSdkVersion 9
         targetSdkVersion 22
-        versionCode 441
-        versionName "4.4.1"
+        versionCode 442
+        versionName "4.4.2"
     }
     buildTypes {
         release {
@@ -26,7 +26,9 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile project(':tolometCore')
-    compile 'com.android.support:appcompat-v7:23.3.0'
-    compile 'com.google.android.gms:play-services:8.4.0'
+    compile(project(':tolometCore')) {
+        exclude group: 'org.json', module: 'json'
+    }
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.google.android.gms:play-services:9.0.2'
 }

@@ -91,6 +91,11 @@ public class RestApi {
 			motd.setVersion("4.4.1");
 			motd.addChange(tr(lang,"Incluida estación PiouPiou 229 (Navarra)", "Included PiouPiou station 229 (Navarra)"));
 		}
+		if( version == 441 ) {
+			motd.setVersion("4.4.2");
+			motd.addChange(tr(lang,"Incluida estación Holfuy de Udalaitz", "Included Udalaitz Holfuy station"));
+			motd.addChange(tr(lang,"Actualizado al nuevo formato de Red Vigía", "Updated to the new Red Vigía format"));
+		}
 	}
 
 	private void changesv3(int version, String lang, Motd motd) {

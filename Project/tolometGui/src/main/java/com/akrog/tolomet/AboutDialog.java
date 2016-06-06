@@ -2,11 +2,6 @@
 
 package com.akrog.tolomet;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -14,11 +9,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.widget.TextView;
 
-import com.akrog.tolomet.R;
-import com.google.android.gms.common.GoogleApiAvailability;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class AboutDialog extends Dialog {
 	private static Context context = null;
@@ -40,7 +36,7 @@ public class AboutDialog extends Dialog {
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
-		Log.i("Tolomet",GoogleApiAvailability.getInstance().getOpenSourceSoftwareLicenseInfo(context));
+		//Log.i("Tolomet",GoogleApiAvailability.getInstance().getOpenSourceSoftwareLicenseInfo(context));
 		tv.setText(Html.fromHtml(readRawTextFile(R.raw.info).replaceAll("\\$VER\\$", versionName)));
 		tv.setLinkTextColor(Color.WHITE);
 		Linkify.addLinks(tv, Linkify.ALL);

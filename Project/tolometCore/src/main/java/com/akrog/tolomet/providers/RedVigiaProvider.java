@@ -1,124 +1,78 @@
 package com.akrog.tolomet.providers;
 
+import com.akrog.tolomet.Measurement;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.Calendar;
+import java.text.DateFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.TimeZone;
 
-public class RedVigiaProvider implements WindProvider {	
+public class RedVigiaProvider implements WindProvider {
+    public RedVigiaProvider() {
+        df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        df.setTimeZone(TimeZone.getTimeZone("Europe/Madrid"));
+    }
+
 	@Override
-	public void refresh(com.akrog.tolomet.Station station) {
-		downloader = new Downloader();
-		downloader.setUrl("http://www.redvigia.es/Historico.aspx");
-		downloader.addParam("codigoBoya", station.getCode());
-		downloader.addParam("numeroDatos", "24");
-		downloader.addParam("tipo", "1");
-		//downloader.addParam("variable", "1");
-		updateStation(station, downloader.download());
+	public void refresh(Station station) {
+        download(station.getCode(), "Direccion-Media-Viento", station.getMeteo().getWindDirection(), 1.0F);
+		download(station.getCode(), "Velocidad-Viento-Media", station.getMeteo().getWindSpeedMed(), 3.6F);
+        download(station.getCode(), "Velocidad-Viento-Maxima", station.getMeteo().getWindSpeedMax(), 3.6F);
+        download(station.getCode(), "Humedad-Relativa-Aire", station.getMeteo().getAirHumidity(), 1.0F);
+        download(station.getCode(), "Presion-Atmosferica-Media", station.getMeteo().getAirPressure(), 1.0F);
+        download(station.getCode(), "Temperatura-Media-Aire", station.getMeteo().getAirTemperature(), 1.0F);
 	}
-	
+
+	private void download(String code, String page, Measurement data, float factor) {
+        downloader = new Downloader();
+        downloader.setBrowser(Downloader.FakeBrowser.MOZILLA);
+        downloader.setUrl(String.format("http://www.redvigia.es/Boyas/Evolucion/%s/%s",code.replaceAll("ñ","%C3%B1"),page));
+        String html = downloader.download("/tbody");
+        String[] fields = html.split("<td>");
+        for( int i = 1; i < fields.length; i+= 2 ) {
+            int i1 = fields[i].indexOf(", ");
+            if( i1 < 0 ) continue;
+            int i2 = fields[i].indexOf("</td>");
+            if( i2 < 0 ) continue;
+            try {
+                long stamp = df.parse(fields[i].substring(i1+2,i2)).getTime();
+                i2 = fields[i+1].indexOf(' ');
+                if( i2 < 0 ) continue;
+                Number value = (float)(nf.parse(fields[i+1].substring(0,i2)).doubleValue()*factor);
+                data.put(stamp, value);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                continue;
+            }
+        }
+    }
+
 	@Override
 	public void cancel() {
 		if( downloader != null )
 			downloader.cancel();
 	}
 
-	protected void updateStation(Station station, String data) {
-		if( data == null )
-			return;
-		try {
-			BufferedReader rd = new BufferedReader(new StringReader(data));
-			String line;
-			String[] fields;
-			long date;
-			Number val;
-			while( (line=rd.readLine()) != null ) {
-				if( line.contains("Velocidad") )
-					break;
-			}
-			if( line == null )
-				return;
-			//this.station.clear();
-			while( rd.readLine() != null ) {
-				line = rd.readLine();	// Skip first line
-				if( line.contains("table") )
-					break;
-				fields = line.split("</td><td>");
-				if( fields.length != 11 )
-					continue;
-				date = toEpoch(getContent(fields[1],false));
-				try {
-					val = Integer.parseInt(getContent(fields[4],true).replaceAll("\\..*", ""));
-					station.getMeteo().getWindDirection().put(date, val);
-				} catch( Exception e ) {}
-				try {
-					val = Float.parseFloat(getContent(fields[2],true))*3.6F;
-					station.getMeteo().getWindSpeedMed().put(date, val);
-				} catch( Exception e ) {}
-				try {
-					val = Float.parseFloat(getContent(fields[3],true))*3.6F;
-					station.getMeteo().getWindSpeedMax().put(date, val);
-				} catch( Exception e ) {}
-		        try {
-			        val = Float.parseFloat(getContent(fields[5],true));
-		        	station.getMeteo().getAirHumidity().put(date, val);
-		        } catch( Exception e ) {}
-		        try {
-			        val = Float.parseFloat(getContent(fields[7],true));
-		        	station.getMeteo().getAirPressure().put(date, val);
-		        } catch( Exception e ) {}
-		        try {
-			        val = Float.parseFloat(getContent(fields[10],true));
-		        	station.getMeteo().getAirTemperature().put(date, val);
-		        } catch( Exception e ) {}	        	
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}				
-	}		
-
 	@Override
 	public int getRefresh( String code ) {
 		return 60;
 	}		
 	
-	private long toEpoch( String str ) {
-		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
-		String[] tmp = str.split(" ");
-		String[] date = tmp[0].split("/");
-		String[] time = tmp[1].split(":");
-		cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(date[0]));
-		cal.set(Calendar.MONTH, Integer.parseInt(date[1])-1);
-		cal.set(Calendar.YEAR, Integer.parseInt(date[2]));
-		cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time[0]));
-		cal.set(Calendar.MINUTE, Integer.parseInt(time[1]));
-		cal.set(Calendar.SECOND, Integer.parseInt(time[2]));
-		cal.set(Calendar.MILLISECOND, 0 );
-	    return cal.getTimeInMillis();
-	}
-	
-	private String getContent( String str, boolean first ) {
-		str = str.replaceAll("<font.*\">", "");
-		str = str.replaceAll("</font>", "");
-		if( first )
-			str = str.split(" ")[0]; 
-		return str.replace(',', this.separator); 	
-	}	
-	
 	@Override
 	public String getInfoUrl(String code) {
-		return "http://www.redvigia.es/DetalleBoya.aspx?codigoBoya="+code;
+        return String.format("http://www.redvigia.es/Boyas/Detalle/%s#detalle_general",code);
 	}
 
 	@Override
 	public String getUserUrl(String code) {
-		return getInfoUrl(code);
+        return String.format("http://www.redvigia.es/Boyas/Detalle/%s#detalle_meteorologia",code);
 	}
 
-	private final char separator = '.';
 	private Downloader downloader;
+    private final DateFormat df;
+    private final NumberFormat nf = NumberFormat.getInstance(Locale.FRANCE);;
 }
