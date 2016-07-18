@@ -74,7 +74,7 @@ public class ResourceManager {
                 station.setRegion(dis.readInt());
                 station.setLatitude(dis.readDouble());
                 station.setLongitude(dis.readDouble());
-                if( names.add(station.getCode()) )
+                if( names.add(station.getId()) )
                     if( station.getLatitude() == 99.0+99.0/60.0 )
                         logger.warning(String.format("Invalid coordinates for '%s'", station));
                     else
