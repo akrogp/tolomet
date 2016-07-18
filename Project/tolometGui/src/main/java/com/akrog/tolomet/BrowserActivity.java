@@ -63,6 +63,7 @@ public abstract class BrowserActivity extends BaseActivity {
         settings.setJavaScriptEnabled(true);
         settings.setBuiltInZoomControls(true);
         //settings.setDisplayZoomControls(false);
+        settings.setUseWideViewPort(true);
     }
 
     @Override
