@@ -51,7 +51,8 @@ public class FixStations {
 			//stations.addAll(PradesStations.getStations());
             //stations.addAll(new HolfuyStations().getStations());
 			//stations.addAll(PiouStations.getStations());
-			stations.addAll(new FfvlStations().getStations());
+			//stations.addAll(new FfvlStations().getStations());
+            //stations.addAll(new MeteoFranceStations().getStations());
 			Station station;
 			while( (station=askNew()) != null )
 				stations.add(station);

@@ -18,7 +18,7 @@ import fr.ffvl.Balises;
  * Created by gorka on 18/07/16.
  */
 public class FfvlStations {
-    public FfvlStations() throws MalformedURLException  {
+    public FfvlStations() throws MalformedURLException {
         //url = new URL("http://data.ffvl.fr/xml/4D6F626942616C69736573/meteo/balise_list.xml");
         url = new File("/home/gorka/MyProjects/Android/Tolomet/Project/tolometUtils/src/main/resources/res/ffvl.xml").toURI().toURL();
     }
