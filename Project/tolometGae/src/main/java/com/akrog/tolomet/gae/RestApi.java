@@ -96,6 +96,10 @@ public class RestApi {
 			motd.addChange(tr(lang,"Incluida estación Holfuy de Udalaitz", "Included Udalaitz Holfuy station"));
 			motd.addChange(tr(lang,"Actualizado al nuevo formato de Red Vigía", "Updated to the new Red Vigía format"));
 		}
+		if( version < 450 ) {
+			motd.setVersion("4.5");
+			motd.addChange(tr(lang,"Incluidas más estaciones de Francia (FFVL y MeteoFrance)", "Included more French stations (FFVL and MeteoFrance)"));
+		}
 	}
 
 	private void changesv3(int version, String lang, Motd motd) {
