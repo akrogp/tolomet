@@ -140,7 +140,8 @@ public class WidgetService extends Service {
                         case WidgetReceiver.WIDGET_SIZE_LARGE:
                             clickIntent = new Intent(getApplicationContext(), LargeWidgetReceiver.class);
                             remoteViews.setTextViewText(R.id.widget_station, data.name);
-                            remoteViews.setTextViewText(R.id.widget_air, data.date + " " + data.air);
+                            remoteViews.setTextViewText(R.id.widget_date, data.date);
+                            remoteViews.setTextViewText(R.id.widget_air, data.air);
                             remoteViews.setTextViewText(R.id.widget_wind, data.directionExt + " " + data.speed + " km/h");
                             break;
                         default:

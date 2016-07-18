@@ -13,6 +13,7 @@ import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.SettingsActivity;
 import com.akrog.tolomet.Station;
+import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.AppSettings;
 import com.akrog.tolomet.data.WidgetSettings;
 import com.akrog.tolomet.data.WindSpot;
@@ -49,10 +50,9 @@ public abstract class WidgetSettingsActivity extends SettingsActivity {
                     values.add(station.getId());
                 }
             }
-            if( entries.isEmpty() ) {
+            if( entries.isEmpty() )
                 showFavoriteDialog();
-                finish();
-            } else {
+            else {
                 ListPreference listPreference = (ListPreference) findPreference(STATION_KEY);
                 listPreference.setEntries(entries.toArray(new String[0]));
                 listPreference.setEntryValues(values.toArray(new String[0]));
@@ -66,7 +66,7 @@ public abstract class WidgetSettingsActivity extends SettingsActivity {
         super.onSharedPreferenceChanged(sp, key);
         if( key.equals(STATION_KEY) ) {
             EditTextPreference name = (EditTextPreference)findPreference(SPOT_KEY);
-            if( name.getText().isEmpty() ) {
+            if( name.getText() != null && name.getText().isEmpty() ) {
                 name.setText(((ListPreference) findPreference(STATION_KEY)).getEntry().toString());
                 onSharedPreferenceChanged(sp, SPOT_KEY);
             }
@@ -79,6 +79,8 @@ public abstract class WidgetSettingsActivity extends SettingsActivity {
         dialog.setPositiveButton(getString(R.string.fav_ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                finish();
+                startActivity(new Intent(getApplicationContext(), Tolomet.class));
             }
         });
         dialog.setIcon(android.R.drawable.ic_dialog_info);
