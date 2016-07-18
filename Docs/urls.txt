@@ -63,3 +63,12 @@ http://data.mobibalises.net/data/ffvl.properties
 http://data.mobibalises.net/4D6F626942616C69736573/relevemeteo.xml.gz
 http://data.mobibalises.net/4D6F626942616C69736573/lastupdate.xml.gz
 http://data.ffvl.fr/xml/4D6F626942616C69736573/meteo/balise_list.xml
+http://data.ffvl.fr/xml/4D6F626942616C69736573/lastupdate.xml.gz
+http://data.ffvl.fr/xml/4D6F626942616C69736573/meteo/relevemeteo.xml
+
+MeteoFrance:
+http://www.meteofrance.com/previsions-meteo-france/station-observations
+http://www.meteofrance.com/previsions-meteo-france/station-observations?a=07002&b=
+http://www.vigimeteo.com/PREV/obs/liste_ville.js
+http://www.vigimeteo.com/PREV/obs/obsd2i_meta.txt
+http://www.vigimeteo.com/data/obsd2i.txt
