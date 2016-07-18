@@ -35,7 +35,8 @@ public class FfvlProvider extends BaseProvider {
 
     @Override
     public void configureDownload(Downloader downloader, Station station) {
-        downloader.setUrl("http://data.ffvl.fr/xml/4D6F626942616C69736573/meteo/relevemeteo.xml");
+        downloader.setUrl("http://data.ffvl.fr/xml/4D6F626942616C69736573/meteo/relevemeteo.xml.gz");
+        downloader.setGzipped(true);
     }
 
     @Override
