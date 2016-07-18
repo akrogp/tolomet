@@ -39,6 +39,7 @@ http://www.redvigia.es/Historico.aspx?codigoBoya=130900414322fa7d&numeroDatos=5&
 Datos -> http://www.redvigia.es/Historico.aspx?codigoBoya=130900414322fa7d&numeroDatos=24&tipo=1
 
 Metar:
+Stations -> http://www.aviationweather.gov/static/adds/metars/stations.txt
 Ficha -> http://www.aviationweather.gov/adds/metars?station_ids=PADK&std_trans=translated&chk_metars=on
 HTML -> http://www.aviationweather.gov/adds/metars?station_ids=PADK&std_trans=standard&chk_metars=on&hoursStr=past+24+hours
 CSV -> http://www.aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=csv&fields=raw_text&startTime=1430251000&endTime=1430253421&stationString=PADK
@@ -56,3 +57,9 @@ Piou:
 Stations -> http://api.pioupiou.fr/v1/live-with-meta/all
 Ficha -> https://pioupiou.fr/fr/336
 Data -> http://api.pioupiou.fr/v1/archive/{station_id}?start={start}&stop={stop}&format={format}
+
+FFVL/Mobibalises:
+http://data.mobibalises.net/data/ffvl.properties
+http://data.mobibalises.net/4D6F626942616C69736573/relevemeteo.xml.gz
+http://data.mobibalises.net/4D6F626942616C69736573/lastupdate.xml.gz
+http://data.ffvl.fr/xml/4D6F626942616C69736573/meteo/balise_list.xml

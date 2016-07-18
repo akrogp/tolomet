@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+   <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+         <!-- XML Schema Generated from XML Document on Mon Jul 18 2016 17:07:39 GMT+0200 (CEST) -->
+         <!-- with XmlGrid.net Free Online Service http://xmlgrid.net -->
+         <xs:element name="balises">
+               <xs:complexType>
+                     <xs:sequence>
+                           <xs:element name="balise" maxOccurs="unbounded">
+                                 <xs:complexType>
+                                       <xs:sequence>
+                                             <xs:element name="idBalise" type="xs:int"></xs:element>
+                                             <xs:element name="nom" type="xs:string"></xs:element>
+                                             <xs:element name="departement">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="value" type="xs:int"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="coord">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="lat" type="xs:double"></xs:attribute>
+                                                         <xs:attribute name="lon" type="xs:double"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="altitude">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="value" type="xs:int"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="description" type="xs:string"></xs:element>
+                                             <xs:element name="remarques" type="xs:string"></xs:element>
+                                             <xs:element name="url">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="url_histo">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="active" type="xs:int"></xs:element>
+                                             <xs:element name="forKyte" type="xs:int"></xs:element>
+                                       </xs:sequence>
+                                 </xs:complexType>
+                           </xs:element>
+                     </xs:sequence>
+               </xs:complexType>
+         </xs:element>
+   </xs:schema>
