@@ -13,6 +13,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.zip.GZIPInputStream;
 
 public class Downloader {
 	public enum FakeBrowser { ANDROID, MOZILLA, WGET };
@@ -23,6 +24,7 @@ public class Downloader {
 	private final List<Entry<String,Object>> params = new ArrayList<Entry<String,Object>>();
 	protected boolean usingLinebreak = true;
 	private boolean cancelled = false;
+    private boolean gzipped = false;
 	private FakeBrowser fakeBrowser = FakeBrowser.ANDROID;
 	
 	public String download() {
@@ -51,7 +53,10 @@ public class Downloader {
     			con = (HttpURLConnection)url.openConnection();
     		}
     		applyBrowserProperties(con);
-    		result = parseInput(con.getInputStream(),stop);
+            InputStream is = con.getInputStream();
+            if( isGzipped() )
+                is = new GZIPInputStream(is);
+    		result = parseInput(is,stop);
     	} catch( Exception e ) {
     		e.printStackTrace();
     		//onCancelled();
@@ -166,4 +171,12 @@ public class Downloader {
 	public void setMethod(String method) {
 		this.method = method;
 	}
+
+    public boolean isGzipped() {
+        return gzipped;
+    }
+
+    public void setGzipped(boolean gzipped) {
+        this.gzipped = gzipped;
+    }
 }
