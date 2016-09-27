@@ -7,6 +7,8 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 
+import com.akrog.tolomet.data.WidgetSettings;
+
 /**
  * Created by gorka on 11/05/16.
  */
@@ -42,6 +44,13 @@ public abstract class WidgetReceiver extends AppWidgetProvider {
         super.onDisabled(context);
         AlarmManager alarm = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         alarm.cancel(getUpdateIntent(context));
+    }
+
+    @Override
+    public void onDeleted(Context context, int[] appWidgetIds) {
+        super.onDeleted(context, appWidgetIds);
+        for( int widgetId : appWidgetIds )
+            new WidgetSettings(context, widgetId).delete();
     }
 
     @Override

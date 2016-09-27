@@ -3,6 +3,8 @@ package com.akrog.tolomet.data;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.io.File;
+
 /**
  * Created by gorka on 18/05/16.
  */
@@ -10,7 +12,8 @@ public class WidgetSettings {
 
     public WidgetSettings(Context context, int widgetId) {
         this.context = context;
-        settings = context.getSharedPreferences(String.format("%s-%d",PREFS_NAME,widgetId),Context.MODE_PRIVATE);
+        fileName = String.format("%s-%d",PREFS_NAME,widgetId);
+        settings = context.getSharedPreferences(fileName,Context.MODE_PRIVATE);
     }
 
     public WindSpot getSpot() {
@@ -19,6 +22,12 @@ public class WidgetSettings {
 
     public void setSpot( WindSpot spot ) {
         setSpot(settings, spot);
+    }
+
+    public void delete() {
+        settings.edit().clear().commit();
+        String path = String.format("%s/shared_prefs/%s.xml", context.getFilesDir().getParent(), fileName);
+        new File(path).delete();
     }
 
     public static WindSpot getSpot(SharedPreferences settings) {
@@ -55,6 +64,7 @@ public class WidgetSettings {
         editor.commit();
     }
 
+    private final String fileName;
     private final SharedPreferences settings;
     private final Context context;
 
