@@ -70,7 +70,7 @@ public class Tolomet extends BaseActivity {
         if( stationId != null ) {
             String country = intent.getStringExtra(EXTRA_COUNTRY);
             if( country != null )
-                model.setCountry(country);
+                spinner.setCountry(country);
             intent.removeExtra(EXTRA_STATION_ID);
             intent.removeExtra(EXTRA_COUNTRY);
             Station station = model.findStation(stationId);

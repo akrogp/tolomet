@@ -83,7 +83,7 @@ public class WidgetProvider {
 
         StationData data = new StationData();
         data.id = station.getId();
-        data.country = station.getCountry();
+        data.country = spot.getCountry();
         data.name = spot.getName();
         long stamp = station.getStamp();
         data.date = model.getStamp(stamp);
