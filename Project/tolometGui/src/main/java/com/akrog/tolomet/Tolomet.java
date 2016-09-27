@@ -55,10 +55,28 @@ public class Tolomet extends BaseActivity {
     	if( downloading )
     		model.cancel();
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        if( intent != null )
+            setIntent(intent);
+    }
     
     @Override
     protected void onResume() {
     	super.onResume();
+        Intent intent = getIntent();
+        String stationId = intent.getStringExtra(EXTRA_STATION_ID);
+        if( stationId != null ) {
+            String country = intent.getStringExtra(EXTRA_COUNTRY);
+            if( country != null )
+                model.setCountry(country);
+            intent.removeExtra(EXTRA_STATION_ID);
+            intent.removeExtra(EXTRA_COUNTRY);
+            Station station = model.findStation(stationId);
+            if( station != null )
+                spinner.selectStation(station);
+        }
     	if( settings.getUpdateMode() >= AppSettings.SMART_UPDATES && model.isOutdated() )
     		downloadData();
     }
@@ -204,6 +222,8 @@ public class Tolomet extends BaseActivity {
 	private Runnable timer;
 	private boolean downloading = false;
 
+	public static String EXTRA_STATION_ID = "com.akrog.tolomet.stationId";
+    public static String EXTRA_COUNTRY = "com.akrog.tolomet.country";
 	public static final int SETTINGS_REQUEST = 0;
 	public static final int MAP_REQUEST = 1;
 }
