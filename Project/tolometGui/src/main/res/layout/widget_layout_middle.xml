@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/widget"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:padding="@dimen/widget_margin">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/widget_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="8dp"
+            android:src="@drawable/ic_wind_unknown"/>
+
+        <TextView
+            android:id="@+id/widget_date"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:lines="1"
+            android:layout_alignBottom="@+id/widget_speed"
+            android:layout_alignLeft="@id/widget_icon"/>
+
+        <TextView
+            android:id="@+id/widget_station"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:lines="1"
+            android:layout_toRightOf="@id/widget_icon"/>
+
+        <TextView
+            android:id="@+id/widget_direction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:lines="1"
+            android:layout_alignLeft="@id/widget_station"
+            android:layout_below="@id/widget_station"/>
+
+        <TextView
+            android:id="@+id/widget_speed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:lines="1"
+            android:layout_alignLeft="@id/widget_station"
+            android:layout_below="@id/widget_direction"/>
+
+    </RelativeLayout>
+</FrameLayout>

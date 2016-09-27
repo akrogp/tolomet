@@ -13,11 +13,11 @@ import android.os.AsyncTask.Status;
 
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Tolomet;
-import com.akrog.tolomet.data.Settings;
+import com.akrog.tolomet.data.AppSettings;
 
 public class GaeManager {
 	private Tolomet tolomet;
-	private Settings settings;
+	private AppSettings settings;
 	private GaeClient gaeClient;
 	
 	public void initialize( Tolomet tolomet ) {

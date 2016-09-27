@@ -102,4 +102,11 @@
     <string name="ShareWebMid">para</string>
     <string name="ShareWebPost"></string>
     <string name="Origin">Web original</string>
+    <string name="wpref_place">Zona de vuelo</string>
+    <string name="spot_prompt">Izena</string>
+    <string name="wpref_conditions">Condiciones de vuelo</string>
+    <string name="min_dir_prompt">Dirección desde</string>
+    <string name="max_dir_prompt">Dirección hasta</string>
+    <string name="min_wind_prompt">Velocidad mínima</string>
+    <string name="max_wind_prompt">Velocidad máxima</string>
 </resources>

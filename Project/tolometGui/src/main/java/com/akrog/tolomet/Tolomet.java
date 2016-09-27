@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.akrog.tolomet.data.Bundler;
-import com.akrog.tolomet.data.Settings;
+import com.akrog.tolomet.data.AppSettings;
 import com.akrog.tolomet.gae.GaeManager;
 import com.akrog.tolomet.presenters.Downloader;
 import com.akrog.tolomet.presenters.MyCharts;
@@ -55,17 +55,35 @@ public class Tolomet extends BaseActivity {
     	if( downloading )
     		model.cancel();
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        if( intent != null )
+            setIntent(intent);
+    }
     
     @Override
     protected void onResume() {
     	super.onResume();
-    	if( settings.getUpdateMode() >= Settings.SMART_UPDATES && model.isOutdated() )
+        Intent intent = getIntent();
+        String stationId = intent.getStringExtra(EXTRA_STATION_ID);
+        if( stationId != null ) {
+            String country = intent.getStringExtra(EXTRA_COUNTRY);
+            if( country != null )
+                model.setCountry(country);
+            intent.removeExtra(EXTRA_STATION_ID);
+            intent.removeExtra(EXTRA_COUNTRY);
+            Station station = model.findStation(stationId);
+            if( station != null )
+                spinner.selectStation(station);
+        }
+    	if( settings.getUpdateMode() >= AppSettings.SMART_UPDATES && model.isOutdated() )
     		downloadData();
     }
     
     private void createTimer() {
     	cancelTimer();
-    	if( settings.getUpdateMode() != Settings.AUTO_UPDATES )
+    	if( settings.getUpdateMode() != AppSettings.AUTO_UPDATES )
     		return;	
     	timer = new Runnable() {				
     		@Override
@@ -85,7 +103,7 @@ public class Tolomet extends BaseActivity {
     }
     
     private boolean postTimer() {
-    	if( timer == null || settings.getUpdateMode() != Settings.AUTO_UPDATES )
+    	if( timer == null || settings.getUpdateMode() != AppSettings.AUTO_UPDATES )
     		return false;
     	handler.removeCallbacks(timer);
     	int minutes = 1;
@@ -160,7 +178,7 @@ public class Tolomet extends BaseActivity {
 		redraw();		
 		if( station.isSpecial() )
 			return;
-		if( settings.getUpdateMode() >= Settings.SMART_UPDATES && model.isOutdated() )
+		if( settings.getUpdateMode() >= AppSettings.SMART_UPDATES && model.isOutdated() )
 			downloadData();
 	}
 
@@ -204,6 +222,8 @@ public class Tolomet extends BaseActivity {
 	private Runnable timer;
 	private boolean downloading = false;
 
+	public static String EXTRA_STATION_ID = "com.akrog.tolomet.stationId";
+    public static String EXTRA_COUNTRY = "com.akrog.tolomet.country";
 	public static final int SETTINGS_REQUEST = 0;
 	public static final int MAP_REQUEST = 1;
 }
