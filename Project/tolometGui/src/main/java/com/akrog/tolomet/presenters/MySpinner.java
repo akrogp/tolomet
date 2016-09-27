@@ -88,7 +88,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		selectItem(state.getPos(), false);
 	}
 	
-	private boolean setCountry( String country ) {
+	public boolean setCountry( String country ) {
 		if( country == null || country.equals(this.country) )
 			return false;
 		model.setCountry(country);
