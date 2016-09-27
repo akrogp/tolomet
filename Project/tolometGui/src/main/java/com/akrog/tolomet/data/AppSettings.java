@@ -1,12 +1,12 @@
 package com.akrog.tolomet.data;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.SparseArray;
 
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.Measurement;
-import com.akrog.tolomet.BaseActivity;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.presenters.MySpinner;
@@ -18,12 +18,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-public class Settings {	
+public class AppSettings {
 	private SharedPreferences settings;
-	private BaseActivity activity;
+	private Activity activity;
 	private Manager model;
 	
-	public void initialize( BaseActivity activity, Manager model ) {
+	public void initialize(Activity activity, Manager model ) {
 		this.activity = activity;
 		this.model = model;
 		settings = PreferenceManager.getDefaultSharedPreferences(activity);
@@ -63,27 +63,27 @@ public class Settings {
 		return result;
 	}
 	
-	public void addFavorite(String code) {
+	public void addFavorite(Station station) {
 		Set<String> favs = getFavorites();
-		favs.add(code);
+		favs.add(station.getId());
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putString("fav", toCsv(favs));
 		editor.commit();
 	}
 	
-	public void removeFavorite(String code) {
+	public void removeFavorite(Station station) {
 		Set<String> favs = getFavorites();
-		favs.remove(code);
+		favs.remove(station);
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putString("fav", toCsv(favs));
 		editor.commit();
 	}
 	
-	public void setFavorite(String code, boolean fav) {
+	public void setFavorite(Station station, boolean fav) {
 		if( fav )
-			addFavorite(code);
+			addFavorite(station);
 		else
-			removeFavorite(code);
+			removeFavorite(station);
 	}
 	
 	public void saveSpinner(MySpinner.State state) {
@@ -193,6 +193,18 @@ public class Settings {
 		return Integer.parseInt(settings.getString("pref_modeUpdate", activity.getString(R.string.pref_modeUpdateDefault)));
 	}
 
+    public String getCountry() {
+        return settings.getString("spinner-country",model.getCountry());
+    }
+
+	public WindSpot getSpot() {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("wcountry",getCountry());
+        editor.putString("wconstraints","1");
+        editor.commit();
+		return WidgetSettings.getSpot(settings);
+	}
+
 	public void setUpdateMode(int mode) {
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putString("pref_modeUpdate",""+mode);
@@ -200,8 +212,11 @@ public class Settings {
 	}
 	
 	private void migrate() {
-		if( getConfigVersion() == 0 )
-			migrateFavs();
+		int oldVersion = getConfigVersion();
+		if( oldVersion == 0 )
+			migrateFavsV0();
+		else if( oldVersion == 2 )
+			migrateFavsV2();
 	}
 	
 	private void fixValues() {
@@ -229,12 +244,25 @@ public class Settings {
 		editor.commit();
 	}
 	
-	private void migrateFavs() {
+	private void migrateFavsV0() {
 		Set<String> set = new HashSet<String>(); 
 		for( Station station : model.getAllStations() )
 			if( settings.contains(station.getCode()) ) {
 				station.setFavorite(true);
 				set.add(station.getCode());
+			}
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putString("fav", toCsv(set));
+		editor.commit();
+	}
+
+	private void migrateFavsV2() {
+		Set<String> set = new HashSet<String>();
+		Set<String> favs = getFavorites();
+		for( Station station : model.getAllStations() )
+			if( favs.contains(station.getCode()) ) {
+				station.setFavorite(true);
+				set.add(station.getId());
 			}
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putString("fav", toCsv(set));
@@ -256,7 +284,7 @@ public class Settings {
 		return str.toString().replaceAll(",$", "");
 	}
 	
-	private final static int VERSION = 2;
+	private final static int VERSION = 3;
 	private final static int INVALID = -1000;
 	private final SparseArray<List<Integer>> mapArrays = new SparseArray<List<Integer>>();
 	public final static int MANUAL_UPDATES=0;

@@ -8,7 +8,7 @@ import com.akrog.tolomet.BaseActivity;
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.Meteo;
 import com.akrog.tolomet.R;
-import com.akrog.tolomet.data.Settings;
+import com.akrog.tolomet.data.AppSettings;
 import com.akrog.tolomet.view.Axis;
 import com.akrog.tolomet.view.Graph;
 import com.akrog.tolomet.view.Marker;
@@ -27,7 +27,7 @@ public class MyCharts implements Presenter {
 	private static final int POINT_GRAY = Color.rgb(100, 100, 100);
 	private BaseActivity activity;
 	private Manager model;
-	private Settings settings;
+	private AppSettings settings;
 	private final Meteo meteo = new Meteo();
 	private final Graph airTemperature = new Graph(meteo.getAirTemperature(), -1.0f, "Temp.", LINE_RED, POINT_RED);
 	private final Graph airHumidity = new Graph(meteo.getAirHumidity(), -1.0f, "% Hum.", LINE_BLUE, POINT_BLUE);
