@@ -52,6 +52,11 @@ public class EuskalmetProvider implements WindProvider {
 	}
 
 	@Override
+	public boolean getHistory(Station station, long date) {
+		return false;
+	}
+
+	@Override
 	public void cancel() {
 		if( downloader != null )
 			downloader.cancel();

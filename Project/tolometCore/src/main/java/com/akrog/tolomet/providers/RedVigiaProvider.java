@@ -27,7 +27,12 @@ public class RedVigiaProvider implements WindProvider {
         download(station.getCode(), "Temperatura-Media-Aire", station.getMeteo().getAirTemperature(), 1.0F);
 	}
 
-	private void download(String code, String page, Measurement data, float factor) {
+    @Override
+    public boolean getHistory(Station station, long date) {
+        return false;
+    }
+
+    private void download(String code, String page, Measurement data, float factor) {
         downloader = new Downloader();
         downloader.setBrowser(Downloader.FakeBrowser.MOZILLA);
         downloader.setUrl(String.format("http://www.redvigia.es/Boyas/Evolucion/%s/%s",code.replaceAll("ñ","%C3%B1"),page));
