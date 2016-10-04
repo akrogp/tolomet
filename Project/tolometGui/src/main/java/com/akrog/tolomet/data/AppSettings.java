@@ -193,6 +193,16 @@ public class AppSettings {
 		return Integer.parseInt(settings.getString("pref_modeUpdate", activity.getString(R.string.pref_modeUpdateDefault)));
 	}
 
+	public void setFlying(boolean flying) {
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putBoolean("pref_flying", flying);
+		editor.commit();
+	}
+
+	public boolean isFlying() {
+		return settings.getBoolean("pref_flying", false);
+	}
+
     public String getCountry() {
         return settings.getString("spinner-country",model.getCountry());
     }

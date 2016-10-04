@@ -18,7 +18,6 @@ public abstract class WidgetReceiver extends AppWidgetProvider {
     public static final int WIDGET_SIZE_SMALL = 0;
     public static final int WIDGET_SIZE_MEDIUM = 1;
     public static final int WIDGET_SIZE_LARGE = 2;
-    private static final long INTERVAL_TEN_MINUTES = 10*60*1000;
 
     protected abstract int getWidgetSize();
 
@@ -26,10 +25,9 @@ public abstract class WidgetReceiver extends AppWidgetProvider {
     public void onEnabled(Context context) {
         super.onEnabled(context);
         AlarmManager alarm = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        // AlarmManager.INTERVAL_FIFTEEN_MINUTES
         alarm.setInexactRepeating(
                 AlarmManager.ELAPSED_REALTIME,
-                INTERVAL_TEN_MINUTES, INTERVAL_TEN_MINUTES,
+                AlarmManager.INTERVAL_FIFTEEN_MINUTES, AlarmManager.INTERVAL_FIFTEEN_MINUTES,
                 getUpdateIntent(context));
     }
 
