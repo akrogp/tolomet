@@ -1,10 +1,10 @@
 package com.akrog.tolomet.providers;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class BaseProvider implements WindProvider {
 
@@ -25,12 +25,18 @@ public abstract class BaseProvider implements WindProvider {
 		}
 		Integer refresh = station.getMeteo().getStep();
 		if( refresh != null ) {
+            refresh = Math.min(refresh, defRefresh);
 			Integer prev = mapRefresh.get(station.getCode());
 			if( prev == null || prev > refresh )
 				mapRefresh.put(station.getCode(), refresh);
 		}
 	}
-	
+
+	@Override
+	public boolean getHistory(Station station, long date) {
+		return false;
+	}
+
 	public abstract void configureDownload(Downloader downloader, Station station );
 	
 	public abstract void updateStation(Station station, String data);

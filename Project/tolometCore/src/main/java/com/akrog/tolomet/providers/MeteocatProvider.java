@@ -27,7 +27,12 @@ public class MeteocatProvider implements WindProvider {
 		if( station.isEmpty() )
 			updateStationV1(station, downloader.download("\"tabs-2\""));
 	}
-	
+
+	@Override
+	public boolean getHistory(Station station, long date) {
+		return false;
+	}
+
 	@Override
 	public void cancel() {
 		if( downloader != null )

@@ -38,7 +38,12 @@ public class CurrentVantageProvider implements WindProvider {
 		val = Float.parseFloat(parseNumber(fields[14]));
 		meteo.getAirPressure().put(date, val);
 	}
-	
+
+	@Override
+	public boolean getHistory(Station station, long date) {
+		return false;
+	}
+
 	private Number parseDirection(String wind) {
 		Matcher matcher = patternDir.matcher(wind);
 		if( !matcher.find() )

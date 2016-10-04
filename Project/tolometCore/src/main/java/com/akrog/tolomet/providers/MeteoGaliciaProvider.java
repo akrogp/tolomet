@@ -36,7 +36,12 @@ public class MeteoGaliciaProvider implements WindProvider {
 		downloader.addParam("red", fields[3]);
 		updateStation(station, downloader.download());
 	}
-	
+
+	@Override
+	public boolean getHistory(Station station, long date) {
+		return false;
+	}
+
 	@Override
 	public void cancel() {
 		if( downloader != null )

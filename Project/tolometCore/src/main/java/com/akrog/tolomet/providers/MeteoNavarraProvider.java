@@ -26,7 +26,12 @@ public class MeteoNavarraProvider implements WindProvider {
 		downloader.addParam("dl","csv");
 		updateStation(station, downloader.download());
 	}
-	
+
+	@Override
+	public boolean getHistory(Station station, long date) {
+		return false;
+	}
+
 	@Override
 	public void cancel() {
 		if( downloader != null )
