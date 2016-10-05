@@ -48,12 +48,27 @@ public class EuskalmetProvider implements WindProvider {
 		downloader.addParam("CodigoEstacion", station.getCode());
 		downloader.addParam("pagina", "1");
 		downloader.addParam("R01HNoPortal", "true");
-		updateStation(station, downloader.download());
+		updateStation(station, downloader.download(),null);
 	}
 
 	@Override
 	public boolean getHistory(Station station, long date) {
-		return false;
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        cal.setTimeInMillis(date);
+
+        downloader = new Downloader();
+        downloader.setBrowser(FakeBrowser.WGET);
+        downloader.setUrl("http://www.euskalmet.euskadi.net/s07-5853x/es/meteorologia/lectur_imp.apl");
+        downloader.addParam("e", "5");
+        downloader.addParam("anyo", cal.get(Calendar.YEAR));
+        downloader.addParam("mes", cal.get(Calendar.MONTH)+1);
+        downloader.addParam("dia", cal.get(Calendar.DAY_OF_MONTH));
+        downloader.addParam("hora", "00:00 23:59");
+        downloader.addParam("CodigoEstacion", station.getCode());
+        downloader.addParam("pagina", "1");
+        downloader.addParam("R01HNoPortal", "true");
+        updateStation(station, downloader.download(), date);
+		return true;
 	}
 
 	@Override
@@ -67,7 +82,7 @@ public class EuskalmetProvider implements WindProvider {
 		return 10;
 	}	
 	
-	private void updateStation(Station station, String data) {
+	private void updateStation(Station station, String data, Long hist) {
 		if( data == null )
 			return;		
 		
@@ -81,7 +96,7 @@ public class EuskalmetProvider implements WindProvider {
 	        	break;
 	        if( getContent(cells[2]).equals("-") )
 	        	continue;
-	        date = toEpoch(getContent(cells[index.getDate()]));
+	        date = toEpoch(getContent(cells[index.getDate()]), hist);
 	        if( index.getDir() > 0 ) {
 		        val = Integer.parseInt(getContent(cells[index.getDir()]));
 		        station.getMeteo().getWindDirection().put(date, val);
@@ -122,8 +137,10 @@ public class EuskalmetProvider implements WindProvider {
 		return index;
 	}
 
-	private long toEpoch( String str ) {
+	private long toEpoch( String str, Long date ) {
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+		if( date != null )
+			cal.setTimeInMillis(date);
 		String[] fields = str.split(":");
 		cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(fields[0]) );
 	    cal.set(Calendar.MINUTE, Integer.parseInt(fields[1]) );
