@@ -264,6 +264,12 @@ public class Manager {
 		}
 		return true;
 	}
+
+	public boolean getHistory( long date ) {
+		if( !checkCurrent() )
+			return false;
+		return currentStation.getProvider().getHistory(currentStation, date);
+	}
 	
 	public void cancel() {
 		if( !checkCurrent() )

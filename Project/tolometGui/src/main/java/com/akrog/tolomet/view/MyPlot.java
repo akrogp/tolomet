@@ -8,9 +8,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @SuppressLint("ClickableViewAccessibility")
 public class MyPlot extends PlotYY implements OnTouchListener {
 	private static final float MIN_DIST_2_FING = 5f;
+
+	public interface BoundaryListener {
+		public void onBoundaryReached( long requestedDate );
+	}
 
 	// Definition of the touch states
 	private enum State {
@@ -25,6 +32,7 @@ public class MyPlot extends PlotYY implements OnTouchListener {
 	private boolean mZoomEnabled; //default is enabled
 	private boolean mZoomVertically;
 	private boolean mZoomHorizontally;
+	private Set<BoundaryListener> boundaryListeners;
 	
 	private void init() {
 		setZoomEnabled(true);
@@ -53,6 +61,18 @@ public class MyPlot extends PlotYY implements OnTouchListener {
 			mZoomEnabled = false;
 		super.setOnTouchListener(l);
 	}
+
+	public void addBoundaryListener( BoundaryListener boundaryListener ) {
+		if( boundaryListeners == null )
+			boundaryListeners = new HashSet<>();
+		boundaryListeners.add(boundaryListener);
+	}
+
+    private void notifyBoundary( long date ) {
+        if( boundaryListeners != null )
+            for( BoundaryListener boundaryListener : boundaryListeners )
+                boundaryListener.onBoundaryReached(date);
+    }
 
 	public boolean getZoomVertically() {
 		return mZoomVertically;
@@ -169,6 +189,7 @@ public class MyPlot extends PlotYY implements OnTouchListener {
 		long minLimit = getXAxis().getMinLimit().longValue();
 		long maxLimit = getXAxis().getMaxLimit().longValue();
 		if(newX.x < minLimit) {
+            notifyBoundary(newX.x);
 			newX.x = minLimit;
 			newX.y = newX.x + diff;
 		}
@@ -216,7 +237,7 @@ public class MyPlot extends PlotYY implements OnTouchListener {
 		float minLimit = axis.getMinLimit().floatValue();
 		float maxLimit = axis.getMaxLimit().floatValue();
 		if(newX.x < minLimit)
-			newX.x = minLimit;
+            newX.x = minLimit;
 		if(newX.y > maxLimit)
 			newX.y = maxLimit;
 	}
