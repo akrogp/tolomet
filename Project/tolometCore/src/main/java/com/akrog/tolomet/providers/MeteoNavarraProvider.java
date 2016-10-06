@@ -28,7 +28,7 @@ public class MeteoNavarraProvider implements WindProvider {
 	}
 
 	@Override
-	public boolean getHistory(Station station, long date) {
+	public boolean travel(Station station, long date) {
 		return false;
 	}
 

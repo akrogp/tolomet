@@ -265,10 +265,10 @@ public class Manager {
 		return true;
 	}
 
-	public boolean getHistory( long date ) {
+	public boolean travel(long date ) {
 		if( !checkCurrent() )
 			return false;
-		return currentStation.getProvider().getHistory(currentStation, date);
+		return currentStation.getProvider().travel(currentStation, date);
 	}
 	
 	public void cancel() {
