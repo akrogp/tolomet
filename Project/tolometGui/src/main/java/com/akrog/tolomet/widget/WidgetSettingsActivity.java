@@ -16,7 +16,7 @@ import com.akrog.tolomet.Station;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.AppSettings;
 import com.akrog.tolomet.data.WidgetSettings;
-import com.akrog.tolomet.data.WindSpot;
+import com.akrog.tolomet.data.FlySpot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +90,7 @@ public abstract class WidgetSettingsActivity extends SettingsActivity {
     @Override
     public void onBackPressed() {
         if( appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID ) {
-            WindSpot spot = appSettings.getSpot();
+            FlySpot spot = appSettings.getSpot();
             if( spot.isValid() ) {
                 WidgetSettings widgetSettings = new WidgetSettings(this, appWidgetId);
                 widgetSettings.setSpot(spot);

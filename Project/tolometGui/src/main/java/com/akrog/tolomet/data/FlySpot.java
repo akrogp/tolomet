@@ -6,10 +6,10 @@ import java.util.List;
 /**
  * Created by gorka on 18/05/16.
  */
-public class WindSpot {
+public class FlySpot {
     private String name;
     private String country;
-    private final List<WindConstraint> constraints = new ArrayList<>();
+    private final List<FlyConstraint> constraints = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -27,14 +27,14 @@ public class WindSpot {
         this.country = country;
     }
 
-    public List<WindConstraint> getConstraints() {
+    public List<FlyConstraint> getConstraints() {
         return constraints;
     }
 
     public boolean isValid() {
         if( name == null || name.isEmpty() || country == null || country.isEmpty() )
             return false;
-        for( WindConstraint constraint : constraints )
+        for( FlyConstraint constraint : constraints )
             if( !constraint.isValid() )
                 return false;
         return true;
