@@ -19,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
+            android:textColor="@color/widgetTextColor"
             android:lines="1"
             android:layout_below="@id/widget_icon"
             android:layout_alignLeft="@id/widget_icon"/>
