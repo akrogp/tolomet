@@ -42,7 +42,7 @@ public class WidgetSettings {
             constraint.setMaxDir(Integer.parseInt(settings.getString("wmaxDir"+i,"360")));
             constraint.setMinWind(Integer.parseInt(settings.getString("wminWind"+i,"0")));
             constraint.setMaxWind(Integer.parseInt(settings.getString("wmaxWind"+i,"0")));
-            constraint.setMaxWind(Integer.parseInt(settings.getString("wmaxHum"+i,"100")));
+            constraint.setMaxHum(Integer.parseInt(settings.getString("wmaxHum"+i,"100")));
             spot.getConstraints().add(constraint);
         }
         return spot;
