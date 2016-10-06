@@ -12,8 +12,8 @@ import com.akrog.tolomet.R;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.WidgetSettings;
-import com.akrog.tolomet.data.WindConstraint;
-import com.akrog.tolomet.data.WindSpot;
+import com.akrog.tolomet.data.FlyConstraint;
+import com.akrog.tolomet.data.FlySpot;
 
 /**
  * Created by gorka on 21/09/16.
@@ -68,10 +68,10 @@ public class WidgetProvider {
 
     private StationData fillStation(int widgetId) {
         WidgetSettings settings = new WidgetSettings(context,widgetId);
-        WindSpot spot = settings.getSpot();
+        FlySpot spot = settings.getSpot();
         if( !spot.isValid() )
             return null;
-        WindConstraint constraint = spot.getConstraints().get(0);
+        FlyConstraint constraint = spot.getConstraints().get(0);
         model.setCountry(spot.getCountry());
         Station station = model.findStation(constraint.getStation());
         if( station == null )
@@ -83,7 +83,7 @@ public class WidgetProvider {
 
         StationData data = new StationData();
         data.id = station.getId();
-        data.country = spot.getCountry();
+        data.country = station.getCountry();
         data.name = spot.getName();
         long stamp = station.getStamp();
         data.date = model.getStamp(stamp);
@@ -105,7 +105,7 @@ public class WidgetProvider {
             if( sb.length() != 0 )
                 sb.append(' ');
             sb.append(String.format("%.0f%%", num));
-            if (num.floatValue() >= 98.0)
+            if (num.floatValue() >= constraint.getMaxHum() )
                 data.fly = FlyCondition.BAD;
         }
         num = station.getMeteo().getAirPressure().getAt(stamp);

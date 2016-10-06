@@ -207,7 +207,7 @@ public class AppSettings {
         return settings.getString("spinner-country",model.getCountry());
     }
 
-	public WindSpot getSpot() {
+	public FlySpot getSpot() {
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("wcountry",getCountry());
         editor.putString("wconstraints","1");

@@ -36,5 +36,11 @@
             android:maxLines="1"
             android:title="@string/max_wind_prompt"
             android:dialogTitle="@string/spot_prompt"/>
+        <EditTextPreference
+            android:key="wmaxHum0"
+            android:inputType="number"
+            android:maxLines="1"
+            android:title="@string/max_hum_prompt"
+            android:dialogTitle="@string/spot_prompt"/>
     </PreferenceCategory>
 </PreferenceScreen>
