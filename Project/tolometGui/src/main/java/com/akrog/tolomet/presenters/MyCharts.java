@@ -308,7 +308,7 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
         downloader = new AsyncTask<Void,Void,Void>() {
             @Override
             protected Void doInBackground(Void... params) {
-                model.getHistory(requestedDate);
+                model.travel(requestedDate);
                 return null;
             }
             @Override
