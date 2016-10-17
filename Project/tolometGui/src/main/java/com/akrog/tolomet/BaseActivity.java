@@ -26,7 +26,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        settings.initialize(this, model);
+        settings.initialize(this);
     }
 
     public void createView(Bundle savedInstanceState, int layoutResId, int... buttonIds ) {
@@ -86,10 +86,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         return settings;
     }
 
-    public Manager getModel() {
-        return model;
-    }
-
     public boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -132,7 +128,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public abstract String getScreenShotText();
 
-    protected final Manager model = new Manager();
+    protected final Model model = Model.getInstance();
     protected final AppSettings settings = new AppSettings();
     protected final MyToolbar toolbar = new MyToolbar();
     protected final MySpinner spinner = new MySpinner();

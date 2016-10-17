@@ -15,15 +15,15 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.akrog.tolomet.AboutDialog;
+import com.akrog.tolomet.AppSettingsActivity;
 import com.akrog.tolomet.BaseActivity;
+import com.akrog.tolomet.ChartsActivity;
 import com.akrog.tolomet.InfoActivity;
-import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.MapActivity;
+import com.akrog.tolomet.Model;
 import com.akrog.tolomet.ProviderActivity;
 import com.akrog.tolomet.R;
-import com.akrog.tolomet.AppSettingsActivity;
 import com.akrog.tolomet.Station;
-import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.AppSettings;
 import com.akrog.tolomet.view.AndroidUtils;
 import com.google.android.gms.maps.GoogleMap;
@@ -40,7 +40,6 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 	@Override
 	public void initialize(BaseActivity activity, Bundle bundle) {
 		this.activity = activity;
-		model = activity.getModel();
 		settings = activity.getSettings();
 
 		toolbar = (Toolbar)activity.findViewById(R.id.my_toolbar);
@@ -152,7 +151,7 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 	}
 
 	private void onChartsItem() {
-		Intent intent = new Intent(activity, Tolomet.class);
+		Intent intent = new Intent(activity, ChartsActivity.class);
 		activity.startActivity(intent);
 	}
 
@@ -184,13 +183,13 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 			intent.putExtra(MapActivity.EXTRA_COUNTRY, station.getCountry());
 			intent.putExtra(MapActivity.EXTRA_PROVIDER, station.getProviderType().name());
 			intent.putExtra(MapActivity.EXTRA_STATION, station.getCode());
-			activity.startActivityForResult(intent, Tolomet.MAP_REQUEST);
+			activity.startActivityForResult(intent, ChartsActivity.MAP_REQUEST);
 		}
 	}
 
 	private void onSettingsItem() {
 		activity.startActivityForResult(
-				new Intent(activity, AppSettingsActivity.class), Tolomet.SETTINGS_REQUEST);
+				new Intent(activity, AppSettingsActivity.class), ChartsActivity.SETTINGS_REQUEST);
 	}
 
 	private void onAboutItem() {
@@ -317,7 +316,7 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 	}
 
 	private BaseActivity activity;
-	private Manager model;
+	private final Model model = Model.getInstance();
 	private AppSettings settings;
 	private Toolbar toolbar;
 	private MenuItem itemFavorite, itemMode;

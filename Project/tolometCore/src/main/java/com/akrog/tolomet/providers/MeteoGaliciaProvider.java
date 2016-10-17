@@ -5,13 +5,9 @@ import com.akrog.tolomet.io.Downloader;
 import com.akrog.tolomet.io.XmlElement;
 import com.akrog.tolomet.io.XmlParser;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -130,6 +126,7 @@ public class MeteoGaliciaProvider implements WindProvider {
 	}
 	
 	private void loadParams() {
+		/*
 		urlParams = new HashMap<String, String>();
 		
 		InputStream inputStream = getClass().getResourceAsStream("/res/meteogalicia.csv");
@@ -145,6 +142,7 @@ public class MeteoGaliciaProvider implements WindProvider {
 			rd.close();
 		} catch( Exception e ) {			
 		}
+		*/
     }
 	
 	@Override

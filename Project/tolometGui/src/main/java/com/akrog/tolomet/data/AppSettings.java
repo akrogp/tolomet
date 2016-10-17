@@ -5,8 +5,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.SparseArray;
 
-import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.Measurement;
+import com.akrog.tolomet.Model;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.presenters.MySpinner;
@@ -21,11 +21,10 @@ import java.util.Set;
 public class AppSettings {
 	private SharedPreferences settings;
 	private Activity activity;
-	private Manager model;
+	private final Model model = Model.getInstance();
 	
-	public void initialize(Activity activity, Manager model ) {
+	public void initialize(Activity activity) {
 		this.activity = activity;
-		this.model = model;
 		settings = PreferenceManager.getDefaultSharedPreferences(activity);
 		
 		migrate();
