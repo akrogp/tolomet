@@ -5,4 +5,5 @@ dependencies {
     compile project(':tolometCore')
     compile 'org.json:json:20090211'
     compile 'com.google.maps:google-maps-services:0.1.12'
+    compile 'org.xerial:sqlite-jdbc:+'
 }

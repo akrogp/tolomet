@@ -7,10 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
+import com.akrog.tolomet.ChartsActivity;
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Station;
-import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.WidgetSettings;
 import com.akrog.tolomet.data.FlyConstraint;
 import com.akrog.tolomet.data.FlySpot;
@@ -158,10 +158,10 @@ public class WidgetProvider {
     }
 
     private PendingIntent getTolometIntent(StationData data) {
-        Intent clickIntent = new Intent(context, Tolomet.class);
+        Intent clickIntent = new Intent(context, ChartsActivity.class);
         //clickIntent.putExtra(WidgetReceiver.EXTRA_WIDGET_SIZE, widgetSize);
-        clickIntent.putExtra(Tolomet.EXTRA_STATION_ID, data.id);
-        clickIntent.putExtra(Tolomet.EXTRA_COUNTRY, data.country);
+        clickIntent.putExtra(ChartsActivity.EXTRA_STATION_ID, data.id);
+        clickIntent.putExtra(ChartsActivity.EXTRA_COUNTRY, data.country);
         return PendingIntent.getActivity(context,0,clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 

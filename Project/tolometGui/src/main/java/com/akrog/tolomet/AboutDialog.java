@@ -36,7 +36,7 @@ public class AboutDialog extends Dialog {
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
-		//Log.i("Tolomet",GoogleApiAvailability.getInstance().getOpenSourceSoftwareLicenseInfo(context));
+		//Log.i("ChartsActivity",GoogleApiAvailability.getInstance().getOpenSourceSoftwareLicenseInfo(context));
 		tv.setText(Html.fromHtml(readRawTextFile(R.raw.info).replaceAll("\\$VER\\$", versionName)));
 		tv.setLinkTextColor(Color.WHITE);
 		Linkify.addLinks(tv, Linkify.ALL);

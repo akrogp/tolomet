@@ -6,18 +6,17 @@ import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.akrog.tolomet.Manager;
+import com.akrog.tolomet.ChartsActivity;
+import com.akrog.tolomet.Model;
 import com.akrog.tolomet.R;
-import com.akrog.tolomet.Tolomet;
 
 public class Downloader extends AsyncTask<Void, Void, Void> {
-	private Tolomet tolomet;
+	private ChartsActivity tolomet;
 	private ProgressDialog progress;
-	private Manager model;
+	private final Model model = Model.getInstance();
 
-	public Downloader( Tolomet tolomet, Manager model ) {
+	public Downloader(ChartsActivity tolomet) {
 		this.tolomet = tolomet;
-		this.model = model;
 		progress = new ProgressDialog(this.tolomet);
 		progress.setMessage( this.tolomet.getString(R.string.Downloading)+"..." );
         progress.setTitle( "" );//getString(R.string.Progress) );

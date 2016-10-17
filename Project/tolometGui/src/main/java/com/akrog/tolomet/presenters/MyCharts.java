@@ -7,8 +7,8 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.akrog.tolomet.BaseActivity;
-import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.Meteo;
+import com.akrog.tolomet.Model;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.data.AppSettings;
 import com.akrog.tolomet.view.Axis;
@@ -32,7 +32,7 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 	private static final int POINT_GRAY = Color.rgb(100, 100, 100);
     private static final DateFormat df = new SimpleDateFormat("EEE (dd/MMM)");
 	private BaseActivity activity;
-	private Manager model;
+	private final Model model = Model.getInstance();
 	private AppSettings settings;
 	private final Meteo meteo = new Meteo();
 	private final Graph airTemperature = new Graph(meteo.getAirTemperature(), -1.0f, "Temp.", LINE_RED, POINT_RED);
@@ -67,7 +67,6 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 	@Override
 	public void initialize(BaseActivity activity, Bundle bundle) {
 		this.activity = activity;
-		model = activity.getModel();
 		settings = activity.getSettings();
 		windSpeedMed = new Graph(meteo.getWindSpeedMed(), -1.0f, activity.getString(R.string.chart_speedMed), LINE_GREEN, POINT_GREEN);
 		windSpeedMax = new Graph(meteo.getWindSpeedMax(), -1.0f, activity.getString(R.string.chart_speedMax), LINE_RED, POINT_RED);

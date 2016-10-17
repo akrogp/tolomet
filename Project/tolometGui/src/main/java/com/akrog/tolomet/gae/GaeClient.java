@@ -1,11 +1,11 @@
 package com.akrog.tolomet.gae;
 
+import android.os.AsyncTask;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-
-import android.os.AsyncTask;
 
 public class GaeClient extends AsyncTask<String, Void, String> {
 	private GaeManager manager;
@@ -37,7 +37,7 @@ public class GaeClient extends AsyncTask<String, Void, String> {
     		rd.close();
     	} catch( Exception e ) {
     		System.out.println(e.getMessage());
-    		onCancelled();
+    		cancel(true);
 		}
     	return builder.toString();
 	}		

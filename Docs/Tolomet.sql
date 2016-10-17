@@ -1,0 +1,23 @@
+BEGIN TRANSACTION;
+CREATE TABLE `Version` (
+	`id`	TEXT NOT NULL,
+	`stamp`	INTEGER NOT NULL,
+	PRIMARY KEY(id)
+);
+CREATE TABLE "Station" (
+	`id`	TEXT NOT NULL,
+	`code`	TEXT NOT NULL,
+	`name`	TEXT NOT NULL,
+	`provider`	TEXT NOT NULL,
+	`region`	INTEGER NOT NULL,
+	`latitude`	REAL NOT NULL,
+	`longitude`	REAL NOT NULL,
+	PRIMARY KEY(id),
+	FOREIGN KEY(`region`) REFERENCES Region ( id )
+);
+CREATE TABLE "Region" (
+	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	`name`	TEXT NOT NULL,
+	`country`	TEXT NOT NULL
+);
+COMMIT;

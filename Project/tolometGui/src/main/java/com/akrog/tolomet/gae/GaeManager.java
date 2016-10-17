@@ -1,26 +1,26 @@
 package com.akrog.tolomet.gae;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.Calendar;
-import java.util.Locale;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask.Status;
 
+import com.akrog.tolomet.ChartsActivity;
 import com.akrog.tolomet.R;
-import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.AppSettings;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Calendar;
+import java.util.Locale;
+
 public class GaeManager {
-	private Tolomet tolomet;
+	private ChartsActivity tolomet;
 	private AppSettings settings;
 	private GaeClient gaeClient;
 	
-	public void initialize( Tolomet tolomet ) {
+	public void initialize( ChartsActivity tolomet ) {
 		this.tolomet = tolomet;
 		settings = tolomet.getSettings();
 	}
@@ -50,7 +50,7 @@ public class GaeManager {
 	}
 	
 	public void onMotd(Motd motd) {		
-		settings.saveGaeStamp(System.currentTimeMillis());
+		//settings.saveGaeStamp(System.currentTimeMillis());
 		
 		if( motd.getVersion() != null ) {		
 			new AlertDialog.Builder(tolomet)

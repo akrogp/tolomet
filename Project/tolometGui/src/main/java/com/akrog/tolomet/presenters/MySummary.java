@@ -4,21 +4,21 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.BaseActivity;
+import com.akrog.tolomet.Model;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.view.Axis;
 
 public class MySummary implements Presenter, Axis.ChangeListener {
 	private BaseActivity activity;
-	private Manager model;
+	private final Model model = Model.getInstance();
 	private TextView summary;
 	private Long stamp = null;
 	
 	@Override
 	public void initialize(BaseActivity activity, Bundle bundle) {
 		this.activity = activity;
-		model = activity.getModel();
+
 		summary = (TextView)activity.findViewById(R.id.textView1);
 	}
 	
@@ -37,7 +37,7 @@ public class MySummary implements Presenter, Axis.ChangeListener {
 	@Override
 	public void onNewLimit(Number value) {
 		stamp = value.longValue();
-		if( model != null )
+		if( activity != null && model.getCurrentStation() != null )
 			updateView();
 	}
 }

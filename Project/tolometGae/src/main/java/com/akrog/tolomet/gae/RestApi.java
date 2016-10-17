@@ -26,15 +26,14 @@ public class RestApi {
 		
 		// MOTD
 		/*Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
-        cal.set(2015,5-1,6,0,0);
+        cal.set(2016,10-1,10,0,0);
         if( stamp < cal.getTimeInMillis() ) {
-        	//motd.setMotd("Para que Tolomet funcione bien en todos los móviles, en caso de que os de algún fallo reportadlo junto con una descripción de cuándo ocurre");
-        	//motd.setMotd("¡Usa la lista de favoritos, es más cómodo! Puedes añadir y quitar estaciones de favoritos tocando la estrella de arriba.");
-        	//motd.setMotd("Parece que AEMET tiene problemas con sus estaciones, esperemos que se solucione pronto");
         	if( lang == null || isSpanish(lang) )
-        		motd.setMotd("En caso de que Tolomet falle y se cierre ¡da al botón de eviar reporte! Limpiar los datos de la aplicación o reinstalar debería solucionarlo.");
+        		//motd.setMotd("En caso de que Tolomet falle y se cierre ¡da al botón de eviar reporte! Limpiar los datos de la aplicación o reinstalar debería solucionarlo.");
+				motd.setMotd("El próximo jueves 13/oct se prevee que no funcionen los servidores de MeteoGalicia entre las 14:00 y las 18:00 por tareas de mantenimiento.");
         	else
-        		motd.setMotd("In case Tolomet crashes, click on send report! Cleaning app data or reinstalling should fix most issues.");
+        		//motd.setMotd("In case Tolomet crashes, click on send report! Cleaning app data or reinstalling should fix most issues.");
+				motd.setMotd("Next tuesday oct/13 MeteoGalicia servers will not be available between 14:00 and 18:00 due to maintenance.");
         	motd.setStamp(cal.getTimeInMillis());
         }*/
         

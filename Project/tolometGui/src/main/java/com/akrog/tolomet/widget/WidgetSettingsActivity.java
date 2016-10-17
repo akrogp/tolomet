@@ -13,7 +13,7 @@ import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.SettingsActivity;
 import com.akrog.tolomet.Station;
-import com.akrog.tolomet.Tolomet;
+import com.akrog.tolomet.ChartsActivity;
 import com.akrog.tolomet.data.AppSettings;
 import com.akrog.tolomet.data.WidgetSettings;
 import com.akrog.tolomet.data.FlySpot;
@@ -30,7 +30,7 @@ public abstract class WidgetSettingsActivity extends SettingsActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         onCreate(savedInstanceState, R.xml.widget_preferences);
-        appSettings.initialize(this, model);
+        appSettings.initialize(this);
         model.setCountry(appSettings.getCountry());
 
         Intent intent = getIntent();
@@ -80,7 +80,7 @@ public abstract class WidgetSettingsActivity extends SettingsActivity {
             @Override
             public void onClick(DialogInterface paramDialogInterface, int paramInt) {
                 finish();
-                startActivity(new Intent(getApplicationContext(), Tolomet.class));
+                startActivity(new Intent(getApplicationContext(), ChartsActivity.class));
             }
         });
         dialog.setIcon(android.R.drawable.ic_dialog_info);
