@@ -8,12 +8,12 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 
 import com.akrog.tolomet.ChartsActivity;
-import com.akrog.tolomet.Manager;
+import com.akrog.tolomet.Model;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Station;
-import com.akrog.tolomet.data.WidgetSettings;
 import com.akrog.tolomet.data.FlyConstraint;
 import com.akrog.tolomet.data.FlySpot;
+import com.akrog.tolomet.data.WidgetSettings;
 
 /**
  * Created by gorka on 21/09/16.
@@ -205,7 +205,7 @@ public class WidgetProvider {
 
     private final Context context;
     private final AppWidgetManager appWidgetManager;
-    private final Manager model = new Manager();
+    private final Model model = Model.getInstance();
     private final int[] smallWidgets, mediumWidgets, largeWidgets;
     private WidgetData smallData, mediumData, largeData;
 }
