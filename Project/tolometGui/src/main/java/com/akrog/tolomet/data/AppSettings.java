@@ -1,6 +1,6 @@
 package com.akrog.tolomet.data;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.SparseArray;
@@ -9,6 +9,7 @@ import com.akrog.tolomet.Measurement;
 import com.akrog.tolomet.Model;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Station;
+import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.presenters.MySpinner;
 
 import java.util.ArrayList;
@@ -19,21 +20,29 @@ import java.util.Locale;
 import java.util.Set;
 
 public class AppSettings {
-	private SharedPreferences settings;
-	private Activity activity;
-	private final Model model = Model.getInstance();
-	
-	public void initialize(Activity activity) {
-		this.activity = activity;
-		settings = PreferenceManager.getDefaultSharedPreferences(activity);
-		
+	private static AppSettings instance;
+	private final SharedPreferences settings;
+	private final Context context;
+	private final Model model;
+
+	private AppSettings() {
+		model = Model.getInstance();
+		context = Tolomet.getAppContext();
+		settings = PreferenceManager.getDefaultSharedPreferences(context);
+
 		migrate();
 		fixValues();
 		setDefaultsAuto();
-		
+
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putInt("cfg", VERSION);
-		editor.commit();		
+		editor.commit();
+	}
+	
+	public static AppSettings getInstance() {
+		if( instance == null )
+			instance = new AppSettings();
+		return instance;
 	}
 	
 	private void setDefaultsAuto() {
@@ -69,8 +78,12 @@ public class AppSettings {
 		editor.putString("fav", toCsv(favs));
 		editor.commit();
 	}
+
+    public void removeFavorite(Station station) {
+        removeFavorite(station.getId());
+    }
 	
-	public void removeFavorite(Station station) {
+	public void removeFavorite(String station) {
 		Set<String> favs = getFavorites();
 		favs.remove(station);
 		SharedPreferences.Editor editor = settings.edit();
@@ -121,16 +134,16 @@ public class AppSettings {
 	}
 	
 	private int getPrefValue( String key, int idDefault, int idArray, boolean max, Measurement meas ) {
-		int res = Integer.parseInt(settings.getString(key, activity.getString(idDefault)));
+		int res = Integer.parseInt(settings.getString(key, context.getString(idDefault)));
 		if( res != INVALID )
 			return res;
 		if( meas.isEmpty() )
-			return Integer.parseInt(activity.getString(idDefault));
+			return Integer.parseInt(context.getString(idDefault));
 		
 		List<Integer> values = mapArrays.get(idArray);
 		if( values == null ) {
 			values = new ArrayList<Integer>();
-			String[] strings = activity.getResources().getStringArray(idArray);
+			String[] strings = context.getResources().getStringArray(idArray);
 			for( int i = 0; i < strings.length; i++ ) {
 				int value = Integer.parseInt(strings[i]);
 				if( value != INVALID )
@@ -161,11 +174,11 @@ public class AppSettings {
 	}
 	
 	public int getMinMarker() {		
-		return Integer.parseInt(settings.getString("pref_minMarker", activity.getString(R.string.pref_minMarkerDefault)));
+		return Integer.parseInt(settings.getString("pref_minMarker", context.getString(R.string.pref_minMarkerDefault)));
 	}
 	
 	public int getMaxMarker() {
-		return Integer.parseInt(settings.getString("pref_maxMarker", activity.getString(R.string.pref_maxMarkerDefault)));
+		return Integer.parseInt(settings.getString("pref_maxMarker", context.getString(R.string.pref_maxMarkerDefault)));
 	}
 	
 	public int getMinTemp(Measurement meas) {
@@ -185,11 +198,11 @@ public class AppSettings {
 	}
 	
 	public boolean isSimpleMode() {		
-		return settings.getString("pref_modeGraphs", activity.getString(R.string.pref_modeGraphsDefault)).equals("0");
+		return settings.getString("pref_modeGraphs", context.getString(R.string.pref_modeGraphsDefault)).equals("0");
 	}
 	
 	public int getUpdateMode() {		
-		return Integer.parseInt(settings.getString("pref_modeUpdate", activity.getString(R.string.pref_modeUpdateDefault)));
+		return Integer.parseInt(settings.getString("pref_modeUpdate", context.getString(R.string.pref_modeUpdateDefault)));
 	}
 
 	public void setFlying(boolean flying) {
@@ -244,7 +257,7 @@ public class AppSettings {
 		String pref = settings.getString(key, null);
 		if( pref == null )
 			return;
-		String[] values = activity.getResources().getStringArray(idArray);
+		String[] values = context.getResources().getStringArray(idArray);
 		for( String value : values )
 			if( pref.equals(value) )
 				return;

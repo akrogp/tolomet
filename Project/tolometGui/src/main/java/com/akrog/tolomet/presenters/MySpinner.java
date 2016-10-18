@@ -41,6 +41,10 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 	private String newCountry, country;
 	private final List<Station> choices = new ArrayList<Station>();
 	private Station selectItem, startItem, favItem, regItem, nearItem, indexItem, allItem, countryItem;
+	private static final int OFF_MENU = 100;
+	private static final int OFF_VOWEL = 200;
+	private static final int OFF_COUNTRY = 1000;
+	private static final int OFF_REGION = 2000;
 
 	@Override
 	public void initialize(BaseActivity activity, Bundle bundle) {
@@ -215,13 +219,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
     		Toast.makeText(activity, activity.getString(R.string.error_gps),Toast.LENGTH_SHORT).show();
     		return false;
     	}
-    	setCountry(guessCountry());
-    	float[] dist = new float[1];
-    	for( Station station : model.getAllStations() ) {    		
-    		Location.distanceBetween(ll.getLatitude(), ll.getLongitude(), station.getLatitude(), station.getLongitude(), dist);
-    		station.setDistance(dist[0]);
-    	}
-		model.selectNearest();
+		model.selectNearest(ll.getLatitude(), ll.getLongitude());
 		if( model.getSelStations().isEmpty() ) {
 			Toast.makeText(activity, activity.getString(R.string.warn_near),Toast.LENGTH_SHORT).show();
     		return false;
@@ -300,7 +298,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 	
 	private void selectRegions() {
 		for( Region region : model.getRegions() )
-			choices.add(new Station(region.getName(), region.getCode()));
+			choices.add(new Station(region.getName(), OFF_REGION+region.getCode()));
 	}
 	
 	private void selectCountries() {
@@ -308,7 +306,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		int len = list.size();
 		for( int i = 0; i < len; i++ ) {
 			Country country = list.get(i);
-			choices.add(new Station(country.getName(), 200+i));
+			choices.add(new Station(country.getName(), OFF_COUNTRY+i));
 		}
 	}
 	
@@ -322,7 +320,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 	
 	private void selectVowels() {
 		for( char c='A'; c <= 'Z'; c++ )
-    		choices.add(new Station(""+c,500+c));
+    		choices.add(new Station(""+c,OFF_VOWEL+c));
 	}	
 	
 	public Station getSelectedItem() {
@@ -341,14 +339,14 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 			return;
 
 		clearDistance();
-		if( station.getSpecial() > 500 ) {
-			vowel=(char)(station.getSpecial()-500);
+		if( station.getSpecial()/OFF_VOWEL == 1 ) {
+			vowel=(char)(station.getSpecial()-OFF_VOWEL);
 			spinnerType = Type.Vowel;
-		} else if( station.getSpecial() >= 200 ) {
-			newCountry = model.getCountries().get(station.getSpecial()-200).getCode();
+		} else if( station.getSpecial()/OFF_COUNTRY == 1 ) {
+			newCountry = model.getCountries().get(station.getSpecial()-OFF_COUNTRY).getCode();
 			spinnerType = Type.Country;
-		} else if( station.getSpecial() < Type.StartMenu.getValue() ) {
-			region=station.getSpecial();
+		} else if( station.getSpecial()/OFF_REGION == 1 ) {
+			region=station.getSpecial()-OFF_REGION;
 			spinnerType = Type.Region;
 		} else
 			spinnerType = Type.values()[station.getSpecial()-Type.StartMenu.getValue()];
@@ -364,16 +362,16 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 	}
 	
 	public static enum Type {
-		StartMenu(100),
-		All(101),
-		Favorite(102),
-		Nearest(103),
-		Regions(104),
-		Vowels(105),
-		Vowel(106),
-		Region(107),
-		Country(108),
-		Countries(109);
+		StartMenu(OFF_MENU),
+		All(OFF_MENU+1),
+		Favorite(OFF_MENU+2),
+		Nearest(OFF_MENU+3),
+		Regions(OFF_MENU+4),
+		Vowels(OFF_MENU+5),
+		Vowel(OFF_MENU+6),
+		Region(OFF_MENU+7),
+		Country(OFF_MENU+8),
+		Countries(OFF_MENU+9);
 		
 		private final int value;
 		

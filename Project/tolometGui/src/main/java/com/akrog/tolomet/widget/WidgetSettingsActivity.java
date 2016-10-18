@@ -9,14 +9,14 @@ import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 
-import com.akrog.tolomet.Manager;
+import com.akrog.tolomet.ChartsActivity;
+import com.akrog.tolomet.Model;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.SettingsActivity;
 import com.akrog.tolomet.Station;
-import com.akrog.tolomet.ChartsActivity;
 import com.akrog.tolomet.data.AppSettings;
-import com.akrog.tolomet.data.WidgetSettings;
 import com.akrog.tolomet.data.FlySpot;
+import com.akrog.tolomet.data.WidgetSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,6 @@ public abstract class WidgetSettingsActivity extends SettingsActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         onCreate(savedInstanceState, R.xml.widget_preferences);
-        appSettings.initialize(this);
         model.setCountry(appSettings.getCountry());
 
         Intent intent = getIntent();
@@ -107,8 +106,8 @@ public abstract class WidgetSettingsActivity extends SettingsActivity {
     }
 
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
-    private final Manager model = new Manager();
-    private final AppSettings appSettings = new AppSettings();
+    private final Model model = Model.getInstance();
+    private final AppSettings appSettings = AppSettings.getInstance();
 
     public static String STATION_KEY = "wstation0";
     public static String SPOT_KEY = "wspot";
