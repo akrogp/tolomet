@@ -26,7 +26,7 @@ import java.util.Set;
  * Created by gorka on 14/10/16.
  */
 
-public class Database extends SQLiteAssetHelper {
+public class DbTolomet extends SQLiteAssetHelper {
     public static final String TAB_STATION = "Station";
     public static final String TAB_REGION = "Region";
     public static final String COL_STA_ID = "id";
@@ -40,13 +40,13 @@ public class Database extends SQLiteAssetHelper {
     public static final String COL_REG_NAME = "name";
     public static final String COL_REG_COUN = "country";
 
-    private Database() {
+    private DbTolomet() {
         super(Tolomet.getAppContext(), DB_NAME, null, DB_VERSION);
     }
 
-    public static synchronized Database getInstance() {
+    public static synchronized DbTolomet getInstance() {
         if( instance == null )
-            instance = new Database();
+            instance = new DbTolomet();
         return instance;
     }
 
@@ -168,6 +168,6 @@ public class Database extends SQLiteAssetHelper {
 
     private static final String DB_NAME = "Tolomet.db";
     private static final int DB_VERSION = 1;
-    private static Database instance;
+    private static DbTolomet instance;
     private List<Country> countries;
 }

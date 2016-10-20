@@ -2,6 +2,7 @@ package com.akrog.tolomet;
 
 import java.util.Calendar;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 public class Measurement {
@@ -41,6 +42,10 @@ public class Measurement {
 		//map.put(time, value);
 		map.put(calendar.getTimeInMillis(), value);
 		clearCache();
+	}
+
+	public Set<Map.Entry<Long,Number>> getEntrySet() {
+		return map.entrySet();
 	}
 	
 	public Long[] getTimes() {
