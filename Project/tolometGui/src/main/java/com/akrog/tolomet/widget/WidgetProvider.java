@@ -76,17 +76,14 @@ public class WidgetProvider {
         Station station = model.findStation(constraint.getStation());
         if( station == null )
             return null;
-        model.setCurrentStation(station);
-        /*if( !model.refresh() )
-            return null;*/
-        model.refresh();
+        model.refresh(station);
 
         StationData data = new StationData();
         data.id = station.getId();
         data.country = station.getCountry();
         data.name = spot.getName();
         long stamp = station.getStamp();
-        data.date = model.getStamp(stamp);
+        data.date = model.getStamp(station, stamp);
         Number num = station.getMeteo().getWindDirection().getAt(stamp);
         if( num != null ) {
             data.directionShort = model.parseDirection(num.intValue());

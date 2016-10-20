@@ -4,16 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Locale;
 
 public class Manager {
-	private List<Country> countries;
-	private String[] directions;
+	private final String[] directions;
 	private final String lang;
 	
 	public Manager() {
@@ -22,45 +17,24 @@ public class Manager {
 	
 	public Manager( String lang) {
 		this.lang = lang;
-		loadDirections();
-		loadCountries();
+		directions = loadDirections();
 	}		
 	
-	private void loadDirections() {
+	private String[] loadDirections() {
 		BufferedReader rd = new BufferedReader(new InputStreamReader(getLocalizedResource("directions.csv")));
 		try {
-			directions = rd.readLine().split(",");
-			rd.close();
+			return rd.readLine().split(",");
 		} catch (IOException e) {
-		}		
+		} finally {
+            try {
+                rd.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
 	}
-	
-	private void loadCountries() {
-		countries = new ArrayList<>();
-		BufferedReader rd = new BufferedReader(new InputStreamReader(getLocalizedResource("countries.csv")));
-		String line, code;
-		String[] fields;
-		try {
-			while( (line=rd.readLine()) != null ) {
-				fields = line.split("\\t");
-				code = fields[0];
-				if(getClass().getResource(String.format("/res/stations_%s.dat", code)) == null )
-					continue;
-				Country country = new Country();
-				country.setCode(code);
-				country.setName(fields[1]);
-				countries.add(country);
-			}
-			rd.close();
-		} catch (IOException e) {}
-		Collections.sort(countries, new Comparator<Country>() {
-			@Override
-			public int compare(Country o1, Country o2) {
-				return o1.getName().compareTo(o2.getName());
-			}
-		});
-	}
-	
+
 	private InputStream getLocalizedResource( String name ) {
 		InputStream is = getClass().getResourceAsStream(String.format("/res/%s", name.replaceAll("\\.", String.format("_%s.", lang.toLowerCase()))));
 		if( is == null )
@@ -72,12 +46,6 @@ public class Manager {
 		return getClass().getResourceAsStream(String.format("/res/%s", name.replaceAll("\\.", String.format("_%s.", country.toUpperCase()))));
 	}
 
-	public List<Country> getCountries() {
-		if( countries == null )
-			loadCountries();
-		return countries;
-	}
-	
 	public int getRefresh( Station station ) {
 		if( !checkStation(station) )
 			return 10;

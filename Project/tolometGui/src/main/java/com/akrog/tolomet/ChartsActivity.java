@@ -88,7 +88,7 @@ public class ChartsActivity extends BaseActivity {
     	timer = new Runnable() {				
     		@Override
     		public void run() {
-    			if( model.checkCurrent() )
+    			if( model.checkStation() )
     				downloadData();					
     		}
     	};
@@ -107,7 +107,7 @@ public class ChartsActivity extends BaseActivity {
     		return false;
     	handler.removeCallbacks(timer);
     	int minutes = 1;
-    	if( model.checkCurrent() && !model.getCurrentStation().isEmpty() ) {
+    	if( model.checkStation() && !model.getCurrentStation().isEmpty() ) {
 			int dif = (int)((System.currentTimeMillis()-model.getCurrentStation().getStamp())/60/1000L);
 			minutes = dif >= model.getRefresh() ? 1 : model.getRefresh()-dif;
 		}
