@@ -3,7 +3,8 @@ package com.akrog.tolomet;
 import android.location.Location;
 
 import com.akrog.tolomet.data.AppSettings;
-import com.akrog.tolomet.data.Database;
+import com.akrog.tolomet.data.DbMeteo;
+import com.akrog.tolomet.data.DbTolomet;
 import com.akrog.tolomet.providers.WindProviderType;
 
 import java.util.ArrayList;
@@ -20,7 +21,8 @@ import java.util.Locale;
 public class Model {
     private static Model instance;
     private final Manager manager;
-    private final Database db = Database.getInstance();
+    private final DbTolomet db = DbTolomet.getInstance();
+    private final DbMeteo cache = DbMeteo.getInstance();
     private final List<Station> selection = new ArrayList<Station>();
     private String country;
     private Station currentStation;
@@ -135,47 +137,47 @@ public class Model {
     }
 
     public int getRefresh() {
-        return manager.getRefresh(currentStation);
+        return getRefresh(currentStation);
     }
 
     public String getInforUrl() {
-        return manager.getInforUrl(currentStation);
+        return getInforUrl(currentStation);
     }
 
     public String getUserUrl() {
-        return manager.getUserUrl(currentStation);
+        return getUserUrl(currentStation);
     }
 
     public boolean refresh() {
-        return manager.refresh(currentStation);
+        return refresh(currentStation);
     }
 
     public boolean travel(long date) {
-        return manager.travel(currentStation, date);
+        return travel(currentStation, date);
     }
 
     public void cancel() {
-        manager.cancel(currentStation);
+        cancel(currentStation);
     }
 
     public String getSummary(boolean large) {
-        return manager.getSummary(currentStation, large);
+        return getSummary(currentStation, large);
     }
 
     public String getSummary(Long stamp, boolean large) {
-        return manager.getSummary(currentStation, stamp, large);
+        return getSummary(currentStation, stamp, large);
     }
 
     public String getStamp() {
-        return manager.getStamp(currentStation);
+        return getStamp(currentStation);
     }
 
     public String getStamp(Long stamp) {
-        return manager.getStamp(currentStation, stamp);
+        return getStamp(currentStation, stamp);
     }
 
     public boolean isOutdated() {
-        return manager.isOutdated(currentStation);
+        return isOutdated(currentStation);
     }
 
     public String parseDirection(int degrees) {
@@ -183,7 +185,7 @@ public class Model {
     }
 
     public boolean checkStation() {
-        return manager.checkStation(currentStation);
+        return checkStation(currentStation);
     }
 
     public int getRefresh(Station station) {
@@ -199,11 +201,19 @@ public class Model {
     }
 
     public boolean refresh(Station station) {
-        return manager.refresh(station);
+        cache.refresh(station);
+        if( !manager.refresh(station) )
+            return false;
+        cache.save(station);
+        return true;
     }
 
     public boolean travel(Station station, long date) {
-        return manager.travel(station, date);
+        cache.travel(station, date);
+        if( !manager.travel(station, date) )
+            return false;
+        cache.save(station);
+        return true;
     }
 
     public void cancel(Station station) {
