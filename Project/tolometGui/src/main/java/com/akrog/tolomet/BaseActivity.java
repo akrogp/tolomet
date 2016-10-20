@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.akrog.tolomet.data.AppSettings;
 import com.akrog.tolomet.presenters.MySpinner;
@@ -113,6 +114,16 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void onFavorite(boolean fav) {
         spinner.setFavorite(fav);
+    }
+
+    public void service() {
+        ProgressBar progressBar = ((ProgressBar)findViewById(R.id.progressbar));
+        progressBar.setIndeterminate(true);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    public ProgressBar getProgressBar() {
+        return (ProgressBar)findViewById(R.id.progressbar);
     }
 
     public abstract void onRefresh();
