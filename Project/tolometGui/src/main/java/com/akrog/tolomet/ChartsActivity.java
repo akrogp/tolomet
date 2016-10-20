@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.akrog.tolomet.data.Bundler;
 import com.akrog.tolomet.data.AppSettings;
+import com.akrog.tolomet.data.Bundler;
 import com.akrog.tolomet.gae.GaeManager;
 import com.akrog.tolomet.presenters.Downloader;
 import com.akrog.tolomet.presenters.MyCharts;
