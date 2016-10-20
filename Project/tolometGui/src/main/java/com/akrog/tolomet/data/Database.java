@@ -1,15 +1,24 @@
 package com.akrog.tolomet.data;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.akrog.tolomet.Country;
+import com.akrog.tolomet.R;
 import com.akrog.tolomet.Region;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.providers.WindProviderType;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -87,6 +96,48 @@ public class Database extends SQLiteAssetHelper {
         return list;
     }
 
+    public Set<String> findCountries() {
+        Set<String> countries = new HashSet<>();
+        SQLiteDatabase lite = getReadableDatabase();
+        Cursor cursor = lite.query(true,TAB_REGION,new String[]{COL_REG_COUN},null,null,null,null,null,null);
+        while( cursor.moveToNext() )
+            countries.add(cursor.getString(0));
+        cursor.close();
+        return countries;
+    }
+
+    public List<Country> getCountries() {
+        if( countries != null )
+            return countries;
+        Set<String> used = findCountries();
+        countries = new ArrayList<>();
+        Context context = Tolomet.getAppContext();
+        String line, code;
+        String[] fields;
+        try {
+            BufferedReader rd = new BufferedReader(new InputStreamReader(
+                    context.getAssets().open("listings/"+context.getString(R.string.countries_csv))));
+            while( (line=rd.readLine()) != null ) {
+                fields = line.split("\\t");
+                code = fields[0];
+                if( !used.contains(code) )
+                    continue;
+                Country country = new Country();
+                country.setCode(code);
+                country.setName(fields[1]);
+                countries.add(country);
+            }
+            rd.close();
+        } catch (IOException e) {}
+        Collections.sort(countries, new Comparator<Country>() {
+            @Override
+            public int compare(Country o1, Country o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+        return countries;
+    }
+
     private List<Station> findStations(String rawQuery, String... args) {
         Set<String> favs = AppSettings.getInstance().getFavorites();
         List<Station> list = new ArrayList<>();
@@ -118,4 +169,5 @@ public class Database extends SQLiteAssetHelper {
     private static final String DB_NAME = "Tolomet.db";
     private static final int DB_VERSION = 1;
     private static Database instance;
+    private List<Country> countries;
 }

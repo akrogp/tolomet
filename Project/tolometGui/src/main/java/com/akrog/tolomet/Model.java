@@ -120,7 +120,7 @@ public class Model {
     }
 
     public List<Country> getCountries() {
-        return manager.getCountries();
+        return db.getCountries();
     }
 
     public List<Region> getRegions() {
@@ -182,7 +182,55 @@ public class Model {
         return manager.parseDirection(degrees);
     }
 
-    public boolean checkCurrent() {
+    public boolean checkStation() {
         return manager.checkStation(currentStation);
+    }
+
+    public int getRefresh(Station station) {
+        return manager.getRefresh(station);
+    }
+
+    public String getInforUrl(Station station) {
+        return manager.getInforUrl(station);
+    }
+
+    public String getUserUrl(Station station) {
+        return manager.getUserUrl(station);
+    }
+
+    public boolean refresh(Station station) {
+        return manager.refresh(station);
+    }
+
+    public boolean travel(Station station, long date) {
+        return manager.travel(station, date);
+    }
+
+    public void cancel(Station station) {
+        manager.cancel(station);
+    }
+
+    public String getSummary(Station station, boolean large) {
+        return manager.getSummary(station, large);
+    }
+
+    public String getSummary(Station station, Long stamp, boolean large) {
+        return manager.getSummary(station, stamp, large);
+    }
+
+    public String getStamp(Station station) {
+        return manager.getStamp(station);
+    }
+
+    public String getStamp(Station station, Long stamp) {
+        return manager.getStamp(station, stamp);
+    }
+
+    public boolean isOutdated(Station station) {
+        return manager.isOutdated(station);
+    }
+
+    public boolean checkStation(Station station) {
+        return manager.checkStation(station);
     }
 }

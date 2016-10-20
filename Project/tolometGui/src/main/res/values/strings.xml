@@ -110,4 +110,5 @@
     <string name="min_wind_prompt">Minimum speed</string>
     <string name="max_wind_prompt">Maximum speed</string>
     <string name="max_hum_prompt">Maximum relative humidity</string>
+    <string name="countries_csv">countries.csv</string>
 </resources>
