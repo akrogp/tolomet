@@ -10,7 +10,10 @@ import com.akrog.tolomet.Station;
 import com.akrog.tolomet.Tolomet;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +23,7 @@ import java.util.Map;
 
 public class DbMeteo extends SQLiteAssetHelper {
     public static final String TAB_METEO = "Meteo";
+    public static final String TAB_TRAVEL = "Travel";
     public static final String COL_MET_STATION = "station";
     public static final String COL_MET_STAMP = "stamp";
     public static final String COL_MET_DIR = "dir";
@@ -28,47 +32,128 @@ public class DbMeteo extends SQLiteAssetHelper {
     public static final String COL_MET_HUM = "hum";
     public static final String COL_MET_TEMP = "temp";
     public static final String COL_MET_PRES = "pres";
+    public static final String COL_TRA_STATION = "station";
+    public static final String COL_TRA_DATE = "date";
 
     private DbMeteo() {
         super( Tolomet.getAppContext(), DB_NAME, Tolomet.getAppContext().getExternalCacheDir().getAbsolutePath(), null, DB_VERSION);
     }
 
     public static synchronized DbMeteo getInstance() {
-        if( instance == null )
+        if( instance == null ) {
             instance = new DbMeteo();
+            instance.trimCache();
+        }
         return instance;
     }
 
+    private void trimCache() {
+        SQLiteDatabase lite = getWritableDatabase();
+        lite.beginTransaction();
+        try {
+            DateRange dr = getDayRange(new Date());
+            dr.from -= 7L*24*60*60*1000;
+            lite.delete(TAB_METEO,COL_MET_STAMP+"<?",new String[]{String.valueOf(dr.from)});
+            lite.delete(TAB_TRAVEL,COL_TRA_DATE+"<?",new String[]{df.format(new Date(dr.from))});
+            lite.setTransactionSuccessful();
+        } catch (Exception e) {
+        } finally {
+            lite.endTransaction();;
+        }
+    }
+
     public int refresh(Station station) {
-        if( station.getMeteo().isEmpty() )
-            return travel(station, System.currentTimeMillis());
+        if( station.getMeteo().isEmpty() ) {
+            DateRange dr = getDayRange(new Date());
+            return loadFrom(station, dr.from);
+        }
         return loadFrom(station, station.getStamp());
     }
 
     public int travel(Station station, long dayStamp) {
-        Calendar from = Calendar.getInstance();
-        from.setTimeInMillis(dayStamp);
-        from.set(Calendar.HOUR_OF_DAY,0);
-        from.set(Calendar.MINUTE,0);
-        from.set(Calendar.SECOND,0);
-        from.set(Calendar.MILLISECOND,0);
+        Date time = new Date(dayStamp);
+        SQLiteDatabase lite = getReadableDatabase();
+        Cursor cursor = lite.rawQuery("SELECT COUNT(*) FROM Travel WHERE station=? AND date=?",
+                new String[]{station.getId(), df.format(time)});
+        cursor.moveToFirst();
+        boolean travel = cursor.getInt(0) > 0;
+        cursor.close();
+        if( !travel )
+            return 0;
+        DateRange dr = getDayRange(time);
+        return load(station, dr.from, -1);
+    }
 
-        Calendar to = Calendar.getInstance();
-        from.setTimeInMillis(dayStamp);
-        from.set(Calendar.HOUR_OF_DAY,23);
-        from.set(Calendar.MINUTE,59);
-        from.set(Calendar.SECOND,59);
-        from.set(Calendar.MILLISECOND,999);
+    private DateRange getDayRange(Date time ) {
+        DateRange dr = new DateRange();
 
-        return load(station, from.getTimeInMillis(), to.getTimeInMillis());
+        Calendar date = Calendar.getInstance();
+        date.setTime(time);
+        date.set(Calendar.HOUR_OF_DAY,0);
+        date.set(Calendar.MINUTE,0);
+        date.set(Calendar.SECOND,0);
+        date.set(Calendar.MILLISECOND,0);
+        dr.from = date.getTimeInMillis();
+
+        date.set(Calendar.HOUR_OF_DAY,23);
+        date.set(Calendar.MINUTE,59);
+        date.set(Calendar.SECOND,59);
+        date.set(Calendar.MILLISECOND,999);
+        dr.to = date.getTimeInMillis();
+
+        return dr;
+    }
+
+    public void travelled(Station station, long dayStamp) {
+        Date time = new Date(dayStamp);
+        DateRange dr = getDayRange(time);
+        long firstStamp = findFirstStamp(station);
+        if( firstStamp != -1 )
+            dr.to = Math.max(dr.to, firstStamp);
+        String id = station.getId();
+        SQLiteDatabase lite = getWritableDatabase();
+        lite.beginTransaction();
+        try {
+            lite.delete(TAB_METEO,"station=? AND stamp BETWEEN ? AND ?",
+                    new String[]{id,String.valueOf(dr.from),String.valueOf(dr.to)});
+            Map<Long,Values> map = mergeMeteo(station.getMeteo(),dr.from,dr.to);
+            saveMeteo(id,map);
+            ContentValues values = new ContentValues();
+            values.put(COL_TRA_STATION, id);
+            values.put(COL_TRA_DATE, df.format(time));
+            lite.insert(TAB_TRAVEL, null, values);
+            lite.setTransactionSuccessful();
+        } catch (Exception e ) {
+            e.printStackTrace();
+        } finally {
+            lite.endTransaction();
+        }
     }
 
     public int load(Station station, long from, long to) {
         SQLiteDatabase lite = getReadableDatabase();
-        Cursor cursor = lite.query(TAB_METEO,null,
-                "station=? AND stamp BETWEEN ? AND ?",
-                new String[]{station.getId(), String.valueOf(from), String.valueOf(to)},
-                null, null, null);
+        Cursor cursor;
+
+        if( from == -1 && to == -1 )
+            cursor = lite.query(TAB_METEO,null,
+                    COL_MET_STATION+"=?",
+                    new String[]{station.getId()},
+                    null, null, null);
+        else if( from == -1 )
+            cursor = lite.query(TAB_METEO,null,
+                    "station=? AND stamp<=?",
+                    new String[]{station.getId(), String.valueOf(to)},
+                    null, null, null);
+        else if( to == -1 )
+            cursor = lite.query(TAB_METEO,null,
+                    "station=? AND stamp>=?",
+                    new String[]{station.getId(), String.valueOf(from)},
+                    null, null, null);
+        else
+            cursor = lite.query(TAB_METEO,null,
+                    "station=? AND stamp BETWEEN ? AND ?",
+                    new String[]{station.getId(), String.valueOf(from), String.valueOf(to)},
+                    null, null, null);
         return loadCursor(cursor, station);
     }
 
@@ -82,25 +167,43 @@ public class DbMeteo extends SQLiteAssetHelper {
     }
 
     public int save(Station station ) {
-        String id = station.getId();
+        Map<Long,Values> map = mergeMeteo(
+                station.getMeteo(), findLastStamp(station), -1);
+        return saveMeteo(station.getId(), map);
+    }
+
+    private long findLastStamp(Station station) {
         SQLiteDatabase lite = getReadableDatabase();
         Cursor cursor = lite.rawQuery(
-                "SELECT MIN(stamp), MAX(stamp) FROM Meteo WHERE station=?",
-                new String[]{id});
+                "SELECT MAX(stamp) FROM Meteo WHERE station=?",
+                new String[]{station.getId()});
         cursor.moveToFirst();
-        long from = cursor.isNull(0) ? -1 : cursor.getLong(0);
-        long to = cursor.isNull(1) ? -1 : cursor.getLong(1);
+        long stamp = cursor.isNull(0) ? -1 : cursor.getLong(0)+1;
         cursor.close();
-        Map<Long,Values> map = mergeMeteo(station.getMeteo(), from, to);
+        return stamp;
+    }
+
+    private long findFirstStamp(Station station) {
+        SQLiteDatabase lite = getReadableDatabase();
+        Cursor cursor = lite.rawQuery(
+                "SELECT MIN(stamp) FROM Meteo WHERE station=?",
+                new String[]{station.getId()});
+        cursor.moveToFirst();
+        long stamp = cursor.isNull(0) ? -1 : cursor.getLong(0)+1;
+        cursor.close();
+        return stamp;
+    }
+
+    private int saveMeteo(String station, Map<Long,Values> map) {
         if( map.isEmpty() )
             return 0;
-        lite = getWritableDatabase();
+        SQLiteDatabase lite = getWritableDatabase();
         lite.beginTransaction();
         try {
             ContentValues contentValues = new ContentValues();
             for( Map.Entry<Long,Values> entry : map.entrySet() ) {
                 Values values = entry.getValue();
-                contentValues.put(COL_MET_STATION, id);
+                contentValues.put(COL_MET_STATION, station);
                 contentValues.put(COL_MET_STAMP, entry.getKey());
                 contentValues.put(COL_MET_DIR, values.dir);
                 contentValues.put(COL_MET_MED, values.med);
@@ -144,7 +247,7 @@ public class DbMeteo extends SQLiteAssetHelper {
 
     private void mergeValues(Map<Long,Values> map, long from, long to, Measurement meas, Merger merger) {
         for( Map.Entry<Long,Number> entry : meas.getEntrySet() ) {
-            if( from != -1 && entry.getKey() >= from && to != -1 && entry.getKey() <= to )
+            if( (from != -1 && entry.getKey() <= from) || (to != -1 && entry.getKey() >= to) )
                 continue;
             Values values = map.get(entry.getKey());
             if( values == null ) {
@@ -188,10 +291,15 @@ public class DbMeteo extends SQLiteAssetHelper {
         public Float med, max, hum, temp, pres;
     }
 
+    private static class DateRange {
+        public long from, to;
+    }
+
     private interface Merger {
         void merge(Values values, Number number);
     }
 
+    private static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
     private static final String DB_NAME = "Meteo.db";
     private static final int DB_VERSION = 1;
     private static DbMeteo instance;

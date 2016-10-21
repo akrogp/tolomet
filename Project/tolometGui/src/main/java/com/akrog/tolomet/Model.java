@@ -209,10 +209,11 @@ public class Model {
     }
 
     public boolean travel(Station station, long date) {
-        cache.travel(station, date);
+        if( cache.travel(station, date) > 0 )
+            return true;
         if( !manager.travel(station, date) )
             return false;
-        cache.save(station);
+        cache.travelled(station, date);
         return true;
     }
 
