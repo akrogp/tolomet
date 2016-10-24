@@ -53,6 +53,18 @@ public class Station {
 		return str;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if( !Station.class.isInstance(obj) )
+			return super.equals(obj);
+		return getId().equals(((Station)obj).getId());
+	}
+
+	@Override
+	public int hashCode() {
+		return getId().hashCode();
+	}
+
 	public static String buildId(WindProviderType type, String code) {
 		StringBuilder sb = new StringBuilder(type.getCode());
 		sb.append('-');

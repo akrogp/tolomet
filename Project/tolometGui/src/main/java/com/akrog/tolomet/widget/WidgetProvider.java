@@ -84,14 +84,25 @@ public class WidgetProvider {
         data.name = spot.getName();
         long stamp = station.getStamp();
         data.date = model.getStamp(station, stamp);
+
+        fillMeteo(data, station, stamp);
+
+        data.fly = checkConditions(station, stamp, constraint);
+        if( data.fly == FlyCondition.GOOD ) {
+            long prevStamp = stamp-model.getRefresh(station)*60*1000;
+            prevStamp = station.getMeteo().getStamp(prevStamp);
+            if( checkConditions(station, prevStamp, constraint) == FlyCondition.BAD )
+                data.fly = FlyCondition.UNKOWN;
+        }
+
+        return data;
+    }
+
+    private void fillMeteo( StationData data, Station station, long stamp ) {
         Number num = station.getMeteo().getWindDirection().getAt(stamp);
         if( num != null ) {
             data.directionShort = model.parseDirection(num.intValue());
             data.directionExt = String.format("%dº (%s)", num.intValue(), data.directionShort);
-            if( constraint.getMinDir() <= constraint.getMaxDir() )
-                data.fly = num.intValue() >= constraint.getMinDir() && num.intValue() <= constraint.getMaxDir() ? FlyCondition.GOOD : FlyCondition.BAD;
-            else
-                data.fly = num.intValue() >= constraint.getMinDir() || num.intValue() <= constraint.getMaxDir() ? FlyCondition.GOOD : FlyCondition.BAD;
         }
         StringBuilder sb = new StringBuilder();
         num = station.getMeteo().getAirTemperature().getAt(stamp);
@@ -102,8 +113,6 @@ public class WidgetProvider {
             if( sb.length() != 0 )
                 sb.append(' ');
             sb.append(String.format("%.0f%%", num));
-            if (num.floatValue() >= constraint.getMaxHum() )
-                data.fly = FlyCondition.BAD;
         }
         num = station.getMeteo().getAirPressure().getAt(stamp);
         if( num != null ) {
@@ -115,18 +124,36 @@ public class WidgetProvider {
         num = station.getMeteo().getWindSpeedMed().getAt(stamp);
         if( num != null ) {
             sb = new StringBuilder(String.format("%.1f", num));
-            if( data.fly == FlyCondition.GOOD && (num.floatValue() >= constraint.getMaxWind() || num.floatValue() < constraint.getMinWind()) )
-                data.fly = FlyCondition.BAD;
             num = station.getMeteo().getWindSpeedMax().getAt(stamp);
-            if (num != null) {
+            if (num != null)
                 sb.append(String.format("~%.1f", num));
-                if( data.fly == FlyCondition.GOOD && (num.floatValue() >= constraint.getMaxWind() || num.floatValue() < constraint.getMinWind()) )
-                    data.fly = FlyCondition.BAD;
-            }
             //sb.append(" km/h");
             data.speed = sb.toString();
         }
-        return data;
+    }
+
+    private FlyCondition checkConditions(Station station, long stamp, FlyConstraint constraint) {
+        boolean missing = false;
+        Number num = station.getMeteo().getWindDirection().getAt(stamp);
+        if( num != null ) {
+            if( constraint.getMinDir() <= constraint.getMaxDir() ) {
+                if( num.intValue() < constraint.getMinDir() || num.intValue() > constraint.getMaxDir() )
+                    return FlyCondition.BAD;
+            } else if (num.intValue() < constraint.getMinDir() && num.intValue() > constraint.getMaxDir() )
+                return FlyCondition.BAD;
+        } else
+            missing = true;
+        num = station.getMeteo().getAirHumidity().getAt(stamp);
+        if( num != null && num.floatValue() > constraint.getMaxHum() )
+            return FlyCondition.BAD;
+        num = station.getMeteo().getWindSpeedMax().getAt(stamp);
+        if( num == null )
+            num = station.getMeteo().getWindSpeedMed().getAt(stamp);
+        if( num == null )
+            missing = true;
+        else if( num.floatValue() < constraint.getMinWind() || num.floatValue() > constraint.getMaxWind() )
+            return FlyCondition.BAD;
+        return missing ? FlyCondition.UNKOWN : FlyCondition.GOOD;
     }
 
     public void updateWidgets() {
