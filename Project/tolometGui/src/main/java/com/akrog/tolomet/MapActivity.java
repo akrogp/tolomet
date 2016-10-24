@@ -4,21 +4,25 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.akrog.tolomet.providers.WindProviderType;
+import com.akrog.tolomet.data.DbTolomet;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class MapActivity extends BaseActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MapActivity extends BaseActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraChangeListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,19 +59,47 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         mMap.setMyLocationEnabled(true);
         mMap.setOnMarkerClickListener(this);
+        mMap.setOnCameraChangeListener(this);
 
         Intent intent = getIntent();
-        String country = intent.getStringExtra(MapActivity.EXTRA_COUNTRY);
-        WindProviderType provider = WindProviderType.valueOf(intent.getStringExtra(MapActivity.EXTRA_PROVIDER));
-        String code = intent.getStringExtra(MapActivity.EXTRA_STATION);
+        String id = intent.getStringExtra(MapActivity.EXTRA_STATION);
+        model.setCurrentStation(model.findStation(id));
+
+        zoom(model.getCurrentStation());
+
+        redraw();
+    }
+
+    private void zoom(Station station) {
+        zoom(station.getLatitude(), station.getLongitude());
+    }
+
+    private void zoom(double lat, double lon) {
+        LatLng cam = new LatLng(lat, lon);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cam, 10));
+    }
+
+    @Override
+    public void onCameraChange(CameraPosition cameraPosition) {
+        LatLngBounds bounds = mMap.getProjection().getVisibleRegion().latLngBounds;
+        List<Station> stations = DbTolomet.getInstance().findGeoStations(
+                bounds.northeast.latitude, bounds.northeast.longitude,
+                bounds.southwest.latitude, bounds.southwest.longitude);
+
+        for( Map.Entry<Station,Marker> entry : new ArrayList<>(station2marker.entrySet()) ) {
+            if( !stations.contains(entry.getKey()) ) {
+                station2marker.remove(entry.getKey());
+                marker2station.remove(entry.getValue());
+                entry.getValue().remove();
+            }
+        }
 
         float hueHi = BitmapDescriptorFactory.HUE_GREEN;
         float hueMi = BitmapDescriptorFactory.HUE_YELLOW;
         float hueLo = BitmapDescriptorFactory.HUE_RED;
-
-        for( Station station : model.getAllStations() ) {
-            if( model.getCurrentStation() == null && station.getProviderType() == provider && station.getCode().equals(code) )
-                model.setCurrentStation(station);
+        for( Station station : stations ) {
+            if( station2marker.containsKey(station) )
+                continue;
             float hue;
             switch( station.getProviderType().getQuality() ) {
                 case Good: hue = hueHi; break;
@@ -75,35 +107,36 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
                 default: hue = hueLo; break;
             }
             Marker marker = mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(station.getLatitude(), station.getLongitude()))
-                            .icon(BitmapDescriptorFactory.defaultMarker(hue))
-                            .title(station.getName())
-                            .snippet(String.format("%s", station.getProviderType().name()))
+                    .position(new LatLng(station.getLatitude(), station.getLongitude()))
+                    .icon(BitmapDescriptorFactory.defaultMarker(hue))
+                    .title(station.getName())
+                    .snippet(String.format("%s", station.getProviderType().name()))
             );
-            station.setExtra(marker);
-            mapMarker.put(marker,station);
+            station2marker.put(station, marker);
+            marker2station.put(marker,station);
         }
+
         showStation();
-        redraw();
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Station station = mapMarker.get(marker);
+        Station station = marker2station.get(marker);
         if( station == null )
             return false;
         spinner.selectStation(station);
-        marker.hideInfoWindow();
+        marker.showInfoWindow();
         return true;
     }
 
     private void showStation() {
-        if( model.getCurrentStation() == null || model.getCurrentStation().getExtra() == null )
+        if( model.getCurrentStation() == null || model.getCurrentStation().isSpecial() )
+            return;
+        Marker marker = station2marker.get(model.getCurrentStation());
+        if( marker == null )
             return;
         lastStation = model.getCurrentStation().getName();
-        ((Marker)model.getCurrentStation().getExtra()).showInfoWindow();
-        LatLng cam = new LatLng(model.getCurrentStation().getLatitude(), model.getCurrentStation().getLongitude());
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cam, 10));
+        marker.showInfoWindow();
     }
 
     @Override
@@ -136,8 +169,9 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
     @Override
     public void onSelected(Station station) {
         redraw();
-        if( station.isSpecial() || station.getExtra() == null )
+        if( station.isSpecial() )
             return;
+        zoom(station);
         showStation();
     }
 
@@ -167,10 +201,10 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
     }
 
     public static final String EXTRA_COUNTRY = "com.akrog.tolomet.MapActivity.country";
-    public static final String EXTRA_PROVIDER = "com.akrog.tolomet.MapActivity.provider";
     public static final String EXTRA_STATION = "com.akrog.tolomet.MapActivity.station";
 
     private GoogleMap mMap;
     private String lastStation;
-    private final Map<Marker,Station> mapMarker = new HashMap<>();
+    private final Map<Marker,Station> marker2station = new HashMap<>();
+    private final Map<Station,Marker> station2marker = new HashMap<>();
 }
