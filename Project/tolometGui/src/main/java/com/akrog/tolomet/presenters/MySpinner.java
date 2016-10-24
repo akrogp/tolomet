@@ -27,7 +27,6 @@ import com.akrog.tolomet.data.AppSettings;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 public class MySpinner implements OnItemSelectedListener, Presenter {
 	private BaseActivity activity;
@@ -76,8 +75,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		String country = state.getCountry();
 		if( country == null )
 			country = guessCountry();		
-		if( !setCountry(country) )
-			updateFavorites();
+		setCountry(country);
 		Type type = state.getType();
 		if( type == Type.StartMenu
 				|| type == Type.Countries || type == Type.Regions || type == Type.Vowels
@@ -95,16 +93,8 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		if( country == null || country.equals(this.country) )
 			return false;
 		model.setCountry(country);
-		updateFavorites();
 		this.country = country;
 		return true;
-	}
-
-	private void updateFavorites() {
-		Set<String> favs = settings.getFavorites();
-		for( Station station : model.getAllStations() )
-			//station.setFavorite(favs.contains(station.getCode()));
-			station.setFavorite(favs.contains(station.getId()));
 	}
 
 	public void setFavorite(boolean fav) {
@@ -156,7 +146,6 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		switch( type ) {
 			case All: model.selectAll(); break;
 			case Favorite:
-				updateFavorites();
 				model.selectFavorites();
 				if( model.getSelStations().isEmpty() ) {
 					showFavoriteDialog();
@@ -194,6 +183,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 	}
 
 	public void selectStation(Station station) {
+		setCountry(station.getCountry());
 		Type type = Type.All;
 		if( station.isFavorite() )
 			type = Type.Favorite;

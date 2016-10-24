@@ -74,10 +74,21 @@ public class DbTolomet extends SQLiteAssetHelper {
                 country, String.format("%c%%",vowel));
     }
 
-    public List<Station> findCloseStations(double lat, double lon, double degrees) {
+    public List<Station> findGeoStations(double lat1, double lon1, double lat2, double lon2) {
+        double tmp;
+        if( lat2 < lat1 ) {
+            tmp = lat1; lat1 = lat2; lat2 = tmp;
+        }
+        if( lon2 < lon1 ) {
+            tmp = lon1; lon1 = lon2; lon2 = tmp;
+        }
         return findStations(
                 "SELECT Station.*,Region.country FROM Station, Region WHERE Station.latitude BETWEEN ? AND ? AND Station.longitude BETWEEN ? AND ? AND Region.id=Station.region",
-                String.valueOf(lat-degrees), String.valueOf(lat+degrees), String.valueOf(lon-degrees), String.valueOf(lon+degrees));
+                String.valueOf(lat1), String.valueOf(lat2), String.valueOf(lon1), String.valueOf(lon2));
+    }
+
+    public List<Station> findCloseStations(double lat, double lon, double degrees) {
+        return findGeoStations(lat-degrees, lon-degrees, lat+degrees, lon+degrees);
     }
 
     public List<Region> findRegions(String country) {
