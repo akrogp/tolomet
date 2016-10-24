@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.akrog.tolomet.data.AppSettings;
+import com.akrog.tolomet.data.DbMeteo;
 import com.akrog.tolomet.gae.GaeManager;
 import com.akrog.tolomet.presenters.MyCharts;
 import com.akrog.tolomet.presenters.MySummary;
@@ -37,6 +38,9 @@ public class ChartsActivity extends BaseActivity {
         presenters.add(summary);
         for( Presenter presenter : presenters)
         	presenter.initialize(this, savedInstanceState);
+
+        if( model.checkStation() )
+            DbMeteo.getInstance().refresh(model.getCurrentStation());
 
         createTimer();
     }

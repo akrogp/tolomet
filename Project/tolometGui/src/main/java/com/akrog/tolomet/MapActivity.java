@@ -83,6 +83,11 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
 
     @Override
     public void onCameraChange(CameraPosition cameraPosition) {
+        float minZoom = 5.0f;
+        if( cameraPosition.zoom < minZoom ) {
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(minZoom));
+            return;
+        }
         LatLngBounds bounds = mMap.getProjection().getVisibleRegion().latLngBounds;
         List<Station> stations = DbTolomet.getInstance().findGeoStations(
                 bounds.northeast.latitude, bounds.northeast.longitude,
@@ -96,13 +101,16 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
     }
 
     private void updateStationMarkers(List<Station> stations) {
-        for( Map.Entry<Station,Marker> entry : new ArrayList<>(station2marker.entrySet()) ) {
-            if( !stations.contains(entry.getKey()) ) {
-                station2marker.remove(entry.getKey());
-                marker2station.remove(entry.getValue());
-                entry.getValue().remove();
+        if( isClustered() )
+            clearMarkers();
+        else
+            for( Map.Entry<Station,Marker> entry : new ArrayList<>(station2marker.entrySet()) ) {
+                if( !stations.contains(entry.getKey()) ) {
+                    station2marker.remove(entry.getKey());
+                    marker2station.remove(entry.getValue());
+                    entry.getValue().remove();
+                }
             }
-        }
 
         float hueHi = BitmapDescriptorFactory.HUE_GREEN;
         float hueMi = BitmapDescriptorFactory.HUE_YELLOW;
@@ -130,10 +138,7 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
     }
 
     private void updateRegionClusters(List<Station> stations) {
-        station2marker.clear();
-        for( Marker marker : marker2station.keySet() )
-            marker.remove();
-        marker2station.clear();
+        clearMarkers();
         Map<Integer,List<Station>> clusters = new HashMap<>();
         for( Station station : stations ) {
             List<Station> list = clusters.get(station.getRegion());
@@ -163,10 +168,7 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
     }
 
     private void updateCountryClusters(List<Station> stations) {
-        station2marker.clear();
-        for( Marker marker : marker2station.keySet() )
-            marker.remove();
-        marker2station.clear();
+        clearMarkers();
         Map<String,List<Station>> clusters = new HashMap<>();
         for( Station station : stations ) {
             List<Station> list = clusters.get(station.getCountry());
@@ -192,6 +194,13 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
             );
             marker2station.put(marker,station);
         }
+    }
+
+    private void clearMarkers() {
+        station2marker.clear();
+        for( Marker marker : marker2station.keySet() )
+            marker.remove();
+        marker2station.clear();
     }
 
     private Station selectMedian(List<Station> stations) {
