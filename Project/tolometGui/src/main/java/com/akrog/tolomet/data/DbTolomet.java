@@ -107,6 +107,31 @@ public class DbTolomet extends SQLiteAssetHelper {
         return list;
     }
 
+    public Counts getRegionCounts(int id) {
+        Counts info = new Counts();
+        SQLiteDatabase lite = getReadableDatabase();
+        Cursor cursor = lite.query(TAB_REGION, new String[]{COL_REG_NAME}, COL_REG_ID+"=?", new String[]{String.valueOf(id)}, null, null, null);
+        cursor.moveToFirst();
+        info.name = cursor.getString(0);
+        cursor.close();
+        cursor = lite.rawQuery("SELECT COUNT(*) FROM Station WHERE region=?",new String[]{String.valueOf(id)});
+        cursor.moveToFirst();
+        info.stationCount = cursor.getInt(0);
+        cursor.close();
+        return info;
+    }
+
+    public Counts getCountryCounts(String id) {
+        Counts info = new Counts();
+        SQLiteDatabase lite = getReadableDatabase();
+        Cursor cursor = lite.rawQuery("SELECT COUNT(*) FROM Station, Region WHERE Region.id=Station.region AND Region.country=?",new String[]{id});
+        cursor.moveToFirst();
+        info.name = id;
+        info.stationCount = cursor.getInt(0);
+        cursor.close();
+        return info;
+    }
+
     public Set<String> findCountries() {
         Set<String> countries = new HashSet<>();
         SQLiteDatabase lite = getReadableDatabase();
@@ -175,6 +200,23 @@ public class DbTolomet extends SQLiteAssetHelper {
         }
         cursor.close();
         return list;
+    }
+
+    public static class Counts {
+        private String name;
+        private int stationCount;
+        public void setName(String name) {
+            this.name = name;
+        }
+        public String getName() {
+            return name;
+        }
+        public void setStationCount( int stationCount ) {
+            this.stationCount = stationCount;
+        }
+        public int getStationCount() {
+            return stationCount;
+        }
     }
 
     private static final String DB_NAME = "Tolomet.db";

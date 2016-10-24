@@ -17,6 +17,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -85,7 +87,15 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
         List<Station> stations = DbTolomet.getInstance().findGeoStations(
                 bounds.northeast.latitude, bounds.northeast.longitude,
                 bounds.southwest.latitude, bounds.southwest.longitude);
+        if( stations.size() > REGION_LIMIT)
+            updateCountryClusters(stations);
+        else if( stations.size() > STATION_LIMIT )
+            updateRegionClusters(stations);
+        else
+            updateStationMarkers(stations);
+    }
 
+    private void updateStationMarkers(List<Station> stations) {
         for( Map.Entry<Station,Marker> entry : new ArrayList<>(station2marker.entrySet()) ) {
             if( !stations.contains(entry.getKey()) ) {
                 station2marker.remove(entry.getKey());
@@ -119,12 +129,109 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
         showStation();
     }
 
+    private void updateRegionClusters(List<Station> stations) {
+        station2marker.clear();
+        for( Marker marker : marker2station.keySet() )
+            marker.remove();
+        marker2station.clear();
+        Map<Integer,List<Station>> clusters = new HashMap<>();
+        for( Station station : stations ) {
+            List<Station> list = clusters.get(station.getRegion());
+            if( list == null ) {
+                list = new ArrayList<>();
+                clusters.put(station.getRegion(),list);
+            }
+            list.add(station);
+        }
+        Map<String,String> countries = new HashMap<>();
+        for( Country country : DbTolomet.getInstance().getCountries() )
+            countries.put(country.getCode(), country.getName());
+        float hueHi = BitmapDescriptorFactory.HUE_GREEN;
+        for(Map.Entry<Integer,List<Station>> cluster : clusters.entrySet() ) {
+            Station station = selectMedian(cluster.getValue());
+            DbTolomet.Counts info = DbTolomet.getInstance().getRegionCounts(cluster.getKey());
+            if( info.getName().length() == 2 )
+                info.setName(countries.get(info.getName()));
+            Marker marker = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(station.getLatitude(), station.getLongitude()))
+                    .icon(BitmapDescriptorFactory.defaultMarker(hueHi))
+                    .title(info.getName())
+                    .snippet(String.format("%d", info.getStationCount()))
+            );
+            marker2station.put(marker,station);
+        }
+    }
+
+    private void updateCountryClusters(List<Station> stations) {
+        station2marker.clear();
+        for( Marker marker : marker2station.keySet() )
+            marker.remove();
+        marker2station.clear();
+        Map<String,List<Station>> clusters = new HashMap<>();
+        for( Station station : stations ) {
+            List<Station> list = clusters.get(station.getCountry());
+            if( list == null ) {
+                list = new ArrayList<>();
+                clusters.put(station.getCountry(),list);
+            }
+            list.add(station);
+        }
+        Map<String,String> countries = new HashMap<>();
+        for( Country country : DbTolomet.getInstance().getCountries() )
+            countries.put(country.getCode(), country.getName());
+        float hueHi = BitmapDescriptorFactory.HUE_GREEN;
+        for(Map.Entry<String,List<Station>> cluster : clusters.entrySet() ) {
+            Station station = selectMedian(cluster.getValue());
+            DbTolomet.Counts info = DbTolomet.getInstance().getCountryCounts(cluster.getKey());
+            info.setName(countries.get(info.getName()));
+            Marker marker = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(station.getLatitude(), station.getLongitude()))
+                    .icon(BitmapDescriptorFactory.defaultMarker(hueHi))
+                    .title(info.getName())
+                    .snippet(String.format("%d", info.getStationCount()))
+            );
+            marker2station.put(marker,station);
+        }
+    }
+
+    private Station selectMedian(List<Station> stations) {
+        Collections.sort(stations, new Comparator<Station>() {
+            @Override
+            public int compare(Station lhs, Station rhs) {
+                return (int)Math.signum(lhs.getLatitude()-rhs.getLatitude());
+            }
+        });
+        final double medLat = stations.get(stations.size()/2).getLatitude();
+        Collections.sort(stations, new Comparator<Station>() {
+            @Override
+            public int compare(Station lhs, Station rhs) {
+                return (int)Math.signum(lhs.getLongitude()-rhs.getLongitude());
+            }
+        });
+        final double medLon = stations.get(stations.size()/2).getLongitude();
+        Collections.sort(stations, new Comparator<Station>() {
+            @Override
+            public int compare(Station lhs, Station rhs) {
+                double dist1 = Math.abs(lhs.getLatitude()-medLat)+Math.abs(lhs.getLongitude()-medLon);
+                double dist2 = Math.abs(rhs.getLatitude()-medLat)+Math.abs(rhs.getLongitude()-medLon);
+                return (int)Math.signum(dist1-dist2);
+            }
+        });
+        return stations.get(0);
+    }
+
+    private boolean isClustered() {
+        return station2marker.isEmpty();
+    }
+
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Station station = marker2station.get(marker);
-        if( station == null )
-            return false;
-        spinner.selectStation(station);
+        if( !isClustered() ) {
+            Station station = marker2station.get(marker);
+            if (station == null)
+                return false;
+            spinner.selectStation(station);
+        }
         marker.showInfoWindow();
         return true;
     }
@@ -207,4 +314,6 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
     private String lastStation;
     private final Map<Marker,Station> marker2station = new HashMap<>();
     private final Map<Station,Marker> station2marker = new HashMap<>();
+    private static final int STATION_LIMIT = 100;
+    private static final int REGION_LIMIT = 1000;
 }
