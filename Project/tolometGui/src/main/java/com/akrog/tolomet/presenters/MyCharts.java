@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.akrog.tolomet.BaseActivity;
@@ -306,13 +304,11 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 	public void onBoundaryReached(final long requestedDate) {
         if( settings.getUpdateMode() == 0 || downloader != null || (pastDate != null && requestedDate >= pastDate) )
             return;
-		final ProgressBar progressBar = activity.getProgressBar();
         downloader = new AsyncTask<Void,Void,Void>() {
 			@Override
 			protected void onPreExecute() {
 				super.onPreExecute();
-				progressBar.setIndeterminate(true);
-				progressBar.setVisibility(View.VISIBLE);
+				activity.beginProgress();
 			}
 
 			@Override
@@ -333,12 +329,12 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
                 chartAir.redraw();
                 chartWind.redraw();
                 downloader = null;
-				progressBar.setVisibility(View.GONE);
+				activity.endProgress();
             }
             @Override
             protected void onCancelled() {
                 downloader = null;
-				progressBar.setVisibility(View.GONE);
+				activity.endProgress();
             }
         }.execute();
 	}

@@ -2,13 +2,12 @@ package com.akrog.tolomet;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 
 import com.akrog.tolomet.data.AppSettings;
-import com.akrog.tolomet.data.Bundler;
 import com.akrog.tolomet.gae.GaeManager;
-import com.akrog.tolomet.presenters.Downloader;
 import com.akrog.tolomet.presenters.MyCharts;
 import com.akrog.tolomet.presenters.MySummary;
 import com.akrog.tolomet.presenters.Presenter;
@@ -38,10 +37,7 @@ public class ChartsActivity extends BaseActivity {
         presenters.add(summary);
         for( Presenter presenter : presenters)
         	presenter.initialize(this, savedInstanceState);
-        
-        if( savedInstanceState != null )
-        	Bundler.loadStations(model.getAllStations(), savedInstanceState);
-        
+
         createTimer();
     }
         
@@ -50,10 +46,17 @@ public class ChartsActivity extends BaseActivity {
     	super.onSaveInstanceState(outState);
     	for( Presenter presenter : presenters)
     		presenter.save(outState);
-    	Bundler.saveStations(model.getAllStations(), outState);
-    	cancelTimer();
-    	if( downloading )
-    		model.cancel();
+    }
+
+    @Override
+    protected void onStop() {
+        cancelTimer();
+        if (thread != null) {
+            model.cancel();
+            thread.cancel(true);
+            thread = null;
+        }
+        super.onStop();
     }
 
     @Override
@@ -125,13 +128,28 @@ public class ChartsActivity extends BaseActivity {
     }
     
     private void downloadData() {
-		if (downloading)
+		if (thread != null)
 			return;
 		if (alertNetwork())
 			return;
-		Downloader downloader = new Downloader(this);
-		downloader.execute();
-		downloading = true;
+        thread = new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                beginProgress();
+            }
+            @Override
+            protected Void doInBackground(Void... params) {
+                model.refresh();
+                return null;
+            }
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                endProgress();
+                onDownloaded();
+            }
+        }.execute();
 	}
 
 	@Override
@@ -154,6 +172,17 @@ public class ChartsActivity extends BaseActivity {
     	} else
     		downloadData();
     }
+
+	@Override
+	public void onCancel() {
+        super.onCancel();
+        if( thread == null )
+            return;
+        model.cancel();
+        thread.cancel(true);
+        postTimer();
+        redraw();
+	}
 
 	@Override
 	public void onBrowser() {
@@ -194,24 +223,17 @@ public class ChartsActivity extends BaseActivity {
 	}
 
 	public void onDownloaded() {		
-		downloading = false;
+		thread = null;
 		postTimer();
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.HOUR_OF_DAY, 0);
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.MILLISECOND, 0);
-		//model.getCurrentStation().getMeteo().clear(System.currentTimeMillis()-24L*60*60*1000);
 		model.getCurrentStation().getMeteo().clear(cal.getTimeInMillis());
         redraw();
         gaeManager.checkMotd();
     }
-	
-	public void onCancelled() {		
-		downloading = false;
-		postTimer();
-		redraw();
-	}	
 	
 	// Fields
 	private final List<Presenter> presenters = new ArrayList<Presenter>();
@@ -220,7 +242,7 @@ public class ChartsActivity extends BaseActivity {
 	private final GaeManager gaeManager = new GaeManager();
 	private final Handler handler = new Handler();
 	private Runnable timer;
-	private boolean downloading = false;
+    private AsyncTask<Void, Void, Void> thread;
 
 	public static String EXTRA_STATION_ID = "com.akrog.tolomet.stationId";
     public static String EXTRA_COUNTRY = "com.akrog.tolomet.country";

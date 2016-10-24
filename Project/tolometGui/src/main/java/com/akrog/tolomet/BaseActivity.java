@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.akrog.tolomet.data.AppSettings;
 import com.akrog.tolomet.presenters.MySpinner;
@@ -126,6 +127,36 @@ public abstract class BaseActivity extends AppCompatActivity {
         return (ProgressBar)findViewById(R.id.progressbar);
     }
 
+    public boolean beginProgress() {
+        boolean res = !inProgress;
+        ProgressBar progressBar = getProgressBar();
+        progressBar.setIndeterminate(true);
+        progressBar.setVisibility(View.VISIBLE);
+        inProgress = true;
+        return res;
+    }
+
+    public boolean endProgress() {
+        boolean res = inProgress;
+        ProgressBar progressBar = getProgressBar();
+        progressBar.setVisibility(View.GONE);
+        inProgress = false;
+        return res;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if( inProgress ) {
+            endProgress();
+            onCancel();
+        } else
+            super.onBackPressed();
+    }
+
+    public void onCancel() {
+        Toast.makeText(Tolomet.getAppContext(),getString(R.string.DownloadCancelled),Toast.LENGTH_SHORT).show();
+    }
+
     public abstract void onRefresh();
 
     public abstract void onBrowser();
@@ -142,4 +173,5 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected final AppSettings settings = AppSettings.getInstance();
     protected final MyToolbar toolbar = new MyToolbar();
     protected final MySpinner spinner = new MySpinner();
+    private boolean inProgress = false;
 }

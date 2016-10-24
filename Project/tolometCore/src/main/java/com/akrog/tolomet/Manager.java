@@ -111,7 +111,7 @@ public class Manager {
 		Number hum = station.getMeteo().getAirHumidity().getAt(stamp);
 		Number temp = station.getMeteo().getAirTemperature().getAt(stamp);
 
-		StringBuilder str = new StringBuilder(getStamp(station));
+		StringBuilder str = new StringBuilder(getStamp(station,stamp));
 		if( temp != null )
 			str.append(String.format(" | %.1f ºC", temp));
 		if( hum != null )
@@ -126,22 +126,6 @@ public class Manager {
 			str.append(" km/h");
 
 		return large ? str.toString() : str.toString().replaceAll(" ", "");
-	}
-
-	private Number findClosest(Measurement meas, Long stamp) {
-		Number closest = meas.getLast();
-		if( stamp == null )
-			return closest;
-		long diff = Math.abs(stamp-meas.getStamp());
-		long tmp;
-		for( int i = 0; i < meas.size(); i++ ) {
-			tmp = Math.abs(stamp - meas.getTimes()[i]);
-			if( tmp < diff ) {
-				diff = tmp;
-				closest = meas.getValues()[i];
-			}
-		}
-		return closest;
 	}
 
 	public String getStamp(Station station) {

@@ -1,7 +1,5 @@
 package com.akrog.tolomet;
 
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -17,23 +15,7 @@ public abstract class BrowserActivity extends BaseActivity {
     @Override
     public void createView(Bundle savedInstanceState, int layoutResId, int... buttonIds) {
         super.createView(savedInstanceState, layoutResId, buttonIds);
-        createProgress();
         createWeb();
-    }
-
-    private void createProgress() {
-        progress = new ProgressDialog(this);
-        progress.setMessage(getString(R.string.Loading) + "...");
-        //progress.setTitle("");
-        progress.setIndeterminate(true);
-        progress.setCancelable(true);
-        progress.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                web.stopLoading();
-                last = null;
-            }
-        });
     }
 
     private void createWeb() {
@@ -47,13 +29,13 @@ public abstract class BrowserActivity extends BaseActivity {
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                progress.show();
+                beginProgress();
                 super.onPageStarted(view, url, favicon);
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                progress.dismiss();
+                endProgress();
                 super.onPageFinished(view, url);
             }
 
@@ -78,6 +60,13 @@ public abstract class BrowserActivity extends BaseActivity {
             last = null;
             reload(model.getCurrentStation());
         }
+    }
+
+    @Override
+    public void onCancel() {
+        super.onCancel();
+        web.stopLoading();
+        last = null;
     }
 
     @Override
@@ -125,6 +114,5 @@ public abstract class BrowserActivity extends BaseActivity {
     }
 
     private WebView web;
-    private ProgressDialog progress;
     private Station last;
 }
