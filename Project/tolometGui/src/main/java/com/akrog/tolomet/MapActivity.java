@@ -151,7 +151,7 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
         Map<String,String> countries = new HashMap<>();
         for( Country country : DbTolomet.getInstance().getCountries() )
             countries.put(country.getCode(), country.getName());
-        float hueHi = BitmapDescriptorFactory.HUE_GREEN;
+        float hue = BitmapDescriptorFactory.HUE_VIOLET;
         for(Map.Entry<Integer,List<Station>> cluster : clusters.entrySet() ) {
             Station station = selectMedian(cluster.getValue());
             DbTolomet.Counts info = DbTolomet.getInstance().getRegionCounts(cluster.getKey());
@@ -159,7 +159,7 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
                 info.setName(countries.get(info.getName()));
             Marker marker = mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(station.getLatitude(), station.getLongitude()))
-                    .icon(BitmapDescriptorFactory.defaultMarker(hueHi))
+                    .icon(BitmapDescriptorFactory.defaultMarker(hue))
                     .title(info.getName())
                     .snippet(String.format("%d", info.getStationCount()))
             );
@@ -181,14 +181,14 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
         Map<String,String> countries = new HashMap<>();
         for( Country country : DbTolomet.getInstance().getCountries() )
             countries.put(country.getCode(), country.getName());
-        float hueHi = BitmapDescriptorFactory.HUE_GREEN;
+        float hue = BitmapDescriptorFactory.HUE_BLUE;
         for(Map.Entry<String,List<Station>> cluster : clusters.entrySet() ) {
             Station station = selectMedian(cluster.getValue());
             DbTolomet.Counts info = DbTolomet.getInstance().getCountryCounts(cluster.getKey());
             info.setName(countries.get(info.getName()));
             Marker marker = mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(station.getLatitude(), station.getLongitude()))
-                    .icon(BitmapDescriptorFactory.defaultMarker(hueHi))
+                    .icon(BitmapDescriptorFactory.defaultMarker(hue))
                     .title(info.getName())
                     .snippet(String.format("%d", info.getStationCount()))
             );
