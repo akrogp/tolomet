@@ -128,8 +128,7 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
                     .position(new LatLng(station.getLatitude(), station.getLongitude()))
                     .icon(BitmapDescriptorFactory.defaultMarker(hue))
                     .title(station.getName())
-                    .snippet(String.format("%s", station.getProviderType().name()))
-            );
+                    .snippet(String.format("%s", station.getProviderType().name())));
             station2marker.put(station, marker);
             marker2station.put(marker,station);
         }
@@ -160,12 +159,14 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
                 info.setName(countries.get(info.getName()));
             } else
                 hue = BitmapDescriptorFactory.HUE_VIOLET;
+            String desc = cluster.getValue().size() == info.getStationCount() ?
+                    String.valueOf(info.getStationCount()) :
+                    String.format("%d/%d", cluster.getValue().size(), info.getStationCount());
             Marker marker = mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(station.getLatitude(), station.getLongitude()))
                     .icon(BitmapDescriptorFactory.defaultMarker(hue))
                     .title(info.getName())
-                    .snippet(String.format("%d", info.getStationCount()))
-            );
+                    .snippet(desc));
             marker2station.put(marker,station);
         }
     }
@@ -189,12 +190,14 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
             Station station = selectMedian(cluster.getValue());
             DbTolomet.Counts info = DbTolomet.getInstance().getCountryCounts(cluster.getKey());
             info.setName(countries.get(info.getName()));
+            String desc = cluster.getValue().size() == info.getStationCount() ?
+                    String.valueOf(info.getStationCount()) :
+                    String.format("%d/%d", cluster.getValue().size(), info.getStationCount());
             Marker marker = mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(station.getLatitude(), station.getLongitude()))
                     .icon(BitmapDescriptorFactory.defaultMarker(hue))
                     .title(info.getName())
-                    .snippet(String.format("%d", info.getStationCount()))
-            );
+                    .snippet(desc));
             marker2station.put(marker,station);
         }
     }
