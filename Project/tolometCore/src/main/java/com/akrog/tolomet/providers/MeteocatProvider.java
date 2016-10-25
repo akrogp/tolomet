@@ -17,20 +17,22 @@ import java.util.TimeZone;
 public class MeteocatProvider implements WindProvider {
 	@Override
 	public void refresh(Station station) {
+		travel(station, System.currentTimeMillis());
+	}
+
+	@Override
+	public boolean travel(Station station, long date) {
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+		cal.setTimeInMillis(date);
 		downloader = new Downloader();
 		downloader.setBrowser(FakeBrowser.WGET);
 		downloader.setUrl("http://www.meteo.cat/observacions/xema/dades");
 		downloader.addParam("codi", station.getCode());
 		downloader.addParam("dia", String.format("%d-%02d-%02dT00:00Z", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH)));
-		updateStationV2(station, downloader.download("taronja"));
+		updateStationV2(station, cal, downloader.download("taronja"));
 		if( station.isEmpty() )
-			updateStationV1(station, downloader.download("\"tabs-2\""));
-	}
-
-	@Override
-	public boolean travel(Station station, long date) {
-		return false;
+			updateStationV1(station, cal, downloader.download("\"tabs-2\""));
+		return true;
 	}
 
 	@Override
@@ -39,16 +41,14 @@ public class MeteocatProvider implements WindProvider {
 			downloader.cancel();	
 	}
 
-	protected void updateStationV1(Station station, String data) {
+	protected void updateStationV1(Station station, Calendar cal, String data) {
 		if( data == null )
 			return;				
 		int iWind = data.indexOf("renderitzarGraficaVelocitatDireccioVent");
 		int iAir = data.indexOf("renderitzarGraficaTemperaturaHumitat");
 		if( iWind < 0 && iAir < 0 )
 			return;
-		station.clear();
-		
-		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+
 		cal.set(Calendar.HOUR_OF_DAY, 0);
 		cal.set(Calendar.MINUTE, 30);
 		cal.set(Calendar.SECOND, 0);
@@ -94,7 +94,7 @@ public class MeteocatProvider implements WindProvider {
 		return list;
 	}
 
-	protected void updateStationV2(Station station, String data) {
+	protected void updateStationV2(Station station, Calendar cal, String data) {
 		if( data == null )
 			return;
 
@@ -105,14 +105,12 @@ public class MeteocatProvider implements WindProvider {
 		if( iStamp != 0 )
 			return;
 
-		station.clear();
 		int iTemp = findCol(rows[0], "TM");
 		int iHum = findCol(rows[0], "HRM");
 		int iMed = findCol(rows[0], "VVM");
 		int iMax = findCol(rows[0], "VVX");
 		int iDir = findCol(rows[0], "DVM");
 
-		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 		cal.set(Calendar.HOUR_OF_DAY, 0);
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND, 0);

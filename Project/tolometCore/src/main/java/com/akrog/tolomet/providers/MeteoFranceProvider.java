@@ -32,6 +32,11 @@ public class MeteoFranceProvider extends BaseProvider {
     }
 
     @Override
+    public boolean configureDownload(Downloader downloader, Station station, long date) {
+        return false;
+    }
+
+    @Override
     public void updateStation(Station station, String data) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
         df.setTimeZone(TIME_ZONE);

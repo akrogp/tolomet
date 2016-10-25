@@ -23,11 +23,25 @@ public class MetarProvider extends BaseProvider {
 	}
 
 	@Override
+	public boolean configureDownload(Downloader downloader, Station station, long date ) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTimeInMillis(date);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		long from = cal.getTimeInMillis();
+		cal.set(Calendar.HOUR_OF_DAY, 23);
+		cal.set(Calendar.MINUTE, 59);
+		cal.set(Calendar.SECOND, 59);
+		cal.set(Calendar.MILLISECOND, 999);
+		long to = cal.getTimeInMillis();
+		configureDownload(downloader, station, from, to);
+		return true;
+	}
+
+	@Override
 	public void configureDownload(Downloader downloader, Station station) {
-		downloader.setUrl("http://www.aviationweather.gov/adds/dataserver_current/httpparam");
-		downloader.addParam("dataSource","metars");
-		downloader.addParam("requestType","retrieve");
-		downloader.addParam("format","csv");
 		Long stamp = station.getStamp();
 		if( stamp == null ) {
 			Calendar cal = Calendar.getInstance();
@@ -37,8 +51,16 @@ public class MetarProvider extends BaseProvider {
 			cal.set(Calendar.MILLISECOND, 0);
 			stamp = cal.getTimeInMillis();
 		}
-		downloader.addParam("startTime",stamp/1000);		
-		downloader.addParam("endTime",System.currentTimeMillis()/1000);
+		configureDownload(downloader, station, stamp, System.currentTimeMillis());
+	}
+
+	public void configureDownload(Downloader downloader, Station station, long from, long to) {
+		downloader.setUrl("http://www.aviationweather.gov/adds/dataserver_current/httpparam");
+		downloader.addParam("dataSource","metars");
+		downloader.addParam("requestType","retrieve");
+		downloader.addParam("format","csv");
+		downloader.addParam("startTime",from/1000);
+		downloader.addParam("endTime",to/1000);
 		downloader.addParam("stationString",station.getCode());
 	}
 

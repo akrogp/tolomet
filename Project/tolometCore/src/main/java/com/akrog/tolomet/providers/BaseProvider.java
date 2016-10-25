@@ -34,10 +34,22 @@ public abstract class BaseProvider implements WindProvider {
 
 	@Override
 	public boolean travel(Station station, long date) {
-		return false;
+		downloader = new Downloader();
+		if( !configureDownload(downloader, station, date) )
+			return false;
+		String data = downloader.download();
+		if( data == null )
+			return false;
+		try {
+			updateStation(station, data);
+		} catch( Exception e ) {
+		}
+		return true;
 	}
 
 	public abstract void configureDownload(Downloader downloader, Station station );
+
+	public abstract boolean configureDownload(Downloader downloader, Station station, long date );
 	
 	public abstract void updateStation(Station station, String data);
 

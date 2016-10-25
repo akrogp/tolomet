@@ -40,6 +40,11 @@ public class FfvlProvider extends BaseProvider {
     }
 
     @Override
+    public boolean configureDownload(Downloader downloader, Station station, long date) {
+        return false;
+    }
+
+    @Override
     public void updateStation(Station station, String data) {
         try {
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);

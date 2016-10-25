@@ -3,13 +3,27 @@ package com.akrog.tolomet.providers;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
 
 public class MeteoNavarraProvider implements WindProvider {
+    public MeteoNavarraProvider() {
+        df = new SimpleDateFormat("dd/MM/yyyyH:mm");
+        df.setTimeZone(TimeZone.getTimeZone("GMT"));
+    }
+
 	@Override
 	public void refresh(Station station) {
+		travel(station, System.currentTimeMillis());
+	}
+
+	@Override
+	public boolean travel(Station station, long date) {
 		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+		now.setTimeInMillis(date);
 		String time1 = String.format("%d/%d/%d", now.get(Calendar.DAY_OF_MONTH), now.get(Calendar.MONTH)+1, now.get(Calendar.YEAR) );
 		String time2 = String.format("%d/%d/%d", now.get(Calendar.DAY_OF_MONTH)+1, now.get(Calendar.MONTH)+1, now.get(Calendar.YEAR) );
 		downloader = new Downloader();
@@ -25,11 +39,7 @@ public class MeteoNavarraProvider implements WindProvider {
 		downloader.addParam("fecha_hasta",time2);
 		downloader.addParam("dl","csv");
 		updateStation(station, downloader.download());
-	}
-
-	@Override
-	public boolean travel(Station station, long date) {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -45,8 +55,7 @@ public class MeteoNavarraProvider implements WindProvider {
 		long date;
 		Number num;
 		if( cells.length < 26 )
-			return;	
-		station.clear();
+			return;
 		for( int i = 18; i < cells.length; i+=8 ) {
 			if( cells[i].equals("\"\"") || cells[i+1].equals("\"- -\"") )
 				continue;
@@ -84,12 +93,13 @@ public class MeteoNavarraProvider implements WindProvider {
 	}
 
 	private long toEpoch( String str ) {
-		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-		String[] fields = str.substring(10).split(":");
-		cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(fields[0]) );
-	    cal.set(Calendar.MINUTE, Integer.parseInt(fields[1]) );
-	    return cal.getTimeInMillis();
-	}
+        try {
+            return df.parse(str).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 	
 	private String getContent( String cell ) {
 		return cell.replaceAll("\"","").replace('.',this.separator);
@@ -97,4 +107,5 @@ public class MeteoNavarraProvider implements WindProvider {
 	
 	private final char separator = '.';
 	private Downloader downloader;
+    private final DateFormat df;
 }
