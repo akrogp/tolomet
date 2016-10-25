@@ -18,12 +18,18 @@ Ficha -> http://ias1.larioja.org/estaciones/estaciones/mapa/consulta/consulta.js
 - Hay que hacer varias peticiones -> Velocidad (codigoP=7), Dirección (codigoP=8), Humedad (codigoP=2), temperatura (codigoP=6), presión (codigoP=15)
 Usuario -> http://www.larioja.org/emergencias-112/es/meteorologia/datos-estaciones-gobierno/ezcaray
 
-Galicia:
+Galicia (old):
 Gráfica -> http://www2.meteogalicia.es/NovoXeollador/accesograficas/graficashoxe.asp?est=10143&Nest=%20Cari%F1o
 XML -> http://www2.meteogalicia.es/servizos/MComunicacion/xml/observacion/estacions/estado_actual_p.asp?idEst=10064
 http://www2.meteogalicia.es/galego/observacion/estacions/contidos/DatosHistoricosXML_dezminutal.asp?est=10124&param=1306,1307,1311,1312&data1=28/4/2013&data2=29/4/2013
 http://www2.meteogalicia.es/galego/observacion/estacions/contidos/sensor_periodo.asp?Nest=10124&periodo=1
 Usuario -> http://www2.meteogalicia.es/galego/observacion/estacions/estacions.asp?idEst=10091
+
+Galicia (new):
+Estaciones: http://servizos.meteogalicia.gal/rss/observacion/listaEstacionsMeteo.action
+Parámetros: http://www.meteogalicia.gal/observacion/rede/parametrosIndex.action
+Datos: http://servizos.meteogalicia.gal/rss/observacion/ultimos10minEstacionsMeteo.action?idEst=10124&idParam=DV_AVG_10m,VV_AVG_10m
+Histórico: http://servizos.meteogalicia.gal/rss/observacion/datosDiariosEstacionsMeteo.action?idEst=10124&idParam=DVP_MODA_10m,VV_AVG_10m&dataIni=22/10/2016&dataFin=23/10/2016
 
 MeteoCat (old):
 Datos -> curl -d 'idEstacio=VE&team=ObservacioTeledeteccio&inputSource=DadesActualsEstacio' 'http://www.meteo.cat/xema/AppJava/Detall24Estacio.do'
@@ -46,6 +52,9 @@ CSV -> http://www.aviationweather.gov/adds/dataserver_current/httpparam?dataSour
 
 RCNL:
 Todo -> http://www.rcnlaredo.es/~meteorcnl/meteo/Current_Vantage_Pro.html
+
+Prades:
+http://www.meteoprades.cat/export/tolomet_20161025_lafebro.txt
 
 Holfuy:
 Data -> http://holfuy.hu/en/takeit/getdata.php

@@ -10,22 +10,24 @@ import java.util.TimeZone;
 public class LaRiojaProvider implements WindProvider {
 	@Override
 	public void refresh(Station station) {
-		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-		String speed = download(station.getCode(), now, 7);
-		if( speed == null )
-			return;
-		String direction = download(station.getCode(), now, 8);
-		if( direction == null )
-			return;
-		String humidity = download(station.getCode(), now, 2);
-		String temperature = download(station.getCode(), now, 6);
-		String pressure = download(station.getCode(), now, 15);
-		updateStation(station, speed, direction, humidity, temperature, pressure);
+		travel(station, System.currentTimeMillis());
 	}
 
 	@Override
 	public boolean travel(Station station, long date) {
-		return false;
+		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+		now.setTimeInMillis(date);
+		String speed = download(station.getCode(), now, 7);
+		if( speed == null )
+			return false;
+		String direction = download(station.getCode(), now, 8);
+		if( direction == null )
+			return false;
+		String humidity = download(station.getCode(), now, 2);
+		String temperature = download(station.getCode(), now, 6);
+		String pressure = download(station.getCode(), now, 15);
+		updateStation(station, speed, direction, humidity, temperature, pressure);
+		return true;
 	}
 
 	@Override
@@ -71,8 +73,6 @@ public class LaRiojaProvider implements WindProvider {
 		String[] directionLines = direction.split("\n");		
 		if( speedLines.length < 9 || directionLines.length < 9 )
 			return;
-		
-		station.clear();
 		
 		String[] cols;
 		long date;

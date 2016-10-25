@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -35,10 +36,32 @@ public class PiouProvider extends BaseProvider {
 
     @Override
     public void configureDownload(Downloader downloader, Station station) {
-        downloader.setUrl("http://api.pioupiou.fr/v1/archive/" + station.getCode());
         String start = station.getStamp() == null ? "last-day" : df.format(new Date(station.getStamp()));
+        configureDownload(downloader, station, start, "now");
+    }
+
+    @Override
+    public boolean configureDownload(Downloader downloader, Station station, long date) {
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        cal.setTimeInMillis(date);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        String start = df.format(new Date(cal.getTimeInMillis()));
+        cal.set(Calendar.HOUR_OF_DAY, 23);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        cal.set(Calendar.MILLISECOND, 999);
+        String stop = df.format(new Date(cal.getTimeInMillis()));
+        configureDownload(downloader, station, start, stop);
+        return true;
+    }
+
+    public void configureDownload(Downloader downloader, Station station, String start, String stop) {
+        downloader.setUrl("http://api.pioupiou.fr/v1/archive/" + station.getCode());
         downloader.addParam("start",start);
-        downloader.addParam("stop","now");
+        downloader.addParam("stop",stop);
         downloader.addParam("format","json");
     }
 

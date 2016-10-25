@@ -26,6 +26,11 @@ public class PradesProvider extends BaseProvider {
 	}
 
 	@Override
+	public boolean configureDownload(Downloader downloader, Station station, long date) {
+		return false;
+	}
+
+	@Override
 	public void updateStation(Station station, String data) {
 		String[] lines = data.split("\\n");
 		if( lines.length < 1 )
