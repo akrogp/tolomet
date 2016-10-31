@@ -83,7 +83,13 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 	@Override
 	public void save(Bundle bundle) {	
 	}
-	
+
+	@Override
+	public void setEnabled(boolean enabled) {
+		chartWind.setEnabled(enabled);
+		chartAir.setEnabled(enabled);
+	}
+
 	private void updateMarkers() {
 		int pos = settings.getMinMarker(); 
 		markerVmin.setPos(pos);

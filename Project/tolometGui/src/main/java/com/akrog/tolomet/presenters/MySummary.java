@@ -25,7 +25,12 @@ public class MySummary implements Presenter, Axis.ChangeListener {
 	@Override
 	public void save(Bundle bundle) {		
 	}
-	
+
+	@Override
+	public void setEnabled(boolean enabled) {
+		summary.setEnabled(enabled);
+	}
+
 	@Override
 	public void updateView() {
 		if( model.getCurrentStation().isEmpty() )
