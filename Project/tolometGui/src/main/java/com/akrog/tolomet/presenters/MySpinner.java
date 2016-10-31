@@ -350,6 +350,11 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 	@Override
 	public void updateView() {
 	}
+
+    @Override
+	public void setEnabled(boolean enabled) {
+		spinner.setEnabled(enabled);
+	}
 	
 	public static enum Type {
 		StartMenu(OFF_MENU),

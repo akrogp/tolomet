@@ -118,6 +118,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public boolean beginProgress() {
+        toolbar.setEnabled(false);
+        spinner.setEnabled(false);
         boolean res = !inProgress;
         ProgressBar progressBar = getProgressBar();
         progressBar.setIndeterminate(true);
@@ -131,6 +133,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         ProgressBar progressBar = getProgressBar();
         progressBar.setVisibility(View.GONE);
         inProgress = false;
+        toolbar.setEnabled(true);
+        spinner.setEnabled(true);
         return res;
     }
 

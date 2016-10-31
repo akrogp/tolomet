@@ -315,6 +315,13 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 		//drawable.setAlpha(enabled?0xFF:0x42);
 	}
 
+    @Override
+	public void setEnabled(boolean enabled) {
+		Menu menu = toolbar.getMenu();
+		for( int i = 0; i < menu.size(); i++ )
+			menu.getItem(i).setEnabled(enabled);
+	}
+
 	private BaseActivity activity;
 	private final Model model = Model.getInstance();
 	private AppSettings settings;

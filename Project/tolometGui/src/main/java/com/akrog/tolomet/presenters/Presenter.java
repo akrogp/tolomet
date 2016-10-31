@@ -8,4 +8,5 @@ public interface Presenter {
 	void initialize(BaseActivity activity, Bundle bundle);
 	void updateView();
 	void save(Bundle bundle);
+	void setEnabled(boolean enabled);
 }
