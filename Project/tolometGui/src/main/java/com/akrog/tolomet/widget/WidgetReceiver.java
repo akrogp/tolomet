@@ -1,12 +1,11 @@
 package com.akrog.tolomet.widget;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 
+import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.WidgetSettings;
 
 /**
@@ -24,24 +23,24 @@ public abstract class WidgetReceiver extends AppWidgetProvider {
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
-        AlarmManager alarm = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        /*AlarmManager alarm = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         alarm.setInexactRepeating(
                 AlarmManager.ELAPSED_REALTIME,
                 AlarmManager.INTERVAL_FIFTEEN_MINUTES, AlarmManager.INTERVAL_FIFTEEN_MINUTES,
-                getUpdateIntent(context));
+                getUpdateIntent(context));*/
     }
 
-    private PendingIntent getUpdateIntent(Context context) {
+    /*private PendingIntent getUpdateIntent(Context context) {
         Intent intent = new Intent(FORCE_WIDGET_UPDATE);
         intent.putExtra(EXTRA_WIDGET_SIZE, getWidgetSize());
         return PendingIntent.getBroadcast(context,0,intent,PendingIntent.FLAG_CANCEL_CURRENT);
-    }
+    }*/
 
     @Override
     public void onDisabled(Context context) {
         super.onDisabled(context);
-        AlarmManager alarm = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        alarm.cancel(getUpdateIntent(context));
+        /*AlarmManager alarm = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        alarm.cancel(getUpdateIntent(context));*/
     }
 
     @Override
@@ -61,7 +60,8 @@ public abstract class WidgetReceiver extends AppWidgetProvider {
         super.onReceive(context, intent);
         String action = intent.getAction();
         if( FORCE_WIDGET_UPDATE.equals(action) || Intent.ACTION_USER_PRESENT.equals(action) )
-            startService(context);
+            if(Tolomet.isNetworkAvailable())
+                startService(context);
     }
 
     private void startService(Context context) {

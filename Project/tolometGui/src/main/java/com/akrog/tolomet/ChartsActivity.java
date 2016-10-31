@@ -134,8 +134,10 @@ public class ChartsActivity extends BaseActivity {
     private void downloadData() {
 		if (thread != null)
 			return;
-		if (alertNetwork())
-			return;
+		if (alertNetwork()) {
+            model.loadCache();
+            return;
+        }
         thread = new AsyncTask<Void, Void, Void>() {
             @Override
             protected void onPreExecute() {
@@ -152,6 +154,11 @@ public class ChartsActivity extends BaseActivity {
                 super.onPostExecute(aVoid);
                 endProgress();
                 onDownloaded();
+            }
+            @Override
+            protected void onCancelled() {
+                super.onCancelled();
+                onPostExecute(null);
             }
         }.execute();
 	}

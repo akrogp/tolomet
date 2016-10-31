@@ -8,6 +8,7 @@ import android.os.AsyncTask.Status;
 
 import com.akrog.tolomet.ChartsActivity;
 import com.akrog.tolomet.R;
+import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.AppSettings;
 
 import java.io.PrintWriter;
@@ -26,7 +27,7 @@ public class GaeManager {
 	}
 	
 	public void checkMotd() {
-		if( (gaeClient != null && gaeClient.getStatus() == Status.RUNNING) || !tolomet.isNetworkAvailable() )
+		if( (gaeClient != null && gaeClient.getStatus() == Status.RUNNING) || !Tolomet.isNetworkAvailable() )
     		return;
 		
 		// Once a day

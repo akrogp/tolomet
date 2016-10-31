@@ -32,12 +32,32 @@
             </LinearLayout>
         </android.support.v7.widget.Toolbar>
 
-        <ProgressBar
+        <!--<ProgressBar
             android:id="@+id/progressbar"
             android:layout_alignBottom="@id/my_toolbar"
             android:layout_width="match_parent"
             android:layout_height="5dp"
             style="@android:style/Widget.ProgressBar.Horizontal"
+            android:elevation="4dp"
+            android:visibility="gone"/>-->
+
+        <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
+            android:id="@+id/progressbar"
+            android:layout_alignBottom="@id/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:indeterminate="true"
+            app:spb_interpolator="spb_interpolator_acceleratedecelerate"
+            app:spb_sections_count="4"
+            app:spb_color="#00BBBB"
+            app:spb_speed="2.0"
+            app:spb_stroke_width="4dp"
+            app:spb_stroke_separator_length="4dp"
+            app:spb_reversed="false"
+            app:spb_mirror_mode="false"
+            app:spb_progressiveStart_activated="true"
+            app:spb_progressiveStart_speed="1.5"
+            app:spb_progressiveStop_speed="3.4"
             android:elevation="4dp"
             android:visibility="gone"/>
 
