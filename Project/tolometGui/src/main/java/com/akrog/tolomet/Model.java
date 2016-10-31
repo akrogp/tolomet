@@ -152,6 +152,10 @@ public class Model {
         return refresh(currentStation);
     }
 
+    public boolean loadCache() {
+        return loadCache(currentStation);
+    }
+
     public boolean travel(long date) {
         return travel(currentStation, date);
     }
@@ -201,11 +205,19 @@ public class Model {
     }
 
     public boolean refresh(Station station) {
+        if( !checkStation(station) )
+            return false;
         cache.refresh(station);
         if( !manager.refresh(station) )
             return false;
         cache.save(station);
         return true;
+    }
+
+    private boolean loadCache(Station station) {
+        if( !checkStation(station) )
+            return false;
+        return cache.refresh(station) > 0;
     }
 
     public boolean travel(Station station, long date) {

@@ -10,6 +10,7 @@ import com.akrog.tolomet.BaseActivity;
 import com.akrog.tolomet.Meteo;
 import com.akrog.tolomet.Model;
 import com.akrog.tolomet.R;
+import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.AppSettings;
 import com.akrog.tolomet.view.Axis;
 import com.akrog.tolomet.view.Graph;
@@ -304,6 +305,8 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 	public void onBoundaryReached(final long requestedDate) {
         if( settings.getUpdateMode() == 0 || downloader != null || (pastDate != null && requestedDate >= pastDate) )
             return;
+		if( !Tolomet.isNetworkAvailable() )
+			return;
         downloader = new AsyncTask<Void,Void,Void>() {
 			@Override
 			protected void onPreExecute() {
