@@ -5,7 +5,6 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Environment;
 import android.widget.RemoteViews;
 
 import com.akrog.tolomet.ChartsActivity;
@@ -15,13 +14,6 @@ import com.akrog.tolomet.Station;
 import com.akrog.tolomet.data.FlyConstraint;
 import com.akrog.tolomet.data.FlySpot;
 import com.akrog.tolomet.data.WidgetSettings;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Created by gorka on 21/09/16.
@@ -86,7 +78,7 @@ public class WidgetProvider {
             return null;
         model.refresh(station);
 
-        logUpdate(spot.getName());
+        //logUpdate(spot.getName());
 
         StationData data = new StationData();
         data.id = station.getId();
@@ -108,7 +100,7 @@ public class WidgetProvider {
         return data;
     }
 
-    private void logUpdate(String spot) {
+    /*private void logUpdate(String spot) {
         try {
             File file = new File(Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_DOCUMENTS), "TolometWidgetLog.txt");
@@ -117,7 +109,7 @@ public class WidgetProvider {
             pw.println(String.format("%s %s",df.format(new Date()),spot));
             pw.close();
         } catch (Exception e) {}
-    }
+    }*/
 
     private void fillMeteo( StationData data, Station station, long stamp ) {
         Number num = station.getMeteo().getWindDirection().getAt(stamp);
