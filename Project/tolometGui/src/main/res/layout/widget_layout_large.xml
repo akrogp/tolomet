@@ -7,7 +7,8 @@
   android:padding="@dimen/widget_margin">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="@dimen/widget_padding">
 
         <ImageView
             android:id="@+id/widget_icon"
@@ -20,7 +21,7 @@
             android:id="@+id/widget_date"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:textSize="14dp"
+            android:textSize="@dimen/widget_text_small"
             android:textColor="@color/widgetTextColor"
             android:lines="1"
             android:layout_alignBottom="@+id/widget_wind"
@@ -30,7 +31,7 @@
             android:id="@+id/widget_station"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
+            android:textSize="@dimen/widget_text_medium"
             android:textColor="@color/widgetTextColor"
             android:lines="1"
             android:layout_toRightOf="@id/widget_icon"/>
@@ -39,7 +40,7 @@
             android:id="@+id/widget_air"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
+            android:textSize="@dimen/widget_text_medium"
             android:textColor="@color/widgetTextColor"
             android:lines="1"
             android:layout_alignLeft="@id/widget_station"
@@ -49,7 +50,7 @@
             android:id="@+id/widget_wind"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
+            android:textSize="@dimen/widget_text_medium"
             android:textColor="@color/widgetTextColor"
             android:lines="1"
             android:layout_alignLeft="@id/widget_station"

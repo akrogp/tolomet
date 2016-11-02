@@ -3,10 +3,12 @@
   android:id="@+id/widget"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:background="@drawable/widget_background"
   android:padding="@dimen/widget_margin">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="@dimen/widget_padding">
 
         <ImageView
             android:id="@+id/widget_icon"
@@ -18,7 +20,7 @@
             android:id="@+id/widget_station"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
+            android:textSize="@dimen/widget_text_medium"
             android:textColor="@color/widgetTextColor"
             android:lines="1"
             android:layout_below="@id/widget_icon"
