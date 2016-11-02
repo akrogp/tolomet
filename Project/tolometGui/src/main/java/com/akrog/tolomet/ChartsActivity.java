@@ -245,7 +245,23 @@ public class ChartsActivity extends BaseActivity {
         redraw();
         gaeManager.checkMotd();
     }
-	
+
+	@Override
+	public boolean beginProgress() {
+		boolean result = super.beginProgress();
+		for( Presenter presenter : presenters)
+			presenter.setEnabled(false);
+		return result;
+	}
+
+	@Override
+	public boolean endProgress() {
+		boolean result = super.endProgress();
+		for( Presenter presenter : presenters)
+			presenter.setEnabled(true);
+		return result;
+	}
+
 	// Fields
 	private final List<Presenter> presenters = new ArrayList<Presenter>();
 	private final MySummary summary = new MySummary();
