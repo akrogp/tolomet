@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.os.AsyncTaskCompat;
 import android.widget.Toast;
 
 import com.akrog.tolomet.BaseActivity;
@@ -318,8 +319,13 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 			protected void onPreExecute() {
 				super.onPreExecute();
 				activity.beginProgress();
+                activity.addCancelListenner(new Runnable() {
+                    @Override
+                    public void run() {
+                        downloader.cancel(true);
+                    }
+                });
 			}
-
 			@Override
             protected Void doInBackground(Void... params) {
                 if( !model.travel(requestedDate) )
@@ -344,8 +350,10 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
             @Override
             protected void onCancelled() {
                 downloader = null;
+                model.cancel();
 				activity.endProgress();
             }
-        }.execute();
+        };
+        AsyncTaskCompat.executeParallel(downloader);
 	}
 }

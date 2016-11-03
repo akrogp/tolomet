@@ -17,6 +17,8 @@ import com.akrog.tolomet.view.AndroidUtils;
 import com.google.android.gms.maps.GoogleMap;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by gorka on 24/02/16.
@@ -135,6 +137,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         inProgress = false;
         toolbar.setEnabled(true);
         spinner.setEnabled(true);
+        listCancel.clear();
         return res;
     }
 
@@ -147,8 +150,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void onCancel() {
-        endProgress();
         Toast.makeText(Tolomet.getAppContext(),getString(R.string.DownloadCancelled),Toast.LENGTH_SHORT).show();
+        for( Runnable listenner : listCancel )
+            listenner.run();
+        endProgress();
+    }
+
+    public void addCancelListenner( Runnable listenner ) {
+        listCancel.add(listenner);
     }
 
     public abstract void onRefresh();
@@ -168,4 +177,5 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected final MyToolbar toolbar = new MyToolbar();
     protected final MySpinner spinner = new MySpinner();
     private boolean inProgress = false;
+    private final List<Runnable> listCancel = new ArrayList<>();
 }
