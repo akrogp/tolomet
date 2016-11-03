@@ -100,6 +100,10 @@ public class RestApi {
 			motd.setVersion("4.5");
 			motd.addChange(tr(lang,"Incluidas más estaciones de Francia (FFVL y MeteoFrance)", "Included more French stations (FFVL and MeteoFrance)"));
 		}
+		if( version < 451 ) {
+			motd.setVersion("4.5.1");
+			motd.addChange(tr(lang,"Recuperado acceso a Euskalmet", "Restores Euskalmet access"));
+		}
 	}
 
 	private void changesv3(int version, String lang, Motd motd) {
