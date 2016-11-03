@@ -72,7 +72,7 @@ public class Manager {
 		try {
 			station.getProvider().refresh(station);
 		} catch( Exception e ) {
-			station.clear();
+			//station.clear();
 			return false;
 		}
 		return true;
@@ -81,7 +81,11 @@ public class Manager {
 	public boolean travel( Station station, long date ) {
 		if( !checkStation(station) )
 			return false;
-		return station.getProvider().travel(station, date);
+		try {
+			return station.getProvider().travel(station, date);
+		} catch( Exception e ) {
+		}
+		return false;
 	}
 	
 	public void cancel( Station station ) {

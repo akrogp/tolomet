@@ -322,7 +322,8 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 
 			@Override
             protected Void doInBackground(Void... params) {
-                model.travel(requestedDate);
+                if( !model.travel(requestedDate) )
+					cancel(true);
                 return null;
             }
             @Override

@@ -13,10 +13,17 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.zip.GZIPInputStream;
 
 public class Downloader {
-	public enum FakeBrowser { ANDROID, MOZILLA, WGET };
+	public enum FakeBrowser {DEFAULT, MOZILLA, WGET, TOLOMET };
 	
 	private String url;
 	private String query;
@@ -25,19 +32,44 @@ public class Downloader {
 	protected boolean usingLinebreak = true;
 	private boolean cancelled = false;
     private boolean gzipped = false;
-	private FakeBrowser fakeBrowser = FakeBrowser.ANDROID;
+	//private FakeBrowser fakeBrowser = FakeBrowser.DEFAULT;
+    private FakeBrowser fakeBrowser = FakeBrowser.TOLOMET;
+    private long timeout = 30;
+    private Future<String> future;
 	
 	public String download() {
 		return download(null);
 	}
-	
-	public String download( String stop ) {
+
+    public String download( final String stop ) {
+        final ExecutorService executor = Executors.newCachedThreadPool(Executors.defaultThreadFactory());
+        future = executor.submit(new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                return rawDownload(stop);
+            }
+        });
+        String result = "";
+        try {
+            result = future.get(timeout, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+        future = null;
+        return result;
+    }
+
+	private String rawDownload( String stop ) {
 		/*CookieManager manager = new CookieManager();
         manager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
         CookieHandler.setDefault(manager);*/
 		String result = "";
-    	try {    		
-    		HttpURLConnection con;
+        HttpURLConnection con = null;
+    	try {
     		if( this.method != null && this.method.equalsIgnoreCase("POST") ) {
     			URL url = new URL(this.url);
     			con = (HttpURLConnection)url.openConnection();
@@ -60,13 +92,20 @@ public class Downloader {
     	} catch( Exception e ) {
     		e.printStackTrace();
     		//onCancelled();
-		}
-    	return result;
+		} finally {
+            if( con != null )
+                con.disconnect();
+        }
+        return result;
 	}
 	
 	public void setBrowser( FakeBrowser fakeBrowser ) {
 		this.fakeBrowser = fakeBrowser;
 	}
+
+    public void setTimeout( long timeout ) {
+        this.timeout = timeout;
+    }
 	
 	private void applyBrowserProperties( HttpURLConnection con ) {
 		switch( fakeBrowser ) {
@@ -75,6 +114,9 @@ public class Downloader {
 				break;
 			case MOZILLA:
 				con.setRequestProperty("User-Agent","Mozilla/5.0 (Linux)");
+				break;
+			case TOLOMET:
+				con.setRequestProperty("User-Agent","Mozilla/5.0 (Linux) Tolomet/5.0");
 				break;
 			default: break;
 		}
@@ -87,6 +129,10 @@ public class Downloader {
 	}
 	
 	public void cancel() {
+        if( future != null ) {
+            future.cancel(true);
+            future = null;
+        }
 		cancelled = true;
 	}
 	
