@@ -314,18 +314,9 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
             return;
 		if( !Tolomet.isNetworkAvailable() )
 			return;
+        if( !activity.beginProgress() )
+            return;
         downloader = new AsyncTask<Void,Void,Void>() {
-			@Override
-			protected void onPreExecute() {
-				super.onPreExecute();
-				activity.beginProgress();
-                activity.addCancelListenner(new Runnable() {
-                    @Override
-                    public void run() {
-                        downloader.cancel(true);
-                    }
-                });
-			}
 			@Override
             protected Void doInBackground(Void... params) {
                 if( !model.travel(requestedDate) )
@@ -354,6 +345,12 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 				activity.endProgress();
             }
         };
+        activity.addCancelListenner(new Runnable() {
+            @Override
+            public void run() {
+                downloader.cancel(true);
+            }
+        });
         AsyncTaskCompat.executeParallel(downloader);
 	}
 }

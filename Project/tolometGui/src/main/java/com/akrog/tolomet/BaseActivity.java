@@ -120,25 +120,27 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public boolean beginProgress() {
+        if( inProgress )
+            return false;
         toolbar.setEnabled(false);
         spinner.setEnabled(false);
-        boolean res = !inProgress;
         ProgressBar progressBar = getProgressBar();
         progressBar.setIndeterminate(true);
         progressBar.setVisibility(View.VISIBLE);
         inProgress = true;
-        return res;
+        return true;
     }
 
     public boolean endProgress() {
-        boolean res = inProgress;
+        if( !inProgress )
+            return false;
         ProgressBar progressBar = getProgressBar();
         progressBar.setVisibility(View.GONE);
         inProgress = false;
         toolbar.setEnabled(true);
         spinner.setEnabled(true);
         listCancel.clear();
-        return res;
+        return true;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.akrog.tolomet;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -139,12 +140,9 @@ public class ChartsActivity extends BaseActivity {
             model.loadCache();
             return;
         }
+        if( !beginProgress() )
+            return;
         thread = new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                beginProgress();
-            }
             @Override
             protected Void doInBackground(Void... params) {
                 model.refresh();
@@ -237,31 +235,51 @@ public class ChartsActivity extends BaseActivity {
 
 	public void onDownloaded() {		
 		thread = null;
-		postTimer();
-		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-		cal.set(Calendar.MILLISECOND, 0);
-		model.getCurrentStation().getMeteo().clear(cal.getTimeInMillis());
+		if( !postTimer() && model.getCurrentStation().isEmpty() ) {
+            new AlertDialog.Builder(this).setTitle(R.string.NoData)
+                    .setMessage(R.string.RedirectWeb)
+                    .setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            startActivity(new Intent(ChartsActivity.this, ProviderActivity.class));
+                        }
+                    })
+                    .setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create().show();
+        } else {
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND, 0);
+            model.getCurrentStation().getMeteo().clear(cal.getTimeInMillis());
+        }
         redraw();
         gaeManager.checkMotd();
     }
 
 	@Override
 	public boolean beginProgress() {
-		boolean result = super.beginProgress();
+		if( !super.beginProgress() )
+            return false;
 		for( Presenter presenter : presenters)
 			presenter.setEnabled(false);
-		return result;
+		return true;
 	}
 
 	@Override
 	public boolean endProgress() {
-		boolean result = super.endProgress();
+        if( !super.endProgress() )
+            return false;
 		for( Presenter presenter : presenters)
 			presenter.setEnabled(true);
-		return result;
+		return true;
 	}
 
 	// Fields
