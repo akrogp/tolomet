@@ -127,7 +127,7 @@ public class MeteoGaliciaProvider implements WindProvider {
 	
 	private void loadParams() {
 		/*
-		urlParams = new HashMap<String, String>();
+		urlParams = new HashMap<>();
 		
 		InputStream inputStream = getClass().getResourceAsStream("/res/meteogalicia.csv");
 		InputStreamReader in = new InputStreamReader(inputStream);

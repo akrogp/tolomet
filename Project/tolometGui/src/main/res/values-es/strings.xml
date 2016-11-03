@@ -111,4 +111,7 @@
     <string name="max_wind_prompt">Velocidad máxima</string>
     <string name="max_hum_prompt">Humedad relativa máxima</string>
     <string name="countries_csv">countries_es.csv</string>
+    <string name="RedirectWeb">¿Deseas visitar la web original?</string>
+    <string name="Yes">Sí</string>
+    <string name="No">No</string>
 </resources>
