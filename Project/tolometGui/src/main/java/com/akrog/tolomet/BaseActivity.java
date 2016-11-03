@@ -140,14 +140,14 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if( inProgress ) {
-            endProgress();
+        if( inProgress )
             onCancel();
-        } else
+        else
             super.onBackPressed();
     }
 
     public void onCancel() {
+        endProgress();
         Toast.makeText(Tolomet.getAppContext(),getString(R.string.DownloadCancelled),Toast.LENGTH_SHORT).show();
     }
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.os.AsyncTaskCompat;
 
 import com.akrog.tolomet.data.AppSettings;
 import com.akrog.tolomet.data.DbMeteo;
@@ -160,7 +161,8 @@ public class ChartsActivity extends BaseActivity {
                 super.onCancelled();
                 onPostExecute(null);
             }
-        }.execute();
+        };
+        AsyncTaskCompat.executeParallel(thread);
 	}
 
 	@Override

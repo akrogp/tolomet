@@ -234,11 +234,11 @@ public class AppSettings {
 	}
 	
 	private void migrate() {
-		int oldVersion = getConfigVersion();
+		/*int oldVersion = getConfigVersion();
 		if( oldVersion == 0 )
 			migrateFavsV0();
 		else if( oldVersion == 2 )
-			migrateFavsV2();
+			migrateFavsV2();*/
 	}
 	
 	private void fixValues() {
