@@ -13,8 +13,8 @@ import android.webkit.WebViewClient;
  */
 public abstract class BrowserActivity extends BaseActivity {
     @Override
-    public void createView(Bundle savedInstanceState, int layoutResId, int... buttonIds) {
-        super.createView(savedInstanceState, layoutResId, buttonIds);
+    public void createSpinnerView(Bundle savedInstanceState, int layoutResId, int... buttonIds) {
+        super.createSpinnerView(savedInstanceState, layoutResId, buttonIds);
         createWeb();
     }
 
