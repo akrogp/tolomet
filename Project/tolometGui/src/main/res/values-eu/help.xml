@@ -13,7 +13,9 @@
     </string>
     <string name="help_charts">This is the default activity. It shows an spinner to chose a
         station, and different charts are displayed according to user settings (experiment with
-        <i>simple</i> and <i>full</i> display modes to chose the one you like most).
+        <i>simple</i> and <i>full</i> display modes to chose the one you like the most). You can
+        also scroll to check previous readings of the day or even readings from past days (only
+        if the meteo provider supports access to this history).
     </string>
     <string name="help_info">Shows details of the station selected. An embedded browser shows
         the station details on the provider web site.</string>
