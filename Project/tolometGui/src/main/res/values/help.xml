@@ -60,9 +60,10 @@
         behaviour, such as the criteria used to download new readings.
     </string>
     <string name="help_report">This action allows you to easily give me a feedback of your
-        experience with Tolomet: bug reports, new feature requests or an invitation to fly in your
-        zone ;). It opens a mail client with a default subject and a body. Please add your message
-        to the mail body, but do not remove the original body since it contains technical
-        information which can help me to improve Tolomet for your specific device type.
+        experience with Tolomet: bug reports, new feature requests, offer yourself to translate
+        Tolomet to another language or invite me to fly with you ;). It opens a mail client with a
+        default subject and a body. Please add your message to the mail body, but do not remove the
+        original body since it contains technical information which can help me to improve Tolomet
+        for your specific device type.
     </string>
 </resources>
