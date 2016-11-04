@@ -9,7 +9,7 @@ public class ProviderActivity extends BrowserActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        createView(savedInstanceState, R.layout.activity_browser,
+        createSpinnerView(savedInstanceState, R.layout.activity_browser,
                 R.id.favorite_item, R.id.refresh_item,
                 R.id.info_item, R.id.charts_item, R.id.map_item, R.id.browser_item,
                 R.id.share_item, R.id.whatsapp_item,

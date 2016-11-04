@@ -29,11 +29,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
     }
 
-    public void createView(Bundle savedInstanceState, int layoutResId, int... buttonIds ) {
+    public void createSpinnerView(Bundle savedInstanceState, int layoutResId, int... buttonIds ) {
         setContentView(layoutResId);
         toolbar.initialize(this, savedInstanceState);
         toolbar.setButtons(buttonIds);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }
+
+    public void createTitleView(Bundle savedInstanceState, int layoutResId, int... buttonIds ) {
+        createSpinnerView(savedInstanceState, layoutResId, buttonIds);
+        findViewById(R.id.station_spinner).setVisibility(View.GONE);
+        findViewById(R.id.toolbar_title).setVisibility(View.VISIBLE);
     }
 
     @Override

@@ -70,6 +70,12 @@
         android:icon="@drawable/ic_settings"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/help_item"
+        android:title="@string/Help"
+        android:icon="@drawable/ic_help"
+        app:showAsAction="ifRoom" />
+
     <item android:id="@+id/about_item"
         android:title="@string/About"
         android:icon="@drawable/ic_copyright_black"

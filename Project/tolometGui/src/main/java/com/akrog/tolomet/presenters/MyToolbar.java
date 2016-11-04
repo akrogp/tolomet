@@ -18,6 +18,7 @@ import com.akrog.tolomet.AboutDialog;
 import com.akrog.tolomet.AppSettingsActivity;
 import com.akrog.tolomet.BaseActivity;
 import com.akrog.tolomet.ChartsActivity;
+import com.akrog.tolomet.HelpActivity;
 import com.akrog.tolomet.InfoActivity;
 import com.akrog.tolomet.MapActivity;
 import com.akrog.tolomet.Model;
@@ -135,6 +136,9 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 			case R.id.settings_item:
 				onSettingsItem();
 				return true;
+            case R.id.help_item:
+                onHelpItem();
+                return true;
 			case R.id.about_item:
 				onAboutItem();
 				return true;
@@ -191,6 +195,10 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 		activity.startActivityForResult(
 				new Intent(activity, AppSettingsActivity.class), ChartsActivity.SETTINGS_REQUEST);
 	}
+
+    private void onHelpItem() {
+        activity.startActivity(new Intent(activity, HelpActivity.class));
+    }
 
 	private void onAboutItem() {
 		AboutDialog about = new AboutDialog(activity);

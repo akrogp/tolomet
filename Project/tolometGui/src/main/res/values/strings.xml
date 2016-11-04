@@ -114,4 +114,7 @@
     <string name="RedirectWeb">Would you like to visit the original website?</string>
     <string name="Yes">Yes</string>
     <string name="No">No</string>
+    <string name="Help">Help</string>
+    <string name="help_subject">Tolomet help</string>
+    <string name="help_body">Have a look at the Tolomet manual!</string>
 </resources>

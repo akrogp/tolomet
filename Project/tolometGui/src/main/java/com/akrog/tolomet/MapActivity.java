@@ -29,11 +29,11 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        createView(savedInstanceState, R.layout.activity_map,
+        createSpinnerView(savedInstanceState, R.layout.activity_map,
                 R.id.favorite_item,
                 R.id.charts_item, R.id.info_item, R.id.origin_item, R.id.browser_item,
                 R.id.share_item, R.id.whatsapp_item,
-                R.id.about_item, R.id.report_item);
+                R.id.help_item, R.id.about_item, R.id.report_item);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
