@@ -115,12 +115,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         spinner.setFavorite(fav);
     }
 
-    public void service() {
-        ProgressBar progressBar = ((ProgressBar)findViewById(R.id.progressbar));
-        progressBar.setIndeterminate(true);
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
     public ProgressBar getProgressBar() {
         return (ProgressBar)findViewById(R.id.progressbar);
     }

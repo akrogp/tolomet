@@ -235,7 +235,7 @@ public class ChartsActivity extends BaseActivity {
 
 	public void onDownloaded() {		
 		thread = null;
-		if( !postTimer() && model.getCurrentStation().isEmpty() ) {
+		if( !postTimer() && model.checkStation() && model.getCurrentStation().isEmpty() ) {
             new AlertDialog.Builder(this).setTitle(R.string.NoData)
                     .setMessage(R.string.RedirectWeb)
                     .setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
