@@ -24,6 +24,7 @@ import java.util.List;
  * Created by gorka on 24/02/16.
  */
 public abstract class BaseActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +87,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if( resultCode == RESULT_OK )
             spinner.loadState(null);
+        if( requestCode == SETTINGS_REQUEST )
+            onSettingsChanged();
     }
 
     public AppSettings getSettings() {
@@ -166,7 +169,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public abstract void onBrowser();
 
-    public abstract void onChangedSettings();
+    public abstract void onSettingsChanged();
 
     public abstract void onSelected(Station station);
 
@@ -174,6 +177,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public abstract String getScreenShotText();
 
+    public static final int SETTINGS_REQUEST = 0;
+    public static final int MAP_REQUEST = 1;
     protected final Model model = Model.getInstance();
     protected final AppSettings settings = AppSettings.getInstance();
     protected final MyToolbar toolbar = new MyToolbar();

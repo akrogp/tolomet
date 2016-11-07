@@ -9,4 +9,5 @@ public interface Presenter {
 	void updateView();
 	void save(Bundle bundle);
 	void setEnabled(boolean enabled);
+	void onSettingsChanged();
 }

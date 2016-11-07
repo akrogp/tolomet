@@ -5,11 +5,15 @@ import com.akrog.tolomet.Measurement;
 public class Graph {
 	private final Measurement data;
     private final String title;
-    private final int lineColor;
-    private final int pointColor;
+    private int lineColor;
+    private int pointColor;
     private final float wrap;
     private final float wrap2;
     private int yAxis= 0;
+
+	public Graph( Measurement data, float wrap, String title ) {
+		this(data, wrap, title, 0, 0);
+	}
  
     public Graph( Measurement data, float wrap, String title, int lineColor, int pointColor ) {
         this.data = data;
@@ -52,11 +56,24 @@ public class Graph {
     	return y;
     }
 
+    public void setColors( int lineColor, int pointColor ) {
+        setLineColor(lineColor);
+        setPointColor(pointColor);
+    }
+
+    public void setLineColor( int lineColor ) {
+        this.lineColor = lineColor;
+    }
+
 	public int getLineColor() {
 		return lineColor;
 	}
 
-	public int getPointColor() {
+	public void setPointColor( int pointColor ) {
+        this.pointColor = pointColor;
+    }
+
+    public int getPointColor() {
 		return pointColor;
 	}
 

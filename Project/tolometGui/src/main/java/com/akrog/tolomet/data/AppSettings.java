@@ -232,6 +232,10 @@ public class AppSettings {
 		editor.putString("pref_modeUpdate",""+mode);
 		editor.commit();
 	}
+
+	public boolean isDaltonic() {
+		return !settings.getString("pref_modeColors","0").equals("0");
+	}
 	
 	private void migrate() {
 		/*int oldVersion = getConfigVersion();
@@ -312,4 +316,6 @@ public class AppSettings {
 	public final static int MANUAL_UPDATES=0;
 	public final static int SMART_UPDATES=1;
 	public final static int AUTO_UPDATES=2;
+    public final static int COLOR_NORMAL = 0;
+    public final static int COLOR_DALTONIC = 1;
 }

@@ -32,6 +32,10 @@ public class MySummary implements Presenter, Axis.ChangeListener {
 	}
 
 	@Override
+	public void onSettingsChanged() {
+	}
+
+	@Override
 	public void updateView() {
 		if( model.getCurrentStation().isEmpty() )
     		summary.setText(activity.getString(R.string.NoData));

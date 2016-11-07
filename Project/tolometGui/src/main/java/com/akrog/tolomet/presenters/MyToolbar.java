@@ -189,13 +189,13 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 				intent.putExtra(MapActivity.EXTRA_COUNTRY, station.getCountry());
 				intent.putExtra(MapActivity.EXTRA_STATION, station.getId());
 			}
-			activity.startActivityForResult(intent, ChartsActivity.MAP_REQUEST);
+			activity.startActivityForResult(intent, BaseActivity.MAP_REQUEST);
 		}
 	}
 
 	private void onSettingsItem() {
 		activity.startActivityForResult(
-				new Intent(activity, AppSettingsActivity.class), ChartsActivity.SETTINGS_REQUEST);
+				new Intent(activity, AppSettingsActivity.class), BaseActivity.SETTINGS_REQUEST);
 	}
 
     private void onHelpItem() {
@@ -273,7 +273,7 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 				flyNotified = false;
 			}
 		}
-		activity.onChangedSettings();
+		activity.onSettingsChanged();
 	}
 
 	@Override
@@ -332,7 +332,11 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 			menu.getItem(i).setEnabled(enabled);
 	}
 
-	private BaseActivity activity;
+    @Override
+    public void onSettingsChanged() {
+    }
+
+    private BaseActivity activity;
 	private final Model model = Model.getInstance();
 	private AppSettings settings;
 	private Toolbar toolbar;
