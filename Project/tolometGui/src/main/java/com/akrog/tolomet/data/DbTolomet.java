@@ -50,6 +50,14 @@ public class DbTolomet extends SQLiteAssetHelper {
         return instance;
     }
 
+    public int getVersion() {
+        return getReadableDatabase().getVersion();
+    }
+
+    public void setVersion(int version) {
+        getWritableDatabase().setVersion(version);
+    }
+
     public Station findStation(String id) {
         return findStations(
                 "SELECT Station.*,Region.country FROM Station,Region WHERE Station.id=? and Region.id=Station.region",
