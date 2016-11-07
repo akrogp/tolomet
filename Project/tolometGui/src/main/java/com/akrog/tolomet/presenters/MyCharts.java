@@ -91,7 +91,13 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 		chartAir.setEnabled(enabled);
 	}
 
-	private void updateMarkers() {
+    @Override
+    public void onSettingsChanged() {
+        simpleMode = settings.isSimpleMode();
+        createCharts();
+    }
+
+    private void updateMarkers() {
 		int pos = settings.getMinMarker(); 
 		markerVmin.setPos(pos);
 		markerVmin.setLabel(pos+" km/h");
@@ -115,6 +121,7 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
     }
 	
 	private void createCharts() {
+		updateColors();
 		chartAir.clear();
 		chartWind.clear();
 		if( simpleMode )
@@ -124,8 +131,24 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 		updateBoundaries();
 		updateMarkers();
 	}
-    
-    private void createCompleteCharts() {
+
+	private void updateColors() {
+        int lineRed = LINE_RED;
+        int pointRed = POINT_RED;
+        int lineGreen = LINE_GREEN;
+        int pointGreen = POINT_GREEN;
+		if( settings.isDaltonic() ) {
+            lineRed = Color.rgb(208, 28, 139);
+            pointRed = Color.rgb(104, 14, 70);
+            lineGreen = Color.rgb(77, 172, 38);
+            pointGreen = Color.rgb(38, 86, 19);
+        }
+        airTemperature.setColors(lineRed, pointRed);
+        windSpeedMed.setColors(lineGreen, pointGreen);
+        windSpeedMax.setColors(lineRed, pointRed);
+	}
+
+	private void createCompleteCharts() {
         chartAir.setTitle(activity.getString(R.string.Air));
         chartAir.getY1Axis().setLabel("Temp. (ºC)");
 		chartAir.getY1Axis().setSteps(10);
@@ -293,13 +316,8 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
         pastDate = null;
     	if( !model.getCurrentStation().isSpecial() )
     		meteo.merge(model.getCurrentStation().getMeteo());
-    	if( settings.isSimpleMode() != simpleMode ) {
-    		simpleMode = !simpleMode;
-    		createCharts();
-    	} else {
-    		updateBoundaries();
-    		updateMarkers();
-    	}
+        updateBoundaries();
+        updateMarkers();
     	chartAir.redraw();
         chartWind.redraw();
     }

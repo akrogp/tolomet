@@ -339,8 +339,12 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 	public void setEnabled(boolean enabled) {
 		spinner.setEnabled(enabled);
 	}
-	
-	public static enum Type {
+
+    @Override
+    public void onSettingsChanged() {
+    }
+
+    public static enum Type {
 		StartMenu(OFF_MENU),
 		All(OFF_MENU+1),
 		Favorite(OFF_MENU+2),

@@ -21,7 +21,7 @@ public class HelpActivity extends BaseActivity {
     }
 
     @Override
-    public void onChangedSettings() {
+    public void onSettingsChanged() {
     }
 
     @Override

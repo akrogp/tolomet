@@ -75,7 +75,7 @@ public abstract class BrowserActivity extends BaseActivity {
     }
 
     @Override
-    public void onChangedSettings() {
+    public void onSettingsChanged() {
     }
 
     @Override

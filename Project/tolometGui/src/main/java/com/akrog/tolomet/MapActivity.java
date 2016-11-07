@@ -291,7 +291,7 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
     }
 
     @Override
-    public void onChangedSettings() {
+    public void onSettingsChanged() {
     }
 
     @Override

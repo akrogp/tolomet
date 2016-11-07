@@ -200,15 +200,9 @@ public class ChartsActivity extends BaseActivity {
 	}
 
 	@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode,resultCode,data);
-    	if( requestCode != SETTINGS_REQUEST )
-    		return;
-		onChangedSettings();
-    }
-
-	@Override
-	public void onChangedSettings() {
+	public void onSettingsChanged() {
+		for( Presenter presenter : presenters )
+		    presenter.onSettingsChanged();
 		createTimer();
 		redraw();
 	}
@@ -293,6 +287,4 @@ public class ChartsActivity extends BaseActivity {
 
 	public static String EXTRA_STATION_ID = "com.akrog.tolomet.stationId";
     public static String EXTRA_COUNTRY = "com.akrog.tolomet.country";
-	public static final int SETTINGS_REQUEST = 0;
-	public static final int MAP_REQUEST = 1;
 }
