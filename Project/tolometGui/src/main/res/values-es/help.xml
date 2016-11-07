@@ -1,69 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="help_intro">The following actions may be accessible from the different Tolomet
-        activities:
+    <string name="help_intro">En las diferentes pantallas de Tolomet puedes encontrar las siguientes
+        acciones:
     </string>
-    <string name="help_favorite">Adds or removes the selected station to the favorite list. This
-        is a convenient way for accessing quickly the most visited stations, and it is also
-        mandatory for using the station in a widget.
+    <string name="help_favorite">Añade o elimina la estación seleccionada a la lista de estaciones
+        favoritas. Esta lista te permite acceder rápidamente a las estaciones que más consultes y
+        además es necesaria en el caso de querer usar la estación en un widget.
     </string>
-    <string name="help_refresh">Updates the current content. In the case of the charts activity it
-        tries to download a new reading from the server. If the time elapsed from the last reading
-        is too little, the user is just warned in order to minimize server traffic.
+    <string name="help_refresh">Actualiza el contenido de la pantalla actual. En el caso de la
+        pantalla de gráficas intenta descargar una nueva lectura desde el servidor. Si el tiempo
+        transcurrido desde la última lectura no es suficiente, te muestra un aviso y no trata de
+        descargar la lectura para no saturar al servidor.
     </string>
-    <string name="help_charts">This is the default activity. It shows an spinner to chose a
-        station, and different charts are displayed according to user settings (experiment with
-        <i>simple</i> and <i>full</i> display modes to chose the one you like the most). You can
-        also scroll to check previous readings of the day or even readings from past days (only
-        if the meteo provider supports access to this history).
+    <string name="help_charts">Esta es la pantalla inicial. Muestra un despleglable desde el que se
+        puede seleccionar una estación y ver las gráficas con las lecturas de la estación seleccionada.
+        Las gráficas mostradas dependerán de los ajustes del usuario, experimenta con los modos de
+        visualización <i>simple</i> y <i>completa</i> para elegir el que más te guste. Puedes
+        desplazarte por las gráficas para ver lecturas anteriores del mismo día o incluso lecturas
+        de días anteriores en el caso de que el proveedor meteorológico correspondiente lo permita.
     </string>
-    <string name="help_info">Shows details of the station selected. An embedded browser shows
-        the station details on the provider web site.</string>
+    <string name="help_info">Muestra detalles sobre la estación seleccionada. Para ello se emplea
+        un navegador dentro de Tolomet que te muestra la información sobre la propia página web del
+        proveedor meteorológico correspondiente.
+    </string>
     <string name="help_map"><![CDATA[
-        Shows a map with the closest stations. You can change the current
-        station both using the spinner or navigating in the map. Each station is shown using a
-        marker with a <font color="#008800">green</font>, <font color="#888800">yellow</font> or
-        <font color="#880000">red</font> color depending on the update rate of the station
-        provider. In the case you zoom out too much, the stations are collapsed by regions
-        (in <font color="#4A2364">purple</font>) of by countries
-        (in <font color="#000088">blue</font>).
+        Muestra un mapa con las estaciones conocidas. Puedes seleccionar una estación tanto desde
+        el desplegable como navegando por el mapa y haciendo click. Cada estación se muestra como
+        una chincheta <font color="#008800">verde</font>, <font color="#888800">amarilla</font> o
+        <font color="#880000">roja</font> dependiendo de la frecuencia de las lecturas
+        proporcionadas. En caso de que alejes mucho el zoom, las estaciones se muestran agrupadas
+        por regiones (en <font color="#4A2364">morado</font>) o por países
+        (en <font color="#000088">azul</font>).
         ]]>
     </string>
-    <string name="help_origin">Shows the readings of the station selected in the provider\'s
-        web site using an embedded browser. This is useful in case the charts activity tells
-        that there is not data available and you want to confirm whether there it is a fault of
-        the provider web site or of Tolomet. In this last case you can opt to report the failure
-        using the report action described below. This activity is also useful in case you want
-        to check other type of readings not available from the charts activity.
+    <string name="help_origin">Muestra las lecturas de la estación seleccionada en la propia página
+        web del proveedor meteorológico empleando un navegador dentro de Tolomet. Esto es útil en el
+        caso de que en la pantalla de gráficas se indique que no hay datos disponibles y quieras
+        comprobar si se trata de un fallo del proveedor meteorológico o de Tolomet. En este último
+        caso puedes informarme del fallo empleando el icono de informar que se explica más abajo.
+        Esta pantalla también puede resultar de utilidad en caso de que desees consultar otro tipo
+        de lecturas que no estén disponibles desde la pantalla de gráficas.
     </string>
-    <string name="help_browser">This is the same as the previous action but using an external web
-        browser instead of the one embedded in Tolomet. This is useful if you want to bookmark the
-        URL in the web browser or to use other features. Please note that some providers
-        (i.e. Euskalmet) shows different results depending on whether you are using a browser in
-        a mobile phone or in a desktop PC. In this case you should use a browser that has the option
-        to view the website as in a PC.
+    <string name="help_browser">Esta acción es similar a la anterior sólo que emplea un navegador
+        web externo en lugar del intenro de Tolomet. Esto puede resultar de utilidad en caso de que
+        quieras añadir la dirección de la estación a tus marcadores del navegador o usar otras
+        características del navegador. Tienes que tener en cuenta que algunos proveedores
+        meteorológicos (Ej. Euskalmet) muestran un resultado diferente dependiendo de si te estás
+        conectando desde un navegador web de un móvil o de un PC. En este caso deberías emplear un
+        navegador que tenga la opción de visualizar el sitio web como en un PC.
     </string>
-    <string name="help_share">It allows to easily share the view of the current Tolomet activity
-        with other users using an application selected from a list. Typically both a screenshot and
-        a default text message is provided by Tolomet.
+    <string name="help_share">Permite compartir fácilmente la actual pantalla de Tolomet con otros
+        usuarios empleando la aplicación que selecciones de una lista. Típicamente se proporciona
+        tanto una captura de pantalla (donde sólo se ve la aplicación Tolomet) y un mensaje de texto
+        por defecto que puedes cambiar antes de enviar.
     </string>
-    <string name="help_whatsapp">The same as the previous action but using WhatsApp directly
-        instead of asking for the application to be used to share the content.
+    <string name="help_whatsapp">Lo mismo que la acción anterior pero empleando WhatsApp directamente
+        en lugar de preguntarte qué aplicación deseas emplear para compartir el contenido.
     </string>
-    <string name="help_fly">Changes between flying and landed modes. When in fly mode the screen
-        is always on and the rotation is disabled. This only affects to Tolomet, not to other apps
-        in the phone. In this mode the readings are automatically updated using the provider\'s
-        update rate or each minute in case the reading is delayed.
+    <string name="help_fly">Cambia entre modo vuelo y aterrizado. En modo vuelo la pantalla
+        permanecerá siempre encendida y se desactiva la rotación de la misma. Esto sólo afecta a
+        Tolomet, no a otras aplicaciones que tengas en el teléfono. En modo vuelo las lecturas se
+        van descargando automáticamente según la frecuencia de actualización del proveedor
+        meteorológico correspondiente o cada minuto en caso de que se retrase la lectura.
     </string>
-    <string name="help_settings">This allows to customize the experience with Tolomet, modifying
-        its view, such as the type of charts displayed or the scaling of the axes, and its
-        behaviour, such as the criteria used to download new readings.
+    <string name="help_settings">Los ajustes permiten personalizar tu experiencia con Tolomet,
+        modificando tanto su apariencia (tipos de gráficas, escalado de ejes, etc.) como su
+        comportamiento (cada cuánto actualizar las lecturas, etc.).
     </string>
-    <string name="help_report">This action allows you to easily give me a feedback of your
-        experience with Tolomet: bug reports, new feature requests, offer yourself to translate
-        Tolomet to another language or invite me to fly with you ;). It opens a mail client with a
-        default subject and a body. Please add your message to the mail body, but do not remove the
-        original body since it contains technical information which can help me to improve Tolomet
-        for your specific device type.
+    <string name="help_report">Esta acción te permite enviarme un comentario sobre su experiencia
+        con Tolomet: informar de un fallo, sugerir nuevas características, ofrecerte a traducirlo
+        a otros idiomas o invitarme a volar en tu zona ;). Al clickar abre tu cliente de e-mail con
+        un asunto y cuerpo de mensaje por defecto. Puedes añadir tu comentario en el cuerpo del
+        mensaje, pero no elimines las líneas que se muestran por defecto ya que me proporcionan
+        información técnica que me puede ayudar a mejorar Tolomet para tu tipo de dispositivo en
+        concreto.
     </string>
 </resources>
