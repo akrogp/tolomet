@@ -54,6 +54,7 @@
     <string name="cancel">Cancel</string>
     <string name="error_gps">Unknown location</string>
     <string name="warn_fav">First you should mark some stations as starred</string>
+    <string name="warn_map">, do you want to open a map with stations near to you?</string>
     <string name="fav_ok">OK</string>
     <string name="warn_near">No stations found near to your position</string>
     <string name="pref_minMarkerDefault">10</string>

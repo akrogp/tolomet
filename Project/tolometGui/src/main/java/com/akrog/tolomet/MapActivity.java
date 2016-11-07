@@ -1,6 +1,7 @@
 package com.akrog.tolomet;
 
 import android.content.Intent;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -65,9 +66,14 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
 
         Intent intent = getIntent();
         String id = intent.getStringExtra(MapActivity.EXTRA_STATION);
-        model.setCurrentStation(model.findStation(id));
-
-        zoom(model.getCurrentStation());
+        if( id != null ) {
+            model.setCurrentStation(model.findStation(id));
+            zoom(model.getCurrentStation());
+        } else {
+            Location location = Tolomet.getLocation(true);
+            if( location != null )
+                zoom(location.getLatitude(), location.getLongitude());
+        }
 
         redraw();
     }
@@ -309,7 +315,7 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
 
     @Override
     public String getScreenShotText() {
-        return String.format("%s %s%s",
+        return lastStation == null ? "" : String.format("%s %s%s",
                 getString(R.string.ShareMapPre),
                 lastStation,
                 getString(R.string.ShareMapPost)

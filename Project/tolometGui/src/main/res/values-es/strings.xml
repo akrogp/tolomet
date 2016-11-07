@@ -65,6 +65,7 @@
     <string name="cancel">Cancelar</string>
     <string name="error_gps">Localización desconocida</string>
     <string name="warn_fav">Primero deberías marcar algunas estaciones como favoritas</string>
+    <string name="warn_map">, ¿quieres ver en un mapa las estaciones más cercanas?</string>
     <string name="fav_ok">OK</string>
     <string name="warn_near">No se han encontrado estaciones cercanas</string>
     <string name="pref_modes">Modos de funcionamiento</string>

@@ -25,6 +25,7 @@ import com.akrog.tolomet.Model;
 import com.akrog.tolomet.ProviderActivity;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Station;
+import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.AppSettings;
 import com.akrog.tolomet.view.AndroidUtils;
 import com.google.android.gms.maps.GoogleMap;
@@ -63,7 +64,8 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 		addStationItem(menu, R.id.favorite_item);
 		addStationItem(menu, R.id.refresh_item);
 		addStationItem(menu, R.id.info_item);
-		addStationItem(menu, R.id.map_item);
+		if( !Tolomet.supportsMap() )
+			addStationItem(menu, R.id.map_item);
 		addStationItem(menu, R.id.origin_item);
 		addStationItem(menu, R.id.share_item);
 		addStationItem(menu, R.id.whatsapp_item);
@@ -178,15 +180,15 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 		if( activity.alertNetwork() )
 			return;
 		Station station = model.getCurrentStation();
-		if( Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH ) {
+		if( !Tolomet.supportsMap() ) {
 			String url = MapActivity.getUrl(station.getLatitude(),station.getLongitude());
 			activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
 		} else {
 			Intent intent = new Intent(activity, MapActivity.class);
-			//intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-			intent.putExtra(MapActivity.EXTRA_COUNTRY, station.getCountry());
-			//intent.putExtra(MapActivity.EXTRA_PROVIDER, station.getProviderType().name());
-			intent.putExtra(MapActivity.EXTRA_STATION, station.getId());
+			if( model.checkStation() ) {
+				intent.putExtra(MapActivity.EXTRA_COUNTRY, station.getCountry());
+				intent.putExtra(MapActivity.EXTRA_STATION, station.getId());
+			}
 			activity.startActivityForResult(intent, ChartsActivity.MAP_REQUEST);
 		}
 	}
