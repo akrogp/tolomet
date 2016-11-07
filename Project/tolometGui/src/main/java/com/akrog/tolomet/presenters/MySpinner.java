@@ -1,13 +1,11 @@
 package com.akrog.tolomet.presenters;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,10 +16,12 @@ import android.widget.Toast;
 
 import com.akrog.tolomet.BaseActivity;
 import com.akrog.tolomet.Country;
+import com.akrog.tolomet.MapActivity;
 import com.akrog.tolomet.Model;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Region;
 import com.akrog.tolomet.Station;
+import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.AppSettings;
 
 import java.util.ArrayList;
@@ -114,7 +114,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		Locale locale = Locale.getDefault();
 		String code;
 		try {
-			Location ll = getLocation(false);
+			Location ll = Tolomet.getLocation(false);
 			Geocoder geocoder = new Geocoder(activity, locale);
 			List<Address> addresses = geocoder.getFromLocation(ll.getLatitude(), ll.getLongitude(), 1);
 			code = addresses.get(0).getCountryCode();
@@ -146,13 +146,9 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		switch( type ) {
 			case All: model.selectAll(); break;
 			case Favorite:
-				model.selectFavorites();
-				if( model.getSelStations().isEmpty() ) {
-					showFavoriteDialog();
-					popup = false;
-					selectRegions();
-				}
-				break;
+                if( !selectFavorites() )
+                    popup = false;
+                break;
 			case Nearest:
 				if( !selectNearest() ) {
 					popup = false;
@@ -202,9 +198,19 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		if( showStart )
 			choices.add(startItem);
 	}
+
+	private boolean selectFavorites() {
+		model.selectFavorites();
+		if( !model.getSelStations().isEmpty() )
+			return true;
+		showFavoriteDialog();
+        if( model.getSelStations().isEmpty() )
+		    selectRegions();
+		return false;
+	}
 	
 	private boolean selectNearest() {
-    	Location ll = getLocation(true);
+    	Location ll = Tolomet.getLocation(true);
     	if( ll == null ) {
     		Toast.makeText(activity, activity.getString(R.string.error_gps),Toast.LENGTH_SHORT).show();
     		return false;
@@ -216,57 +222,31 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		}
 		return true;
 	}
-	
-	private Location getLocation( boolean warning ) {
-		Location locationGps = null;
-		Location locationNet = null;
-	    try {
-	    	LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
-	    	boolean isGps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-	    	boolean isNet = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER); 
-	        if( isGps )
-	        	locationGps = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-	        if( isNet )
-	            locationNet = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-	        else if( !isGps && warning )
-	            showLocationDialog();
-	    } catch (Exception e) {
-	    }
-	    
-	    if( locationGps == null )
-	    	return locationNet;
-	    if( locationNet == null )
-	    	return locationGps;
-	    return locationGps.getTime() >= locationNet.getTime() ? locationGps : locationNet;
-	}
 
-	private void showLocationDialog() {
-		AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
-        dialog.setMessage(activity.getString(R.string.warn_gps));
-        dialog.setPositiveButton(activity.getString(R.string.gps_ok), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                Intent myIntent = new Intent( android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS );
-                activity.startActivity(myIntent);
-            }
-        });
-        dialog.setNegativeButton(activity.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-            }
-        });
-        dialog.setIcon(android.R.drawable.ic_dialog_alert);
-        dialog.show();
-	}
-	
 	private void showFavoriteDialog() {
 		AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
-        dialog.setMessage(activity.getString(R.string.warn_fav));
-        dialog.setPositiveButton(activity.getString(R.string.fav_ok), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-            }
-        });
+        StringBuilder message = new StringBuilder(activity.getString(R.string.warn_fav));
+        if( Tolomet.supportsMap() )
+            message.append(activity.getString(R.string.warn_map));
+        dialog.setMessage(message.toString());
+        if( !Tolomet.supportsMap() )
+            dialog.setPositiveButton(activity.getString(R.string.fav_ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                }
+            });
+        else
+            dialog.setPositiveButton(activity.getString(R.string.Yes), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    activity.startActivity(new Intent(activity, MapActivity.class));
+                }
+            })
+            .setNegativeButton(activity.getString(R.string.No), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                }
+            });
         dialog.setIcon(android.R.drawable.ic_dialog_info);
         dialog.show();
 	}
@@ -338,8 +318,12 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		} else if( station.getSpecial()/OFF_REGION == 1 ) {
 			region=station.getSpecial()-OFF_REGION;
 			spinnerType = Type.Region;
-		} else
-			spinnerType = Type.values()[station.getSpecial()-Type.StartMenu.getValue()];
+		} else {
+            int type = station.getSpecial() - Type.StartMenu.getValue();
+            if( type < 0 || type >= Type.values().length )
+                type = 0;
+            spinnerType = Type.values()[type];
+        }
 		selectMenu(spinnerType, true);
 	}
 
