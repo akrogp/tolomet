@@ -198,6 +198,16 @@ public class Settings {
 		editor.putString("pref_modeUpdate",""+mode);
 		editor.commit();
 	}
+
+	public void setFlying(boolean flying) {
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putBoolean("pref_flying", flying);
+		editor.commit();
+	}
+
+	public boolean isFlying() {
+		return settings.getBoolean("pref_flying", false);
+	}
 	
 	private void migrate() {
 		if( getConfigVersion() == 0 )

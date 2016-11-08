@@ -74,7 +74,7 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 
 		itemFavorite = menu.findItem(R.id.favorite_item);
 		itemMode = menu.findItem(R.id.fly_item);
-		setScreenMode(false);
+		setScreenMode(settings.isFlying());
 	}
 
 	private void updateMenuItems(Menu menu) {
@@ -242,6 +242,7 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 	private void setScreenMode(boolean flying) {
 		if( itemMode == null )
 			return;
+        settings.setFlying(flying);
 		isFlying = flying;
 		if( isFlying ) {
 			itemMode.setIcon(R.drawable.ic_land_mode);
