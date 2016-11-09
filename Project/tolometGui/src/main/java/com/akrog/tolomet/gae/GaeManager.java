@@ -1,10 +1,5 @@
 package com.akrog.tolomet.gae;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.Calendar;
-import java.util.Locale;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,6 +9,11 @@ import android.os.AsyncTask.Status;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.Settings;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class GaeManager {
 	private Tolomet tolomet;
@@ -45,8 +45,8 @@ public class GaeManager {
     	
     	gaeClient = new GaeClient(this);
     	gaeClient.execute(String.format(
-    		"http://tolomet-gae.appspot.com/rest/motd?version=%s&stamp=%s&lang=%s",
-    		version, stamp, Locale.getDefault().getLanguage()));
+    		"http://tolomet-gae.appspot.com/rest/motd?version=%s&stamp=%s&lang=%s&api=%d",
+    		version, stamp, Locale.getDefault().getLanguage(), android.os.Build.VERSION.SDK_INT));
 	}
 	
 	public void onMotd(Motd motd) {		
@@ -85,6 +85,7 @@ public class GaeManager {
 		StringWriter string = new StringWriter();
 		PrintWriter writer = new PrintWriter(string);
 		if( motd.getChanges() != null ) {
+            writer.println(tolomet.getString(R.string.warnapi));
 			writer.println(tolomet.getString(R.string.improvements)+" v"+motd.getVersion()+":");
 			for( String str : motd.getChanges() )
 				writer.println("* "+str);

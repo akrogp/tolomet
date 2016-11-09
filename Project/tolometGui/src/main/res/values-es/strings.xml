@@ -92,4 +92,5 @@
     <string name="LandMode">Aterrizado</string>
     <string name="Takeoff">¡Modo vuelo activado!</string>
     <string name="Landed">Desactivado modo vuelo</string>
+    <string name="warnapi">Para usar la última versión de Tolomet deberías actualizar tu versión de Android, pero también hay una nueva versión para tu plataforma.</string>
 </resources>
