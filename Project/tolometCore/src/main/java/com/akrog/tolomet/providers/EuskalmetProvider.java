@@ -12,7 +12,7 @@ public class EuskalmetProvider implements WindProvider {
 	
 	@Override
 	public String getInfoUrl(String code) {
-		return "http://www.euskalmet.euskadi.net/s07-5853x/es/meteorologia/estacion.apl?e=5&campo="+code;
+		return "http://www.euskalmet.euskadi.eus/s07-5853x/es/meteorologia/estacion.apl?e=5&campo="+code;
 	}
 
 	@Override
@@ -38,8 +38,8 @@ public class EuskalmetProvider implements WindProvider {
 		downloader.setBrowser(FakeBrowser.WGET);
 		String time1 = String.format("%02d:%02d", past.get(Calendar.HOUR_OF_DAY), past.get(Calendar.MINUTE) );
 		String time2 = String.format("%02d:%02d", now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE) );
-		//downloader.setUrl("http://www.euskalmet.euskadi.net/s07-5853x/es/meteorologia/lectur_fr.apl");
-		downloader.setUrl("http://www.euskalmet.euskadi.net/s07-5853x/es/meteorologia/lectur_imp.apl");
+		//downloader.setUrl("http://www.euskalmet.euskadi.eus/s07-5853x/es/meteorologia/lectur_fr.apl");
+		downloader.setUrl("http://www.euskalmet.euskadi.eus/s07-5853x/es/meteorologia/lectur_imp.apl");
 		downloader.addParam("e", "5");
 		downloader.addParam("anyo", now.get(Calendar.YEAR));
 		downloader.addParam("mes", now.get(Calendar.MONTH)+1);
