@@ -1,9 +1,11 @@
 package com.akrog.tolomet.gae.v2;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Created by gorka on 8/11/16.
  */
-
+@XmlRootElement
 public class Station {
     public enum Action {ADD, UPDATE, REMOVE}
 
