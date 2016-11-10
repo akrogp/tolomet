@@ -1,4 +1,4 @@
-package com.akrog.tolomet.gae;
+package com.akrog.tolomet.gae.v2;
 
 /**
  * Created by gorka on 8/11/16.

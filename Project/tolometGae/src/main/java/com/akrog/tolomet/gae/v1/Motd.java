@@ -1,4 +1,4 @@
-package com.akrog.tolomet.gae;
+package com.akrog.tolomet.gae.v1;
 
 import java.util.ArrayList;
 import java.util.List;

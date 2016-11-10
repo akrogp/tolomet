@@ -1,4 +1,4 @@
-package com.akrog.tolomet.gae;
+package com.akrog.tolomet.gae.v1;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -7,7 +7,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 @Path("/motd")
-public class Api1 {
+public class Api {
 	//private Logger logger = Logger.getLogger("com.akrog.tolomet.gae");
 
 	@GET	
