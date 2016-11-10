@@ -3,7 +3,7 @@
     android:initialLayout="@layout/widget_layout_large"
     android:previewImage="@drawable/large_widget_preview"
     android:configure="com.akrog.tolomet.widget.LargeWidgetSettingsActivity"
-    android:minHeight="40dp"
+    android:minHeight="62dp"
     android:minWidth="250dp"
     android:updatePeriodMillis="0" >
 </appwidget-provider>
