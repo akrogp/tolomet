@@ -20,9 +20,16 @@ public class Api {
 		
 		// Version
 		Motd motd = new Motd();
-		//changesv2(version, motd);
-		//changesv3(version, lang, motd);
-		changesv4(version, lang, motd);
+
+		if( api < 9 )
+            changesApi7(version, lang, motd);
+        else if( api == 9 )
+            changesApi9(version, lang, motd);
+        else {
+            //changesv2(version, motd);
+            //changesv3(version, lang, motd);
+            changesv4(version, lang, motd);
+        }
 		
 		// MOTD
 		/*Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
@@ -40,7 +47,13 @@ public class Api {
 		return motd.toString();
 	}
 
-	private void changesv4(int version, String lang, Motd motd) {
+    private void changesApi7(int version, String lang, Motd motd) {
+    }
+
+    private void changesApi9(int version, String lang, Motd motd) {
+    }
+
+    private void changesv4(int version, String lang, Motd motd) {
 		if( version < 400 ) {
 			motd.setVersion("4.0");
 			motd.addChange(tr(lang,"Nueva interfaz de usuario", "New user interface"));

@@ -120,4 +120,8 @@
     <string name="help_body">Have a look at the Tolomet manual!</string>
     <string name="pref_modeColors">Color combination</string>
     <string name="pref_modeColorsDefault">0</string>
+    <string name="newdb">Station update available!</string>
+    <string name="newst">New</string>
+    <string name="modst">Updated</string>
+    <string name="delst">Removed</string>
 </resources>

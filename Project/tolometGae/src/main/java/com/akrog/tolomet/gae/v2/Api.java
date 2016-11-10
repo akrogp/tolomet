@@ -22,16 +22,16 @@ public class Api {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Notification checkNotifications(
-            @QueryParam("apiLevel") int apiLevel,
-            @QueryParam("appVersion") int appVersion, @QueryParam("dbVersion") int dbVersion,
-            @QueryParam("stamp") long stamp, @QueryParam("lang") String lang ) {
+            @QueryParam("apiLevel") Integer apiLevel,
+            @QueryParam("appVersion") Integer appVersion, @QueryParam("dbVersion") Integer dbVersion,
+            @QueryParam("stamp") Long stamp, @QueryParam("lang") String lang ) {
         Notification info;
 
-        if( (info=checkAppVersion(appVersion, lang)) != null )
+        if( appVersion != null && (info=checkAppVersion(appVersion, lang)) != null )
             return info;
-        if( (info=checkDbVersion(dbVersion)) != null )
+        if( dbVersion != null && (info=checkDbVersion(dbVersion)) != null )
             return info;
-        if( (info=checkMotd(stamp, lang)) != null )
+        if( stamp != null && (info=checkMotd(stamp, lang)) != null )
             return info;
 
         return null;
@@ -45,6 +45,7 @@ public class Api {
         if( appVersion < 600 ) {
             info.setAppVersion("6.0");
             addImprovement(info, lang, "Prueba", "Test");
+            addImprovement(info, lang, "Prueba2", "Test2");
         }
 
         return info;*/
@@ -52,13 +53,13 @@ public class Api {
     }
 
     private Notification checkDbVersion(int dbVersion) {
-        /*if( dbVersion >= 5 )
+        /*if( dbVersion >= 6 )
             return null;
         Notification info = new Notification();
 
-        if( dbVersion < 5 ) {
-            info.setDbVersion(5);
-            addStation(info, "XXX", "Prueba2", "183", "ES", 0.0, 0.0, "Euskalmet", Station.Action.REMOVE);
+        if( dbVersion < 6 ) {
+            info.setDbVersion(6);
+            addStation(info, "XXX", "Prueba2", "País Vasco", "ES", 0.0, 0.0, "Euskalmet", Station.Action.REMOVE);
         }
 
         return info;*/
@@ -66,8 +67,8 @@ public class Api {
     }
 
     private Notification checkMotd(long stamp, String lang) {
-        /*if( stamp >= d("08/11/2016") )
-            return null;*/
+        if( stamp >= d("08/11/2016") )
+            return null;
         Notification info = new Notification();
         info.setStamp(d("08/11/2016"));
         info.setMotd(tr(lang,"¡Bienvenido a la versión 5.0 de Tolomet!","Welcome to Tolomet v5.0!"));
