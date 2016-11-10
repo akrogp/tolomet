@@ -2,9 +2,12 @@ package com.akrog.tolomet.gae.v2;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * The object model for the data we are sending through endpoints
  */
+@XmlRootElement
 public class Notification {
     private String appVersion;
     private List<String> improvements;
