@@ -13,13 +13,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.zip.GZIPInputStream;
 
 public class Downloader {
@@ -35,32 +28,34 @@ public class Downloader {
 	//private FakeBrowser fakeBrowser = FakeBrowser.DEFAULT;
     private FakeBrowser fakeBrowser = FakeBrowser.TOLOMET;
     private long timeout = 30;
-    private Future<String> future;
+    private TimeoutTask<String> task;
+	private String error;
 	
 	public String download() {
 		return download(null);
 	}
 
     public String download( final String stop ) {
-        final ExecutorService executor = Executors.newCachedThreadPool(Executors.defaultThreadFactory());
-        future = executor.submit(new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                return rawDownload(stop);
-            }
-        });
+		task = new TimeoutTask<String>(timeout) {
+			@Override
+			public String call() throws Exception {
+				return rawDownload(stop);
+			}
+		};
         String result = "";
+		error = null;
         try {
-            result = future.get(timeout, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (TimeoutException e) {
+            result = task.execute();
+        } catch (Exception e) {
+			error = e.getMessage();
             e.printStackTrace();
         }
-        future = null;
+        task = null;
         return result;
+    }
+
+    public String getError() {
+        return error;
     }
 
 	private String rawDownload( String stop ) {
@@ -129,9 +124,9 @@ public class Downloader {
 	}
 	
 	public void cancel() {
-        if( future != null ) {
-            future.cancel(true);
-            future = null;
+        if( task != null ) {
+            task.cancel();
+            task = null;
         }
 		cancelled = true;
 	}

@@ -10,7 +10,7 @@ import android.support.v4.os.AsyncTaskCompat;
 
 import com.akrog.tolomet.data.AppSettings;
 import com.akrog.tolomet.data.DbMeteo;
-import com.akrog.tolomet.gae.GaeManager;
+import com.akrog.tolomet.gae.Updater;
 import com.akrog.tolomet.presenters.MyCharts;
 import com.akrog.tolomet.presenters.MySummary;
 import com.akrog.tolomet.presenters.Presenter;
@@ -35,7 +35,7 @@ public class ChartsActivity extends BaseActivity {
 				R.id.fly_item,
 				R.id.help_item, R.id.settings_item, R.id.about_item, R.id.report_item);
 
-        gaeManager.initialize(this);
+        updater.initialize(this);
         presenters.add(charts);
         presenters.add(summary);
         for( Presenter presenter : presenters)
@@ -255,7 +255,7 @@ public class ChartsActivity extends BaseActivity {
             model.getCurrentStation().getMeteo().clear(cal.getTimeInMillis());
         }
         redraw();
-        gaeManager.checkMotd();
+        updater.start();
     }
 
 	@Override
@@ -280,7 +280,7 @@ public class ChartsActivity extends BaseActivity {
 	private final List<Presenter> presenters = new ArrayList<Presenter>();
 	private final MySummary summary = new MySummary();
 	private final MyCharts charts = new MyCharts(summary);
-	private final GaeManager gaeManager = new GaeManager();
+	private final Updater updater = new Updater();
 	private final Handler handler = new Handler();
 	private Runnable timer;
     private AsyncTask<Void, Void, Void> thread;

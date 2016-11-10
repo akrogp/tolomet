@@ -122,14 +122,24 @@ public class AppSettings {
 		}
 		return state;
 	}
-	
-	public long getGaeStamp() {
-		return settings.getLong("gae:last", 0);
+
+	public long getCheckStamp() {
+		return settings.getLong("stamp-check", 0);
 	}
-	
-	public void saveGaeStamp( long stamp ) {
+
+	public void saveCheckStamp( long stamp ) {
 		SharedPreferences.Editor editor = settings.edit();
-		editor.putLong("gae:last", stamp);
+		editor.putLong("stamp-check", stamp);
+		editor.commit();
+	}
+
+	public long getUpdateStamp() {
+		return settings.getLong("stamp-update", 0);
+	}
+
+	public void saveUpdateStamp(long stamp ) {
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putLong("stamp-update", stamp);
 		editor.commit();
 	}
 	
