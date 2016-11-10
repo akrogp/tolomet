@@ -72,6 +72,7 @@ public class Manager {
 		try {
 			station.getProvider().refresh(station);
 		} catch( Exception e ) {
+			e.printStackTrace();
 			//station.clear();
 			return false;
 		}
