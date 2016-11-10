@@ -7,12 +7,12 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 @Path("/motd")
-public class RestApi {
+public class Api1 {
 	//private Logger logger = Logger.getLogger("com.akrog.tolomet.gae");
-	
+
 	@GET	
 	@Produces(MediaType.TEXT_PLAIN)
-	public String getMotd(@QueryParam("version") int version, @QueryParam("stamp") long stamp, @QueryParam("lang") String lang ) {
+	public String getMotd(@QueryParam("version") int version, @QueryParam("stamp") long stamp, @QueryParam("lang") String lang, @QueryParam("api") int api ) {
 		/*Calendar cal = Calendar.getInstance();
 		cal.setTimeInMillis(stamp);
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
