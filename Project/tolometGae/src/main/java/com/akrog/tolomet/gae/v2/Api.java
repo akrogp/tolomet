@@ -1,4 +1,4 @@
-package com.akrog.tolomet.gae;
+package com.akrog.tolomet.gae.v2;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -17,7 +17,7 @@ import javax.ws.rs.core.MediaType;
  */
 
 @Path("/v2")
-public class Api2 {
+public class Api {
     @Path("/checkNotifications")
     @GET
     @Produces(MediaType.APPLICATION_JSON)

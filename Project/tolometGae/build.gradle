@@ -6,7 +6,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.google.appengine:gradle-appengine-plugin:1.9.18'
+        classpath 'com.google.appengine:gradle-appengine-plugin:1.9.34'
     }
 }
 
@@ -23,7 +23,7 @@ targetCompatibility = JavaVersion.VERSION_1_7
 
 dependencies {
     compile fileTree(dir: 'src/main/webapp/WEB-INF/lib', include: ['*.jar'])
-    appengineSdk 'com.google.appengine:appengine-java-sdk:1.9.18'
+    appengineSdk 'com.google.appengine:appengine-java-sdk:1.9.34'
     compile 'javax.servlet:servlet-api:2.5'
 }
 
