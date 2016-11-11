@@ -23,7 +23,7 @@ public class Api {
 
 		if( api < 9 )
             changesApi7(version, lang, motd);
-        else if( api == 9 )
+        else if( api < 14 )
             changesApi9(version, lang, motd);
         else {
             //changesv2(version, motd);
@@ -48,6 +48,14 @@ public class Api {
 	}
 
     private void changesApi7(int version, String lang, Motd motd) {
+		if( version < 412 ) {
+			motd.setVersion("4.0");
+			motd.addChange(tr(lang,"Nueva interfaz de usuario", "New user interface"));
+			motd.addChange(tr(lang,"Opciones para compartir lecturas","Support for sharing readings"));
+			motd.addChange(tr(lang,"Añadido modo vuelo","Added a flight mode"));
+			motd.addChange(tr(lang,"Localización en mapa","Location in map"));
+			motd.addChange(tr(lang,"Desplazarse por lecturas","Scroll of readings"));
+		}
     }
 
     private void changesApi9(int version, String lang, Motd motd) {

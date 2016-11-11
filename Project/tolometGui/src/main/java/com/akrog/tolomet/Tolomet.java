@@ -1,7 +1,6 @@
 package com.akrog.tolomet;
 
 import android.app.AlertDialog;
-import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,12 +9,13 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.support.multidex.MultiDexApplication;
 
 /**
  * Created by gorka on 6/10/16.
  */
 
-public class Tolomet extends Application {
+public class Tolomet extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
