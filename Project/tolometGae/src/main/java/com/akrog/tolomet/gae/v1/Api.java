@@ -21,16 +21,16 @@ public class Api {
 		// Version
 		Motd motd = new Motd();
 
-		if( api < 9 )
-            changesApi7(version, lang, motd);
-        else if( api < 14 )
-            changesApi9(version, lang, motd);
-        else {
+        if( api == 0 || api >= 14 ) {
             //changesv2(version, motd);
             //changesv3(version, lang, motd);
-            changesv4(version, lang, motd);
+            changesv5(version, lang, motd);
         }
-		
+		else if( api < 9 )
+            changesApi7(version, lang, motd);
+        else
+            changesApi9(version, lang, motd);
+
 		// MOTD
 		/*Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
         cal.set(2016,10-1,10,0,0);
@@ -48,17 +48,21 @@ public class Api {
 	}
 
     private void changesApi7(int version, String lang, Motd motd) {
-		if( version < 412 ) {
-			motd.setVersion("4.0");
-			motd.addChange(tr(lang,"Nueva interfaz de usuario", "New user interface"));
-			motd.addChange(tr(lang,"Opciones para compartir lecturas","Support for sharing readings"));
-			motd.addChange(tr(lang,"Añadido modo vuelo","Added a flight mode"));
-			motd.addChange(tr(lang,"Localización en mapa","Location in map"));
-			motd.addChange(tr(lang,"Desplazarse por lecturas","Scroll of readings"));
-		}
+        if( version < 413 ) {
+            motd.setVersion("4.1.3");
+            motd.addChange(tr(lang,"Mejorado modo vuelo", "Improved fly mode"));
+            motd.addChange(tr(lang,"Solucionado fallo con Euskalmet", "Solved bug with Euskalmet"));
+        }
     }
 
     private void changesApi9(int version, String lang, Motd motd) {
+        if( version < 451 ) {
+            motd.setVersion("4.5.1");
+            motd.addChange(tr(lang,"Mejorado modo vuelo", "Improved fly mode"));
+        }
+    }
+
+    private void changesv5(int version, String lang, Motd motd) {
     }
 
     private void changesv4(int version, String lang, Motd motd) {
