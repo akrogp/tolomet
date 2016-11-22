@@ -189,6 +189,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		}
 		selectMenu(type, false);
 		spinner.setSelection(adapter.getPosition(station));
+		model.setCurrentStation(station);
 	}
 
 	private void resetChoices( boolean showStart ) {

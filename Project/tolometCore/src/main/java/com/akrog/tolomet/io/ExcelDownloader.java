@@ -4,6 +4,14 @@ import jxl.Sheet;
 import jxl.Workbook;
 
 public class ExcelDownloader extends Downloader {
+	public ExcelDownloader(long timeout, int retries) {
+		super(timeout, retries);
+	}
+
+	public ExcelDownloader() {
+		super();
+	}
+
 	@Override
 	protected String parseInput(java.io.InputStream is, String stop ) throws Exception {
 		Workbook workbook = Workbook.getWorkbook(is);

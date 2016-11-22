@@ -27,16 +27,26 @@ public class Downloader {
     private boolean gzipped = false;
 	//private FakeBrowser fakeBrowser = FakeBrowser.DEFAULT;
     private FakeBrowser fakeBrowser = FakeBrowser.TOLOMET;
-    private long timeout = 30;
+	private final int retries;
+    private final long timeout;
     private TimeoutTask<String> task;
 	private String error;
+
+    public Downloader(long timeout, int retries) {
+        this.timeout = timeout;
+        this.retries = retries;
+    }
+
+    public Downloader() {
+        this(15,2);
+    }
 	
 	public String download() {
 		return download(null);
 	}
 
     public String download( final String stop ) {
-		task = new TimeoutTask<String>(timeout) {
+		task = new TimeoutTask<String>(timeout, retries) {
 			@Override
 			public String call() throws Exception {
 				return rawDownload(stop);
@@ -97,10 +107,6 @@ public class Downloader {
 	public void setBrowser( FakeBrowser fakeBrowser ) {
 		this.fakeBrowser = fakeBrowser;
 	}
-
-    public void setTimeout( long timeout ) {
-        this.timeout = timeout;
-    }
 	
 	private void applyBrowserProperties( HttpURLConnection con ) {
 		switch( fakeBrowser ) {

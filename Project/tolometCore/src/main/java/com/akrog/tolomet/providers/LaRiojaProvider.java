@@ -52,7 +52,7 @@ public class LaRiojaProvider implements WindProvider {
 	}
 
 	private String download(String code, Calendar now, int codigoP ) {
-		downloader = new ExcelDownloader();
+		downloader = new ExcelDownloader(20,2);
 		downloader.setUrl("http://ias1.larioja.org/estaciones/estaciones/mapa/informes/ExportarDatosServlet");
 		downloader.addParam("direccion", "/opt/tomcat/webapps/estaciones/estaciones");
 		downloader.addParam("codOrg","1");

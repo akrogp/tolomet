@@ -83,8 +83,10 @@ public class ChartsActivity extends BaseActivity {
             intent.removeExtra(EXTRA_STATION_ID);
             intent.removeExtra(EXTRA_COUNTRY);
             Station station = model.findStation(stationId);
-            if( station != null )
+            if( station != null ) {
                 spinner.selectStation(station);
+                DbMeteo.getInstance().refresh(model.getCurrentStation());
+            }
         }
     	if( settings.getUpdateMode() >= AppSettings.SMART_UPDATES && model.isOutdated() )
     		downloadData();
