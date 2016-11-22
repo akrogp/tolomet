@@ -187,7 +187,7 @@ public class WidgetProvider {
                 continue;
             if( !updateViews(remoteViews,data,widgetSize) )
                 continue;
-            if( widgetSize != WidgetReceiver.WIDGET_SIZE_SMALL )
+            //if( widgetSize != WidgetReceiver.WIDGET_SIZE_SMALL )
                 remoteViews.setOnClickPendingIntent(R.id.widget_icon, getUpdateIntent());
             remoteViews.setOnClickPendingIntent(R.id.widget, getTolometIntent(data));
             appWidgetManager.updateAppWidget(widgetId, remoteViews);

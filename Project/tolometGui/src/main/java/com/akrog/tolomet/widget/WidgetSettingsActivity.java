@@ -65,8 +65,10 @@ public abstract class WidgetSettingsActivity extends SettingsActivity {
         super.onSharedPreferenceChanged(sp, key);
         if( key.equals(STATION_KEY) ) {
             EditTextPreference name = (EditTextPreference)findPreference(SPOT_KEY);
-            if( name.getText() != null && name.getText().isEmpty() ) {
-                name.setText(((ListPreference) findPreference(STATION_KEY)).getEntry().toString());
+            ListPreference station = (ListPreference)findPreference(STATION_KEY);
+            if( station.getEntry() != null ) {
+            //if( name.getText() != null && name.getText().isEmpty() ) {
+                name.setText(station.getEntry().toString());
                 onSharedPreferenceChanged(sp, SPOT_KEY);
             }
         }
