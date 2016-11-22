@@ -199,6 +199,8 @@ public class WidgetProvider {
         //clickIntent.putExtra(WidgetReceiver.EXTRA_WIDGET_SIZE, widgetSize);
         clickIntent.putExtra(ChartsActivity.EXTRA_STATION_ID, data.id);
         clickIntent.putExtra(ChartsActivity.EXTRA_COUNTRY, data.country);
+        // http://stackoverflow.com/questions/3168484/pendingintent-works-correctly-for-the-first-notification-but-incorrectly-for-the#comment3283736_3168653
+        clickIntent.setAction(Long.toString(System.currentTimeMillis()));
         return PendingIntent.getActivity(context,0,clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 

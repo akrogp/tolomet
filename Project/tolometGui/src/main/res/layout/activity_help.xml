@@ -76,6 +76,17 @@
             <com.akrog.tolomet.view.HtmlView android:layout_width="0dp" app:layout_gravity="fill_horizontal"
                       android:text="@string/help_fly"/>
 
+            <LinearLayout android:orientation="vertical">
+                <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content"
+                           android:src="@drawable/ic_widget" android:tint="#FFAA0000"/>
+                <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content"
+                           android:src="@drawable/ic_widget" android:tint="#FFAAAA00"/>
+                <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content"
+                           android:src="@drawable/ic_widget" android:tint="#FF00AA00"/>
+            </LinearLayout>
+            <com.akrog.tolomet.view.HtmlView android:layout_width="0dp" app:layout_gravity="fill_horizontal"
+                      android:text="@string/help_widget"/>
+
             <ImageView android:src="@drawable/ic_settings"/>
             <com.akrog.tolomet.view.HtmlView android:layout_width="0dp" app:layout_gravity="fill_horizontal"
                       android:text="@string/help_settings"/>
