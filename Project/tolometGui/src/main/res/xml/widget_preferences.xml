@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="@string/wpref_place">
+        <ListPreference
+            android:key="wstation0"
+            android:title="@string/station_prompt"
+            android:dialogTitle="@string/station_prompt"/>
         <EditTextPreference
             android:key="wspot"
             android:maxLines="1"
             android:title="@string/spot_prompt"
             android:dialogTitle="@string/spot_prompt"/>
-        <ListPreference
-            android:key="wstation0"
-            android:title="@string/station_prompt"
-            android:dialogTitle="@string/station_prompt"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/wpref_conditions">
         <EditTextPreference
