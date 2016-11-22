@@ -50,7 +50,7 @@
     <string name="help_whatsapp">The same as the previous action but using WhatsApp directly
         instead of asking for the application to be used to share the content.
     </string>
-    <string name="help_fly">Changes between flying and landed modes. When in fly mode the screen
+    <string name="help_fly">Changes between flying and landed modes. When in flight mode the screen
         is always on and the rotation is disabled. This only affects to Tolomet, not to other apps
         in the phone. In this mode the readings are automatically updated using the provider\'s
         update rate or each minute in case the reading is delayed.
@@ -65,5 +65,22 @@
         default subject and a body. Please add your message to the mail body, but do not remove the
         original body since it contains technical information which can help me to improve Tolomet
         for your specific device type.
+    </string>
+    <string name="help_widget"><![CDATA[
+        The widget allows you to have a quick look at your favorite spot(s) from the home screen.
+        There are three widget sizes available, displaying more or less information. When you add a
+        widget, a configuration screen is opened to allow you to customize which are your preferred
+        flying conditions at a given spot using any of the stations in your favorite list. The
+        preferred wind direction range is specified with two values in degrees (between 0 and 360):
+        <u>from</u> and <u>to</u>. For instance the pair [from=0, to=90] would indicate that all
+        winds between north and east are fine to fly, and the pair [from=270, to=90] would indicate
+        that all winds with a north component (both west and east) are fine. The icon of the widget
+        is shown in <font color="#880000">red</font> if any of the readings are not within your
+        preferred flying conditions, in <font color="#888800">yellow</font> if there is no
+        information available or the conditions are in a transition from bad to good, and in
+        <font color="#008800">green</font> if the flying conditions are good during the last two
+        readings. If you click on the icon, the readings are updated (if necessary), and if you
+        click on the text, Tolomet is opened showing the readings of the corresponding station.
+        ]]>
     </string>
 </resources>

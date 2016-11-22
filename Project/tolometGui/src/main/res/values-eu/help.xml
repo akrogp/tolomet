@@ -75,4 +75,24 @@
         información técnica que me puede ayudar a mejorar Tolomet para tu tipo de dispositivo en
         concreto.
     </string>
+    <string name="help_widget"><![CDATA[
+        El widget te permite consultar de un vistazo rápido cuáles son las condiciones de vuelo
+        actuales en tus zonas de vuelo favoritas. Hay disponibles tres tamaños diferentes de widget
+        que muestran más o menos información. Cuando añades un widget se te abre una pantalla
+        de configuración para que indiques la zona de vuelo y tus condiciones de vuelo preferidas.
+        La zona de vuelo se indica mediante cualquiera de las estaciones que tengas en favoritos y
+        un nombre que puede ser diferente al de la estación. La dirección de viento preferida se
+        indica mediante un par de valores en grados (entre 0 y 360): <u>desde</u> y <u>hasta</u>.
+        Por ejemplo el par [desde=0, hasta=90] indicaría que todas las direcciones de viento entre
+        el norte y el este son buenas, mientras que el par [desde=270, hasta=90] indicaría que
+        cualquier componente norte (tanto de oeste como de este) es buena. El icono del widget se
+        muestra de color <font color="#880000">rojo</font> si cualquiera de las lecturas no está
+        dentro de tus condiciones de vuelo preferidas, en <font color="#888800">amarillo</font> en
+        caso de no haber información disponible o si las condicioens están en transición de malas a
+        buenas, y en <font color="#008800">verde</font> si las condiciones se han mantenido buenas
+        durante las dos últimas lecturas. Si haces click en el icono se actualizan las lecturas (en
+        caso de ser necesario), y si haces click en el texto se abre Tolomet en la estación
+        correspondiente.
+        ]]>
+    </string>
 </resources>
