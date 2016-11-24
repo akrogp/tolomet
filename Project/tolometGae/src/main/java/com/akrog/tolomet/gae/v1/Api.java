@@ -48,21 +48,30 @@ public class Api {
 	}
 
     private void changesApi7(int version, String lang, Motd motd) {
-        if( version < 413 ) {
-            motd.setVersion("4.1.3");
+        if( version < 470 ) {
+            motd.setVersion("4.7.0");
             motd.addChange(tr(lang,"Mejorado modo vuelo", "Improved fly mode"));
             motd.addChange(tr(lang,"Solucionado fallo con Euskalmet", "Solved bug with Euskalmet"));
         }
     }
 
     private void changesApi9(int version, String lang, Motd motd) {
-        if( version < 451 ) {
-            motd.setVersion("4.5.1");
+        if( version < 490 ) {
+            motd.setVersion("4.9.0");
             motd.addChange(tr(lang,"Mejorado modo vuelo", "Improved fly mode"));
         }
     }
 
     private void changesv5(int version, String lang, Motd motd) {
+		if( version < 500 ) {
+			motd.setVersion("5.0");
+			motd.addChange(tr(lang,"Añadidos widgets", "Included widget support"));
+			motd.addChange(tr(lang,"Posibilidad de consultar días anteriores", "Now it is possible to check readings of past days"));
+			motd.addChange(tr(lang,"Mejorada navegación en mapa entre países", "Improved map navigation between countries"));
+			motd.addChange(tr(lang,"Incluida ayuda", "Included help window"));
+			motd.addChange(tr(lang,"Posibilidad de colores para daltónicos", "Choice of colors for daltonics"));
+			motd.addChange(tr(lang,"Facilitado cambio de idioma", "Now it is easy to change the language"));
+		}
     }
 
     private void changesv4(int version, String lang, Motd motd) {
