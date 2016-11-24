@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="@string/pref_modes">
+		<ListPreference
+			android:key="pref_modeLang"
+			android:title="@string/pref_modeLang"
+			android:dialogTitle="@string/pref_modeLang"
+			android:entries="@array/pref_modeLangEntries"
+			android:entryValues="@array/pref_modeLangValues"
+			android:defaultValue="@string/pref_modeLangDefault" />
 	    <ListPreference
 	        android:key="pref_modeGraphs"
 	        android:title="@string/pref_modeGraphs"

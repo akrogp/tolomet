@@ -150,4 +150,16 @@
     <item>0</item>
     <item>1</item>
 </string-array>
+<string-array name="pref_modeLangEntries">
+    <item>Sistema</item>
+    <item>Español</item>
+    <item>Euskara</item>
+    <item>English</item>
+</string-array>
+<string-array name="pref_modeLangValues">
+    <item></item>
+    <item>es</item>
+    <item>eu</item>
+    <item>en</item>
+</string-array>
 </resources>
