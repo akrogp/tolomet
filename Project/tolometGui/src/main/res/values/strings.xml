@@ -68,7 +68,7 @@
     <string name="pref_minPresDefault">980</string>
     <string name="pref_maxPres">Higher pressure</string>
     <string name="pref_maxPresDefault">1030</string>
-    <string name="pref_modes">Running modes</string>
+    <string name="pref_modes">General</string>
     <string name="pref_modeGraphs">Charts</string>
     <string name="pref_modeGraphsDefault">0</string>
     <string name="pref_modeUpdate">Readings update</string>
