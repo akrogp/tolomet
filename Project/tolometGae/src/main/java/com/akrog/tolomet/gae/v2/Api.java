@@ -67,12 +67,13 @@ public class Api {
     }
 
     private Notification checkMotd(long stamp, String lang) {
-        if( stamp >= d("08/11/2016") )
+        /*if( stamp >= d("08/11/2016") )
             return null;
         Notification info = new Notification();
         info.setStamp(d("08/11/2016"));
         info.setMotd(tr(lang,"¡Bienvenido a la versión 5.0 de Tolomet!","Welcome to Tolomet v5.0!"));
-        return info;
+        return info;*/
+        return null;
     }
 
     private String tr(String lang, String es, String en) {
