@@ -15,6 +15,7 @@ import com.akrog.tolomet.presenters.MySpinner;
 import com.akrog.tolomet.presenters.MyToolbar;
 import com.akrog.tolomet.view.AndroidUtils;
 import com.google.android.gms.maps.GoogleMap;
+import com.gunhansancar.android.sdk.helper.LocaleHelper;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LocaleHelper.onCreate(this);
     }
 
     public void createSpinnerView(Bundle savedInstanceState, int layoutResId, int... buttonIds ) {
@@ -87,8 +89,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if( resultCode == RESULT_OK )
             spinner.loadState(null);
-        if( requestCode == SETTINGS_REQUEST )
-            onSettingsChanged();
+        if( requestCode == SETTINGS_REQUEST ) {
+            if( data.getBooleanExtra(LocaleHelper.SELECTED_LANGUAGE,false) ) {
+                //Toast.makeText(this,"recreate",Toast.LENGTH_SHORT).show();
+                recreate();
+            } else
+                onSettingsChanged();
+        }
     }
 
     public AppSettings getSettings() {
