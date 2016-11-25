@@ -38,18 +38,18 @@ public class Api {
     }
 
     private Notification checkAppVersion(int appVersion, String lang) {
-        /*if( appVersion >= 600 )
+        if( appVersion >= 501 )
             return null;
         Notification info = new Notification();
 
-        if( appVersion < 600 ) {
-            info.setAppVersion("6.0");
-            addImprovement(info, lang, "Prueba", "Test");
-            addImprovement(info, lang, "Prueba2", "Test2");
+        if( appVersion < 501 ) {
+            info.setAppVersion("5.0.1");
+            addImprovement(info, lang,
+                    "Solucionados fallos reportados de la versión 5.0",
+                    "Solved reported bug of version 5.0");
         }
 
-        return info;*/
-        return null;
+        return info;
     }
 
     private Notification checkDbVersion(int dbVersion) {
