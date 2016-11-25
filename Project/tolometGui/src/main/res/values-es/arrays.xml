@@ -151,7 +151,7 @@
     <item>1</item>
 </string-array>
 <string-array name="pref_modeLangEntries">
-    <item>Sistema</item>
+    <item>Automático</item>
     <item>Español</item>
     <item>Euskara</item>
     <item>English</item>
