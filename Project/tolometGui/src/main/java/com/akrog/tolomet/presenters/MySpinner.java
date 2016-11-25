@@ -44,6 +44,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 	private static final int OFF_VOWEL = 200;
 	private static final int OFF_COUNTRY = 1000;
 	private static final int OFF_REGION = 2000;
+	private boolean shownFavDialog = false;
 
 	@Override
 	public void initialize(BaseActivity activity, Bundle bundle) {
@@ -204,7 +205,10 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		model.selectFavorites();
 		if( !model.getSelStations().isEmpty() )
 			return true;
-		showFavoriteDialog();
+		if( !shownFavDialog ) {
+			showFavoriteDialog();
+			shownFavDialog = true;
+		}
         if( model.getSelStations().isEmpty() )
 		    selectRegions();
 		return false;
