@@ -38,14 +38,21 @@ public class WidgetSettings {
         for( int i = 0; i < len; i++ ) {
             FlyConstraint constraint = new FlyConstraint();
             constraint.setStation(settings.getString("wstation"+i, null));
-            constraint.setMinDir(Integer.parseInt(settings.getString("wminDir"+i,"0")));
-            constraint.setMaxDir(Integer.parseInt(settings.getString("wmaxDir"+i,"360")));
-            constraint.setMinWind(Integer.parseInt(settings.getString("wminWind"+i,"0")));
-            constraint.setMaxWind(Integer.parseInt(settings.getString("wmaxWind"+i,"0")));
-            constraint.setMaxHum(Integer.parseInt(settings.getString("wmaxHum"+i,"100")));
+            constraint.setMinDir(getInt(settings,"wminDir"+i,0));
+            constraint.setMaxDir(getInt(settings,"wmaxDir"+i,360));
+            constraint.setMinWind(getInt(settings,"wminWind"+i,0));
+            constraint.setMaxWind(getInt(settings,"wmaxWind"+i,0));
+            constraint.setMaxHum(getInt(settings,"wmaxHum"+i,100));
             spot.getConstraints().add(constraint);
         }
         return spot;
+    }
+
+    private static int getInt(SharedPreferences settings, String key, int def) {
+        String value = settings.getString(key,String.valueOf(def));
+        if( value.isEmpty() )
+            return def;
+        return Integer.parseInt(value);
     }
 
     public static void setSpot( SharedPreferences settings, FlySpot spot ) {

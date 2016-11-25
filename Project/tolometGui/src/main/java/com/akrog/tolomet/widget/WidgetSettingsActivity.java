@@ -43,6 +43,8 @@ public abstract class WidgetSettingsActivity extends SettingsActivity {
             List<String> entries = new ArrayList<>();
             List<String> values = new ArrayList<>();
             for( String fav : favs ) {
+                if( fav.isEmpty() )
+                    continue;
                 Station station = model.findStation(fav);
                 if( station != null ) {
                     entries.add(station.getName());
