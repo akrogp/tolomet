@@ -308,6 +308,8 @@ public class AppSettings {
 	private Set<String> fromCsv( String str ) {
 		Set<String> set = new HashSet<String>();
 		set.addAll(Arrays.asList(str.split(",")));
+		if( set.size() == 1 && set.iterator().next().isEmpty() )
+			set.clear();
 		return set;
 	}
 	

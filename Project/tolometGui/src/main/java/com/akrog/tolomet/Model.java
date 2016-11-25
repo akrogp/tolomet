@@ -86,6 +86,12 @@ public class Model {
                 settings.removeFavorite(stationId);
             }
         }
+        Collections.sort(selection, new Comparator<Station>() {
+            @Override
+            public int compare(Station s1, Station s2) {
+                return s1.getName().compareTo(s2.getName());
+            }
+        });
     }
 
     public void selectNearest(double lat, double lon) {
