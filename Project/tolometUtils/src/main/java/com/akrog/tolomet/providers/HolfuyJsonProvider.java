@@ -63,6 +63,11 @@ public class HolfuyJsonProvider extends BaseProvider {
     }
 
     @Override
+    public boolean configureDownload(Downloader downloader, Station station, long date) {
+        return false;
+    }
+
+    @Override
     public void updateStation(Station station, String data) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         df.setTimeZone(TimeZone.getTimeZone("Europe/Madrid"));
