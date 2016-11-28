@@ -1,11 +1,11 @@
 package com.akrog.tolomet.utils;
 
+import com.akrog.tolomet.Manager;
+import com.akrog.tolomet.Station;
+
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-import com.akrog.tolomet.Manager;
-import com.akrog.tolomet.Station;
 
 public class BrokenStations {
 	public static void main( String[] args ) throws IOException {
@@ -13,12 +13,12 @@ public class BrokenStations {
 		DataOutputStream ok = new DataOutputStream(new FileOutputStream("stations.dat"));
 		DataOutputStream ko = new DataOutputStream(new FileOutputStream("badstations.dat"));
 		boolean broken;
-		for( Station station : tolomet.getAllStations() ) {
+		/*for( Station station : tolomet.getAllStations() ) {
 			System.out.print(String.format("%s ... ", station.toString()));
 			broken = checkBroken(station);
 			System.out.println(broken?"KO":"OK");
 			saveStation(broken?ko:ok, station);
-		}
+		}*/
 		ok.close();
 		ko.close();
 	}

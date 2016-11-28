@@ -15,7 +15,8 @@ public enum WindProviderType {
 	Holfuy("HO", new HolfuyProvider(), WindProviderQuality.Good),
 	PiouPiou("PI", new PiouProvider(), WindProviderQuality.Medium),
 	Ffvl("FFVL", new FfvlProvider(), WindProviderQuality.Medium),
-    MeteoFrance("MF", new MeteoFranceProvider(), WindProviderQuality.Poor);
+    MeteoFrance("MF", new MeteoFranceProvider(), WindProviderQuality.Poor),
+	MeteoClimatic("MC", new MeteoClimaticProvider(), WindProviderQuality.Poor);
 	
 	private final String code;
 	private final WindProvider provider;

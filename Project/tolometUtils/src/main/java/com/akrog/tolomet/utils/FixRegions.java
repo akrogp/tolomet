@@ -1,5 +1,10 @@
 package com.akrog.tolomet.utils;
 
+import com.akrog.tolomet.Manager;
+import com.akrog.tolomet.Region;
+import com.akrog.tolomet.Station;
+import com.akrog.tolomet.providers.WindProviderType;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
@@ -7,16 +12,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
-import com.akrog.tolomet.Manager;
-import com.akrog.tolomet.Region;
-import com.akrog.tolomet.Station;
-import com.akrog.tolomet.providers.WindProviderType;
-
 public class FixRegions {
 	public static void main( String[] args ) throws IOException {
 		Manager tolomet = new Manager();		
-		List<Station> stations = tolomet.getAllStations();
-		List<Region> regions = tolomet.getRegions();
+		List<Station> stations = null;//tolomet.getAllStations();
+		List<Region> regions = null;//tolomet.getRegions();
 		DataOutputStream dos = new DataOutputStream(new FileOutputStream("/home/gorka/stations.dat"));
 		for( Station station : stations ) {
 			System.out.println(String.format("%s ... ", station.toString()));

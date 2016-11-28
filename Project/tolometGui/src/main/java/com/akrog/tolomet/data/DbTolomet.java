@@ -228,7 +228,7 @@ public class DbTolomet extends SQLiteAssetHelper {
     }
 
     private static final String DB_NAME = "Tolomet.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
     private static DbTolomet instance;
     private List<Country> countries;
 }
