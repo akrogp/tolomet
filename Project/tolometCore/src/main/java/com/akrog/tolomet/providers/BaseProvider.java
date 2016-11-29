@@ -21,7 +21,8 @@ public abstract class BaseProvider implements WindProvider {
 			return;
 		try {
 			updateStation(station, data);
-		} catch( Exception e ) {			
+		} catch( Exception e ) {
+			e.printStackTrace();
 		}
 		Integer refresh = station.getMeteo().getStep();
 		if( refresh != null ) {
@@ -51,7 +52,7 @@ public abstract class BaseProvider implements WindProvider {
 
 	public abstract boolean configureDownload(Downloader downloader, Station station, long date );
 	
-	public abstract void updateStation(Station station, String data);
+	public abstract void updateStation(Station station, String data) throws Exception;
 
 	@Override
 	public void cancel() {
