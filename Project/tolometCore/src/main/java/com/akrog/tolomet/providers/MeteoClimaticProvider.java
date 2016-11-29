@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 
 public class MeteoClimaticProvider extends BaseProvider {
     public MeteoClimaticProvider() {
-        super(15);
+        super(REFRESH);
     }
 
     @Override
@@ -41,19 +41,26 @@ public class MeteoClimaticProvider extends BaseProvider {
         String[] fields = data.substring(begin,end).replaceAll(",",".").split("\\)?;\\(");
         String[] subfields;
         Meteo meteo = station.getMeteo();
+        double value;
 
         subfields = fields[1].split(";");
         meteo.getAirTemperature().put(stamp,Double.parseDouble(subfields[0]));
 
         subfields = fields[2].split(";");
-        meteo.getAirHumidity().put(stamp,Double.parseDouble(subfields[0]));
+        if( (value=Double.parseDouble(subfields[0])) < 0.0 )
+            return;
+        meteo.getAirHumidity().put(stamp,value);
 
         subfields = fields[3].split(";");
-        meteo.getAirPressure().put(stamp,Double.parseDouble(subfields[0]));
+        if( (value=Double.parseDouble(subfields[0])) < 0.0 )
+            return;
+        meteo.getAirPressure().put(stamp,value);
 
         subfields = fields[4].split(";");
-        meteo.getWindSpeedMed().put(stamp,Double.parseDouble(subfields[0]));
-        meteo.getWindSpeedMax().put(stamp,Double.parseDouble(subfields[1]));
+        if( (value = Double.parseDouble(subfields[0])) < 0.0 )
+            return;
+        meteo.getWindSpeedMed().put(stamp,value);
+        //meteo.getWindSpeedMax().put(stamp,Double.parseDouble(subfields[1]));
         meteo.getWindDirection().put(stamp,Double.parseDouble(subfields[2]));
     }
 
@@ -67,5 +74,6 @@ public class MeteoClimaticProvider extends BaseProvider {
         return String.format("http://www.meteoclimatic.net/perfil/%s#content",code);
     }
 
+    private static final int REFRESH = 15;
     private static final DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm z");
 }
