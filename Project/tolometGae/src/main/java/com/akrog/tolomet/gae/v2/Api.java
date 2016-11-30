@@ -38,7 +38,7 @@ public class Api {
     }
 
     private Notification checkAppVersion(int appVersion, String lang) {
-        if( appVersion >= 501 )
+        if( appVersion >= 510 )
             return null;
         Notification info = new Notification();
 
@@ -47,6 +47,12 @@ public class Api {
             addImprovement(info, lang,
                     "Solucionados fallos reportados de la versión 5.0",
                     "Solved reported bug of version 5.0");
+        }
+        if( appVersion < 510 ) {
+            info.setAppVersion("5.1");
+            addImprovement(info, lang,
+                    "Incluidas 996 estaciones de MeteoClimatic",
+                    "Included 996 MeteoClimatic stations");
         }
 
         return info;
