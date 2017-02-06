@@ -77,6 +77,9 @@ public class WidgetProvider {
         if( station == null )
             return null;
         model.refresh(station);
+        Long stamp = station.getStamp();
+        if( stamp == null )
+            return null;
 
         //logUpdate(spot.getName());
 
@@ -84,7 +87,7 @@ public class WidgetProvider {
         data.id = station.getId();
         data.country = station.getCountry();
         data.name = spot.getName();
-        long stamp = station.getStamp();
+        //long stamp = station.getStamp();
         data.date = model.getStamp(station, stamp);
 
         fillMeteo(data, station, stamp);
