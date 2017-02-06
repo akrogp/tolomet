@@ -1,0 +1,12 @@
+pinchando en el mapa:
+http://www.euskalmet.euskadi.eus/s07-5853x/es/meteorologia/oharra.apl?e=5&diasel=Viernes&zon=0&R01HNoPortal=true
+http://www.euskalmet.euskadi.eus/s07-5853x/es/meteorologia/oharra.apl?e=5&diasel=Viernes&zon=1&R01HNoPortal=true
+http://www.euskalmet.euskadi.eus/s07-5853x/es/meteorologia/oharra.apl?e=5&diasel=Viernes&zon=2&R01HNoPortal=true
+http://www.euskalmet.euskadi.eus/s07-5853x/es/meteorologia/oharra.apl?e=5&diasel=Viernes&zon=3&R01HNoPortal=true
+...
+http://www.euskalmet.euskadi.eus/s07-5853x/es/meteorologia/oharra.apl?e=5&diasel=Viernes&zon=6&R01HNoPortal=true
+
+AEMET
+http://www.aemet.es/es/eltiempo/prediccion/avisos?w=hoy
+http://www.aemet.es/es/eltiempo/prediccion/avisos?w=hoy&k=gal
+http://www.aemet.es/es/eltiempo/prediccion/avisos?l=712701&w=hoy
