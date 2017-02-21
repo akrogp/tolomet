@@ -59,9 +59,12 @@ public class DbTolomet extends SQLiteAssetHelper {
     }
 
     public Station findStation(String id) {
-        return findStations(
+        List<Station> list= findStations(
                 "SELECT Station.*,Region.country FROM Station,Region WHERE Station.id=? and Region.id=Station.region",
-                id).get(0);
+                id);
+        if( list.isEmpty() )
+            return null;
+        return list.get(0);
     }
 
     public List<Station> findCountryStations(String country) {

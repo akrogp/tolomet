@@ -22,3 +22,5 @@
 
 -keep class org.xmlpull.** {*;}
 -dontwarn org.xmlpull.v1.**
+
+-keepattributes SourceFile,LineNumberTable

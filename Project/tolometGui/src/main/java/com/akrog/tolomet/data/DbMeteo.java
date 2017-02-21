@@ -36,7 +36,7 @@ public class DbMeteo extends SQLiteAssetHelper {
     public static final String COL_TRA_DATE = "date";
 
     private DbMeteo() {
-        super( Tolomet.getAppContext(), DB_NAME, Tolomet.getAppContext().getExternalCacheDir().getAbsolutePath(), null, DB_VERSION);
+        super( Tolomet.getAppContext(), DB_NAME, Tolomet.getAvailableCacheDir().getAbsolutePath(), null, DB_VERSION);
     }
 
     public static synchronized DbMeteo getInstance() {
