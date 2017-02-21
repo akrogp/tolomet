@@ -76,7 +76,8 @@
         concreto.
     </string>
     <string name="help_widget"><![CDATA[
-        El widget te permite consultar de un vistazo rápido cuáles son las condiciones de vuelo
+        Los widgets sólo están disponibles si tienes Tolomet instalado en la memoria interna.
+        Te permiten consultar de un vistazo rápido cuáles son las condiciones de vuelo
         actuales en tus zonas de vuelo favoritas. Hay disponibles tres tamaños diferentes de widget
         que muestran más o menos información. Cuando añades un widget se te abre una pantalla
         de configuración para que indiques la zona de vuelo y tus condiciones de vuelo preferidas.
