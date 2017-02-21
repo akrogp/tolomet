@@ -1,0 +1,1001 @@
+
+<!DOCTYPE HTML>
+<html class="" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://opengraphprotocol.org/schema/">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+	<meta name="fb-app-id" content="325331260891611" />
+	<meta name="fb-channel-url" content="//api.wunderground.com/php/lib/fb_sdk/channel.php" />
+	<meta name="wui-member-logged-in" content="false" />
+		<meta name="description" content="Weather Underground provides local & long range Weather Forecast, weather reports, maps & tropical weather conditions for locations worldwide." />
+		<meta name="keywords" content="Weather, Weather Underground, Error, forecasts, current conditions, rain, snow, hurricane, tornado, storm, thunderstorm, tropical storm, wundermap, ski conditions, ski report, surfing, marine, aviation, photographs, photos, severe weather" />
+	<meta name="msapplication-task" content="name=Local Weather;action-uri=http://www.wunderground.com/;icon-uri=" />
+	<meta name="msapplication-task" content="name=Maps and Radar;action-uri=http://www.wunderground.com/maps/;icon-uri=" />
+	<meta name="msapplication-task" content="name=Severe;action-uri=http://www.wunderground.com/severe.asp;icon-uri=" />
+	<meta name="msapplication-task" content="name=Tropical;action-uri=http://www.wunderground.com/tropical/;icon-uri=" />
+	<meta name="msapplication-task" content="name=WunderPhotos;action-uri=http://www.wunderground.com/wximage/;icon-uri=" />
+	<meta name="application-name" content="Weather Underground"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=8" />
+		<meta http-equiv="Refresh" content="330;URL=/api/4a29de2bbabe77d5/geolookup/q/35.0,-9.4.json?MR=1" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="pics-label" content='(pics-1.1 "http://www.icra.org/ratingsv02.html" comment "ICRAonline v2.0" l gen true for "http://www.wunderground.com" r (nz 0 vz 0 lz 0 oz 0 cz 0) "http://www.rsac.org/ratingsv01.html" l gen true for "http://www.wunderground.com"  r (n 0 s 0 v 0 l 0))' />
+		<title>Error | Weather Underground</title>
+		<link rel="canonical" href="https://www.wunderground.com/api/4a29de2bbabe77d5/geolookup/q/35.0,-9.4.json" />
+		<link rel="stylesheet" type="text/css" href="//style.wxug.com/css/wu3_base.css?v=2014042801" />
+		<link rel="stylesheet" type="text/css" href="//style.wxug.com/css/wu3_print.css?v=2012111501" media="print" />
+		<link rel="stylesheet" type="text/css" href="//style.wxug.com/css/wu3r_menu.css?v=2014040102" />
+	<link rel="stylesheet" type="text/css" href="//icons.wxug.com/css/slimbox2.css" media="screen" />
+	 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.19/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.min.js"></script>
+		<link href="//style.wxug.com/scripts/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+		<link href="/scripts/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+		<script src="/scripts/respond.proxy.js"></script>
+	<script type="text/javascript">
+		$.noConflict();
+	</script>
+	<link href="https://plus.google.com/wunderground/" rel="publisher" />
+		<script type="text/javascript" src="/scripts/swfobject.js?v=2.2"></script>
+		<script type="text/javascript" src="//script.wxug.com/scripts/wui.global.min.js?v=1.3.18"></script>
+	<script type="text/javascript" src="//script.wxug.com/scripts/slimbox2.js"></script>
+		<script>
+		var crtg_nid="1458";
+		var crtg_cookiename="cto_wun";
+		var crtg_varname="crtg_content";
+		function crtg_getCookie(c_name){ var i,x,y,ARRCookies=document.cookie.split(";");for(i=0;i<ARRCookies.length;i++){x=ARRCookies[i].substr(0,ARRCookies[i].indexOf("="));y=ARRCookies[i].substr(ARRCookies[i].indexOf("=")+1);x=x.replace(/^\s+|\s+$/g,"");if(x==c_name){return unescape(y);}}return'';}
+		var crtg_content = crtg_getCookie(crtg_cookiename);var crtg_rnd=Math.floor(Math.random()*99999999999);
+		var crtg_url=location.protocol+'//rtax.criteo.com/delivery/rta/rta.js?netId='+escape(crtg_nid);crtg_url+='&cookieName='+escape(crtg_cookiename);crtg_url+='&rnd='+crtg_rnd;crtg_url+='&varName=' + escape(crtg_varname);
+		var crtg_script=document.createElement('script');crtg_script.type='text/javascript';crtg_script.src=crtg_url;crtg_script.async=true;
+		if(document.getElementsByTagName("head").length>0)document.getElementsByTagName("head")[0].appendChild(crtg_script);else if(document.getElementsByTagName("body").length>0)document.getElementsByTagName("body")[0].appendChild(crtg_script);
+</script>
+<script src="//c.amazon-adsystem.com/aax2/amzn_ads.js"></script>
+<script>try{amznads.getAds('1004');}catch(e){}</script>
+	<script type="text/javascript">
+		<!--
+			function bodyOnLoad()
+			{
+			
+			}
+		//-->
+	</script>
+</head>
+	<body onload="bodyOnLoad()" class="off-canvas hide-extras">
+  <!--[if lte IE 8]>
+  <div style="background-color:pink; text-align: center; font-size: 200%; padding:20px;"> We are no longer supporting Internet Explorer 8 or earlier. Please <a href="http://windows.microsoft.com/en-us/internet-explorer/which-version-am-i-using#ie=other">update your browser</a> for the best experience.</div>
+	<![endif]-->
+	<section role="main">
+<center>
+	<div id="pageHeader" class="headerOff">
+		<div id="headerContent">
+		<div id="optionBar">
+		<div id="wuSites">
+		<span class="b">Main Site</span>
+		<a href="http://m.wund.com/">Mobile</a>
+		<a href="http://i.wund.com/">iPhone</a>
+		<a href="http://www.wund.com/">Lite</a>
+		<a href="http://www.fullscreenweather.com/">Full Screen</a>
+		<a href="/download/index.asp">Downloads</a>
+		</div>
+		<div id="unitPrefs">
+		<a id="cfToggle" class="cfToggleC" href="/cgi-bin/findweather/getForecast?setunits=english" title="Switch to English"></a>
+		</div>
+		<div id="wuLinks">
+		<a href="/member/membersettings.html?page=prefs">Settings</a>
+		<a href="https://www.wunderground.com/members/signup.asp" title="Join the Weather Underground community">Join</a>
+		<a href="https://www.wunderground.com/login.asp">Sign In</a>
+		</div>
+		</div>
+		<div id="logo">
+		<a href="/"><img src="//icons.wxug.com/i/o/transformation/logo-15.png" alt="Weather Underground" title="Weather Underground" /></a>
+		</div>
+		<div id="navContent" class="posRel">
+		<div id="favoritesBar">
+	<a class="favoritesTitle" href="/favorites/edit.html">Favorites</a>
+	<div class="favoritesScrollContainer" style="width:auto !important;">
+  <div class="loadFavs noFavs">Loading favorites...</div>
+  <table cellspacing="0" cellpadding="0" class="favoritesScroll" >
+  <tr id="favoritesRow"></tr>
+  </table>
+	</div>
+	<div class="favoritesScrollButtons">
+		<a href="javascript:void(0);" class="favoritesScrollRight disabled" onclick="wui.favorites.scroll.right();">&#x25BA;</a>
+  <a href="javascript:void(0);" class="favoritesScrollLeft disabled" onclick="wui.favorites.scroll.left();">&#x25C4;</a>
+  </div>
+<!-- Underscore partial for favorites table columns -->
+<script type="text/template" id="cellTemplate">
+  <td style="display: none;" id="<%= cityFavNum %>" class="nobr">
+  <a href="/cgi-bin/findweather/getForecast?query=<%= zmw %>" class="favoritesItem">
+  <img class="condIcon" alt="Unknown" title="Unknown" />
+  <span class="favCity"></span>
+  <span class="favTemp">&nbsp;<span class="nobr"><span class="b"></span>&nbsp;</span></span>
+  <img style="display: none;" src="//icons.wxug.com/i/wu/alertTriOrange.png" width="18" height="16" class="warnIcon" />
+  </a>
+  </td>
+</script>
+<!-- Script to load favorites asynchronously -->
+<script type="text/javascript">
+  jQuery(".favoritesScrollContainer").touchwipe({
+  wipeLeft: function() { wui.favorites.scroll.right(); },
+  wipeRight: function() { wui.favorites.scroll.left(); },
+  //wipeUp: function() { alert("up"); },
+  //wipeDown: function() { alert("down"); },
+  min_move_x: 20,
+  min_move_y: 20,
+  preventDefaultEvents: false
+  });
+	//Load favorites based on ZMW, preloaded into table cells by
+	//the server
+	jQuery(document).ready(function($) {
+  var cityString = "";
+  var iconPref = "/k/";
+  wui.favorites.scroll.load(cityString, iconPref);
+	});
+</script>
+</div>
+		<div id="searchBox">
+		<script type="text/javascript">
+		function SubmitFastForecastSearch(){
+		var url=new String();
+		var search = document.getElementById('wuSearch').value;
+		url='/cgi-bin/findweather/getForecast?query='+search;
+		window.location = url;
+		return true;
+		}
+		</script>
+		<form action="/cgi-bin/findweather/getForecast" name="wxsearch">
+		<table cellspacing="0" cellpadding="0">
+		<tr>
+		<td><input type="text" name="query" value="" id="wuSearch" class="brLeft5" x-webkit-speech /></td>
+		<td><a href="" id="searchSubmit" class="brRight5" onclick="SubmitFastForecastSearch();return false;">Search</a></td>
+		</tr>
+		</table>
+		</form>
+		</div>
+		<div id="featureMenu">
+	<div id="featuregroup" class="featureGroup">
+		<a href="/" id="grouptitle" class="groupTitle brTop5" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Weather [Tab]']);"><span>Weather</span></a>
+		<div id="fulllist" class="fullList g1 menuHide brBot5 uberMenu">
+		<div class="u1">
+		<div class="uTitle"><a href="/weatherstation/about.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'PWS Subhead [Weather]']);">PWS</a></div>
+		<ul class="uLinks">
+		<li><a href="/weatherstation/about.asp">About Weather Stations</a></li>
+		<li><a href="/wundermap/?lat=43.260899&lon=-2.938800&zoom=8&type=&rad=0&sat=0&stormreports=0&svr=0&pix=0&cams=0&tor=0&riv=0&wxsn=1&wxsn.mode=temp&wxsn.opa=50&wxsn.bcdgtemp=0&wxsn.rf=1&ski=0&tfk=0&mm=0&ndfd=0&fire=0&firewfas=0&extremes=0&hurrevac=0&sst=0&livesurge=0&femaflood=0&tsunami=0&seismicrisk=0&fault=0&fissures=0&fronts=0&dir=1&dir.mode=driving&hur=0" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Weather Stations [Weather]']);">Map of Weather Stations</a></li>
+		<li><a href="/personal-weather-station/signup" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Sign Up Your Station [Weather]']);">Sign Up Your Station</a></li>
+		<li><a href="/personal-weather-station/mypws" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'My PWS [Weather]']);">My PWS</a></li>
+		</ul>
+		</div>
+		<div class="u1">
+		<div class="uTitle"><a href="/history/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'History Data Subhead [Weather]']);">Weather History</a></div>
+		<ul class="uLinks">
+		<li><a href="/history/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Airport History Data [Weather]']);">Airport Weather History</a></li>
+		<li><a href="/hurricane/at2016.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Hurricane Archive [Weather]']);">Hurricane Archive</a></li>
+		<li><a href="/climate/extremes.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Record Extremes [Weather]']);">Record Extremes</a></li>
+		<li><a href="/travelplanner/index.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Travel Planner (History) [Weather]']);">Travel Planner</a></li>
+		</ul>
+		</div>
+		<div class="u1">
+		<div class="uTitle"><a href="/travel/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Travel Subhead [Weather]']);">Travel</a></div>
+		<ul class="uLinks">
+		<li><a href="/roadtrip/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Road Trip Planner [Weather]']);">Road Trip Planner</a></li>
+		<li><a href="/travelplanner/index.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Travel Planner [Weather]']);">Travel Planner</a></li>
+		<li><a href="/beach-weather/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Beach Weather [Weather]']);">Beach Weather</a></li>
+		<li><a href="/travel/index.asp#parks" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'US National Parks [Weather]']);">U.S. National Parks</a></li>
+		<li><a href="/flights/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Flight Tracking [Weather]']);">Flight Tracking</a></li>
+		</ul>
+		</div>
+		<div class="u1">
+		<div class="uTitle"><a href="/ski/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Activities Subhead [Weather]']);">Activities</a></div>
+		<ul class="uLinks">
+		<li><a href="/ski/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Ski and Snow [Weather]']);">Ski &amp; Snow</a></li>
+		<li><a href="/sports/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Sports [Weather]']);">Sports</a></li>
+		<li><a href="/Aviation/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'General Aviation [Weather]']);">General Aviation</a></li>
+		<li><a href="/sailing-weather/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Sailing and Boating [Weather]']);">Sailing & Boating</a></li>
+		<li><a href="/sky/index.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Astronomy [Weather]']);">Astronomy</a></li>
+		</ul>
+		</div>
+		<div class="u1">
+		<div class="uTitle"><a href="/maps/health/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Health [Weather]']);">Health</a></div>
+		<ul class="uLinks">
+		<li><a href="/maps/us/2xAirQuality.html" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Air Quality [Weather]']);">Air Quality</a></li>
+		<li><a href="/DisplayPollen.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Pollen and Allergies [Weather]']);">Pollen &amp; Allergies</a></li>
+		<li><a href="/maps/us/2xUVForecast.html" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'UV Index [Weather]']);">UV Index</a></li>
+		<li><a href="/maps/health/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Flu Tracker [Weather]']);">Flu Tracker</a></li>
+		</ul>
+		</div>
+		<div class="u1e">
+		<div class="uTitle"><a href="/download/index.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Downloads Subhead [Weather]']);">Downloads</a></div>
+		<ul class="uLinks">
+		<li><a href="/download/index.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Wunderground Apps [Weather]']);">Wunderground Apps</a></li>
+		<li><a href="/weather/api/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Weather API for Devs [Weather]']);">Weather&trade; API for Developers</a></li>
+		<li><a href="/stickers/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Weather Stickers [Weather]']);">Weather Stickers&reg;</a></li>
+		<li><a href="/printer/cityforecast.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Forecast Flyer [Weather]']);">Daily Forecast Flyer</a></li>
+		</ul>
+		</div>
+		<div class="clear"></div>
+		</div>
+	</div>
+	<div id="featuregroup" class="featureGroup">
+		<a href="/wundermap/" id="grouptitle" class="groupTitle brTop5" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Maps & Radar [Tab]']);"><span>Maps & Radar</span></a>
+		<div id="fulllist" class="fullList g2 menuHide brBot5 uberMenu">
+		<div class="u2">
+		<div class="uTitle"><a href="/wundermap/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Wundermap Subhead [Maps & Radar]']);">WunderMap</a></div>
+		<div class="iLeft"><a href="/wundermap/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Wundermap Image [Maps & Radar]']);"><img src="//icons.wxug.com/i/wm/misc/fmStatic.jpg" /></a></div>
+		<ul class="uLinks uSplit">
+		<li><a href="/wundermap/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Wundermap [Maps & Radar]']);">WunderMap</a></li>
+		<li><a href="//www.fullscreenweather.com/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Fullscreen Weather [Maps & Radar]']);">Full Screen Weather</a></li>
+		<li><a href="/wundermap/?lat=43.260899&lon=-2.938800&zoom=10&type=&tl.play=0&tl.spd=2&extremes=0&fault=0&femaflood=0&fire=0&firewfas=0&fissures=0&fronts=0&hurrevac=0&hur=0&lightning=0&livesurge=0&mm=0&ndfd=0&rad=1&rad.num=1&rad.spd=25&rad.opa=81&rad.type=00Q&rad.type2=&rad.smo=1&rad.stm=0&dir=1&dir.mode=driving&sst=0&sat=0&seismicrisk=0&svr=0&ski=0&snowfall=0&stormreports=0&tor=0&tfk=0&tsunami=0&riv=0&wxsn=1&wxsn.mode=temp&wxsn.opa=50&wxsn.bcdgtemp=0&wxsn.rf=1&cams=0&pix=0" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Local Weather Wundermap [Maps & Radar]']);">Local Weather</a></li>
+		<li><a href="/wundermap?lat=39.74503&lon=-97.89816&zoom=5&type=lightmap&units=english&tl.play=0&tl.spd=2&extremes=0&fault=0&femaflood=0&fire=0&firewfas=0&fissures=0&fronts=0&hurrevac=0&hur=0&lightning=1&livesurge=0&mm=0&ndfd=0&rad=1&rad.num=1&rad.spd=25&rad.opa=81&rad.type=00Q&rad.type2=&rad.smo=1&rad.stm=0&dir=1&dir.mode=driving&sst=0&sat=0&seismicrisk=0&svr=1&svr.opa=70&ski=0&snowfall=0&stormreports=0&tor=0&tfk=0&tsunami=0&riv=0&wxsn=0&cams=0&pix=0" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Severe Storms Wundermap [Maps & Radar]']);">Severe Storms</a></li>
+		<li><a href="/wundermap?lat=29.99756&lon=-72.45383&zoom=5&type=lightmap&units=english&tl.play=0&tl.spd=2&extremes=0&fault=0&femaflood=0&fire=0&firewfas=0&fissures=0&fronts=0&hurrevac=0&hur=1&hur.wr=0&hur.cod=1&hur.fx=1&hur.obs=0&hur.hd=0&hur.mdl=0&hur.gpce=0&hur.img=0&hur.opa=70&hur.opa2=40&lightning=0&livesurge=0&mm=0&ndfd=0&rad=1&rad.num=1&rad.spd=25&rad.opa=81&rad.type=00Q&rad.type2=&rad.smo=1&rad.stm=0&dir=1&dir.mode=driving&sst=0&sat=0&seismicrisk=0&svr=0&ski=0&snowfall=0&stormreports=0&tor=0&tfk=0&tsunami=0&riv=0&wxsn=1&wxsn.mode=tw&wxsn.opa=50&wxsn.bcdgtemp=0&wxsn.rf=1&cams=0&pix=0" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Hurricanes Wundermap [Maps & Radar]']);">Hurricanes</a></li>
+		</ul>
+		</div>
+		<div class="u1">
+		<div class="uTitle"><a href="/radar/map.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Radar Subhead [Maps & Radar]']);">Radar</a></div>
+		<ul class="uLinks">
+		<li><a href="/radar/map.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'US Radar [Maps & Radar]']);">United States</a></li>
+		<li><a href="/radar/mosaic.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'US Regional Radar [Maps & Radar]']);">U.S. Regional Radar</a></li>
+		<li><a href="/radar/map.asp?region=ca" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Canada Radar [Maps & Radar]']);">Canada</a></li>
+		<li><a href="/radar/map.asp?region=au" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Australia Radar [Maps & Radar]']);">Australia</a></li>
+		<li><a href="/wundermap/?lat=51.70306&lon=10.69070&zoom=4&units=english&rad=1&rad.num=1&rad.spd=25&rad.opa=81&rad.type=00Q&rad.type2=&rad.smo=1&rad.stm=0&sat=0&stormreports=0&svr=0&pix=0&cams=0&tor=0&riv=0&wxsn=0&ski=0&tfk=0&mm=0&ndfd=0&fire=0&firewfas=0&extremes=0&hurrevac=0&sst=0&livesurge=0&femaflood=0&tsunami=0&seismicrisk=0&fault=0&fissures=0&fronts=0&dir=1&dir.mode=driving&hur=0" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Europe Radar [Maps & Radar]']);">Europe</a></li>
+		</ul>
+		</div>
+		<div class="u1">
+		<div class="uTitle"><a href="/wundermap/?lat=43.260899&lon=-2.938800&zoom=5&type=&tl.play=0&tl.spd=2&extremes=0&fault=0&femaflood=0&fire=0&firewfas=0&fissures=0&fronts=0&hurrevac=0&hur=0&lightning=0&livesurge=0&mm=0&ndfd=0&rad=0&dir=1&dir.mode=driving&sst=0&sat=1&sat.num=1&sat.spd=25&sat.opa=87&sat.gtt1=108&sat.gtt2=108&sat.type=IR4&seismicrisk=0&svr=0&ski=0&snowfall=0&stormreports=0&tor=0&tfk=0&tsunami=0&riv=0&wxsn=0&cams=0&pix=0" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Satellite Subhead [Maps & Radar]']);">Satellite</a></div>
+		<ul class="uLinks">
+		<li><a href="/wundermap/?lat=39.20228&lon=-97.06320&zoom=5&type=hybrid&units=english&rad=0&sat=1&sat.num=1&sat.spd=25&sat.opa=87&sat.gtt1=108&sat.gtt2=108&sat.type=IR4&stormreports=0&svr=0&pix=0&cams=0&tor=0&riv=0&wxsn=0&ski=0&tfk=0&mm=0&ndfd=0&fire=0&firewfas=0&extremes=0&hurrevac=0&sst=0&livesurge=0&femaflood=0&tsunami=0&seismicrisk=0&fault=0&fissures=0&fronts=0&dir=1&dir.mode=driving&hur=0" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'United States [Maps & Radar]']);">United States</a></li>
+		<li><a href="/wundermap/?lat=55.35712&lon=-102.95187&zoom=4&type=hybrid&units=english&rad=0&sat=1&sat.num=1&sat.spd=25&sat.opa=87&sat.gtt1=108&sat.gtt2=108&sat.type=IR4&stormreports=0&svr=0&pix=0&cams=0&tor=0&riv=0&wxsn=0&ski=0&tfk=0&mm=0&ndfd=0&fire=0&firewfas=0&extremes=0&hurrevac=0&sst=0&livesurge=0&femaflood=0&tsunami=0&seismicrisk=0&fault=0&fissures=0&fronts=0&dir=1&dir.mode=driving&hur=0" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Canada [Maps & Radar]']);">Canada</a></li>
+		<li><a href="/wundermap/?lat=-25.00121&lon=-225.91086&zoom=5&type=hybrid&units=english&rad=0&sat=1&sat.num=1&sat.spd=25&sat.opa=87&sat.gtt1=108&sat.gtt2=108&sat.type=IR4&stormreports=0&svr=0&pix=0&cams=0&tor=0&riv=0&wxsn=0&ski=0&tfk=0&mm=0&ndfd=0&fire=0&firewfas=0&extremes=0&hurrevac=0&sst=0&livesurge=0&femaflood=0&tsunami=0&seismicrisk=0&fault=0&fissures=0&fronts=0&dir=1&dir.mode=driving&hur=0" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Australia [Maps & Radar]']);">Australia</a></li>
+		<li><a href="/wundermap/?lat=50.06756&lon=-349.04562&zoom=4&type=hybrid&units=english&rad=0&sat=1&sat.num=1&sat.spd=25&sat.opa=87&sat.gtt1=108&sat.gtt2=108&sat.type=IR4&stormreports=0&svr=0&pix=0&cams=0&tor=0&riv=0&wxsn=0&ski=0&tfk=0&mm=0&ndfd=0&fire=0&firewfas=0&extremes=0&hurrevac=0&sst=0&livesurge=0&femaflood=0&tsunami=0&seismicrisk=0&fault=0&fissures=0&fronts=0&dir=1&dir.mode=driving&hur=0" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Europe [Maps & Radar]']);">Europe</a></li>
+		<li><a href="/wundermap/?lat=37.65319&lon=92.25320&zoom=3&type=hybrid&units=english&rad=0&sat=1&sat.num=1&sat.spd=25&sat.opa=87&sat.gtt1=108&sat.gtt2=108&sat.type=IR4&stormreports=0&svr=0&pix=0&cams=0&tor=0&riv=0&wxsn=0&ski=0&tfk=0&mm=0&ndfd=0&fire=0&firewfas=0&extremes=0&hurrevac=0&sst=0&livesurge=0&femaflood=0&tsunami=0&seismicrisk=0&fault=0&fissures=0&fronts=0&dir=1&dir.mode=driving&hur=0" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Asia [Maps & Radar]']);">Asia</a></li>
+		<li><a href="/wundermap/?lat=1.58707&lon=17.28250&zoom=4&type=hybrid&units=english&rad=0&sat=1&sat.num=1&sat.spd=25&sat.opa=87&sat.gtt1=108&sat.gtt2=108&sat.type=IR4&stormreports=0&svr=0&pix=0&cams=0&tor=0&riv=0&wxsn=0&ski=0&tfk=0&mm=0&ndfd=0&fire=0&firewfas=0&extremes=0&hurrevac=0&sst=0&livesurge=0&femaflood=0&tsunami=0&seismicrisk=0&fault=0&fissures=0&fronts=0&dir=1&dir.mode=driving&hur=0" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Africa [Maps & Radar]']);">Africa</a></li>
+		</ul>
+		</div>
+		<div class="u2e">
+		<div class="uTitle"><a href="/maps/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Maps Subhead [Maps & Radar]']);">Maps</a></div>
+		<ul class="uLinks uSplit">
+		<li><a href="/ndfdimage/viewimage" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Forecast Maps [Maps & Radar]']);">Forecast Maps</a></li>
+		<li><a href="/maps/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Current Conditions [Maps & Radar]']);">Current Conditions</a></li>
+		<li><a href="/severe.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'U.S. Severe Weather [Maps & Radar]']);">U.S. Severe Weather</a></li>
+		<li><a href="/severe/europe.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Europe Severe Weather [Maps & Radar]']);">Europe Severe Weather</a></li>
+		<li><a href="/hurricane/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Tropical & Hurricane [Maps & Radar]']);">Tropical &amp; Hurricane</a></li>
+		<li><a href="/tornado/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Tornadoes [Maps & Radar]']);">Tornadoes</a></li>
+		</ul>
+		<ul class="uLinks uSplit fRight">
+		<li><a href="/MAR/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Marine & Boating [Maps & Radar]']);">Marine &amp; Boating</a></li>
+		<li><a href="/Aviation/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Aviation [Maps & Radar]']);">Aviation</a></li>
+		<li><a href="/wundermap/?zoom=4&rad=0&wxsn=0&svr=0&cams=0&sat=0&riv=0&mm=1&mm.mdl=GFS&mm.type=SURPRE&mm.hour=0&mm.opa=100&mm.clk=0&hur=0&fire=0&tor=0&ndfd=0&pix=0&dir=0&ads=0&tfk=0&fodors=0&ski=0&ls=0&rad2=0" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Weather Models [Maps & Radar]']);">Weather Models</a></li>
+		<li><a href="/resources/about/maps.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Map Help [Maps & Radar]']);">Map Help</a></li>
+		<li><a href="/resources/about/radar.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Radar Help [Maps & Radar]']);">Radar Help</a></li>
+		<li><a href="/resources/about/satellite.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Satellite Help [Maps & Radar]']);">Satellite Help</a></li>
+		</ul>
+		</div>
+		</div>
+	</div>
+	<div id="featuregroup" class="featureGroup">
+		<a href="/severe.asp" id="grouptitle" class="groupTitle brTop5" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Severe Weather [Tab]']);"><span>Severe Weather</span></a>
+		<div id="fulllist" class="fullList g3 menuHide brBot5 uberMenu">
+		<div class="u1">
+		<div class="uTitle"><a href="/fire/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Fire Subhead [Severe]']);">Fire</a> &amp; <a href="/winter-storm/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Ice Subhead [Severe]']);">Ice</a></div>
+		<ul class="uLinks">
+		<li><a href="/fire/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Wildfires [Severe]']);">Wildfires</a></li>
+		<li><a href="/winter-storm/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Current Winter Storms & Archive [Severe]']);">Winter Storms</a></li>
+		</ul>
+		</div>
+		<div class="u2">
+		<div class="uTitle"><a href="/severe.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Severe Subhead [Severe]']);">Severe</a></div>
+		<div class="iLeft"><a href="/severe.asp" id="fmSevere" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Severe Image [Severe]']);"><img src="//icons.wxug.com/data/640x480/us_severe_thumb.gif" /></a></div>
+		<ul class="uLinks uSplit">
+		<li><a href="/severe.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'U.S. Severe Weather [Severe]']);">U.S. Severe Weather</a></li>
+		<li><a href="/severe/europe.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Europe Severe Weather [Severe]']);">Europe Severe Weather</a></li>
+		<li><a href="/wundermap/?lat=40.28354&lon=-97.85422&zoom=4&rad=0&sat=0&stormreports=1&stormreports.type.tor=1&stormreports.type.hail=1&stormreports.type.wind=1&svr=0&pix=0&cams=0&tor=0&riv=0&wxsn=0&ski=0&tfk=0&mm=0&ndfd=0&fire=0&firewfas=0&extremes=0&hurrevac=0&sst=0&livesurge=0&femaflood=0&tsunami=0&seismicrisk=0&fault=0&fissures=0&fronts=0&dir=1&dir.mode=driving&hur=0" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'U.S. Storm Reports [Severe]']);">U.S. Storm Reports</a></li>
+		<li><a href="/severeconvective.asp">Convective Outlook</a></li>
+		<li><a href="/tornado/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Tornado [Severe]']);">Tornadoes</a></li>
+		<li class="none"><a href="/fire/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Wildfires [Severe]']);">Wildfires</a></li>
+		<li><a href="/climate/extremes.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Record Extremes [Severe]']);">Record Extremes</a></li>
+		</ul>
+		</div>
+		<div class="u2">
+		<div class="uTitle"><a href="/hurricane/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Tropical Subhead [Severe]']);">Hurricanes & Tropical Cyclones</a></div>
+		<div class="iRight"><a href="/hurricane/" id="fmTropical" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Tropical Image [Severe]']);"><img src="//icons.wxug.com/data/images/sst_basin/gl_sst_thumb.gif" /></a></div>
+		<ul class="uLinks uSplit">
+		<li><a href="/hurricane/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Active Storms [Severe]']);">Active Storms</a></li>
+		<li><a href="/hurricane/accumulated_cyclone_energy.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Cyclone Energy [Severe]']);">Cyclone Energy</a></li>
+		<li><a href="/hurricane/at2017.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Hurricane Archive [Severe]']);">Hurricane Archive</a></li>
+		</ul>
+		</div>
+		<div class="u1e">
+		<div class="uTitle"><a href="/prepare/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Preparedness Subhead [Severe]']);">Preparedness</a></div>
+		<ul class="uLinks">
+		<li><a href="/prepare/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Be Prepared [Severe]']);">Be Prepared</a></li>
+		<li><a href="/education/winterdriving.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Winter Driving Tips [Severe]']);">Winter Driving Tips</a></li>
+		<li><a href="/wxradio/index.html" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Weather Radio Online [Severe]']);">Weather Radio Online</a></li>
+		<!--<li><a href="">[ Preparedness Mobile App ]</a></li>-->
+		<li><a href="/email/emailsettings.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Get Severe Weather Alerts [Severe]']);">Get Severe Weather Alerts</a></li>
+		</ul>
+		</div>
+		</div>
+	</div>
+	<div id="featuregroup" class="featureGroup">
+		<a href="/photos/" id="grouptitle" class="groupTitle brTop5" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Photos & Video [Tab]']);"><span>WunderPhotos</span></a>
+		<div id="fulllist" class="fullList g5 menuHide brBot5 uberMenu">
+		<div class="u2">
+		<div class="uTitle"><a href="/video/">Videos</a></div>
+		<div class="iLeft"><a href='/video/?video=' onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Video Image [Photos & Video]']);"><img src="" /></a></div>
+		<ul class="uLinks uSplit">
+		<li><a href="/video/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'All Videos [Photos & Video]']);"><span class="b">All Videos</span></a></li>
+		</ul>
+		</div>
+		<div class="u2">
+		<div class="uTitle"><a href="/wximage/">Photos</a></div>
+		<ul class="uLinks uSplit">
+		<li><a href="/wximage/viewimages.html?gallery=EDITORSPICK" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Approvers Choice [Photos & Video]']);">Approvers' Choice</a></li>
+		<li><a href="/wximage/viewimages.html?gallery=VIPPICT" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'VIP Photos [Photos & Video]']);">VIP Photos</a></li>
+		<li><a href="/worldview/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'World View [Photos & Video]']);">World View</a></li>
+		</ul>
+		<ul class="uLinks uSplit">
+		<li><a href="/wximage/favorites.html" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'My Favorite Photos [Photos & Video]']);">My Favorite Photos</a></li>
+		<li><a href="/wximage/multiupload.html" onclick="_gaq.push(['_trackEvent', 'Upload Photos', 'Click', 'Feature Menu PhotoVideo']);">Upload a Photo</a></li>
+		<li><a href="/wximage/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'All Galleries [Photos & Video]']);"><span class="b">All Galleries</span></a></li>
+		</ul>
+		</div>
+		<div class="u2e">
+		<div class="uTitle"><a href="/webcams/">Webcams</a></div>
+		<ul class="uLinks uSplit">
+		<li><a href="/webcams/index.html?qlat=39.26628426150451&qlon=-96.94335937&qzoom=4" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'U.S. Webcams [Photos & Video]']);">U.S. Webcams</a></li>
+		<li class="none"><a href="/webcams/index.html?qlat=56.43820357888461&qlon=-98.26171874500004&qzoom=4" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Canada Webcams [Photos & Video]']);">Canada Webcams</a></li>
+		<li><a href="/webcams/index.html?qlat=48.60385747104044&qlon=11.601562505&qzoom=4" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Europe Webcams [Photos & Video]']);">Europe Webcams</a></li>
+		</ul>
+		<ul class="uLinks uSplit">
+		<li><a href="/webcams/index.html?qlat=-25.12539279935161&qlon=-224.73632812000008&qzoom=4" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Australia Webcams [Photos & Video]']);">Australia Webcams</a></li>
+		<li><a href="/webcams/index.html?qlat=32.87958699883&qlon=96.50390625499996&qzoom=3" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Asia Webcams [Photos & Video]']);">Asia Webcams</a></li>
+		<li><a href="/webcams/signup.html" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'My Webcams [Photos & Video]']);">My Webcams</a></li>
+		<li><a href="/webcams/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'All Webcams [Photos & Video]']);"><span class="b">All Webcams</span></a></li>
+		</ul>
+		</div>
+		</div>
+	</div>
+	<div id="featuregroup" class="featureGroup">
+		<a href="/blog/" id="grouptitle" class="groupTitle brTop5" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Community [Tab]']);"><span>Community</span></a>
+		<div id="fulllist" class="fullList g4 menuHide brBot5 uberMenu">
+		<div class="u2">
+		<div class="uTitle"><a href="/wximage/">Photos</a></div>
+		<ul class="uLinks uSplit">
+		<li><a href="/wximage/viewimages.html?gallery=EDITORSPICK" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Approvers Choice [Community]']);">Approvers' Choice</a></li>
+		<li><a href="/wximage/viewimages.html?gallery=VIPPICT" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'VIP Photos [Community]']);">VIP Photos</a></li>
+		<li><a href="/worldview/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'World View [Community]']);">World View</a></li>
+		</ul>
+		<ul class="uLinks uSplit">
+		<li><a href="/wximage/favorites.html" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Favorite Photos [Community]']);">Favorite Photos</a></li>
+		<li><a href="/wximage/multiupload.html" onclick="_gaq.push(['_trackEvent', 'Upload Photos', 'Click', 'Feature Menu Community']);">Upload a Photo</a></li>
+		<li><a href="/wximage/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'All Galleries [Community]']);"><span class="b">All Galleries</span></a></li>
+		</ul>
+		</div>
+		<div class="u1">
+		<div class="uTitle"><a href="/social/">Social</a></div>
+		<ul class="uLinks">
+		<li><a href="//www.twitter.com/wunderground" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Twitter [Community]']);">Twitter</a></li>
+		<li><a href="//www.facebook.com/wunderground" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Facebook [Community]']);">Facebook</a></li>
+		<li><a href="//plus.google.com/u/0/+weatherunderground/posts" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Google+ [Community]']);">Google+</a></li>
+		<li><a href="//pinterest.com/wunderground/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Pinterest [Community]']);">Pinterest</a></li>
+		<li><a href="/community/chat.asp">Visitor Chat</a></li>
+		</ul>
+		</div>
+		<div class="u1">
+		<div class="uTitle"><a href="/community/">My Community</a></div>
+		<ul class="uLinks">
+		<li><a href="/members/signup.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'My Blog/Start a Blog [Community]']);">Start a Blog</a></li>
+		<li><a href="/community/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Community Activity [Community]']);">Community Activity</a></li>
+		<li><a href="/blog/index.html?range=favs#mem" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Favorite Blogs [Community]']);">Favorite Blogs</a></li>
+		<li><a href="/wximage/favorites.html" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Favorite Photos [Community]']);">Favorite Photos</a></li>
+		<li><a href="/wximage/myphotos.html" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'My Photos/Upload a Photo [Community]']);">Upload a Photo</a></li>
+		<li><a href="/webcams/signup.html" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'My Webcams [Community]']);">My Webcams</a></li>
+		</ul>
+		</div>
+		<div class="u2e">
+		<div class="uTitle"><a href="/blog/">Blogs</a></div>
+		<ul class="uLinks uSplit">
+		<li><a href="/blog/JeffMasters/show.html" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Dr. Jeff Masters [Community]']);">Dr. Jeff Masters</a></li>
+		<li><a href="/blog/shauntanner/show.html" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Shaun Tanner [Community]']);">Shaun Tanner</a></li>
+		<li><a href="/blog/24hourprof/show.html" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Lee Grenci [Community]']);">Lee Grenci</a></li>
+		<li><a href="/blog/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Meteorologists [Community]']);">Meteorologists</a></li>
+		<li><a href="/blog/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'All Blogs [Community]']);"><span class="b">All Blogs</span></a></li>
+		</ul>
+		<ul class="uLinks uSplit fRight">
+		<li><a href="/blog/weatherhistorian/show.html" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Chris Burt [Community]']);">Christopher C. Burt</a></li>
+		<li><a href="/blog/RickyRood/show.html" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Ricky Rood [Community]']);">Dr. Ricky Rood</a></li>
+		<li><a href="/blog/angelafritz/show.html" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Angela Fritz [Community]']);">Angela Fritz</a></li>
+		</ul>
+		</div>
+		</div>
+	</div>
+	<div id="featuregroup" class="featureGroup">
+		<a href="/news/" id="grouptitle" class="groupTitle brTop5" onclick="_gaq.push(['_trackEvent', 'News', 'Click', 'Feature Menu News']); _gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'News [Tab]']);"><span>News</span></a>
+		<div id="fulllist" class="fullList g6 menuHide brBot5 uberMenu">
+		<div class="u2">
+		<div class="uTitle"><a href="/blog/">Blogs</a></div>
+		<ul class="uLinks uSplit">
+		<li><a href="/blog/JeffMasters/show.html" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Dr. Jeff Masters [News]']);">Dr. Jeff Masters</a></li>
+		<li><a href="/blog/shauntanner/show.html" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Shaun Tanner [News]']);">Shaun Tanner</a></li>
+		<li><a href="/blog/24hourprof/show.html" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Lee Grenci [News]']);">Lee Grenci</a></li>
+		<li><a href="/blog/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Meteorologists [News]']);">Meteorologists</a></li>
+		</ul>
+		<ul class="uLinks uSplit fRight">
+		<li><a href="/blog/weatherhistorian/show.html" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Chris Burt [News]']);">Christopher C. Burt</a></li>
+		<li><a href="/blog/RickyRood/show.html" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Ricky Rood [News]']);">Dr. Ricky Rood</a></li>
+		<li><a href="/blog/angelafritz/show.html" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Angela Fritz [News]']);">Angela Fritz</a></li>
+		<li><a href="/blog/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'All Blogs [News]']);"><span class="b">All Blogs</span></a></li>
+		</ul>
+		</div>
+		<div class="u2">
+		<div class="uTitle"><a href="/news/">Popular Stories</a></div>
+		<ul class="uLinks">
+		<li><a href="/news/" onclick="_gaq.push(['_trackEvent', 'News', 'Click', 'Feature Menu News']); _gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'All News [News]']);"><span class="b">All News</span></a></li>
+		</ul>
+		</div>
+		<div class="u2e">
+		<div class="uTitle"><a href="/news/">Recent Stories</a></div>
+		<ul class="uLinks">
+		<li><a href="/news/" onclick="_gaq.push(['_trackEvent', 'News', 'Click', 'Feature Menu News']); _gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'All News [News]']);"><span class="b">All News</span></a></li>
+		</ul>
+		</div>
+		</div>
+	</div>
+	<div id="featuregroup" class="featureGroup">
+		<a href="/climate/" id="grouptitle" class="groupTitle brTop5" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Climate [Tab]']);"><span>Climate Change</span></a>
+		<div id="fulllist" class="fullList g7 menuHide brBot5 uberMenu">
+		<div class="u1">
+		<div class="uTitle"><a href="/video/climate-and-going-green/">Videos</a></div>
+		<ul class="uLinks">
+		<li><a href="/video/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'All Videos [Climate]']);"><span class="b">All Videos</span></a></li>
+		</ul>
+		</div>
+		<div class="u2">
+		<div class="uTitle"><a href="/climate/climateblogs.asp">Blogs</a></div>
+		<ul class="uLinks">
+		<li><a href="/blog/RickyRood/show.html" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Ricky Rood [Climate]']);">Dr. Ricky Rood</a></li>
+		<li><a href="/climate/climateblogs.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'All Climate Change Blogs [Climate]']);" class="b">All Climate Change Blogs</a></li>
+		</ul>
+		</div>
+		<div class="u2">
+		<div class="uTitle"><a href="/news/">News</a></div>
+		<ul class="uLinks">
+		<li><a href="/news/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'All News [Climate]']);"><span class="b">All News</span></a></li>
+		</ul>
+		</div>
+		<div class="u1e">
+		<div class="uTitle"><a href="/climate/">Climate Change</a></div>
+		<ul class="uLinks">
+		<li><a href="/climate/" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Climate Change [Climate]']);">Climate Change</a></li>
+		<li><a href="/climate/local.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Local Climate Change [Climate]']);">Local Climate Change</a></li>
+		<li><a href="/climate/evidence.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Evidence [Climate]']);">Evidence</a></li>
+		<li><a href="/climate/extremes.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Record Extremes [Climate]']);">Record Extremes</a></li>
+		<li><a href="/climate/facts.asp" onclick="_gaq.push(['_trackEvent', 'Feature Menu', 'Click', 'Feeling Skeptical? [Climate]']);">Feeling Skeptical?</a></li>
+		</ul>
+		</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+  wui.featuremenu();
+</script>
+		</div>
+		</div>
+	</div>
+	<div id="quickMenuDropdown" class="brBot3 none">
+		<ul>
+		<li><a href="/email/mainmenu.php">My Email &amp; Text Alerts</a></li>
+		<li><a href="/webcams/signup.html" class="brBot3">My Webcams</a></li>
+		</ul>
+	</div>
+</center>
+<div id="mobile-header">
+	<a class="mobile-menu-button sidebar-button" id="sidebarButton" href="#sidebar" onclick="_gaq.push(['_trackEvent', 'Responsive Menu', 'Click', 'Mobile / Tablet']);"></a>
+	<div id="wuFormR-contain">
+		<form action="/cgi-bin/findweather/getForecast" name="wxsearch" id="wuFormR">
+		<div id="wuSearchR-contain">
+		<input type="search" name="query" value="" id="wuSearchR" placeholder="Search " x-webkit-speech />
+		</div>
+		<div id="wuSubmitR-contain">
+		<span class="postfix button radius" id="wuSubmitR" title="Search"></span>
+		</div>
+		</form>
+	</div>
+</div>
+<script>
+  jQuery(document).ready(function($) {
+	});
+</script>
+<script type="text/template" id="autocomplete_item_template">
+	<li class="<% if (isCity) { %>is-city<% } %><% if (isFav) { %> is-fav<% } %><% if (hasConds) { %> has-conds<% } %>">
+		<a>
+		<% if (item.label) { %><span class="city-name"><%= item.label %></span><% } %>
+		<% if (hasConds) { %>
+		<span class="city-conds">
+		<%= item.condition.temp %> &deg;C <%= item.condition.weather %>
+		</span>
+  <span class="cond-icon-touch cond-set-<%= item.condition.iconPref %> cond-<%= item.condition.icon %>"></span>
+		<% } %>
+		<% if (isCity) { %><span class="city-star" title="<% if (isFav) { %>Remove From<% } else { %>Add To<% } %> Favorite Cities"></span><% } %>
+		</a>
+	</li>
+</script>
+		<center id="WX_Skin">
+		<div id="wuPage">
+		<div id="innerContent" class="tm20">
+		<center>
+	<div class="taL rContent" style="width: 450px;">
+		<h1>There has been an error!</h1>
+		<p>We're sorry, but the page you have requested was not found.</p>
+		<code class="red b big tm20">Lat / Lon search error - corrupt or missing data files.</code>
+		<p class="b">Common Search Problems:</p>
+		<ul>
+		<li>We don't support old style abbreviations like Conn. for Connecticut, use CT</li>
+		<li>If you are searching for an international city, try the name of the country or province</li>
+		<li>Don't use provinces for non-us cities (ie: Vancouver, BC)</li>
+		<li>Zipcodes only work in Canada, UK and the US</li>
+		</ul>
+		<p>If you need additional help, online support is available at <a href="http://help.wunderground.com">Weather Underground</a> where you can search our <a href="http://wiki.wunderground.com/">WunderWiki</a> website and get answers to frequently asked questions.</p>
+		<p>You can visit the Weather Underground Web site at <a href="http://www.wunderground.com">http://www.wunderground.com</a>.</p>
+	</div>
+</center>
+		</div>
+		<div id="preFooter">
+		&nbsp;
+		</div>
+		</div>
+		</center>
+		<div id="footer">
+	<div id="footerContents">
+		<div id="subNav">
+		<ul class="rb">
+		<li class="b"><a href="/">Local Weather</a></li>
+		<li><a href="/favorites/">My Favorites</a></li>
+		<li><a href="/history/">History Data</a></li>
+		<li><a href="/weatherstation/about.asp">Weather Stations</a></li>
+		</ul>
+		<ul class="rb">
+		<li class="b"><a href="/US/Region/US/Temperature.html">Maps &amp; Radar</a></li>
+		<li><a href="/radar/">Radar</a></li>
+		<li><a href="/wundermap/?sat=1">Satellite</a></li>
+		<li><a href="/wundermap/">WunderMap&trade;</a></li>
+		</ul>
+		<ul class="rb">
+		<li class="b"><a href="/severe.asp">Severe Weather</a></li>
+		<li><a href="/tropical/">Tropical &amp; Hurricane</a></li>
+		<li><a href="/stormreport.asp">Storm Reports</a></li>
+		<li><a href="/severe.asp">U.S. Severe Alerts</a></li>
+		</ul>
+		<ul class="rb">
+		<li class="b"><a href="/photos/">Photos &amp; Video</a></li>
+		<li><a href="/wximage/">Photo Galleries</a></li>
+		<li><a href="/worldview/">World View</a></li>
+		<li><a href="/webcams/">Webcams</a></li>
+		</ul>
+		<ul class="rb">
+		<li class="b"><a href="/blog/">Blogs</a></li>
+		<li><a href="/blog/JeffMasters/article.html">Dr. Jeff Masters</a></li>
+		<li><a href="/blog/#met">Meteorology Blogs</a></li>
+		<li><a href="/blog/index.html?range=updated&t=1486403101#mem">Member Blogs</a></li>
+		</ul>
+		<ul class="rb">
+		<li class="b"><a href="/travel/">Travel &amp; Activities</a></li>
+		<li><a href="/travelplanner/">Travel Planner</a></li>
+		<li><a href="/roadtrip/">Road Trip Planner</a></li>
+		<li><a href="/ski/">Ski &amp; Snow</a></li>
+		</ul>
+		<ul>
+		<li class="b"><a href="/education/">Climate</a></li>
+		<li><a href="/climate/">Climate Change</a></li>
+		<li><a href="/climate/evidence.asp">Evidence</a></li>
+		<li><a href="/climate/extremes.asp">Record Extremes</a></li>
+		</ul>
+		</div>
+		<div id="signoff">
+		<div id="moFoot" class="none">
+		<div class="taC tm5">&copy; Copyright The Weather Company, LLC</div>
+		<div class="taC p10">
+		<span id="moAPI" class="none nobr"><a href="/weather/api/">Weather API</a> -</span>
+		<span class="nobr"><a href="/about/background.asp">About Us</a> -</span>
+		<span class="nobr"><a href="/about/contact.asp">Contact</a> -</span>
+		<span class="nobr"><a href="/members/tos.asp">TOS</a> -</span>
+		<span class="nobr"><a href="/members/tos.asp#privacy">Privacy</a></span>
+		</div>
+		</div>
+		<table cellspacing="0" cellpadding="0" class="full nomo">
+		<tr>
+		<td id="copyright" class="nobr vaT">&copy; Copyright The Weather Company, LLC</td>
+		<td id="moreInfo">
+		<span id="moAPI" class="none nobr"><a href="/weather/api/">Weather API</a> -</span>
+		<span class="nobr"><a href="/about/background.asp">About Us</a> -</span>
+		<span class="nobr"><a href="/about/contact.asp">Contact</a> -</span>
+		<span class="nobr"><a href="/about/pr/news.asp">Press Releases</a> -</span>
+		<span class="nobr"><a href="/members/tos.asp">Terms of Service</a> -</span>
+		<span class="nobr"><a href="/members/tos.asp#privacy">Privacy Statement</a> -</span>
+		</td>
+		</tr>
+		</table>
+		</div>
+		<img src="//icons.wxug.com/i/misc/logo-ibm-twc-wu-color.svg" alt="An IBM Company" height="100" />
+	</div>
+</div>
+	</section>
+		<section id="sidebar" role="complementary">
+	<nav id="sideMenu" role="navigation">
+		<ul id="sideProfile" class="signedOut">
+		<li>
+		<a href="https://www.wunderground.com/login.asp">Sign In</a>
+		</li>
+		</ul>
+		<ul id="sideMainNav" class="nav-bar">
+		<li class="nomob">
+		<a href="/wundermap/">WunderMap</a>
+		</li>
+		<li class="gotMore">
+		<a href="javascript:void(0);">Maps & Radar</a>
+		<ul class="sideSubNav">
+		<li class="sideGoBack"><a href="javascript:void(0);">Maps & Radar</a></li>
+		<li><a href="/wundermap/?units=english&rad=1&rad.num=1&rad.spd=25&rad.opa=81&rad.type=00Q&rad.type2=&rad.smo=1&rad.stm=0&sat=0&stormreports=0&svr=0&pix=0&cams=0&tor=0&riv=0&wxsn=0&ski=0&tfk=0&mm=0&ndfd=0&fire=0&firewfas=0&extremes=0&hurrevac=0&sst=0&livesurge=0&femaflood=0&tsunami=0&seismicrisk=0&fault=0&fissures=0&fronts=0&dir=1&dir.mode=driving&hur=0">WunderMap Radar</a></li>
+		<li><a href="/radar/map.asp">NEXRAD Radar</a></li>
+		<li><a href="/radar/mosaic.asp">U.S. Regional Radar</a></li>
+		<li><a href="/wundermap/?zoom=5&type=&tl.play=0&tl.spd=2&extremes=0&fault=0&femaflood=0&fire=0&firewfas=0&fissures=0&fronts=0&hurrevac=0&hur=0&lightning=0&livesurge=0&mm=0&ndfd=0&rad=0&dir=1&dir.mode=driving&sst=0&sat=1&sat.num=1&sat.spd=25&sat.opa=87&sat.gtt1=108&sat.gtt2=108&sat.type=IR4&seismicrisk=0&svr=0&ski=0&snowfall=0&stormreports=0&tor=0&tfk=0&tsunami=0&riv=0&wxsn=0&cams=0&pix=0">Satellite</a></li>
+		<li><a href="/maps/">All Weather Maps</a></li>
+		</ul>
+		</li>
+		<li class="gotMore">
+		<a href="javascript:void(0);">Severe Weather</a>
+		<ul class="sideSubNav">
+		<li class="sideGoBack"><a href="javascript:void(0);">Severe Weather</a></li>
+		<li><a href="/email/emailsettings.asp">Weather Alerts</a></li>
+		<li><a href="/hurricane/">Hurricane &amp; Tropical Cyclones</a></li>
+		<li><a href="/severe.asp">US Severe Weather Map</a></li>
+		<li><a href="/severeconvective.asp">Convective Outlook</a></li>
+		<li><a href="/tornado/">Tornadoes</a></li>
+		<li><a href="/winter-storm/">Winter Storms</a></li>
+		<li><a href="/fire/">Wildfires</a></li>
+		<li><a href="/prepare/">Preparedness</a></li>
+		</ul>
+		</li>
+		<li class="gotMore">
+		<a href="javascript:void(0);">News &amp; Blogs</a>
+		<ul class="sideSubNav">
+		<li class="sideGoBack"><a href="javascript:void(0);">News &amp; Blogs</a></li>
+		<li><a href="/blog/JeffMasters/article.html">Dr. Jeff Masters</a></li>
+		<li><a href="/blog/">All Weather Blogs</a></li>
+		<li><a href="/news/">Recent News Stories</a></li>
+		</ul>
+		</li>
+		<li>
+		<a href="/history/">Historical Weather</a>
+		</li>
+		<li class="gotMore">
+		<a href="javascript:void(0);">Photos &amp; Video</a>
+		<ul class="sideSubNav">
+		<li class="sideGoBack"><a href="javascript:void(0);">Photos &amp; Video</a></li>
+		<li><a href="/wximage/">WunderPhotos</a></li>
+		<li><a href="/webcams/">Webcams</a></li>
+		<li><a href="/video/">Videos</a></li>
+		</ul>
+		</li>
+		<li>
+		<a href="/climate/">Climate Change</a>
+		</li>
+		<li class="gotMore">
+		<a href="javascript:void(0);">Activities</a>
+		<ul class="sideSubNav">
+		<li class="sideGoBack"><a href="javascript:void(0);">Activities</a></li>
+		<li><a href="/ski/">Ski &amp; Snow Reports</a></li>
+		<li><a href="/marine-weather/">Marine Weather</a></li>
+		<li><a href="/sailing-weather/">Sailing Weather</a></li>
+		<li><a href="/travelplanner/">Travel Planner</a></li>
+		<li><a href="/roadtrip/">Road Trip Planner</a></li>
+		</ul>
+		</li>
+		<li>
+		<a href="/sitemap/">Browse All</a>
+		</li>
+		</ul>
+		<div id="sideUnits">
+		<a href="/member/membersettings.html?page=prefs">Settings</a>
+		<div id="unitSwitch">
+		<a href="/cgi-bin/findweather/getForecast?setunits=english" title="Switch to English">&deg;F</a> | &deg;C
+		</div>
+		</div>
+		<ul id="sideExtra">
+		<li><a href="/weatherstation/about.asp">Personal Weather Station Network</a>
+		<li><a href="/download/index.asp">Weather Underground Mobile Apps</a>
+		<li><a href="/weather/api/">Weather API for Developers</a>
+		<li><a href="/">Home</a>
+		</ul>
+	</nav>
+</section>
+<section id="sidebar-gutter"></section>
+		<div id="side-tab">
+	<div id="side-wrapper">
+		<a href="#" id="side-teaser">Try Our BETA</a>
+		<a href="//preview.wunderground.com/api/4a29de2bbabe77d5/geolookup/q/35.0,-9.4.json" id="side-message">
+		<div>We're updating<br />the WU experience.</div>
+		<div></br>Try it!</div>
+		</a>
+	</div>
+</div>
+<script>
+	(function(wui,$){
+	 $(function() {
+	 $( "#side-teaser" ).click(function() {
+	 $( "#side-tab" ).toggleClass( "openTab", 100 );
+	 return false;
+	 });
+	 });
+	})(wui,jQuery);
+</script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/swipe/2.0/swipe.min.js"></script>
+	<div id="iconspopcontainer"></div>
+	<script type="text/javascript">
+		(function($) {
+		jQuery("a[class^='iconSwitch']").click(function() {
+		icon = jQuery(this);
+		popcontain = jQuery('<div class="iconSwitchPop none"></div>').insertAfter('#iconspopcontainer');
+		jQuery(popcontain).load('/member/membersettings.html?responder=1&request=iconspopbox', function() {
+		jQuery(popcontain).removeClass("none");
+		jQuery(popcontain).position({ of: icon, my: "left top", at: "left top", offset: "0", collision: 'fit fit' });
+		});
+		return false;
+		});
+		$(".scrollAnchor").click(function(event){
+		event.preventDefault();
+		$('html,body').animate({scrollTop:$(this.hash).offset().top}, 500);
+		});
+		})(jQuery);
+	</script>
+<script>
+		var crtg_nid="1458";
+		var crtg_cookiename="cto_wun";
+		var crtg_varname="crtg_content";
+		function crtg_getCookie(c_name){ var i,x,y,ARRCookies=document.cookie.split(";");for(i=0;i<ARRCookies.length;i++){x=ARRCookies[i].substr(0,ARRCookies[i].indexOf("="));y=ARRCookies[i].substr(ARRCookies[i].indexOf("=")+1);x=x.replace(/^\s+|\s+$/g,"");if(x==c_name){return unescape(y);}}return'';}
+		var crtg_content = crtg_getCookie(crtg_cookiename);var crtg_rnd=Math.floor(Math.random()*99999999999);
+		var crtg_url=location.protocol+'//rtax.criteo.com/delivery/rta/rta.js?netId='+escape(crtg_nid);crtg_url+='&cookieName='+escape(crtg_cookiename);crtg_url+='&rnd='+crtg_rnd;crtg_url+='&varName=' + escape(crtg_varname);
+		var crtg_script=document.createElement('script');crtg_script.type='text/javascript';crtg_script.src=crtg_url;crtg_script.async=true;
+		if(document.getElementsByTagName("head").length>0)document.getElementsByTagName("head")[0].appendChild(crtg_script);else if(document.getElementsByTagName("body").length>0)document.getElementsByTagName("body")[0].appendChild(crtg_script);
+</script>
+<script src="//c.amazon-adsystem.com/aax2/amzn_ads.js"></script>
+<script>try{amznads.getAds('1004');}catch(e){}</script>
+<script>
+	if(window.innerWidth > 990) {
+		var ad_unit = "web_wunderground_us";
+		var ad_plat = "wund";
+		var pos_top = "wx_ws";
+		var pos_top_sizes = [[728,91],[970,90],[970,250]];
+		var pos_big = "wx_300var";
+		var pos_big_sizes = [[300,600],[300,251]];
+		var pos_hsd_sizes = [[636,50]];
+		var pos_box = "wx_300sm";
+		var pos_mid = "wx_mid300";
+		var pos_low = "wx_bot300";
+		var pos_low_1 = "wx_bot300_1";
+		var pos_mil = "wx_midldr";
+		var pos_bot = "wx_botldr";
+		var pos_bot_sizes = [[728,91]];
+		var pos_pds = "wx_pds";
+		var pos_tdu = "wx_hsd";
+		var wfx_id = "B1CC73";
+	}
+	else {
+		var ad_unit = "mobile_smart_wunderground_us";
+		var ad_plat = "wund_mw";
+		var pos_top = "mw_top";
+		var pos_top_sizes = [[320,51]];
+		var pos_big = "mw_mid1";
+		var pos_big_sizes = [[300,251],[320,51]];
+		var pos_hsd_sizes = [[320,51]];
+		var pos_box = "mw_mid1";
+		var pos_mid = "null";
+		var pos_low = "mw_mid2";
+		var pos_mil = "null";
+		var pos_bot = "mw_bot";
+		var pos_bot_1 = "null";
+		var pos_bot_sizes = [[320,51]];
+		var pos_pds = "null";
+		var pos_tdu = "wx_hmd";
+		var wfx_id = "5B3739";
+	}
+	//convert crtg_content into hash for utag_data
+	var criteo_array = (window['crtg_content']) ? crtg_content.split("|") : null;
+	var combined_hash = {};
+	for(var i in criteo_array){
+		var kv = criteo_array[i].split("=");
+		if(kv[1] == 1)
+		combined_hash[kv[0]] = kv[1];
+	}
+	//collect amazon keys
+	var amz_keys = (window['amznads']) ? amznads.getKeys() : null;
+	if(amz_keys){
+  for (var i = 0; i < amz_keys.length; i++) {
+      		combined_hash[amz_keys[i]] = "1";
+  		}
+	}
+
+	var wundermap_layers = "";
+	if("" == "on") {
+		wundermap_layers = "trop";
+	}
+
+	var utag_data = {
+		ad_placements :[
+			
+			
+			
+			
+			
+		],
+		ad_unit : "/7646/"+ad_unit+"/manmade",
+		preempt : "y",
+		platform : ad_plat,
+	
+		site : "www",
+	
+	
+	
+	
+	
+		exclude : "wund",
+	
+	
+	
+		page_view : "1",
+	
+	
+	
+		
+			weather_fx : (window['wfxtrigs']) ? wfxtrigs.split("=")[1] : null,
+			weather_fx_zcs : "",
+			weather_fx_nzcs : "",
+		
+		ad_bidding : combined_hash,
+	
+		page_name : "",
+		channel : "",
+		content_type : "error",
+		sub_section : "",
+		events : "",
+	
+	
+	
+	
+		search_type : "other",
+	
+	
+		search_error : "",
+	
+	
+		
+	
+		
+		page : "Error",
+		category : "Error",
+	
+		display_ads : "yes",
+	
+	
+		ssl_page : "no",
+	
+	
+		member_pws : "0",
+	
+	
+		member_webcam : "0",
+	
+	
+		member_translator : "0",
+	
+	
+		member_approver : "0",
+	
+	
+		member_zealot : "0",
+	
+	
+		member_moderator : "0",
+	
+	
+		member_favorites : "0",
+	
+		member_type : "non-member"
+	}
+
+</script>
+<script>
+	(function($) {
+		var wfx_url = '//triggers1.wfxtriggers.com/json/?resp_type=json&acctid=' + wfx_id + '&current=true&df=1,2,3&zcs=&nzcs=';
+		$.ajax({
+		url: wfx_url,
+		dataType: 'jsonp',
+		cache: true,
+		type: 'GET',
+		timeout: 5000,
+		success: function(data) {
+		if (data && data.wfxtg) {
+		var types = ['zcs', 'hzcs', 'nzcs'];
+		if (data.wfxtg.current) {
+		utag_data.weather_fx = data.wfxtg.current.join(',');
+		}
+		if (data.wfxtg.scatterSegs) {
+		for (var i = 0, len = data.wfxtg.scatterSegs.length; i < len; i++) {
+							var seg = data.wfxtg.scatterSegs[i];
+							var type;
+							for (var key in seg) {
+								if (seg.hasOwnProperty(key)) {
+					                type = key;
+					            }
+							}
+
+							if (type.length && seg[type].length && $.inArray(type, types) > -1) {
+		var segments = seg[type][0].segments;
+		if (segments && segments.length) {
+		utag_data['weather_fx_' + type] = segments.join(',');
+		}
+		}
+		}
+		}
+		}
+		},
+		error: function(){
+		console.log('wfxtriggers failed');
+		}
+		});
+		var url2 = '//ad.crwdcntrl.net/5/c=2215/pe=y/callback=?';
+		$.ajax({
+		url: url2,
+		dataType: 'jsonp',
+		cache: true,
+		type: 'GET',
+		timeout: 5000,
+		success: function(data) {
+		utag_data['lotame_audience'] = '';
+		if(data && data.Profile && data.Profile.Audiences && data.Profile.Audiences.Audience) {
+		for(var i = 0; i < data.Profile.Audiences.Audience.length; i++) {
+						if(i > 0) {
+		utag_data['lotame_audience'] = utag_data['lotame_audience'] + ',';
+		}
+		utag_data['lotame_audience'] = utag_data['lotame_audience'] + data.Profile.Audiences.Audience[i].id;
+		}
+		}
+		utag_data['tpid'] = data && data.Profile && data.Profile.tpid || '';
+		if (window._cc2216) {
+		if(utag_data.dma) { _cc2216.add("seg", "dma_" + utag_data.dma); }
+		if(utag_data.state) { _cc2216.add("seg", "state_" + utag_data.state); }
+		if(utag_data.country_code) { _cc2216.add("seg", "country_" + utag_data.country_code); }
+		if(utag_data.language) { _cc2216.add("seg", "lang_" + utag_data.language); }
+		if(utag_data.temperature) { _cc2216.add("seg", "temp_" + utag_data.temperature); }
+		if(utag_data.temperature_range) { _cc2216.add("seg", "tempR_" + utag_data.temperature_range); }
+		if(utag_data.pollen) { _cc2216.add("seg", "pollen_" + utag_data.pollen); }
+		if(utag_data.humidity) { _cc2216.add("seg", "hum_" + utag_data.humidity); }
+		if(utag_data.condition) { _cc2216.add("seg", "cond_" + utag_data.condition); }
+		if(utag_data.forecast_high_imcrement) { _cc2216.add("seg", "tempH_" + utag_data.forecast_high_imcrement); }
+		if(utag_data.forecast_high_range) { _cc2216.add("seg", "tempHR_" + utag_data.forecast_high_range); }
+		if(utag_data.forecast_low_increment) { _cc2216.add("seg", "tempL_" + utag_data.forecast_low_increment); }
+		if(utag_data.forecast_low_range) { _cc2216.add("seg", "tempLR_" + utag_data.forecast_low_range); }
+		if(utag_data.forecast_day_1) { _cc2216.add("seg", "fc1_" + utag_data.forecast_day_1); }
+		if(utag_data.forecast_day_2) { _cc2216.add("seg", "fc2_" + utag_data.forecast_day_2); }
+		if(utag_data.forecast_day_3) { _cc2216.add("seg", "fc3_" + utag_data.forecast_day_3); }
+		if(utag_data.barometer) { _cc2216.add("seg", "baroTendency_" + utag_data.barometer); }
+		_cc2216.bcp();
+		}
+		},
+		error: function(){
+		console.log('lotame adcontrol failed');
+		}
+		});
+	})(jQuery);
+</script>
+<script>
+	(function(a,b,c,d){
+		a='//tags.tiqcdn.com/utag/weather/wunderground/prod/utag.js';
+		b=document;c='script';d=b.createElement(c);d.src=a;d.type='text/java'+c;d.async=true;
+		a=b.getElementsByTagName(c)[0];a.parentNode.insertBefore(d,a);
+	})();
+</script>
+</body>
+</html>
+<!-- WUICATEGORY | Error | Error -->
+<!-- SERVERHOSTNAME | ip-10-226-236-16 | Feb  3 2017 22:43:46 -->

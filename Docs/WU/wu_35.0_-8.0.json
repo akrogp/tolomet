@@ -1,0 +1,42 @@
+
+{
+  "response": {
+  "version":"0.1",
+  "termsofService":"http://www.wunderground.com/weather/api/d/terms.html",
+  "features": {
+  "geolookup": 1
+  }
+	}
+		,	"location": {
+		"type":"INTLCITY",
+		"country":"MC",
+		"country_iso3166":"MA",
+		"country_name":"Morocco",
+		"state":"02",
+		"city":"El Behara",
+		"tz_short":"WET",
+		"tz_long":"Africa/Casablanca",
+		"lat":"35.000000",
+		"lon":"-8.000000",
+		"zip":"00000",
+		"magic":"28",
+		"wmo":"60120",
+		"l":"/q/zmw:00000.28.60120",
+		"requesturl":"global/stations/60120.html",
+		"wuiurl":"https://www.wunderground.com/global/stations/60120.html",
+		"nearby_weather_stations": {
+		"airport": {
+		"station": [
+		{ "city":"", "state":"", "country":"", "icao":"", "lat":"", "lon":"" }
+		,{ "city":"", "state":"", "country":"", "icao":"", "lat":"", "lon":"" }
+		,{ "city":"Rabat-Sale", "state":"", "country":"MA", "icao":"GMME", "lat":"34.04999924", "lon":"-6.76999998" }
+		]
+		}
+		,
+		"pws": {
+		"station": [
+		]
+		}
+		}
+	}
+}

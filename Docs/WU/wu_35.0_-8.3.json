@@ -1,0 +1,382 @@
+
+{
+  "response": {
+  "version":"0.1",
+  "termsofService":"http://www.wunderground.com/weather/api/d/terms.html",
+  "features": {
+  "geolookup": 1
+  }
+	}
+		,	"location": {
+		"type":"INTLCITY",
+		"country":"PO",
+		"country_iso3166":"PT",
+		"country_name":"Portugal",
+		"state":"08",
+		"city":"Ilha do Farol",
+		"tz_short":"WET",
+		"tz_long":"Europe/Lisbon",
+		"lat":"35.000000",
+		"lon":"-8.300000",
+		"zip":"00000",
+		"magic":"392",
+		"wmo":"08554",
+		"l":"/q/zmw:00000.392.08554",
+		"requesturl":"global/stations/08554.html",
+		"wuiurl":"https://www.wunderground.com/global/stations/08554.html",
+		"nearby_weather_stations": {
+		"airport": {
+		"station": [
+		{ "city":"Faro / Aeroporto", "state":"", "country":"Portugal", "icao":"LPFR", "lat":"37.01442337", "lon":"-7.96591091" }
+		,{ "city":"Faro", "state":"", "country":"PT", "icao":"LPFR", "lat":"37.02000046", "lon":"-7.96999979" }
+		]
+		}
+		,
+		"pws": {
+		"station": [
+		{
+		"neighborhood":"Porto de Faro",
+		"city":"Faro",
+		"state":"FARO DISTRICT",
+		"country":"PT",
+		"id":"IFARODIS5",
+		"lat":37.004150,
+		"lon":-7.921765,
+		"distance_km":225,
+		"distance_mi":135
+		},
+		{
+		"neighborhood":"Unnamed Road",
+		"city":"Faro",
+		"state":"",
+		"country":"PT",
+		"id":"IFARO15",
+		"lat":37.019642,
+		"lon":-7.971954,
+		"distance_km":226,
+		"distance_mi":135
+		},
+		{
+		"neighborhood":"Rua João de Deus",
+		"city":"Faro",
+		"state":"",
+		"country":"PT",
+		"id":"IFARO13",
+		"lat":37.019356,
+		"lon":-7.930440,
+		"distance_km":226,
+		"distance_mi":136
+		},
+		{
+		"neighborhood":"Faro",
+		"city":"Portugal",
+		"state":"",
+		"country":"PT",
+		"id":"IPORTUGA103",
+		"lat":37.020565,
+		"lon":-7.925779,
+		"distance_km":227,
+		"distance_mi":136
+		},
+		{
+		"neighborhood":"Estadio Farense",
+		"city":"Faro",
+		"state":"FARO",
+		"country":"PT",
+		"id":"IFAROFAR7",
+		"lat":37.021763,
+		"lon":-7.929930,
+		"distance_km":227,
+		"distance_mi":136
+		},
+		{
+		"neighborhood":"Rua Comandante José Nunes da Cruz",
+		"city":"Faro",
+		"state":"",
+		"country":"PT",
+		"id":"IFARO6",
+		"lat":37.024025,
+		"lon":-7.921073,
+		"distance_km":227,
+		"distance_mi":136
+		},
+		{
+		"neighborhood":"Faro Municipality",
+		"city":"Faro",
+		"state":"",
+		"country":"PO",
+		"id":"IFARO8",
+		"lat":37.030182,
+		"lon":-7.958832,
+		"distance_km":227,
+		"distance_mi":136
+		},
+		{
+		"neighborhood":"Loulé Municipality",
+		"city":"Quinta Do Lago",
+		"state":"08",
+		"country":"PO",
+		"id":"I08QUINT2",
+		"lat":37.040905,
+		"lon":-8.030964,
+		"distance_km":228,
+		"distance_mi":136
+		},
+		{
+		"neighborhood":"Avenida André Jordan",
+		"city":"Faro",
+		"state":"",
+		"country":"PO",
+		"id":"IFARO11",
+		"lat":37.040989,
+		"lon":-8.014715,
+		"distance_km":228,
+		"distance_mi":137
+		},
+		{
+		"neighborhood":"Aldeamento Vilar do Golf",
+		"city":"Faro",
+		"state":"",
+		"country":"PT",
+		"id":"IFARO17",
+		"lat":37.045403,
+		"lon":-8.019138,
+		"distance_km":228,
+		"distance_mi":137
+		},
+		{
+		"neighborhood":"Faro Municipality",
+		"city":"Faro",
+		"state":"",
+		"country":"PO",
+		"id":"IFARO9",
+		"lat":37.041126,
+		"lon":-7.959518,
+		"distance_km":228,
+		"distance_mi":137
+		},
+		{
+		"neighborhood":"Loteamento Fonte Santa",
+		"city":"Quarteira",
+		"state":"",
+		"country":"PT",
+		"id":"IQUARTEI5",
+		"lat":37.065929,
+		"lon":-8.078841,
+		"distance_km":230,
+		"distance_mi":138
+		},
+		{
+		"neighborhood":"Algarve - Almancil",
+		"city":"Almancil",
+		"state":"ALGARVE",
+		"country":"PT",
+		"id":"IALGARVE2",
+		"lat":37.066257,
+		"lon":-8.051551,
+		"distance_km":230,
+		"distance_mi":138
+		},
+		{
+		"neighborhood":"Rua de Volta do Barinel",
+		"city":"Quarteira",
+		"state":"",
+		"country":"PT",
+		"id":"IQUARTEI2",
+		"lat":37.078667,
+		"lon":-8.098996,
+		"distance_km":231,
+		"distance_mi":139
+		},
+		{
+		"neighborhood":"Loulé Municipality",
+		"city":"Ferrarias",
+		"state":"08",
+		"country":"PO",
+		"id":"I08FERRA2",
+		"lat":37.079746,
+		"lon":-8.055314,
+		"distance_km":232,
+		"distance_mi":139
+		},
+		{
+		"neighborhood":"Vale Faro",
+		"city":"Albufeira",
+		"state":"FARO DISTRICT",
+		"country":"PT",
+		"id":"IFARODIS6",
+		"lat":37.089550,
+		"lon":-8.236257,
+		"distance_km":232,
+		"distance_mi":139
+		},
+		{
+		"neighborhood":"Loulé",
+		"city":"Loulé",
+		"state":"",
+		"country":"PO",
+		"id":"ILOUL4",
+		"lat":37.091713,
+		"lon":-8.093151,
+		"distance_km":233,
+		"distance_mi":139
+		},
+		{
+		"neighborhood":"Sunset Villas",
+		"city":"Quarteira",
+		"state":"FARO",
+		"country":"PT",
+		"id":"IFAROQUA2",
+		"lat":37.092064,
+		"lon":-8.093214,
+		"distance_km":233,
+		"distance_mi":139
+		},
+		{
+		"neighborhood":"Rua Ivone Silva",
+		"city":"Albufeira",
+		"state":"",
+		"country":"PT",
+		"id":"IALBUFEI4",
+		"lat":37.099148,
+		"lon":-8.227516,
+		"distance_km":233,
+		"distance_mi":140
+		},
+		{
+		"neighborhood":"Santa Barbara de Nexe",
+		"city":"Santa Bárbara De Nexe",
+		"state":"FARO",
+		"country":"PT",
+		"id":"IFAROSAN2",
+		"lat":37.101242,
+		"lon":-7.960427,
+		"distance_km":235,
+		"distance_mi":141
+		},
+		{
+		"neighborhood":"Loulé Municipality",
+		"city":"Maritenda",
+		"state":"08",
+		"country":"PO",
+		"id":"I08MARIT2",
+		"lat":37.121593,
+		"lon":-8.140086,
+		"distance_km":236,
+		"distance_mi":141
+		},
+		{
+		"neighborhood":"Atlantic coastal region",
+		"city":"Estói",
+		"state":"FARO",
+		"country":"PT",
+		"id":"IFAROEST3",
+		"lat":37.099590,
+		"lon":-7.854210,
+		"distance_km":236,
+		"distance_mi":142
+		},
+		{
+		"neighborhood":"Quinta da Boavista, Loule",
+		"city":"Loulé",
+		"state":"",
+		"country":"PO",
+		"id":"ILOUL5",
+		"lat":37.141876,
+		"lon":-8.022073,
+		"distance_km":239,
+		"distance_mi":143
+		},
+		{
+		"neighborhood":"Travessa do Pastor",
+		"city":"Santa Barbara De Nexe",
+		"state":"",
+		"country":"PT",
+		"id":"ISANTABA2",
+		"lat":37.137604,
+		"lon":-7.947350,
+		"distance_km":239,
+		"distance_mi":143
+		},
+		{
+		"neighborhood":"Rua Francisco José Nascimento Bateira",
+		"city":"Santa Luzia",
+		"state":"",
+		"country":"PO",
+		"id":"ISANTALU2",
+		"lat":37.101936,
+		"lon":-7.663039,
+		"distance_km":240,
+		"distance_mi":144
+		},
+		{
+		"neighborhood":"Tavira",
+		"city":"Casas Juntas",
+		"state":"08",
+		"country":"PO",
+		"id":"I08CASAS2",
+		"lat":37.138081,
+		"lon":-7.793345,
+		"distance_km":242,
+		"distance_mi":145
+		},
+		{
+		"neighborhood":"Tavira",
+		"city":"Tavira",
+		"state":"",
+		"country":"PO",
+		"id":"ITAVIRA3",
+		"lat":37.144745,
+		"lon":-7.605691,
+		"distance_km":246,
+		"distance_mi":147
+		},
+		{
+		"neighborhood":"Conceicao de Tavira",
+		"city":"Tavira",
+		"state":"",
+		"country":"PT",
+		"id":"ITAVIRA6",
+		"lat":37.147854,
+		"lon":-7.605085,
+		"distance_km":246,
+		"distance_mi":148
+		},
+		{
+		"neighborhood":"Benafim",
+		"city":"Alto fica",
+		"state":"Algarve",
+		"country":"PT",
+		"id":"IDNS51",
+		"lat":37.218708,
+		"lon":-8.119240,
+		"distance_km":247,
+		"distance_mi":148
+		},
+		{
+		"neighborhood":"Villa Alfarroba",
+		"city":"Vila Nova De Cacela",
+		"state":"FARO",
+		"country":"PT",
+		"id":"IFAROVIL3",
+		"lat":37.174236,
+		"lon":-7.568338,
+		"distance_km":250,
+		"distance_mi":150
+		},
+		{
+		"neighborhood":"Nora",
+		"city":"Monte Gordo",
+		"state":"",
+		"country":"PT",
+		"id":"IMONTEGO2",
+		"lat":37.239105,
+		"lon":-7.585171,
+		"distance_km":257,
+		"distance_mi":154
+		}
+		]
+		}
+		}
+	}
+}
