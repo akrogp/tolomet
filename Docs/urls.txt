@@ -1,6 +1,7 @@
 Euskalmet:
 Datos -> http://www.euskalmet.euskadi.net/s07-5853x/es/meteorologia/lectur_fr.apl?e=5&anyo=2012&mes=8&dia=22&hora=00:00%2023:50&CodigoEstacion=C072&pagina=1&R01HNoPortal=true
 Usuario -> http://www.euskalmet.euskadi.eus/s07-5853x/es/meteorologia/lectur.apl?e=5&campo=C072
+http://opendata.euskadi.eus/catalogo/-/red-de-estaciones-meteorologicas-de-euskadi/
 
 Meteo Navarra:
 Datos -> http://meteo.navarra.es/download/estacion_datos.cfm?IDEstacion=22&p_10=7&p_10=2&p_10=9&p_10=6&fecha_desde=2%2F4%2F2013&fecha_hasta=3%2F4%2F2013&dl=csv

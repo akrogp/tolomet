@@ -1,0 +1,195 @@
+
+{
+  "response": {
+  "version":"0.1",
+  "termsofService":"http://www.wunderground.com/weather/api/d/terms.html",
+  "features": {
+  "geolookup": 1
+  }
+	}
+		,	"location": {
+		"type":"INTLCITY",
+		"country":"PO",
+		"country_iso3166":"PT",
+		"country_name":"Portugal",
+		"state":"08",
+		"city":"Sagres",
+		"tz_short":"WET",
+		"tz_long":"Europe/Lisbon",
+		"lat":"35.000000",
+		"lon":"-9.900000",
+		"zip":"00000",
+		"magic":"1",
+		"wmo":"08533",
+		"l":"/q/zmw:00000.1.08533",
+		"requesturl":"global/stations/08533.html",
+		"wuiurl":"https://www.wunderground.com/global/stations/08533.html",
+		"nearby_weather_stations": {
+		"airport": {
+		"station": [
+		{ "city":"Sagres", "state":"", "country":"PO", "icao":"", "lat":"37.00000000", "lon":"-8.94999981" }
+		,{ "city":"Faro", "state":"", "country":"PT", "icao":"LPFR", "lat":"37.02000046", "lon":"-7.96999979" }
+		]
+		}
+		,
+		"pws": {
+		"station": [
+		{
+		"neighborhood":"Vila do Bispo Municipality",
+		"city":"Vila Do Bispo",
+		"state":"",
+		"country":"PO",
+		"id":"IVILADOB2",
+		"lat":37.012253,
+		"lon":-8.934760,
+		"distance_km":239,
+		"distance_mi":143
+		},
+		{
+		"neighborhood":"Rua Maria José Rijo",
+		"city":"Luz",
+		"state":"",
+		"country":"PT",
+		"id":"ILUZ100",
+		"lat":37.076694,
+		"lon":-8.774570,
+		"distance_km":252,
+		"distance_mi":151
+		},
+		{
+		"neighborhood":"Lagos",
+		"city":"Lagos",
+		"state":"",
+		"country":"PO",
+		"id":"ILAGOS8",
+		"lat":37.090904,
+		"lon":-8.759131,
+		"distance_km":254,
+		"distance_mi":152
+		},
+		{
+		"neighborhood":"Rua do Ramalhete",
+		"city":"Luz",
+		"state":"",
+		"country":"PO",
+		"id":"ILUZ10",
+		"lat":37.090076,
+		"lon":-8.729933,
+		"distance_km":255,
+		"distance_mi":153
+		},
+		{
+		"neighborhood":"Lagos",
+		"city":"Lagos",
+		"state":"",
+		"country":"PO",
+		"id":"ILAGOS12",
+		"lat":37.104534,
+		"lon":-8.684116,
+		"distance_km":258,
+		"distance_mi":154
+		},
+		{
+		"neighborhood":"Lagos",
+		"city":"Cerro Ruivo",
+		"state":"08",
+		"country":"PO",
+		"id":"I08CERRO2",
+		"lat":37.163914,
+		"lon":-8.697629,
+		"distance_km":263,
+		"distance_mi":158
+		},
+		{
+		"neighborhood":"Cotifo",
+		"city":"Lagos",
+		"state":"",
+		"country":"PT",
+		"id":"ILAGOS11",
+		"lat":37.166588,
+		"lon":-8.701033,
+		"distance_km":263,
+		"distance_mi":158
+		},
+		{
+		"neighborhood":"Rua Doutor João Lúcio",
+		"city":"Portimão",
+		"state":"",
+		"country":"PT",
+		"id":"IPORTIMO2",
+		"lat":37.127499,
+		"lon":-8.538430,
+		"distance_km":266,
+		"distance_mi":159
+		},
+		{
+		"neighborhood":"Porto de Portimão",
+		"city":"Portimão",
+		"state":"FARO",
+		"country":"PT",
+		"id":"IFAROPOR4",
+		"lat":37.128090,
+		"lon":-8.530705,
+		"distance_km":266,
+		"distance_mi":160
+		},
+		{
+		"neighborhood":"Mexilhoeira Grande",
+		"city":"Faro",
+		"state":"FARO",
+		"country":"PT",
+		"id":"IFAROFAR5",
+		"lat":37.177643,
+		"lon":-8.639515,
+		"distance_km":267,
+		"distance_mi":160
+		},
+		{
+		"neighborhood":"Rua dos Bombeiros Voluntários",
+		"city":"Portimão",
+		"state":"",
+		"country":"PT",
+		"id":"IPORTIMO3",
+		"lat":37.141087,
+		"lon":-8.544585,
+		"distance_km":267,
+		"distance_mi":160
+		},
+		{
+		"neighborhood":"Portimao (IFARODIS4)",
+		"city":"Portimão",
+		"state":"FARO DISTRICT",
+		"country":"PT",
+		"id":"IFARODIS4",
+		"lat":37.141048,
+		"lon":-8.544330,
+		"distance_km":267,
+		"distance_mi":160
+		},
+		{
+		"neighborhood":"Portimao (IFAROPOR3)",
+		"city":"Portimão",
+		"state":"FARO",
+		"country":"PT",
+		"id":"IFAROPOR3",
+		"lat":37.141048,
+		"lon":-8.544330,
+		"distance_km":267,
+		"distance_mi":160
+		},
+		{
+		"neighborhood":"Vales, Aljezur",
+		"city":"Vales, Aljezur",
+		"state":"FARO",
+		"country":"PT",
+		"id":"IFAROVAL2",
+		"lat":37.292900,
+		"lon":-8.840197,
+		"distance_km":272,
+		"distance_mi":163
+		}
+		]
+		}
+		}
+	}
+}
