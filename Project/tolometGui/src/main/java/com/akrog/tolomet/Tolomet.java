@@ -11,6 +11,8 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.multidex.MultiDexApplication;
 
+import java.io.File;
+
 /**
  * Created by gorka on 6/10/16.
  */
@@ -24,6 +26,15 @@ public class Tolomet extends MultiDexApplication {
 
     public static Context getAppContext() {
         return context;
+    }
+
+    public static File getAvailableCacheDir() {
+        if( context == null )
+            return null;
+        File dir = context.getExternalCacheDir();
+        if( dir != null )
+            return dir;
+        return context.getCacheDir();
     }
 
     public static boolean isNetworkAvailable() {
