@@ -67,7 +67,8 @@
         for your specific device type.
     </string>
     <string name="help_widget"><![CDATA[
-        The widget allows you to have a quick look at your favorite spot(s) from the home screen.
+        The widget is only available if Tolomet is installed on the internal device storage.
+        It allows you to have a quick look at your favorite spot(s) from the home screen.
         There are three widget sizes available, displaying more or less information. When you add a
         widget, a configuration screen is opened to allow you to customize which are your preferred
         flying conditions at a given spot using any of the stations in your favorite list. The
