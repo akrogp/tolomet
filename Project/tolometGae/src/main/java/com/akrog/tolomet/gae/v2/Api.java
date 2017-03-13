@@ -38,7 +38,7 @@ public class Api {
     }
 
     private Notification checkAppVersion(int appVersion, String lang) {
-        if( appVersion >= 510 )
+        if( appVersion >= 530 )
             return null;
         Notification info = new Notification();
 
@@ -53,6 +53,21 @@ public class Api {
             addImprovement(info, lang,
                     "Incluidas 996 estaciones de MeteoClimatic",
                     "Included 996 MeteoClimatic stations");
+        }
+        if( appVersion < 520 ) {
+            info.setAppVersion("5.2");
+            addImprovement(info, lang,
+                    "Habilitada instalación en memoria externa",
+                    "Enabled installation on external storage");
+            addImprovement(info, lang,
+                    "Solucionados algunos fallos",
+                    "Solved several bugs");
+        }
+        if( appVersion < 530 ) {
+            info.setAppVersion("5.3");
+            addImprovement(info, lang,
+                    "Traducción a francés (por Jean Lombart)",
+                    "French translation (by Jean Lombart)");
         }
 
         return info;

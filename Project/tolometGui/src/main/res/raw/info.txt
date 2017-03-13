@@ -1,5 +1,6 @@
 <b>Tolomet</b> (v$VER$)<br/>
-Copyright 2012-2016, Gorka Prieto<br/><br/>
+Copyright 2012-2017, Gorka Prieto<br/><br/>
 Thanks to:<br/>
 - Fran Echarte (Euskara translator)<br/>
+- Jean Lombart (French translator)<br/>
 https://github.com/akrogp/tolomet
