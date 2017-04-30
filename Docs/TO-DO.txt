@@ -1,0 +1,35 @@
+Pendiente:
+- Solucionar bugs reportados
+- Actualizar widget con pantalla encendida
+- Estaciones rotas/puntuaciones
+- Rutas de estaciones (Mario)
+- Soporte para leer algunas estaciones desde GAE
+- Gráficas con predicción (meteoblue)
+- Eje y con etiquetas N, NE, ... en lugar de grados (Aníbal)
+- Weather Underground
+- Alertas meteorológicas (Fili/FVDA)
+x Tolomet en SD
+- Gráficas con sigma (Edu)
+- Alarma sonora cuando peligro
+- Otras unidades (nudos)
+- Mejorar gestión ubicación
+
+Hecho:
+x Estaciones de meteoclimatic (RSS)
+x Widget
+x Colores para daltónicos
+x Ver días pasados (Txema)
+x Estaciones de varios países (Chomin)
+x MeteoGalicia
+x Arquitectura de componentes
+x Mejorar modo vuelo
+x Manual de ayuda
+x Actualizar BD desde GAE
+x METAR
+x Estaciones de Sierra de Prades
+x Hora Canaria
+x Opción de compartir (por WA, etc.) para no tener que hacer captura de pantalla
+x Comprobar autoescala en RCNL
+x Modo vuelo donde no se bloquee la pantalla
+x Mapa de estaciones con lecturas
+x Balizas Francia -> http://www.balisemeteo.com, mobibalises, Meteofrance 
