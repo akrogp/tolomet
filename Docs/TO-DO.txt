@@ -8,13 +8,13 @@ Pendiente:
 - Eje y con etiquetas N, NE, ... en lugar de grados (Aníbal)
 - Weather Underground
 - Alertas meteorológicas (Fili/FVDA)
-x Tolomet en SD
 - Gráficas con sigma (Edu)
 - Alarma sonora cuando peligro
 - Otras unidades (nudos)
 - Mejorar gestión ubicación
 
 Hecho:
+x Tolomet en SD
 x Estaciones de meteoclimatic (RSS)
 x Widget
 x Colores para daltónicos
