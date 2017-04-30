@@ -74,7 +74,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		vowel = state.getVowel();
 		region = state.getRegion();
 		String country = state.getCountry();
-		if( country == null )
+		if( country == null || country.isEmpty() )
 			country = guessCountry();		
 		setCountry(country);
 		Type type = state.getType();
