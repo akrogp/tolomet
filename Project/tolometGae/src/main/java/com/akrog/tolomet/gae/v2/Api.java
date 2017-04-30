@@ -38,7 +38,7 @@ public class Api {
     }
 
     private Notification checkAppVersion(int appVersion, String lang) {
-        if( appVersion >= 530 )
+        if( appVersion >= 531 )
             return null;
         Notification info = new Notification();
 
@@ -68,6 +68,12 @@ public class Api {
             addImprovement(info, lang,
                     "Traducción a francés (por Jean Lombart)",
                     "French translation (by Jean Lombart)");
+        }
+        if( appVersion == 530 ) {
+            info.setAppVersion("5.3.1");
+            addImprovement(info, lang,
+                    "Solucionados algunos fallos",
+                    "Solved several bugs");
         }
 
         return info;
