@@ -75,7 +75,7 @@ public class ChartsActivity extends BaseActivity {
         String stationId = intent.getStringExtra(EXTRA_STATION_ID);
         if( stationId != null ) {
             String country = intent.getStringExtra(EXTRA_COUNTRY);
-            if( country != null )
+            if( country != null && !country.isEmpty() )
                 spinner.setCountry(country);
             intent.removeExtra(EXTRA_STATION_ID);
             intent.removeExtra(EXTRA_COUNTRY);
