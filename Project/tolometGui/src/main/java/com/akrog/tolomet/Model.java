@@ -30,6 +30,8 @@ public class Model {
     private Model() {
         manager = new Manager();
         country = Locale.getDefault().getCountry();
+        if ( country == null || country.isEmpty() )
+            country = "ES";
     }
 
     public static Model getInstance() {
