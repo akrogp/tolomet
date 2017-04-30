@@ -122,6 +122,8 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		} catch(Exception e) {
 			code = locale.getCountry();
 		}
+		if( code == null || code.isEmpty() )
+			code = "ES";
 		return code;
 	}
 	

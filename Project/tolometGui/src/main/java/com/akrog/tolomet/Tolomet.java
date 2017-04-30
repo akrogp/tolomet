@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.multidex.MultiDexApplication;
 
 import java.io.File;
@@ -51,15 +53,20 @@ public class Tolomet extends MultiDexApplication {
             LocationManager locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
             boolean isGps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             boolean isNet = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-            if( isGps )
+            if( isGps ) {
                 locationGps = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if( isNet )
+                if( locationGps == null )
+                    locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER,locationListener,null);
+            }
+            if( isNet ) {
                 locationNet = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                if( locationNet == null )
+                    locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER,locationListener,null);
+            }
             else if( !isGps && warning )
                 showLocationDialog();
         } catch (Exception e) {
         }
-
         if( locationGps == null )
             return locationNet;
         if( locationNet == null )
@@ -91,4 +98,18 @@ public class Tolomet extends MultiDexApplication {
     }
 
     private static Context context;
+    private static LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+        }
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+        }
+        @Override
+        public void onProviderEnabled(String s) {
+        }
+        @Override
+        public void onProviderDisabled(String s) {
+        }
+    };
 }
