@@ -12,6 +12,7 @@ Pendiente:
 - Alarma sonora cuando peligro
 - Otras unidades (nudos)
 - Mejorar gestión ubicación
+- Arreglar RCNL
 
 Hecho:
 x Tolomet en SD
