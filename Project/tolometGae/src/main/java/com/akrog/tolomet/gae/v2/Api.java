@@ -38,7 +38,7 @@ public class Api {
     }
 
     private Notification checkAppVersion(int appVersion, String lang) {
-        if( appVersion >= 531 )
+        if( appVersion >= 532 )
             return null;
         Notification info = new Notification();
 
@@ -74,6 +74,15 @@ public class Api {
             addImprovement(info, lang,
                     "Solucionados algunos fallos",
                     "Solved several bugs");
+        }
+        if( appVersion == 530 || appVersion == 531 ) {
+            info.setAppVersion("5.3.2");
+            addImprovement(info, lang,
+                    "Solucionado fallo de actualización de lecturas",
+                    "Solved readings update bug");
+            addImprovement(info, lang,
+                    "Recuperada estación de Laredo (RCNL)",
+                    "Recovered Laredo (RCNL) station");
         }
 
         return info;
