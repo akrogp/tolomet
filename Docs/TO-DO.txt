@@ -1,20 +1,24 @@
-Pendiente:
+Corto:
 - Solucionar bugs reportados
 - Actualizar widget con pantalla encendida
-- Estaciones rotas/puntuaciones
-- Rutas de estaciones (Mario)
-- Soporte para leer algunas estaciones desde GAE
-- Gráficas con predicción (meteoblue)
-- Eje y con etiquetas N, NE, ... en lugar de grados (Aníbal)
 - Weather Underground
 - Alertas meteorológicas (Fili/FVDA)
-- Gráficas con sigma (Edu)
 - Alarma sonora cuando peligro
-- Otras unidades (nudos)
 - Mejorar gestión ubicación
-- Arreglar RCNL
+
+Medio:
+- Rutas de estaciones (Mario)
+- Eje y con etiquetas N, NE, ... en lugar de grados (Aníbal)
+- Otras unidades (nudos)
+
+Largo:
+- Soporte para leer algunas estaciones desde GAE
+- Estaciones rotas/puntuaciones
+- Gráficas con sigma (Edu)
+- Gráficas con predicción (meteoblue)
 
 Hecho:
+x Arreglar RCNL
 x Tolomet en SD
 x Estaciones de meteoclimatic (RSS)
 x Widget
