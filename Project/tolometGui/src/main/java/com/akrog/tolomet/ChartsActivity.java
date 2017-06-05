@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.os.AsyncTaskCompat;
 
@@ -16,14 +15,8 @@ import com.akrog.tolomet.presenters.MyCharts;
 import com.akrog.tolomet.presenters.MySummary;
 import com.akrog.tolomet.presenters.Presenter;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -164,15 +157,15 @@ public class ChartsActivity extends BaseActivity {
             @Override
             protected void onCancelled() {
                 super.onCancelled();
-				logFile("onCancelled1");
+				//logFile("onCancelled1");
                 onPostExecute(null);
-				logFile("onCancelled2");
+				//logFile("onCancelled2");
             }
         };
         AsyncTaskCompat.executeParallel(thread);
 	}
 
-	private void logFile(String msg) {
+	/*private void logFile(String msg) {
 		try {
 			File file = new File(Environment.getExternalStoragePublicDirectory(
 					Environment.DIRECTORY_DOCUMENTS), "Tolomet.txt");
@@ -181,7 +174,7 @@ public class ChartsActivity extends BaseActivity {
 			pw.println(String.format("%s %s",df.format(new Date()),msg));
 			pw.close();
 		} catch (Exception e) {}
-	}
+	}*/
 
 	@Override
     public void onRefresh() {
@@ -250,7 +243,7 @@ public class ChartsActivity extends BaseActivity {
 	public void onDownloaded() {		
 		thread = null;
 		if( !postTimer() && model.checkStation() && model.getCurrentStation().isEmpty() ) {
-			logFile("No data => station:" + model.getCurrentStation().getId() + " empty:" + model.getCurrentStation().isEmpty());
+			//logFile("No data => station:" + model.getCurrentStation().getId() + " empty:" + model.getCurrentStation().isEmpty());
             new AlertDialog.Builder(this).setTitle(R.string.NoData)
                     .setMessage(R.string.RedirectWeb)
                     .setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
