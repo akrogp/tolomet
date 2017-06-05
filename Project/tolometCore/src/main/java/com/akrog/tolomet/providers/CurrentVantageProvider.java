@@ -106,5 +106,5 @@ public class CurrentVantageProvider implements WindProvider {
 	private Downloader downloader;
 	private final Pattern patternField = Pattern.compile(".*>([^<>]+)<.*");
 	private final Pattern patternDir = Pattern.compile(".*\\((.+).\\).*");
-	private final static String URL = "http://www.rcnlaredo.es/~meteorcnl/meteo/Current_Vantage_Pro.html";
+	private final static String URL = "https://www.rcnlaredo.es/~meteorcnl/meteo/Current_Vantage_Pro.html";
 }
