@@ -1,4 +1,5 @@
 Corto:
+- Deep links para compartir
 - Solucionar bugs reportados
 - Actualizar widget con pantalla encendida
 - Weather Underground
