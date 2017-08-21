@@ -5,6 +5,8 @@ Corto:
 - Alertas meteorológicas (Fili/FVDA)
 - Alarma sonora cuando peligro
 - Mejorar gestión ubicación
+- Estaciones de Arcones y Piedrahíta
+- Resolución del Widget en móvil de Fernando
 
 Medio:
 - Rutas de estaciones (Mario)
