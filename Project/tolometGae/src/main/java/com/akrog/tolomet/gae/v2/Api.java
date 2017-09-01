@@ -38,7 +38,7 @@ public class Api {
     }
 
     private Notification checkAppVersion(int appVersion, String lang) {
-        if( appVersion >= 532 )
+        if( appVersion >= 540 )
             return null;
         Notification info = new Notification();
 
@@ -83,6 +83,18 @@ public class Api {
             addImprovement(info, lang,
                     "Recuperada estación de Laredo (RCNL)",
                     "Recovered Laredo (RCNL) station");
+        }
+        if( appVersion < 540 ) {
+            info.setAppVersion("5.4");
+            addImprovement(info, lang,
+                    "Recuperadas estaciones de MeteoFrance",
+                    "Recovered MeteoFrance stations");
+            addImprovement(info, lang,
+                    "Añadida estación de Piedrahíta (Peñanegra)",
+                    "Included Piedrahíta (Peñanegra) station");
+            addImprovement(info, lang,
+                    "Añadida estación de Arcones",
+                    "Included Arcones station");
         }
 
         return info;
