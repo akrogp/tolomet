@@ -2,17 +2,16 @@ Corto:
 - Deep links para compartir
 - Solucionar bugs reportados
 - Actualizar widget con pantalla encendida
-- Weather Underground
 - Alertas meteorológicas (Fili/FVDA)
 - Alarma sonora cuando peligro
 - Mejorar gestión ubicación
-- Estaciones de Arcones y Piedrahíta
 - Resolución del Widget en móvil de Fernando
 
 Medio:
 - Rutas de estaciones (Mario)
 - Eje y con etiquetas N, NE, ... en lugar de grados (Aníbal)
 - Otras unidades (nudos)
+- Todas las de Weather Underground
 
 Largo:
 - Soporte para leer algunas estaciones desde GAE
@@ -21,6 +20,8 @@ Largo:
 - Gráficas con predicción (meteoblue)
 
 Hecho:
+x Recuperar estaciones de Meteo France
+x Estaciones de Arcones y Piedrahíta
 x Arreglar RCNL
 x Tolomet en SD
 x Estaciones de meteoclimatic (RSS)
