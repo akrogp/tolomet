@@ -23,12 +23,14 @@ public class MeteoFranceProvider extends BaseProvider {
 
     @Override
     public String getUserUrl(String code) {
-        return String.format("http://www.meteofrance.com/previsions-meteo-france/station-observations?a=%s&b=",code);
+        //return String.format("http://www.meteofrance.com/previsions-meteo-france/station-observations?a=%s&b=",code);
+        return String.format("http://www.meteo.fr/test/gratuit/vigilance_debordement/PREV/obs/obs_seul.html?a=%s&b=",code);
     }
 
     @Override
     public void configureDownload(Downloader downloader, Station station) {
-        downloader.setUrl("http://www.vigimeteo.com/data/obsd2i.txt");
+        //downloader.setUrl("http://www.vigimeteo.com/data/obsd2i.txt");
+        downloader.setUrl("http://www.meteo.fr/test/gratuit/vigilance_debordement/data/obsd2i.txt");
     }
 
     @Override
