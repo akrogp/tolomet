@@ -1,7 +1,9 @@
 package com.akrog.tolomet;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,6 +17,9 @@ import com.akrog.tolomet.presenters.MySpinner;
 import com.akrog.tolomet.presenters.MyToolbar;
 import com.akrog.tolomet.view.AndroidUtils;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.gunhansancar.android.sdk.helper.LocaleHelper;
 
 import java.lang.reflect.Method;
@@ -30,6 +35,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LocaleHelper.onCreate(this);
+
+        Intent intent = getIntent();
+        String id = intent.getStringExtra(EXTRA_STATION);
+        if( id != null ) {
+            Station station = model.findStation(id);
+            if( station != null )
+                spinner.selectStation(station);
+        }
     }
 
     public void createSpinnerView(Bundle savedInstanceState, int layoutResId, int... buttonIds ) {
@@ -57,6 +70,58 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         toolbar.save(outState);
         spinner.save(outState);
+    }
+
+    protected void receiveDynamicLinks() {
+        final Context context = this;
+        FirebaseDynamicLinks.getInstance()
+            .getDynamicLink(getIntent())
+            .addOnSuccessListener(new OnSuccessListener<PendingDynamicLinkData>() {
+                @Override
+                public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                    if( pendingDynamicLinkData == null )
+                        return;
+                    Uri link = pendingDynamicLinkData.getLink();
+                    String[] fields = link.getPathSegments().toArray(new String[0]);
+                    if( !fields[0].equalsIgnoreCase("app") )
+                        return;
+                    Intent intent;
+                    switch (fields[1]) {
+                        case ChartsActivity.PATH:
+                            if( fields.length == 3 ) {
+                                intent = new Intent(context, ChartsActivity.class);
+                                intent.putExtra(ChartsActivity.EXTRA_STATION_ID, fields[2]);
+                                startActivity(intent);
+                            }
+                            break;
+                        case MapActivity.PATH:
+                            if( fields.length == 3 ) {
+                                intent = new Intent(context, MapActivity.class);
+                                intent.putExtra(MapActivity.EXTRA_STATION, fields[2]);
+                                startActivity(intent);
+                            }
+                            break;
+                        case HelpActivity.PATH:
+                            intent = new Intent(context, HelpActivity.class);
+                            startActivity(intent);
+                            break;
+                        case InfoActivity.PATH:
+                            if( fields.length == 3 ) {
+                                intent = new Intent(context, InfoActivity.class);
+                                intent.putExtra(EXTRA_STATION, fields[2]);
+                                startActivity(intent);
+                            }
+                            break;
+                        case ProviderActivity.PATH:
+                            if( fields.length == 3 ) {
+                                intent = new Intent(context, ProviderActivity.class);
+                                intent.putExtra(EXTRA_STATION, fields[2]);
+                                startActivity(intent);
+                            }
+                            break;
+                    }
+                }
+            });
     }
 
     @Override
@@ -184,6 +249,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public abstract String getScreenShotText();
 
+    public abstract String getRelativeLink();
+
+    public static final String EXTRA_STATION = "com.akrog.tolomet.BaseActivity.station";
     public static final int SETTINGS_REQUEST = 0;
     public static final int MAP_REQUEST = 1;
     protected final Model model = Model.getInstance();

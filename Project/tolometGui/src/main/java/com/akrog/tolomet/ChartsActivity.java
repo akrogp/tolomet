@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class ChartsActivity extends BaseActivity {
+	public static final String PATH = "chart";
 	
 	// Creation and state
 	
@@ -66,6 +67,7 @@ public class ChartsActivity extends BaseActivity {
     protected void onNewIntent(Intent intent) {
         if( intent != null )
             setIntent(intent);
+        receiveDynamicLinks();
     }
     
     @Override
@@ -238,6 +240,11 @@ public class ChartsActivity extends BaseActivity {
 	public String getScreenShotText() {
 		return String.format("%s %s%s",
 				getString(R.string.ShareTextPre), model.getCurrentStation().getName(), getString(R.string.ShareTextPost));
+	}
+
+	@Override
+	public String getRelativeLink() {
+		return String.format("%s/%s", PATH, model.getCurrentStation().getId());
 	}
 
 	public void onDownloaded() {		

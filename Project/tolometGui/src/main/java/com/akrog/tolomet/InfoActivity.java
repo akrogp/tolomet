@@ -6,6 +6,9 @@ import android.os.Bundle;
  * Created by gorka on 4/03/16.
  */
 public class InfoActivity extends BrowserActivity {
+    public static final String PATH = "info";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,5 +22,10 @@ public class InfoActivity extends BrowserActivity {
     @Override
     protected String getUrl() {
         return model.getInforUrl();
+    }
+
+    @Override
+    public String getRelativeLink() {
+        return String.format("%s/%s", PATH, model.getCurrentStation().getId());
     }
 }

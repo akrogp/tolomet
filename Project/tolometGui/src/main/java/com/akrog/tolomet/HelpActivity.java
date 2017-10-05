@@ -3,6 +3,7 @@ package com.akrog.tolomet;
 import android.os.Bundle;
 
 public class HelpActivity extends BaseActivity {
+    public static final String PATH = "help";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,5 +37,10 @@ public class HelpActivity extends BaseActivity {
     @Override
     public String getScreenShotText() {
         return getString(R.string.help_body);
+    }
+
+    @Override
+    public String getRelativeLink() {
+        return PATH;
     }
 }

@@ -20,8 +20,14 @@
             android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:host="tolomet-gae.appspot.com" android:scheme="http"/>
+                <data android:host="tolomet-gae.appspot.com" android:scheme="https"/>
             </intent-filter>
         </activity>
         <activity
@@ -131,6 +137,9 @@
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1"/>
+        <meta-data
+            android:name="firebase_analytics_collection_deactivated"
+            android:value="true" />
 
     </application>
 

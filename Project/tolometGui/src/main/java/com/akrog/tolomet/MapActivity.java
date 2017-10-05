@@ -26,6 +26,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class MapActivity extends BaseActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraChangeListener {
+    public static final String PATH = "map";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -320,6 +321,11 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
                 lastStation,
                 getString(R.string.ShareMapPost)
         );
+    }
+
+    @Override
+    public String getRelativeLink() {
+        return String.format("%s/%s", PATH, model.getCurrentStation().getId());
     }
 
     @Override

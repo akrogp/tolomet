@@ -8,8 +8,8 @@ android {
         applicationId "com.akrog.tolomet"
         targetSdkVersion 22
         minSdkVersion 14
-        versionCode 540
-        versionName "5.4"
+        versionCode 550
+        versionName "5.5"
         multiDexEnabled true
     }
     buildTypes {
@@ -33,7 +33,10 @@ dependencies {
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.android.support:gridlayout-v7:24.0.0'
-    compile 'com.google.android.gms:play-services:10.2.1'
+    compile 'com.google.android.gms:play-services:11.0.4'
     //compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
     compile 'com.github.castorflex.smoothprogressbar:library:1.1.0'
+    compile 'com.google.firebase:firebase-invites:11.0.4'
 }
+
+apply plugin: 'com.google.gms.google-services'
