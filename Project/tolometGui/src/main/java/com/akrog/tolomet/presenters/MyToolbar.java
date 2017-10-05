@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +30,11 @@ import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.data.AppSettings;
 import com.akrog.tolomet.view.AndroidUtils;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -280,34 +286,59 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 	public void onSnapshotReady(Bitmap bitmap) {
 		String name = String.format("%s_%d.png", model.getCurrentStation().toString(), System.currentTimeMillis());
 		//File file = saveScreenShot(bitmap, Bitmap.CompressFormat.JPEG, 90, name);
-		File file = AndroidUtils.saveScreenShot(bitmap, Bitmap.CompressFormat.PNG, 85, name);
-		if( file != null )
-			switch( shareOption ) {
-				case WHATSAPP: whatsappScreenShot(file); break;
-				default: shareScreenShot(file); break;
-			}
+		final File file = AndroidUtils.saveScreenShot(bitmap, Bitmap.CompressFormat.PNG, 85, name);
+		if( file == null )
+		    return;
+        getScreenShotIntent(file, new IntentListener() {
+            @Override
+            public void run(Intent intent) {
+                switch( shareOption ) {
+                    case WHATSAPP: whatsappScreenShot(intent); break;
+                    default: shareScreenShot(intent); break;
+                }
+            }
+        });
 	}
 
-	private Intent getScreenShotIntent(File file) {
-		Intent intent = new Intent();
+	private void getScreenShotIntent(File file, final IntentListener listener ) {
+		final Intent intent = new Intent();
+        final String text = activity.getScreenShotText();
 		intent.setAction(Intent.ACTION_SEND);
 		intent.setType("image/*");
 		intent.putExtra(android.content.Intent.EXTRA_SUBJECT, activity.getScreenShotSubject());
-		intent.putExtra(android.content.Intent.EXTRA_TEXT, activity.getScreenShotText());
-		intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-		intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-		return intent;
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, text);
+        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+		String relLink = activity.getRelativeLink();
+		if( relLink == null )
+		    listener.run(intent);
+		else FirebaseDynamicLinks.getInstance().createDynamicLink()
+            .setLink(Uri.parse(String.format("https://tolomet-gae.appspot.com/app/%s", relLink)))
+            .setDynamicLinkDomain("ekc2m.app.goo.gl")
+            .setAndroidParameters(new DynamicLink.AndroidParameters.Builder()
+                    .setMinimumVersion(550)
+                    .build())
+            .buildShortDynamicLink()
+            .addOnCompleteListener(new OnCompleteListener<ShortDynamicLink>() {
+                @Override
+                public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+                    if( task.isSuccessful() )
+                        intent.putExtra(android.content.Intent.EXTRA_TEXT, String.format(
+                                "%s\n\n%s",
+                                text,
+                                task.getResult().getShortLink().toString()));
+                    listener.run(intent);
+                }
+            });
 	}
 
-	private void shareScreenShot(File file) {
-		Intent intent = getScreenShotIntent(file);
+	private void shareScreenShot(Intent intent) {
 		activity.startActivity(Intent.createChooser(intent, activity.getString(R.string.ShareApp)));
 	}
 
-	private void whatsappScreenShot(File file) {
+	private void whatsappScreenShot(Intent waIntent) {
 		PackageManager pm = activity.getPackageManager();
 		try {
-			Intent waIntent = getScreenShotIntent(file);
 			pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
 			waIntent.setPackage("com.whatsapp");
 			activity.startActivity(Intent.createChooser(waIntent, activity.getString(R.string.ShareApp)));
@@ -334,6 +365,10 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 
     @Override
     public void onSettingsChanged() {
+    }
+
+    private interface IntentListener {
+        void run(Intent intent);
     }
 
     private BaseActivity activity;

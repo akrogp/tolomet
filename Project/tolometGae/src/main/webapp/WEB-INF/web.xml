@@ -15,8 +15,17 @@
     </init-param>
     <load-on-startup>1</load-on-startup>
  </servlet>
+ <servlet>
+     <servlet-name>TolometLink</servlet-name>
+     <servlet-class>com.akrog.tolomet.gae.web.DynamicLink</servlet-class>
+     <load-on-startup>1</load-on-startup>
+ </servlet>
  <servlet-mapping>
   <servlet-name>TolometREST</servlet-name>
   <url-pattern>/rest/*</url-pattern>
+ </servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>TolometLink</servlet-name>
+  <url-pattern>/app/*</url-pattern>
  </servlet-mapping>
 </web-app>

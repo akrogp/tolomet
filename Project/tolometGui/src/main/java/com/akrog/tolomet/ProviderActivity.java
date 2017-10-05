@@ -6,6 +6,8 @@ import android.os.Bundle;
  * Created by gorka on 21/03/16.
  */
 public class ProviderActivity extends BrowserActivity {
+    public static final String PATH = "src";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,5 +21,10 @@ public class ProviderActivity extends BrowserActivity {
     @Override
     protected String getUrl() {
         return model.getUserUrl();
+    }
+
+    @Override
+    public String getRelativeLink() {
+        return String.format("%s/%s", PATH, model.getCurrentStation().getId());
     }
 }
