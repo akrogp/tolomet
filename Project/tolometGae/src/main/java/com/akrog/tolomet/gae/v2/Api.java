@@ -38,7 +38,7 @@ public class Api {
     }
 
     private Notification checkAppVersion(int appVersion, String lang) {
-        if( appVersion >= 540 )
+        if( appVersion >= 550 )
             return null;
         Notification info = new Notification();
 
@@ -95,6 +95,15 @@ public class Api {
             addImprovement(info, lang,
                     "Añadida estación de Arcones",
                     "Included Arcones station");
+        }
+        if( appVersion < 550 ) {
+            info.setAppVersion("5.5");
+            addImprovement(info, lang,
+                    "Añadidas estaciones de Arkauti y Ernio",
+                    "Included Arkauti and Ernio stations");
+            addImprovement(info, lang,
+                    "Posibilidad de compartir enlaces de Tolomet",
+                    "Support for sharing Tolomet links");
         }
 
         return info;
