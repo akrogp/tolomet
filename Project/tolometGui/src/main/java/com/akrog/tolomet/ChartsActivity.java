@@ -32,7 +32,7 @@ public class ChartsActivity extends BaseActivity {
         createSpinnerView(savedInstanceState, R.layout.activity_tolomet,
 				R.id.favorite_item, R.id.refresh_item,
 				R.id.info_item, R.id.map_item, R.id.origin_item,
-				R.id.share_item, R.id.whatsapp_item,
+				R.id.share_item, //R.id.whatsapp_item,
 				R.id.fly_item,
 				R.id.help_item, R.id.settings_item, R.id.about_item, R.id.report_item);
 

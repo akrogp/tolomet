@@ -9,7 +9,7 @@ public class HelpActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         createTitleView(savedInstanceState,R.layout.activity_help,
-                R.id.share_item, R.id.whatsapp_item,
+                R.id.share_item, //R.id.whatsapp_item,
                 R.id.about_item, R.id.report_item);
     }
 
