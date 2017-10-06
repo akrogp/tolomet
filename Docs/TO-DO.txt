@@ -1,5 +1,4 @@
 Corto:
-- Deep links para compartir
 - Solucionar bugs reportados
 - Actualizar widget con pantalla encendida
 - Alertas meteorológicas (Fili/FVDA)
@@ -20,6 +19,7 @@ Largo:
 - Gráficas con predicción (meteoblue)
 
 Hecho:
+x Deep links para compartir
 x Recuperar estaciones de Meteo France
 x Estaciones de Arcones y Piedrahíta
 x Arreglar RCNL

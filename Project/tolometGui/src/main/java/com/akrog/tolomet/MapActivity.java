@@ -65,12 +65,9 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
         mMap.setOnMarkerClickListener(this);
         mMap.setOnCameraChangeListener(this);
 
-        Intent intent = getIntent();
-        String id = intent.getStringExtra(MapActivity.EXTRA_STATION);
-        if( id != null ) {
-            model.setCurrentStation(model.findStation(id));
+        if( !model.getCurrentStation().isSpecial() )
             zoom(model.getCurrentStation());
-        } else {
+        else {
             Location location = Tolomet.getLocation(true);
             if( location != null )
                 zoom(location.getLatitude(), location.getLongitude());
@@ -333,9 +330,6 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
         setResult(RESULT_OK);
         super.onBackPressed();
     }
-
-    public static final String EXTRA_COUNTRY = "com.akrog.tolomet.MapActivity.country";
-    public static final String EXTRA_STATION = "com.akrog.tolomet.MapActivity.station";
 
     private GoogleMap mMap;
     private String lastStation;
