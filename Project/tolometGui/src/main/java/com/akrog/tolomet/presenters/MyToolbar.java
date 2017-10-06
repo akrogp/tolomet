@@ -191,10 +191,6 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 			activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
 		} else {
 			Intent intent = new Intent(activity, MapActivity.class);
-			if( model.checkStation() ) {
-				intent.putExtra(MapActivity.EXTRA_COUNTRY, station.getCountry());
-				intent.putExtra(MapActivity.EXTRA_STATION, station.getId());
-			}
 			activity.startActivityForResult(intent, BaseActivity.MAP_REQUEST);
 		}
 	}

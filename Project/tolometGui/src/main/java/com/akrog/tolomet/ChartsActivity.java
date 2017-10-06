@@ -73,18 +73,6 @@ public class ChartsActivity extends BaseActivity {
     @Override
     protected void onResume() {
     	super.onResume();
-        Intent intent = getIntent();
-        String stationId = intent.getStringExtra(EXTRA_STATION_ID);
-        if( stationId != null ) {
-            String country = intent.getStringExtra(EXTRA_COUNTRY);
-            if( country != null && !country.isEmpty() )
-                spinner.setCountry(country);
-            intent.removeExtra(EXTRA_STATION_ID);
-            intent.removeExtra(EXTRA_COUNTRY);
-            Station station = model.findStation(stationId);
-            if( station != null )
-                spinner.selectStation(station);
-        }
         if( model.checkStation() )
             DbMeteo.getInstance().refresh(model.getCurrentStation());
     	if( settings.getUpdateMode() >= AppSettings.SMART_UPDATES && model.isOutdated() )
@@ -305,7 +293,4 @@ public class ChartsActivity extends BaseActivity {
 	private final Handler handler = new Handler();
 	private Runnable timer;
     private AsyncTask<Void, Void, Void> thread;
-
-	public static String EXTRA_STATION_ID = "com.akrog.tolomet.stationId";
-    public static String EXTRA_COUNTRY = "com.akrog.tolomet.country";
 }

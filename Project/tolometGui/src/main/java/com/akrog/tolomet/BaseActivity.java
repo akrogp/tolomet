@@ -35,14 +35,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LocaleHelper.onCreate(this);
-
-        Intent intent = getIntent();
-        String id = intent.getStringExtra(EXTRA_STATION);
-        if( id != null ) {
-            Station station = model.findStation(id);
-            if( station != null )
-                spinner.selectStation(station);
-        }
     }
 
     public void createSpinnerView(Bundle savedInstanceState, int layoutResId, int... buttonIds ) {
@@ -62,6 +54,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         spinner.initialize(this, null);
+        Intent intent = getIntent();
+        String id = intent.getStringExtra(EXTRA_STATION);
+        if( id != null ) {
+            intent.removeExtra(EXTRA_STATION);
+            Station station = model.findStation(id);
+            if( station != null )
+                spinner.selectStation(station);
+        }
         redraw();
     }
 
@@ -90,14 +90,14 @@ public abstract class BaseActivity extends AppCompatActivity {
                         case ChartsActivity.PATH:
                             if( fields.length == 3 ) {
                                 intent = new Intent(context, ChartsActivity.class);
-                                intent.putExtra(ChartsActivity.EXTRA_STATION_ID, fields[2]);
+                                intent.putExtra(EXTRA_STATION, fields[2]);
                                 startActivity(intent);
                             }
                             break;
                         case MapActivity.PATH:
                             if( fields.length == 3 ) {
                                 intent = new Intent(context, MapActivity.class);
-                                intent.putExtra(MapActivity.EXTRA_STATION, fields[2]);
+                                intent.putExtra(EXTRA_STATION, fields[2]);
                                 startActivity(intent);
                             }
                             break;
@@ -146,6 +146,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
             }
         }
+        //noinspection RestrictedApi
         return super.onPrepareOptionsPanel(view, menu);
     }
 
