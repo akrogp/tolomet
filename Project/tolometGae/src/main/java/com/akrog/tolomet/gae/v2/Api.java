@@ -38,7 +38,7 @@ public class Api {
     }
 
     private Notification checkAppVersion(int appVersion, String lang) {
-        if( appVersion >= 550 )
+        if( appVersion >= 551 )
             return null;
         Notification info = new Notification();
 
@@ -104,6 +104,12 @@ public class Api {
             addImprovement(info, lang,
                     "Posibilidad de compartir enlaces de Tolomet",
                     "Support for sharing Tolomet links");
+        }
+        if( appVersion == 550 ) {
+            info.setAppVersion("5.5.1");
+            addImprovement(info, lang,
+                    "Solucionado fallo al abrir enlaces de Tolomet",
+                    "Bugfix openning Tolomet links");
         }
 
         return info;

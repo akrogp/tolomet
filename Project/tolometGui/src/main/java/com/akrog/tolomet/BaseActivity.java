@@ -51,6 +51,22 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        stopped = false;
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        stopped = true;
+        super.onStop();
+    }
+
+    protected boolean isStopped() {
+        return stopped;
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         spinner.initialize(this, null);
@@ -261,4 +277,5 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected final MySpinner spinner = new MySpinner();
     private boolean inProgress = false;
     private final List<Runnable> listCancel = new ArrayList<>();
+    private boolean stopped = true;
 }

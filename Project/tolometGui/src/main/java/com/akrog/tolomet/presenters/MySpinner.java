@@ -70,6 +70,8 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 	}
 	
 	public void loadState( Bundle bundle ) {
+		if( settings == null )	// Not initialized
+			return;
 		State state = settings.loadSpinner();
 		vowel = state.getVowel();
 		region = state.getRegion();

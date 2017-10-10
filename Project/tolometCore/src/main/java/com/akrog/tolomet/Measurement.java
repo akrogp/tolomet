@@ -57,7 +57,8 @@ public class Measurement {
 	public Long getStamp() {
 		if( isEmpty() )
 			return null;
-		return getTimes()[size()-1];
+		Long[] times = getTimes();
+		return times[times.length-1];
 	}
 
 	public Long getStamp(Long stamp) {

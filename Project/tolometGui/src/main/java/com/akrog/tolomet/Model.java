@@ -160,6 +160,13 @@ public class Model {
         return refresh(currentStation);
     }
 
+    public Station safeRefresh() {
+        Station station = currentStation.clone();
+        if( !refresh(station) && station.isEmpty() )
+            return null;
+        return station;
+    }
+
     public boolean loadCache() {
         return loadCache(currentStation);
     }

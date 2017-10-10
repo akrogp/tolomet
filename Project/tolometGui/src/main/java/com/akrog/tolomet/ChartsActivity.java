@@ -132,16 +132,17 @@ public class ChartsActivity extends BaseActivity {
         }
         if( !beginProgress() )
             return;
-        thread = new AsyncTask<Void, Void, Void>() {
+        thread = new AsyncTask<Void, Void, Station>() {
             @Override
-            protected Void doInBackground(Void... params) {
-                model.refresh();
-                return null;
+            protected Station doInBackground(Void... params) {
+                return model.safeRefresh();
             }
             @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
+            protected void onPostExecute(Station station) {
+                super.onPostExecute(station);
                 endProgress();
+				if( station != null )
+					model.getCurrentStation().getMeteo().merge(station.getMeteo());
                 onDownloaded();
             }
             @Override
@@ -235,8 +236,10 @@ public class ChartsActivity extends BaseActivity {
 		return String.format("%s/%s", PATH, model.getCurrentStation().getId());
 	}
 
-	public void onDownloaded() {		
+	public void onDownloaded() {
 		thread = null;
+        if( isStopped() )
+            return;
 		if( !postTimer() && model.checkStation() && model.getCurrentStation().isEmpty() ) {
 			//logFile("No data => station:" + model.getCurrentStation().getId() + " empty:" + model.getCurrentStation().isEmpty());
             new AlertDialog.Builder(this).setTitle(R.string.NoData)
@@ -292,5 +295,5 @@ public class ChartsActivity extends BaseActivity {
 	private final Updater updater = new Updater();
 	private final Handler handler = new Handler();
 	private Runnable timer;
-    private AsyncTask<Void, Void, Void> thread;
+    private AsyncTask<Void, Void, Station> thread;
 }
