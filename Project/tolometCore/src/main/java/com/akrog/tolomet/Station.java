@@ -42,6 +42,22 @@ public class Station {
 		this( station.name, station.code, station.country, station.region, station.favorite, station.providerType, station.latitude, station.longitude );
 		replace(station);
 	}
+
+	public Station clone() {
+		Station station = new Station();
+		station.setName(name);
+		station.setCode(code);
+		station.setRegion(region);
+		station.setCountry(country);
+		station.setLatitude(latitude);
+		station.setLongitude(longitude);
+		station.setFavorite(favorite);
+		station.setProviderType(providerType);
+		station.setSpecial(special);
+		station.setDistance(distance);
+		station.meteo.merge(meteo);
+		return station;
+	}
 	
 	@Override
 	public String toString() {
