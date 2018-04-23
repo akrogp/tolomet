@@ -1,10 +1,12 @@
 Corto:
+- Fiochi
 - Solucionar bugs reportados
 - Actualizar widget con pantalla encendida
 - Alertas meteorológicas (Fili/FVDA)
 - Alarma sonora cuando peligro
 - Mejorar gestión ubicación
 - Resolución del Widget en móvil de Fernando
+- Mirar weathercloud
 
 Medio:
 - Rutas de estaciones (Mario)

@@ -82,3 +82,11 @@ http://www.meteofrance.com/previsions-meteo-france/station-observations?a=07002&
 http://www.vigimeteo.com/PREV/obs/liste_ville.js
 http://www.vigimeteo.com/PREV/obs/obsd2i_meta.txt
 http://www.vigimeteo.com/data/obsd2i.txt
+
+Fiochi:
+http://tiempo.fiochi.com/wd_data/index.php
+http://tiempo.fiochi.com/clientraw.txt
+http://tiempo.fiochi.com/clientrawextra.txt
+http://tiempo.fiochi.com/clientrawdaily.txt
+http://tiempo.fiochi.com/clientrawhour.txt
+https://www.tnetweather.com/wdparserold/index.php?site=http%3A%2F%2Ftiempo.fiochi.com&submit=Submit
