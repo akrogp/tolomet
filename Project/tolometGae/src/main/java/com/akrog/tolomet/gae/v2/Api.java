@@ -38,7 +38,7 @@ public class Api {
     }
 
     private Notification checkAppVersion(int appVersion, String lang) {
-        if( appVersion >= 551 )
+        if( appVersion >= 560 )
             return null;
         Notification info = new Notification();
 
@@ -110,6 +110,12 @@ public class Api {
             addImprovement(info, lang,
                     "Solucionado fallo al abrir enlaces de Tolomet",
                     "Bugfix openning Tolomet links");
+        }
+        if( appVersion < 560 ) {
+            info.setAppVersion("5.6");
+            addImprovement(info, lang,
+                    "Añadida estación amateur de Santander",
+                    "Included amateur station at Santander");
         }
 
         return info;

@@ -18,7 +18,8 @@ public enum WindProviderType {
     MeteoFrance("MF", new MeteoFranceProvider(), WindProviderQuality.Poor),
 	MeteoClimatic("MC", new MeteoClimaticProvider(), WindProviderQuality.Poor),
 	WeatherUnderground("WU", new WeatherUndergroundProvider(), WindProviderQuality.Medium),
-    WirelessWeatherStation("WWS", new WirelessWeatherStationProvider(), WindProviderQuality.Medium);
+    WirelessWeatherStation("WWS", new WirelessWeatherStationProvider(), WindProviderQuality.Medium),
+	WeatherDisplay("WD", new WeatherDisplayProvider(), WindProviderQuality.Medium);
 	
 	private final String code;
 	private final WindProvider provider;
