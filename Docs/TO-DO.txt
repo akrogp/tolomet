@@ -1,6 +1,5 @@
 Corto:
-- Fiochi
-- Solucionar bugs reportados
+- Hora canaria!!
 - Actualizar widget con pantalla encendida
 - Alertas meteorológicas (Fili/FVDA)
 - Alarma sonora cuando peligro
@@ -21,6 +20,7 @@ Largo:
 - Gráficas con predicción (meteoblue)
 
 Hecho:
+x Fiochi
 x Deep links para compartir
 x Recuperar estaciones de Meteo France
 x Estaciones de Arcones y Piedrahíta
