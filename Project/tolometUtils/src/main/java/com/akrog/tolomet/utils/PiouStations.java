@@ -71,7 +71,7 @@ public class PiouStations {
 
     // http://api.pioupiou.fr/v1/live-with-meta/all
     private static String loadJson() throws Exception {
-        try(Scanner scanner = new Scanner(PiouStations.class.getResourceAsStream("/res/piou.json"), "UTF-8")) {
+        try(Scanner scanner = new Scanner(PiouStations.class.getResourceAsStream("/res/piou-20180430.json"), "UTF-8")) {
             return scanner.useDelimiter("\\A").next();
         }
     }
