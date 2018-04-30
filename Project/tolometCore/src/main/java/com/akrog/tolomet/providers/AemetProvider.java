@@ -11,7 +11,7 @@ public class AemetProvider implements WindProvider {
 	
 	@Override
 	public String getInfoUrl(String code) {
-		return "http://www.aemet.es/es/eltiempo/observacion/ultimosdatos?l="+code+"&datos=det";
+		return "http://www.aemet.es/es/eltiempo/observacion/ultimosdatos?l="+code+"&datos=det&w=0";
 	}
 
 	@Override
@@ -26,6 +26,7 @@ public class AemetProvider implements WindProvider {
 		downloader.addParam("l",station.getCode());
 		downloader.addParam("datos","det");
 		downloader.addParam("x","h24");
+		downloader.addParam("w","0");
 		updateStation(station,downloader.download());
 	}
 
@@ -62,7 +63,7 @@ public class AemetProvider implements WindProvider {
 			String[] cells = lines[i].split(",");
 			if( cells.length <= index.getDate() || (cell=cells[index.getDate()]).isEmpty() )
 				continue;
-			date = toEpoch(station.getRegion() == 12, cells[index.getDate()]);
+			date = toEpoch(station.getRegion() == 178, cells[index.getDate()]);
 			if( index.getDir() < cells.length && !(cell=cells[index.getDir()]).isEmpty() ) {
 				num = parseDir(cells[index.getDir()]);
 				if( num == null )
