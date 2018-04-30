@@ -38,7 +38,7 @@ public class Api {
     }
 
     private Notification checkAppVersion(int appVersion, String lang) {
-        if( appVersion >= 560 )
+        if( appVersion >= 570 )
             return null;
         Notification info = new Notification();
 
@@ -116,6 +116,15 @@ public class Api {
             addImprovement(info, lang,
                     "Añadida estación amateur de Santander",
                     "Included amateur station at Santander");
+        }
+        if( appVersion < 570 ) {
+            info.setAppVersion("5.7");
+            addImprovement(info, lang,
+                    "Añadida estación PiouPiou de Peyragudes",
+                    "Included PiouPiou station at Peyragudes");
+            addImprovement(info, lang,
+                    "Solucionado problema con hora canaria en AEMET",
+                    "Solved problem with canary AEMET stations");
         }
 
         return info;
