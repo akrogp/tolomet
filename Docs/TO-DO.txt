@@ -6,12 +6,15 @@ Corto:
 - Mejorar gestión ubicación
 - Resolución del Widget en móvil de Fernando
 - Mirar weathercloud
+- Rango velocidad inferior a 40 km/h
+- Estación La Covatilla de AEMET
 
 Medio:
 - Rutas de estaciones (Mario)
 - Eje y con etiquetas N, NE, ... en lugar de grados (Aníbal)
 - Otras unidades (nudos)
 - Todas las de Weather Underground
+- Actualización automática del listado de estaciones
 
 Largo:
 - Soporte para leer algunas estaciones desde GAE
