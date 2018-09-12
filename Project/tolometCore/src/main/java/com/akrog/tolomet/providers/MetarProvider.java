@@ -14,7 +14,7 @@ public class MetarProvider extends BaseProvider {
 
 	@Override
 	public String getInfoUrl(String code) {
-		return "http://www.aviationweather.gov/adds/metars?std_trans=translated&chk_metars=on&station_ids="+code;
+		return "https://www.aviationweather.gov/adds/metars?std_trans=translated&chk_metars=on&station_ids="+code;
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class MetarProvider extends BaseProvider {
 	}
 
 	public void configureDownload(Downloader downloader, Station station, long from, long to) {
-		downloader.setUrl("http://www.aviationweather.gov/adds/dataserver_current/httpparam");
+		downloader.setUrl("https://www.aviationweather.gov/adds/dataserver_current/httpparam");
 		downloader.addParam("dataSource","metars");
 		downloader.addParam("requestType","retrieve");
 		downloader.addParam("format","csv");

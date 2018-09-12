@@ -16,7 +16,7 @@ import org.junit.runners.Suite;
         MeteocatProviderTest.class,
         MeteoGaliciaProviderTest.class,
         MeteoNavarraProviderTest.class,
-        PradesProviderTest.class,
+        //PradesProviderTest.class,
         RedVigiaProviderTest.class,
         HolfuyProviderTest.class,
         PiouProviderTest.class
