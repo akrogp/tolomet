@@ -38,7 +38,7 @@ public class Api {
     }
 
     private Notification checkAppVersion(int appVersion, String lang) {
-        if( appVersion >= 570 )
+        if( appVersion >= 571 )
             return null;
         Notification info = new Notification();
 
@@ -125,6 +125,15 @@ public class Api {
             addImprovement(info, lang,
                     "Solucionado problema con hora canaria en AEMET",
                     "Solved problem with canary AEMET stations");
+        }
+        if( appVersion == 570 ) {
+            info.setAppVersion("5.7.1");
+            addImprovement(info, lang,
+                    "Añadida estación de La Covatilla",
+                    "Included La Covatilla station");
+            addImprovement(info, lang,
+                    "Solucionados problemas con algunas estaciones",
+                    "Solved problems with several stations");
         }
 
         return info;
