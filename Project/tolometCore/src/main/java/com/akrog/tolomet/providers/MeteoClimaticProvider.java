@@ -18,7 +18,7 @@ public class MeteoClimaticProvider extends BaseProvider {
 
     @Override
     public void configureDownload(Downloader downloader, Station station) {
-        downloader.setUrl(String.format("http://www.meteoclimatic.net/feed/rss/%s",station.getCode()));
+        downloader.setUrl(String.format("https://www.meteoclimatic.net/feed/rss/%s",station.getCode()));
     }
 
     @Override
@@ -66,12 +66,12 @@ public class MeteoClimaticProvider extends BaseProvider {
 
     @Override
     public String getInfoUrl(String code) {
-        return String.format("http://www.meteoclimatic.net/perfil/%s#toggle",code);
+        return String.format("https://www.meteoclimatic.net/perfil/%s#toggle",code);
     }
 
     @Override
     public String getUserUrl(String code) {
-        return String.format("http://www.meteoclimatic.net/perfil/%s#content",code);
+        return String.format("https://www.meteoclimatic.net/perfil/%s#content",code);
     }
 
     private static final int REFRESH = 15;
