@@ -17,7 +17,7 @@ import org.junit.runners.Suite;
         MeteoGaliciaProviderTest.class,
         MeteoNavarraProviderTest.class,
         //PradesProviderTest.class,
-        RedVigiaProviderTest.class,
+        //RedVigiaProviderTest.class,
         HolfuyProviderTest.class,
         PiouProviderTest.class
 })
