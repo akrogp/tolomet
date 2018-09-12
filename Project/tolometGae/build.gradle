@@ -18,17 +18,14 @@ apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'appengine'
 
-sourceCompatibility = JavaVersion.VERSION_1_7
-targetCompatibility = JavaVersion.VERSION_1_7
-
 dependencies {
-    compile fileTree(dir: 'src/main/webapp/WEB-INF/lib', include: ['*.jar'])
+    implementation fileTree(dir: 'src/main/webapp/WEB-INF/lib', include: ['*.jar'])
     appengineSdk 'com.google.appengine:appengine-java-sdk:1.9.34'
-    compile 'javax.servlet:servlet-api:2.5'
-    compile 'com.sun.jersey:jersey-server:1.13'
-    compile 'com.sun.jersey:jersey-core:1.13'
-    compile 'com.sun.jersey:jersey-servlet:1.13'
-    compile 'com.sun.jersey:jersey-json:1.13'
+    implementation 'javax.servlet:servlet-api:2.5'
+    implementation 'com.sun.jersey:jersey-server:1.13'
+    implementation 'com.sun.jersey:jersey-core:1.13'
+    implementation 'com.sun.jersey:jersey-servlet:1.13'
+    implementation 'com.sun.jersey:jersey-json:1.13'
 }
 
 appengine {
