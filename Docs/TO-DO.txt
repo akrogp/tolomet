@@ -1,4 +1,5 @@
 Corto:
+- Target a última versión de Android (permisos, etc)
 - Cambiar tema de regiones
 - Actualizar widget con pantalla encendida
 - Alertas meteorológicas (Fili/FVDA)
@@ -7,7 +8,6 @@ Corto:
 - Resolución del Widget en móvil de Fernando
 - Mirar weathercloud
 - Rango velocidad inferior a 40 km/h
-- Estación La Covatilla de AEMET
 
 Medio:
 - Rutas de estaciones (Mario)
@@ -23,6 +23,7 @@ Largo:
 - Gráficas con predicción (meteoblue)
 
 Hecho:
+x Estación La Covatilla de AEMET
 x Hora canaria!!
 x Fiochi
 x Deep links para compartir
