@@ -126,4 +126,6 @@
     <string name="delst">Removed</string>
     <string name="pref_modeLang">Language</string>
     <string name="pref_modeLangDefault"/>
+    <string name="ok">OK</string>
+    <string name="permission_neccesary">Permission required</string>
 </resources>
