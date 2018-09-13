@@ -1,10 +1,15 @@
 package com.akrog.tolomet;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -88,6 +93,49 @@ public abstract class BaseActivity extends AppCompatActivity {
         spinner.save(outState);
     }
 
+    protected void requestPermission(String permission, int rationale, Runnable onGranted, Runnable onDenied) {
+        if (Build.VERSION.SDK_INT < 23)
+            onGranted.run();
+        else if (ActivityCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED ) {
+            this.onGranted = onGranted;
+            this.onDenied = onDenied;
+            if( shouldShowRequestPermissionRationale(permission) ) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.setTitle(R.string.permission_neccesary);
+                alert.setMessage(rationale);
+                alert.setIcon(android.R.drawable.ic_dialog_info);
+                alert.setPositiveButton(R.string.ok, (dialogInterface, i) -> requestPermissions(new String[]{permission}, RC_PERMISSION));
+                alert.setNegativeButton(R.string.cancel, (dialogInterface, i) -> onDenied.run());
+                alert.show();
+            } else
+                requestPermissions(new String[]{permission}, RC_PERMISSION);
+        } else
+            onGranted.run();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if( grantResults.length == 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED ) {
+            switch( requestCode ) {
+                case RC_PERMISSION:
+                    if( onDenied != null ) {
+                        onDenied.run();
+                        onDenied = null;
+                    }
+                    break;
+            }
+            return;
+        }
+        switch( requestCode ) {
+            case RC_PERMISSION:
+                if( onGranted != null ) {
+                    onGranted.run();
+                    onGranted = null;
+                }
+                break;
+        }
+    }
+
     protected void receiveDynamicLinks() {
         final Context context = this;
         FirebaseDynamicLinks.getInstance()
@@ -147,6 +195,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         return true;
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected boolean onPrepareOptionsPanel(View view, Menu menu) {
         Log.i(getClass().getSimpleName(), "called");
@@ -162,7 +211,6 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
             }
         }
-        //noinspection RestrictedApi
         return super.onPrepareOptionsPanel(view, menu);
     }
 
@@ -278,4 +326,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     private boolean inProgress = false;
     private final List<Runnable> listCancel = new ArrayList<>();
     private boolean stopped = true;
+    private Runnable onGranted, onDenied;
+    private static final int RC_PERMISSION = 100;
 }
