@@ -14,8 +14,8 @@ import android.util.Log;
 
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Tolomet;
-import com.akrog.tolomet.data.AppSettings;
-import com.akrog.tolomet.data.DbTolomet;
+import com.akrog.tolomet.model.AppSettings;
+import com.akrog.tolomet.model.DbTolomet;
 import com.akrog.tolomet.io.TimeoutTask;
 import com.akrog.tolomet.providers.WindProviderType;
 

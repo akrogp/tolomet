@@ -15,7 +15,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ChartsActivity"
+            android:name=".ui.ChartsActivity"
             android:label="@string/title_activity_tolomet"
             android:launchMode="singleInstance">
             <intent-filter>
@@ -31,44 +31,44 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AppSettingsActivity"
+            android:name=".ui.AppSettingsActivity"
             android:label="@string/app_name">
         </activity>
         <activity
-            android:name=".InfoActivity"
+            android:name=".ui.InfoActivity"
             android:label="@string/app_name"
             android:launchMode="singleInstance">
         </activity>
         <activity
-            android:name=".ProviderActivity"
+            android:name=".ui.ProviderActivity"
             android:label="@string/app_name"
             android:launchMode="singleInstance">
         </activity>
         <activity
-            android:name=".MapActivity"
+            android:name=".ui.MapActivity"
             android:label="@string/app_name"
             android:launchMode="singleInstance">
         </activity>
         <activity
-            android:name=".HelpActivity"
+            android:name=".ui.HelpActivity"
             android:label="@string/app_name">
         </activity>
         <activity
-            android:name=".widget.SmallWidgetSettingsActivity"
+            android:name=".ui.widget.SmallWidgetSettingsActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>
         </activity>
         <activity
-            android:name=".widget.MediumWidgetSettingsActivity"
+            android:name=".ui.widget.MediumWidgetSettingsActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>
         </activity>
         <activity
-            android:name=".widget.LargeWidgetSettingsActivity"
+            android:name=".ui.widget.LargeWidgetSettingsActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
@@ -76,7 +76,7 @@
         </activity>
 
         <receiver
-            android:name=".widget.MediumWidgetReceiver"
+            android:name=".ui.widget.MediumWidgetReceiver"
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_name">
             <intent-filter>
@@ -94,7 +94,7 @@
                 android:resource="@xml/medium_widget_provider"/>
         </receiver>
         <receiver
-            android:name=".widget.SmallWidgetReceiver"
+            android:name=".ui.widget.SmallWidgetReceiver"
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_name">
             <intent-filter>
@@ -106,7 +106,7 @@
                 android:resource="@xml/small_widget_provider"/>
         </receiver>
         <receiver
-            android:name=".widget.LargeWidgetReceiver"
+            android:name=".ui.widget.LargeWidgetReceiver"
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_name">
             <intent-filter>
@@ -118,7 +118,7 @@
                 android:resource="@xml/large_widget_provider"/>
         </receiver>
 
-        <service android:name=".widget.WidgetService"/>
+        <service android:name=".ui.widget.WidgetService"/>
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
