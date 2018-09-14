@@ -127,4 +127,5 @@
     <string name="pref_modeLang">Hizkuntza</string>
     <string name="pref_modeLangDefault"/>
     <string name="permission_neccesary">Permiso necesario</string>
+    <string name="gps_rationale">El acceso al GPS es necesario para poder mostrar las estaciones más cercanas a tu ubicación actual</string>
 </resources>

@@ -2,12 +2,12 @@ package com.akrog.tolomet.view;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.widget.TextView;
 
 // See: http://stackoverflow.com/questions/2617266/how-to-adjust-text-font-size-to-fit-textview
-public class AdaptativeTextView extends TextView {
+public class AdaptativeTextView extends AppCompatTextView {
 
 	public AdaptativeTextView(Context context) {
 		super(context);

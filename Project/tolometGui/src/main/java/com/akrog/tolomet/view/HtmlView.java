@@ -1,15 +1,15 @@
 package com.akrog.tolomet.view;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatTextView;
 import android.text.Html;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 /**
  * Created by gorka on 4/11/16.
  */
 
-public class HtmlView extends TextView {
+public class HtmlView extends AppCompatTextView {
     public HtmlView(Context context) {
         super(context);
     }

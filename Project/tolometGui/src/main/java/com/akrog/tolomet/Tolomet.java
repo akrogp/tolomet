@@ -1,5 +1,6 @@
 package com.akrog.tolomet;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -46,7 +47,8 @@ public class Tolomet extends MultiDexApplication {
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 
-    public static Location getLocation( boolean warning ) {
+    @SuppressLint("MissingPermission")
+    public static Location getLocation(boolean warning ) {
         Location locationGps = null;
         Location locationNet = null;
         try {
