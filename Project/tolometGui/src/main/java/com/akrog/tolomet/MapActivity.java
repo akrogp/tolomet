@@ -1,5 +1,7 @@
 package com.akrog.tolomet;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
@@ -57,11 +59,13 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+    @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-        mMap.setMyLocationEnabled(true);
+        requestPermission(Manifest.permission.ACCESS_FINE_LOCATION, R.string.gps_rationale,
+                () -> mMap.setMyLocationEnabled(true), null);
         mMap.setOnMarkerClickListener(this);
         mMap.setOnCameraChangeListener(this);
 
