@@ -7,7 +7,7 @@
 
     <include layout="@layout/toolbar"/>
 
-    <com.akrog.tolomet.view.AdaptativeTextView
+    <com.akrog.tolomet.ui.view.AdaptativeTextView
         android:id="@+id/textView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
  		android:layout_above="@id/textView1"
  		android:weightSum="1.0">
  		
-        <com.akrog.tolomet.view.MyPlot
+        <com.akrog.tolomet.ui.view.MyPlot
             android:id="@+id/chartAir"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -35,7 +35,7 @@
             android:layout_marginLeft="2dp"
             android:layout_marginRight="1dp" />
 
-        <com.akrog.tolomet.view.MyPlot
+        <com.akrog.tolomet.ui.view.MyPlot
             android:id="@+id/chartWind"
             android:layout_width="0dp"
             android:layout_height="match_parent"

@@ -7,11 +7,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.akrog.tolomet.HelpActivity">
+    tools:context="com.akrog.tolomet.ui.HelpActivity">
 
     <include layout="@layout/toolbar"/>
 
-    <com.akrog.tolomet.view.HtmlView
+    <com.akrog.tolomet.ui.view.HtmlView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
@@ -32,40 +32,49 @@
                 <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content"
                            android:src="@drawable/ic_favorite"/>
             </LinearLayout>
-            <com.akrog.tolomet.view.HtmlView android:layout_width="0dp" app:layout_gravity="fill_horizontal"
-                      android:text="@string/help_favorite"/>
+            <com.akrog.tolomet.ui.view.HtmlView
+                android:layout_width="0dp" app:layout_gravity="fill_horizontal"
+                android:text="@string/help_favorite"/>
 
             <ImageView android:src="@drawable/ic_sync"/>
-            <com.akrog.tolomet.view.HtmlView android:layout_width="0dp" app:layout_gravity="fill_horizontal"
-                      android:text="@string/help_refresh"/>
+            <com.akrog.tolomet.ui.view.HtmlView
+                android:layout_width="0dp" app:layout_gravity="fill_horizontal"
+                android:text="@string/help_refresh"/>
 
             <ImageView android:src="@drawable/ic_charts"/>
-            <com.akrog.tolomet.view.HtmlView android:layout_width="0dp" app:layout_gravity="fill_horizontal"
-                      android:text="@string/help_charts"/>
+            <com.akrog.tolomet.ui.view.HtmlView
+                android:layout_width="0dp" app:layout_gravity="fill_horizontal"
+                android:text="@string/help_charts"/>
 
             <ImageView android:src="@drawable/ic_info_outline"/>
-            <com.akrog.tolomet.view.HtmlView android:layout_width="0dp" app:layout_gravity="fill_horizontal"
-                      android:text="@string/help_info"/>
+            <com.akrog.tolomet.ui.view.HtmlView
+                android:layout_width="0dp" app:layout_gravity="fill_horizontal"
+                android:text="@string/help_info"/>
 
             <ImageView android:src="@drawable/ic_map"/>
-            <com.akrog.tolomet.view.HtmlView android:layout_width="0dp" app:layout_gravity="fill_horizontal"
-                      android:text="@string/help_map"/>
+            <com.akrog.tolomet.ui.view.HtmlView
+                android:layout_width="0dp" app:layout_gravity="fill_horizontal"
+                android:text="@string/help_map"/>
 
             <ImageView android:src="@drawable/ic_origin"/>
-            <com.akrog.tolomet.view.HtmlView android:layout_width="0dp" app:layout_gravity="fill_horizontal"
-                      android:text="@string/help_origin"/>
+            <com.akrog.tolomet.ui.view.HtmlView
+                android:layout_width="0dp" app:layout_gravity="fill_horizontal"
+                android:text="@string/help_origin"/>
 
             <ImageView android:src="@drawable/ic_external"/>
-            <com.akrog.tolomet.view.HtmlView android:layout_width="0dp" app:layout_gravity="fill_horizontal"
-                      android:text="@string/help_browser"/>
+            <com.akrog.tolomet.ui.view.HtmlView
+                android:layout_width="0dp" app:layout_gravity="fill_horizontal"
+                android:text="@string/help_browser"/>
 
             <ImageView android:src="@drawable/ic_share"/>
-            <com.akrog.tolomet.view.HtmlView android:layout_width="0dp" app:layout_gravity="fill_horizontal"
-                      android:text="@string/help_share"/>
+            <com.akrog.tolomet.ui.view.HtmlView
+                android:layout_width="0dp" app:layout_gravity="fill_horizontal"
+                android:text="@string/help_share"/>
 
             <ImageView android:src="@drawable/ic_whatsapp"/>
-            <com.akrog.tolomet.view.HtmlView android:layout_width="0dp" app:layout_gravity="fill_horizontal"
-                      android:text="@string/help_whatsapp"/>
+            <com.akrog.tolomet.ui.view.HtmlView
+                android:layout_width="0dp" app:layout_gravity="fill_horizontal"
+                android:text="@string/help_whatsapp"/>
 
             <LinearLayout android:orientation="vertical">
                 <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content"
@@ -73,16 +82,19 @@
                 <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content"
                            android:src="@drawable/ic_land_mode"/>
             </LinearLayout>
-            <com.akrog.tolomet.view.HtmlView android:layout_width="0dp" app:layout_gravity="fill_horizontal"
-                      android:text="@string/help_fly"/>
+            <com.akrog.tolomet.ui.view.HtmlView
+                android:layout_width="0dp" app:layout_gravity="fill_horizontal"
+                android:text="@string/help_fly"/>
 
             <ImageView android:src="@drawable/ic_settings"/>
-            <com.akrog.tolomet.view.HtmlView android:layout_width="0dp" app:layout_gravity="fill_horizontal"
-                      android:text="@string/help_settings"/>
+            <com.akrog.tolomet.ui.view.HtmlView
+                android:layout_width="0dp" app:layout_gravity="fill_horizontal"
+                android:text="@string/help_settings"/>
 
             <ImageView android:src="@drawable/ic_mail"/>
-            <com.akrog.tolomet.view.HtmlView android:layout_width="0dp" app:layout_gravity="fill_horizontal"
-                      android:text="@string/help_report"/>
+            <com.akrog.tolomet.ui.view.HtmlView
+                android:layout_width="0dp" app:layout_gravity="fill_horizontal"
+                android:text="@string/help_report"/>
 
             <LinearLayout android:orientation="vertical">
                 <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content"
@@ -92,8 +104,9 @@
                 <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content"
                            android:src="@drawable/ic_widget" android:tint="#FF00AA00"/>
             </LinearLayout>
-            <com.akrog.tolomet.view.HtmlView android:layout_width="0dp" app:layout_gravity="fill_horizontal"
-                          android:text="@string/help_widget"/>
+            <com.akrog.tolomet.ui.view.HtmlView
+                android:layout_width="0dp" app:layout_gravity="fill_horizontal"
+                android:text="@string/help_widget"/>
         </android.support.v7.widget.GridLayout>
     </ScrollView>
 
