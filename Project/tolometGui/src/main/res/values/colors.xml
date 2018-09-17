@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="colorPrimary" type="color">#FF33B5E5</item>
+    <!--<item name="colorPrimary" type="color">#FF33B5E5</item>-->
+    <item name="colorPrimary" type="color">@android:color/black</item>
     <color name="widgetTextColor">#FFFFFF</color>
 </resources>

@@ -11,11 +11,11 @@
     <application
         android:name=".Tolomet"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.ChartsActivity"
+            android:name=".ui.activities.MainActivity"
             android:label="@string/title_activity_tolomet"
             android:launchMode="singleInstance">
             <intent-filter>
@@ -36,6 +36,11 @@
                     android:host="tolomet-gae.appspot.com"
                     android:scheme="https"/>
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.ChartsActivity"
+            android:label="@string/title_activity_tolomet"
+            android:launchMode="singleInstance">
         </activity>
         <activity
             android:name=".ui.AppSettingsActivity"
@@ -148,11 +153,6 @@
             android:name="firebase_analytics_collection_deactivated"
             android:value="true"/>
 
-        <activity
-            android:name=".ui.activities.MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme">
-        </activity>
     </application>
 
 </manifest>
