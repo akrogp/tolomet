@@ -7,14 +7,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
-import com.akrog.tolomet.ui.BaseActivity;
-import com.akrog.tolomet.ui.ChartsActivity;
+import com.akrog.tolomet.ui.activities.BaseActivity;
+import com.akrog.tolomet.ui.activities.ChartsActivity;
 import com.akrog.tolomet.viewmodel.Model;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Station;
-import com.akrog.tolomet.model.FlyConstraint;
-import com.akrog.tolomet.model.FlySpot;
-import com.akrog.tolomet.model.WidgetSettings;
+import com.akrog.tolomet.viewmodel.FlyConstraint;
+import com.akrog.tolomet.viewmodel.FlySpot;
+import com.akrog.tolomet.viewmodel.WidgetSettings;
 
 /**
  * Created by gorka on 21/09/16.

@@ -1,4 +1,4 @@
-package com.akrog.tolomet.ui;
+package com.akrog.tolomet.ui.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -11,7 +11,7 @@ import com.akrog.tolomet.Country;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.Tolomet;
-import com.akrog.tolomet.model.DbTolomet;
+import com.akrog.tolomet.viewmodel.DbTolomet;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;

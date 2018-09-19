@@ -1,4 +1,4 @@
-package com.akrog.tolomet.ui;
+package com.akrog.tolomet.ui.activities;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -21,7 +21,7 @@ import com.akrog.tolomet.viewmodel.Model;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.Tolomet;
-import com.akrog.tolomet.model.AppSettings;
+import com.akrog.tolomet.viewmodel.AppSettings;
 import com.akrog.tolomet.ui.presenters.MySpinner;
 import com.akrog.tolomet.ui.presenters.MyToolbar;
 import com.akrog.tolomet.ui.view.AndroidUtils;
@@ -320,7 +320,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public abstract String getRelativeLink();
 
-    public static final String EXTRA_STATION = "com.akrog.tolomet.ui.BaseActivity.station";
+    public static final String EXTRA_STATION = "com.akrog.tolomet.ui.activities.BaseActivity.station";
     public static final int SETTINGS_REQUEST = 0;
     public static final int MAP_REQUEST = 1;
     protected final Model model = Model.getInstance();

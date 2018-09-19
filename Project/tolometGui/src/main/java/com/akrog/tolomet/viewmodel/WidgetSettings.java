@@ -1,4 +1,4 @@
-package com.akrog.tolomet.model;
+package com.akrog.tolomet.viewmodel;
 
 import android.content.Context;
 import android.content.SharedPreferences;
