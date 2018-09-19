@@ -1,4 +1,4 @@
-package com.akrog.tolomet.model;
+package com.akrog.tolomet.viewmodel;
 
 /**
  * Created by gorka on 18/05/16.

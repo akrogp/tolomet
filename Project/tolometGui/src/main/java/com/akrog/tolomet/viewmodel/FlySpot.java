@@ -1,4 +1,4 @@
-package com.akrog.tolomet.model;
+package com.akrog.tolomet.viewmodel;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
 // http://www.techrepublic.com/blog/app-builder/a-reusable-about-dialog-for-your-android-apps/504
 
-package com.akrog.tolomet.ui;
+package com.akrog.tolomet.ui.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;

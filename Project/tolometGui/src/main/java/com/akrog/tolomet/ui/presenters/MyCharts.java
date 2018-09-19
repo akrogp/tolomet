@@ -7,12 +7,12 @@ import android.os.Bundle;
 import android.support.v4.os.AsyncTaskCompat;
 import android.widget.Toast;
 
-import com.akrog.tolomet.ui.BaseActivity;
+import com.akrog.tolomet.ui.activities.BaseActivity;
 import com.akrog.tolomet.Meteo;
 import com.akrog.tolomet.viewmodel.Model;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Tolomet;
-import com.akrog.tolomet.model.AppSettings;
+import com.akrog.tolomet.viewmodel.AppSettings;
 import com.akrog.tolomet.ui.view.Axis;
 import com.akrog.tolomet.ui.view.Graph;
 import com.akrog.tolomet.ui.view.Marker;

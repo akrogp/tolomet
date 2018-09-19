@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.akrog.tolomet.Tolomet;
-import com.akrog.tolomet.model.WidgetSettings;
+import com.akrog.tolomet.viewmodel.WidgetSettings;
 
 /**
  * Created by gorka on 11/05/16.

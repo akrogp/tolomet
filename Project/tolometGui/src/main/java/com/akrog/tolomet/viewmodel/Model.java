@@ -6,9 +6,6 @@ import com.akrog.tolomet.Country;
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.Region;
 import com.akrog.tolomet.Station;
-import com.akrog.tolomet.model.AppSettings;
-import com.akrog.tolomet.model.DbMeteo;
-import com.akrog.tolomet.model.DbTolomet;
 import com.akrog.tolomet.providers.WindProviderType;
 
 import java.util.ArrayList;

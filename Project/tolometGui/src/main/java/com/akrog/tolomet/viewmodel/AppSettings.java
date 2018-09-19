@@ -1,4 +1,4 @@
-package com.akrog.tolomet.model;
+package com.akrog.tolomet.viewmodel;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 import android.util.SparseArray;
 
 import com.akrog.tolomet.Measurement;
-import com.akrog.tolomet.viewmodel.Model;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.Tolomet;

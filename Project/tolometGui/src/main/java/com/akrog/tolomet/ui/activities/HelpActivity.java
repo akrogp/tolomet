@@ -1,4 +1,4 @@
-package com.akrog.tolomet.ui;
+package com.akrog.tolomet.ui.activities;
 
 import android.os.Bundle;
 

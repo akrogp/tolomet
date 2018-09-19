@@ -4,7 +4,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.akrog.tolomet.ui.BaseActivity;
+import com.akrog.tolomet.ui.activities.BaseActivity;
 import com.akrog.tolomet.viewmodel.Model;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.ui.view.Axis;

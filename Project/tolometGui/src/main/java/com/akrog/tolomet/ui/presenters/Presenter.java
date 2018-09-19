@@ -2,7 +2,7 @@ package com.akrog.tolomet.ui.presenters;
 
 import android.os.Bundle;
 
-import com.akrog.tolomet.ui.BaseActivity;
+import com.akrog.tolomet.ui.activities.BaseActivity;
 
 public interface Presenter {
 	void initialize(BaseActivity activity, Bundle bundle);

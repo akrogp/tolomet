@@ -1,4 +1,4 @@
-package com.akrog.tolomet.ui;
+package com.akrog.tolomet.ui.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -10,8 +10,8 @@ import android.support.v4.os.AsyncTaskCompat;
 
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Station;
-import com.akrog.tolomet.model.AppSettings;
-import com.akrog.tolomet.model.DbMeteo;
+import com.akrog.tolomet.viewmodel.AppSettings;
+import com.akrog.tolomet.viewmodel.DbMeteo;
 import com.akrog.tolomet.gae.Updater;
 import com.akrog.tolomet.ui.presenters.MyCharts;
 import com.akrog.tolomet.ui.presenters.MySummary;

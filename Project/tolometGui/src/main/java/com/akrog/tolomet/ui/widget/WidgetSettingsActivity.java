@@ -9,14 +9,14 @@ import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 
-import com.akrog.tolomet.ui.ChartsActivity;
+import com.akrog.tolomet.ui.activities.ChartsActivity;
 import com.akrog.tolomet.viewmodel.Model;
 import com.akrog.tolomet.R;
-import com.akrog.tolomet.ui.SettingsActivity;
+import com.akrog.tolomet.ui.activities.SettingsActivity;
 import com.akrog.tolomet.Station;
-import com.akrog.tolomet.model.AppSettings;
-import com.akrog.tolomet.model.FlySpot;
-import com.akrog.tolomet.model.WidgetSettings;
+import com.akrog.tolomet.viewmodel.AppSettings;
+import com.akrog.tolomet.viewmodel.FlySpot;
+import com.akrog.tolomet.viewmodel.WidgetSettings;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -14,15 +14,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.akrog.tolomet.ui.BaseActivity;
+import com.akrog.tolomet.ui.activities.BaseActivity;
 import com.akrog.tolomet.Country;
-import com.akrog.tolomet.ui.MapActivity;
+import com.akrog.tolomet.ui.activities.MapActivity;
 import com.akrog.tolomet.viewmodel.Model;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Region;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.Tolomet;
-import com.akrog.tolomet.model.AppSettings;
+import com.akrog.tolomet.viewmodel.AppSettings;
 
 import java.util.ArrayList;
 import java.util.List;
