@@ -1,10 +1,12 @@
 package com.akrog.tolomet.ui.activities;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.akrog.tolomet.model.Consumer;
 import com.akrog.tolomet.viewmodel.Model;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Station;
@@ -300,6 +303,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         for( Runnable listenner : listCancel )
             listenner.run();
         endProgress();
+    }
+
+    public void askLocation(Consumer<Location> onOk, Runnable onError, boolean warning) {
+        requestPermission(
+                Manifest.permission.ACCESS_FINE_LOCATION, R.string.gps_rationale,
+                () -> onOk.accept(Tolomet.getLocation(warning)), onError);
     }
 
     public void addCancelListenner( Runnable listenner ) {

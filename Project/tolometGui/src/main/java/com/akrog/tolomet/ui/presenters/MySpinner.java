@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.akrog.tolomet.model.Consumer;
 import com.akrog.tolomet.ui.activities.BaseActivity;
 import com.akrog.tolomet.Country;
 import com.akrog.tolomet.ui.activities.MapActivity;
@@ -148,18 +149,26 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		spinnerType = type;
 		resetChoices(type!=Type.StartMenu);
 		regItem.setName(country.equals("ES") ? this.activity.getString(R.string.menu_ccaa) : this.activity.getString(R.string.menu_reg));
+		if( type == Type.Nearest ) {
+            final boolean showPopup = popup;
+            selectNearest(() -> {
+                choices.addAll(model.getSelStations());
+                adapter.notifyDataSetChanged();
+                selectItem(0, showPopup);
+            }, () -> {
+                selectRegions();
+                choices.addAll(model.getSelStations());
+                adapter.notifyDataSetChanged();
+                selectItem(0, false);
+            });
+            return;
+        }
 		switch( type ) {
 			case All: model.selectAll(); break;
 			case Favorite:
                 if( !selectFavorites() )
                     popup = false;
                 break;
-			case Nearest:
-				if( !selectNearest() ) {
-					popup = false;
-					selectRegions();
-				}
-				break;
 			case Region: model.selectRegion(region); break;
 			case Regions: selectRegions(); break;
 			case StartMenu: selectStart(); break;
@@ -218,18 +227,26 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 		return false;
 	}
 	
-	private boolean selectNearest() {
-    	Location ll = Tolomet.getLocation(true);
-    	if( ll == null ) {
-    		Toast.makeText(activity, activity.getString(R.string.error_gps),Toast.LENGTH_SHORT).show();
-    		return false;
-    	}
-		model.selectNearest(ll.getLatitude(), ll.getLongitude());
-		if( model.getSelStations().isEmpty() ) {
-			Toast.makeText(activity, activity.getString(R.string.warn_near),Toast.LENGTH_SHORT).show();
-    		return false;
-		}
-		return true;
+	private void selectNearest(Runnable onFound, Runnable onNothing) {
+	    activity.askLocation(new Consumer<Location>() {
+            @Override
+            public void accept(Location ll) {
+                if( ll == null ) {
+                    Toast.makeText(activity, activity.getString(R.string.error_gps), Toast.LENGTH_SHORT).show();
+                    onNothing.run();
+                } else {
+                    model.selectNearest(ll.getLatitude(), ll.getLongitude());
+                    if (model.getSelStations().isEmpty()) {
+                        Toast.makeText(activity, activity.getString(R.string.warn_near), Toast.LENGTH_SHORT).show();
+                        onNothing.run();
+                    } else
+                        onFound.run();
+                }
+            }
+        }, () -> {
+            Toast.makeText(activity, activity.getString(R.string.warn_near),Toast.LENGTH_SHORT).show();
+            onNothing.run();
+        }, true);
 	}
 
 	private void showFavoriteDialog() {
