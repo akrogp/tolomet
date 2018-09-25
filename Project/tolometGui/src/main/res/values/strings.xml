@@ -130,7 +130,5 @@
     <string name="permission_neccesary" tools:ignore="MissingTranslation">Permission required</string>
     <string name="gps_rationale" tools:ignore="MissingTranslation">GPS access is required for showing the stations close to your current location</string>
     <string name="contact_mail" tools:ignore="MissingTranslation">akrog.apps@gmail.com</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="storage_rationale" tools:ignore="MissingTranslation">External storage access is required for saving the screenshot to share</string>
 </resources>

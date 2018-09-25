@@ -255,7 +255,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void getScreenShot(GoogleMap.SnapshotReadyCallback callback) {
-        callback.onSnapshotReady(AndroidUtils.getScreenShot(getWindow().getDecorView()));
+        requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, R.string.storage_rationale,
+                () -> callback.onSnapshotReady(AndroidUtils.getScreenShot(getWindow().getDecorView())), null);
     }
 
     public void onFavorite(boolean fav) {
