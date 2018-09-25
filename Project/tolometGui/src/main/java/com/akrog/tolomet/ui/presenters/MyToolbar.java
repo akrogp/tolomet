@@ -325,6 +325,8 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
                                 "%s\n\n%s",
                                 text,
                                 task.getResult().getShortLink().toString()));
+                    else
+                        task.getException().printStackTrace();
                     listener.run(intent);
                 }
             });
