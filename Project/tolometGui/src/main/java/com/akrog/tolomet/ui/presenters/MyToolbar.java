@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -303,7 +304,8 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 		intent.setType("image/*");
 		intent.putExtra(android.content.Intent.EXTRA_SUBJECT, activity.getScreenShotSubject());
         intent.putExtra(android.content.Intent.EXTRA_TEXT, text);
-        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+        //intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+		intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(activity, Tolomet.FILE_PROVIDER_AUTHORITY, file));
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		String relLink = activity.getRelativeLink();
 		if( relLink == null )

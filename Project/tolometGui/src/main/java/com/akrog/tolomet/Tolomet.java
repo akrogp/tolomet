@@ -114,4 +114,5 @@ public class Tolomet extends MultiDexApplication {
         public void onProviderDisabled(String s) {
         }
     };
+    public static final String FILE_PROVIDER_AUTHORITY = "com.akrog.tolomet.ui.FileProvider";
 }
