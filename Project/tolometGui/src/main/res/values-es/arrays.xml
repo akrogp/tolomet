@@ -10,6 +10,11 @@
     <item>10</item>
     <item>15</item>
 </string-array>
+<string-array name="pref_speedUnitEntries">
+    <item>km/h</item>
+    <item>m/s</item>
+    <item>nudos</item>
+</string-array>
 <string-array name="pref_maxSpeedEntries">
     <item>20 km/h</item>
     <item>25 km/h</item>

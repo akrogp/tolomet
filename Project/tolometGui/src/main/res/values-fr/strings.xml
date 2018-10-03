@@ -49,6 +49,7 @@
     <string name="pref_catWind">Graphique du vent</string>
     <string name="pref_catAir">Graphique de l\'air</string>
     <string name="pref_speedRange">Marge de vitesse </string>
+    <string name="pref_speedUnit">Units</string>
     <string name="pref_minMarkerDefault">10</string>
     <string name="pref_maxMarkerDefault">30</string>
     <string name="pref_speedRangeDefault">40</string>    

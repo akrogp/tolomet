@@ -329,4 +329,11 @@ public class AppSettings {
 	public final static int AUTO_UPDATES=2;
     public final static int COLOR_NORMAL = 0;
     public final static int COLOR_DALTONIC = 1;
+	public final static int UNIT_KMH = 0;
+	public final static int UNIT_MS = 1;
+	public final static int UNIT_KNOT = 2;
+	public final static String PREF_UNIT = "pref_speedUnit";
+	public final static String PREF_SPEED_RANGE = "pref_speedRange";
+	public final static String PREF_MARKER_MIN = "pref_minMarker";
+	public final static String PREF_MARKER_MAX = "pref_maxMarker";
 }
