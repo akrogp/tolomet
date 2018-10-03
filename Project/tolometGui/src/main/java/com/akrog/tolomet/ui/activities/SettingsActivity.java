@@ -8,6 +8,8 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceGroup;
 
+import com.akrog.tolomet.viewmodel.AppSettings;
+
 /**
  * Created by gorka on 17/05/16.
  */
@@ -15,7 +17,28 @@ public abstract class SettingsActivity extends PreferenceActivity implements Sha
 
     protected void onCreate(Bundle savedInstanceState, int preferencesResId) {
         addPreferencesFromResource(preferencesResId);
+        setPreferenceEntries();
         initSummaries(this.getPreferenceScreen());
+    }
+
+    private void setPreferenceEntries() {
+        CharSequence unit = ((ListPreference)findPreference(AppSettings.PREF_UNIT)).getEntry();
+        setPreferenceEntries(AppSettings.PREF_SPEED_RANGE, unit);
+        setPreferenceEntries(AppSettings.PREF_MARKER_MIN, unit);
+        setPreferenceEntries(AppSettings.PREF_MARKER_MAX, unit);
+    }
+
+    private void setPreferenceEntries(CharSequence key, CharSequence unit) {
+        ListPreference pref = (ListPreference)findPreference(key);
+        CharSequence[] values = pref.getEntryValues();
+        String[] entries = new String[values.length];
+        for( int i = 0; i < values.length; i++ )
+            if( Integer.parseInt(values[i].toString()) < 0 )
+                entries[i] = "Auto";
+            else
+                entries[i] = values[i].toString() + " " + unit;
+        pref.setEntries(entries);
+        setSummary(pref);
     }
 
     private void initSummaries(PreferenceGroup pg) {
@@ -39,6 +62,8 @@ public abstract class SettingsActivity extends PreferenceActivity implements Sha
     }
 
     public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
+        if( key.equals(AppSettings.PREF_UNIT) )
+            setPreferenceEntries();
         Preference pref = findPreference(key);
         setSummary(pref);
     }
