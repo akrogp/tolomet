@@ -38,7 +38,7 @@ public class Api {
     }
 
     private Notification checkAppVersion(int appVersion, String lang) {
-        if( appVersion >= 581 )
+        if( appVersion >= 582 )
             return null;
         Notification info = new Notification();
 
@@ -147,13 +147,11 @@ public class Api {
                     "Información de permisos",
                     "Information about permissions");
         }
-        if( appVersion == 580 ) {
-            if( appVersion < 580 ) {
-                info.setAppVersion("5.8.1");
-                addImprovement(info, lang,
-                        "Solucionado problema con los widgets",
-                        "Solved problem with widgets");
-            }
+        if( appVersion == 580 || appVersion == 581 ) {
+            info.setAppVersion("5.8.2");
+            addImprovement(info, lang,
+                    "Solucionado problema con los widgets",
+                    "Solved problem with widgets");
         }
 
         return info;

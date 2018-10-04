@@ -59,9 +59,7 @@ public abstract class WidgetReceiver extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         String action = intent.getAction();
-        if( AppWidgetManager.ACTION_APPWIDGET_UPDATE.equals(action)
-                || FORCE_WIDGET_UPDATE.equals(action)
-                || Intent.ACTION_USER_PRESENT.equals(action) )
+        if( FORCE_WIDGET_UPDATE.equals(action) || Intent.ACTION_USER_PRESENT.equals(action) )
             if(Tolomet.isNetworkAvailable())
                 startService(context);
     }
