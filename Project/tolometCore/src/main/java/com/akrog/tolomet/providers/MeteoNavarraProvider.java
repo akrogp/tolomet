@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
+import java.util.regex.Pattern;
 
 public class MeteoNavarraProvider implements WindProvider {
     public MeteoNavarraProvider() {
@@ -56,7 +57,13 @@ public class MeteoNavarraProvider implements WindProvider {
 		Number num;
 		if( cells.length < 26 )
 			return;
-		for( int i = 18; i < cells.length; i+=8 ) {
+		int i;
+		for( i = 0; i < cells.length; i++ )
+			if( cells[i].contains("Fecha") )
+				break;
+		for( i = i+16; i < cells.length; i+=8 ) {
+			if( END_PATTERN.matcher(cells[i]).find() )
+				break;
 			if( cells[i].equals("\"\"") || cells[i+1].equals("\"- -\"") )
 				continue;
 			date = toEpoch(getContent(cells[i]));
@@ -104,7 +111,8 @@ public class MeteoNavarraProvider implements WindProvider {
 	private String getContent( String cell ) {
 		return cell.replaceAll("\"","").replace('.',this.separator);
 	}
-	
+
+	private static final Pattern END_PATTERN = Pattern.compile("[a-zA-Z]");
 	private final char separator = '.';
 	private Downloader downloader;
     private final DateFormat df;
