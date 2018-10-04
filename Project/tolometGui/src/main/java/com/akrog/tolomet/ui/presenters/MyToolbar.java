@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.akrog.tolomet.BuildConfig;
 import com.akrog.tolomet.ui.dialogs.AboutDialog;
 import com.akrog.tolomet.ui.activities.AppSettingsActivity;
 import com.akrog.tolomet.ui.activities.BaseActivity;
@@ -217,9 +218,10 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 		emailIntent.putExtra(Intent.EXTRA_SUBJECT,
 				activity.getString(R.string.ReportSubject));
 		emailIntent.putExtra(Intent.EXTRA_TEXT, String.format(
-				"%s\n\n%s\nAndroid %s (%d)\nPhone %s (%s)",
+				"%s\n\n%s\n%s v%s (%d)\nAndroid %s (%d)\nPhone %s (%s)",
 				activity.getString(R.string.ReportGreetings),
 				activity.getString(R.string.ReportInfo),
+				activity.getString(R.string.app_name), BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE,
 				Build.VERSION.RELEASE, Build.VERSION.SDK_INT,
 				Build.MANUFACTURER, Build.MODEL
 		));
