@@ -38,7 +38,7 @@ public class Api {
     }
 
     private Notification checkAppVersion(int appVersion, String lang) {
-        if( appVersion >= 571 )
+        if( appVersion >= 580 )
             return null;
         Notification info = new Notification();
 
@@ -134,6 +134,15 @@ public class Api {
             addImprovement(info, lang,
                     "Solucionados problemas con algunas estaciones",
                     "Solved problems with several stations");
+        }
+        if( appVersion < 580 ) {
+            info.setAppVersion("5.8.0");
+            addImprovement(info, lang,
+                    "Solucionado problema con estaciones de MeteoNavarra",
+                    "Solved problem with MeteoNavarra stations");
+            addImprovement(info, lang,
+                    "Información de permisos",
+                    "Information about permissions");
         }
 
         return info;
