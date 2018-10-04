@@ -100,7 +100,8 @@ public abstract class WidgetSettingsActivity extends SettingsActivity {
                 Intent result = new Intent();
                 result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
                 setResult(RESULT_OK, result);
-                Intent intent = new Intent(WidgetReceiver.FORCE_WIDGET_UPDATE);
+                Intent intent = new Intent(this, MediumWidgetReceiver.class);
+                intent.setAction(WidgetReceiver.FORCE_WIDGET_UPDATE);
                 intent.putExtra(WidgetReceiver.EXTRA_WIDGET_SIZE, getWidgetSize());
                 sendBroadcast(intent);
             } else
