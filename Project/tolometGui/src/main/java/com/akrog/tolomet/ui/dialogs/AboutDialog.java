@@ -4,13 +4,13 @@ package com.akrog.tolomet.ui.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.util.Linkify;
 import android.widget.TextView;
 
+import com.akrog.tolomet.BuildConfig;
 import com.akrog.tolomet.R;
 
 import java.io.BufferedReader;
@@ -32,12 +32,7 @@ public class AboutDialog extends Dialog {
 		TextView tv = (TextView)findViewById(R.id.legal_text);
 		tv.setText(readRawTextFile(R.raw.legal));
 		tv = (TextView)findViewById(R.id.info_text);
-		String versionName = "??";
-		try {
-			versionName = AboutDialog.context.getPackageManager().getPackageInfo(AboutDialog.context.getPackageName(), 0).versionName;
-		} catch (NameNotFoundException e) {
-			e.printStackTrace();
-		}
+		String versionName = BuildConfig.VERSION_NAME;
 		//Log.i("ChartsActivity",GoogleApiAvailability.getInstance().getOpenSourceSoftwareLicenseInfo(context));
 		tv.setText(Html.fromHtml(readRawTextFile(R.raw.info).replaceAll("\\$VER\\$", versionName)));
 		tv.setLinkTextColor(Color.WHITE);
