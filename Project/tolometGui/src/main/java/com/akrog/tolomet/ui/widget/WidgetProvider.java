@@ -9,6 +9,7 @@ import android.widget.RemoteViews;
 
 import com.akrog.tolomet.ui.activities.BaseActivity;
 import com.akrog.tolomet.ui.activities.ChartsActivity;
+import com.akrog.tolomet.viewmodel.AppSettings;
 import com.akrog.tolomet.viewmodel.Model;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Station;
@@ -33,6 +34,8 @@ public class WidgetProvider {
         String speed;
         String air;
         FlyCondition fly = FlyCondition.UNKOWN;
+        String unit;
+        float factor;
     }
 
     public static class WidgetData {
@@ -90,6 +93,8 @@ public class WidgetProvider {
         data.name = spot.getName();
         //long stamp = station.getStamp();
         data.date = model.getStamp(station, stamp);
+        data.factor = AppSettings.getSpeedFactor(spot.getSpeedUnits());
+        data.unit = context.getResources().getStringArray(R.array.pref_speedUnitEntries)[spot.getSpeedUnits()];
 
         fillMeteo(data, station, stamp);
 
@@ -140,11 +145,10 @@ public class WidgetProvider {
         data.air = sb.toString();
         num = station.getMeteo().getWindSpeedMed().getAt(stamp);
         if( num != null ) {
-            sb = new StringBuilder(String.format("%.1f", num));
+            sb = new StringBuilder(String.format("%.1f", num.floatValue()*data.factor));
             num = station.getMeteo().getWindSpeedMax().getAt(stamp);
             if (num != null)
-                sb.append(String.format("~%.1f", num));
-            //sb.append(" km/h");
+                sb.append(String.format("~%.1f", num.floatValue()*data.factor));
             data.speed = sb.toString();
         }
     }
@@ -231,7 +235,7 @@ public class WidgetProvider {
                 remoteViews.setTextViewText(R.id.widget_station, data.name);
                 remoteViews.setTextViewText(R.id.widget_date, data.date);
                 remoteViews.setTextViewText(R.id.widget_air, data.air);
-                remoteViews.setTextViewText(R.id.widget_wind, data.directionExt + " " + data.speed + " km/h");
+                remoteViews.setTextViewText(R.id.widget_wind, data.directionExt + " " + data.speed + " " + data.unit);
                 break;
             default:
                 return false;
