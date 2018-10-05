@@ -181,6 +181,31 @@ public class AppSettings {
 	public int getSpeedRange(Measurement meas) {
 		return getPrefValue("pref_speedRange", R.string.pref_speedRangeDefault, R.array.pref_rangeValues, true, meas);
 	}
+
+	public int getSpeedUnit() {
+		return Integer.parseInt(settings.getString(PREF_UNIT, "0"));
+	}
+
+	public String getSpeedLabel() {
+		String[] labels = context.getResources().getStringArray(R.array.pref_speedUnitEntries);
+		return labels[getSpeedUnit()];
+	}
+
+	public float getSpeedFactor() {
+		float factor;
+		switch( getSpeedUnit() ) {
+			case UNIT_MS:
+				factor = 1000.0F/3600.0F;
+				break;
+			case UNIT_KMH:
+				factor = 1.0F/1.852F;
+				break;
+			default:
+				factor = 1.0F;
+				break;
+		}
+		return factor;
+	}
 	
 	public int getMinMarker() {		
 		return Integer.parseInt(settings.getString("pref_minMarker", context.getString(R.string.pref_minMarkerDefault)));
