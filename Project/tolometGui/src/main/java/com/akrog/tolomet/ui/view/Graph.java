@@ -10,6 +10,7 @@ public class Graph {
     private final float wrap;
     private final float wrap2;
     private int yAxis= 0;
+    private float yFactor = 1.0F;
 
 	public Graph( Measurement data, float wrap, String title ) {
 		this(data, wrap, title, 0, 0);
@@ -45,14 +46,14 @@ public class Graph {
     }
  
     public float getY(int index) {
-    	return data.getValues()[index].floatValue();
+    	return data.getValues()[index].floatValue()*yFactor;
     }
     
     public float[] getY() {
     	Number[] values = data.getValues();
     	float[] y = new float[data.size()];
     	for( int i = 0; i < y.length; i++ )
-    		y[i] = values[i].floatValue();
+    		y[i] = values[i].floatValue()*yFactor;
     	return y;
     }
 
@@ -92,4 +93,12 @@ public class Graph {
 	public void setyAxis(int yAxis) {
 		this.yAxis = yAxis;
 	}
+
+    public float getyFactor() {
+        return yFactor;
+    }
+
+    public void setyFactor(float yFactor) {
+        this.yFactor = yFactor;
+    }
 }

@@ -17,7 +17,7 @@ public class WidgetSettings {
     }
 
     public FlySpot getSpot() {
-        return getSpot(settings);
+        return getSpot(settings, 1.0F);
     }
 
     public void setSpot( FlySpot spot ) {
@@ -30,18 +30,19 @@ public class WidgetSettings {
         new File(path).delete();
     }
 
-    public static FlySpot getSpot(SharedPreferences settings) {
+    public static FlySpot getSpot(SharedPreferences settings, float factor) {
         FlySpot spot = new FlySpot();
         spot.setName(settings.getString("wspot",null));
         spot.setCountry(settings.getString("wcountry",null));
+        spot.setSpeedUnits(getInt(settings, "wunit", 0));
         int len = Integer.parseInt(settings.getString("wconstraints","0"));
         for( int i = 0; i < len; i++ ) {
             FlyConstraint constraint = new FlyConstraint();
             constraint.setStation(settings.getString("wstation"+i, null));
             constraint.setMinDir(getInt(settings,"wminDir"+i,0));
             constraint.setMaxDir(getInt(settings,"wmaxDir"+i,360));
-            constraint.setMinWind(getInt(settings,"wminWind"+i,0));
-            constraint.setMaxWind(getInt(settings,"wmaxWind"+i,0));
+            constraint.setMinWind(getFloat(settings,"wminWind"+i,0)/factor);
+            constraint.setMaxWind(getFloat(settings,"wmaxWind"+i,0)/factor);
             constraint.setMaxHum(getInt(settings,"wmaxHum"+i,100));
             spot.getConstraints().add(constraint);
         }
@@ -55,10 +56,18 @@ public class WidgetSettings {
         return Integer.parseInt(value);
     }
 
+    private static float getFloat(SharedPreferences settings, String key, float def) {
+        String value = settings.getString(key,String.valueOf(def));
+        if( value.isEmpty() )
+            return def;
+        return Float.parseFloat(value);
+    }
+
     public static void setSpot( SharedPreferences settings, FlySpot spot ) {
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("wspot", spot.getName());
         editor.putString("wcountry", spot.getCountry());
+        editor.putString("wunit", spot.getSpeedUnits()+"");
         int len = spot.getConstraints().size();
         editor.putString("wconstraints", ""+len);
         for( int i = 0; i < len; i++ ) {

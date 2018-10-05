@@ -51,7 +51,8 @@
     <string name="pref_speedRange">Rango de velocidad</string>
     <string name="pref_minMarkerDefault">10</string>
     <string name="pref_maxMarkerDefault">30</string>
-    <string name="pref_speedRangeDefault">40</string>    
+    <string name="pref_speedRangeDefault">40</string>
+    <string name="pref_speedUnit">Unidades</string>
     <string name="pref_minTemp">Temperatura mínima</string>
     <string name="pref_minTempDefault">0</string>
     <string name="pref_maxTemp">Temperatura máxima</string>
@@ -73,7 +74,7 @@
     <string name="pref_modeGraphsDefault">0</string>
     <string name="pref_modeUpdate">Actualización de lecturas</string>
     <string name="pref_modeUpdateDefault">1</string>
-    <string name="chart_speed">Vel. (km/h)</string>
+    <string name="chart_speed">Vel.</string>
     <string name="chart_speedMed">Vel. Med.</string>
     <string name="chart_speedMax">Vel. Máx.</string>
     <string name="chart_covered">100&#37; humedad</string>

@@ -180,12 +180,12 @@ public class Model {
         cancel(currentStation);
     }
 
-    public String getSummary(boolean large) {
-        return getSummary(currentStation, large);
+    public String getSummary(boolean large, float factor, String unit) {
+        return getSummary(currentStation, large, factor, unit);
     }
 
-    public String getSummary(Long stamp, boolean large) {
-        return getSummary(currentStation, stamp, large);
+    public String getSummary(Long stamp, boolean large, float factor, String unit) {
+        return getSummary(currentStation, stamp, large, factor, unit);
     }
 
     public String getStamp() {
@@ -249,12 +249,12 @@ public class Model {
         manager.cancel(station);
     }
 
-    public String getSummary(Station station, boolean large) {
-        return manager.getSummary(station, large);
+    public String getSummary(Station station, boolean large, float factor, String unit) {
+        return manager.getSummary(station, large, factor, unit);
     }
 
-    public String getSummary(Station station, Long stamp, boolean large) {
-        return manager.getSummary(station, stamp, large);
+    public String getSummary(Station station, Long stamp, boolean large, float factor, String unit) {
+        return manager.getSummary(station, stamp, large, factor, unit);
     }
 
     public String getStamp(Station station) {
