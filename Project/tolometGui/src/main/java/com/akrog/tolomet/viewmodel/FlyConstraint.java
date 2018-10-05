@@ -7,8 +7,8 @@ public class FlyConstraint {
     private String station;
     private int minDir;
     private int maxDir;
-    private int minWind;
-    private int maxWind;
+    private float minWind;
+    private float maxWind;
     private int maxHum;
 
     public String getStation() {
@@ -35,19 +35,19 @@ public class FlyConstraint {
         this.maxDir = maxDir;
     }
 
-    public int getMinWind() {
+    public float getMinWind() {
         return minWind;
     }
 
-    public void setMinWind(int minWind) {
+    public void setMinWind(float minWind) {
         this.minWind = minWind;
     }
 
-    public int getMaxWind() {
+    public float getMaxWind() {
         return maxWind;
     }
 
-    public void setMaxWind(int maxWind) {
+    public void setMaxWind(float maxWind) {
         this.maxWind = maxWind;
     }
 

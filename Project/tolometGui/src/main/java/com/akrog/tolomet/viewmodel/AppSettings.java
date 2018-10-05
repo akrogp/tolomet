@@ -265,7 +265,7 @@ public class AppSettings {
         editor.putString("wcountry",getCountry());
         editor.putString("wconstraints","1");
         editor.commit();
-		return WidgetSettings.getSpot(settings);
+		return WidgetSettings.getSpot(settings, getSpeedFactor());
 	}
 
 	public void setUpdateMode(int mode) {

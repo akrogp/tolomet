@@ -22,7 +22,10 @@ public abstract class SettingsActivity extends PreferenceActivity implements Sha
     }
 
     private void setPreferenceEntries() {
-        CharSequence unit = ((ListPreference)findPreference(AppSettings.PREF_UNIT)).getEntry();
+        ListPreference pref = (ListPreference)findPreference(AppSettings.PREF_UNIT);
+        if( pref == null )
+            return;
+        CharSequence unit = pref.getEntry();
         setPreferenceEntries(AppSettings.PREF_SPEED_RANGE, unit);
         setPreferenceEntries(AppSettings.PREF_MARKER_MIN, unit);
         setPreferenceEntries(AppSettings.PREF_MARKER_MAX, unit);
