@@ -1,53 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<string-array name="pref_minSpeedEntries">
-    <item>5 km/h</item>
-    <item>10 km/h</item>
-    <item>15 km/h</item>
-</string-array>
-<string-array name="pref_minSpeedValues">
-    <item>5</item>
-    <item>10</item>
-    <item>15</item>
-</string-array>
 <string-array name="pref_speedUnitEntries">
     <item>km/h</item>
     <item>m/s</item>
     <item>nudos</item>
-</string-array>
-<string-array name="pref_maxSpeedEntries">
-    <item>20 km/h</item>
-    <item>25 km/h</item>
-    <item>30 km/h</item>
-    <item>35 km/h</item>
-    <item>40 km/h</item>
-    <item>45 km/h</item>
-    <item>50 km/h</item>
-</string-array>
-<string-array name="pref_maxSpeedValues">
-    <item>20</item>
-    <item>25</item>
-    <item>30</item>
-    <item>35</item>
-    <item>40</item>
-    <item>45</item>
-    <item>50</item>
-</string-array>
-<string-array name="pref_rangeEntries">
-    <item>Automático</item>
-    <item>40 km/h</item>
-    <item>48 km/h</item>
-    <item>80 km/h</item>
-    <item>120 km/h</item>
-    <item>160 km/h</item>
-</string-array>
-<string-array name="pref_rangeValues">
-    <item>-1000</item>
-    <item>40</item>
-    <item>48</item>
-    <item>80</item>
-    <item>120</item>
-    <item>160</item>
 </string-array>
 <string-array name="pref_minTempEntries">
     <item>Automático</item>
