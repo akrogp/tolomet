@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.viewmodel.WidgetSettings;
@@ -69,6 +70,7 @@ public abstract class WidgetReceiver extends AppWidgetProvider {
     private void startService(Context context) {
         Intent intent = new Intent(context.getApplicationContext(), WidgetService.class);
         intent.putExtra(EXTRA_WIDGET_SIZE, getWidgetSize());
-        context.startService(intent);
+        //context.startService(intent);
+        ContextCompat.startForegroundService(context, intent);
     }
 }

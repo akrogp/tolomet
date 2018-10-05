@@ -131,4 +131,6 @@
     <string name="gps_rationale" tools:ignore="MissingTranslation">GPS access is required for showing the stations close to your current location</string>
     <string name="contact_mail" tools:ignore="MissingTranslation">akrog.apps@gmail.com</string>
     <string name="storage_rationale" tools:ignore="MissingTranslation">External storage access is required for saving the screenshot to share</string>
+    <string name="notification_widget" tools:ignore="MissingTranslation">Updating widgets</string>
+    <string name="widget_channel_name" tools:ignore="MissingTranslation">Widget</string>
 </resources>
