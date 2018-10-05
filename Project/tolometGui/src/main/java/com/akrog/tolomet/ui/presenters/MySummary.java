@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.akrog.tolomet.ui.activities.BaseActivity;
+import com.akrog.tolomet.viewmodel.AppSettings;
 import com.akrog.tolomet.viewmodel.Model;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.ui.view.Axis;
 
 public class MySummary implements Presenter, Axis.ChangeListener {
 	private BaseActivity activity;
+	private AppSettings settings;
 	private final Model model = Model.getInstance();
 	private TextView summary;
 	private Long stamp = null;
@@ -18,6 +20,7 @@ public class MySummary implements Presenter, Axis.ChangeListener {
 	@Override
 	public void initialize(BaseActivity activity, Bundle bundle) {
 		this.activity = activity;
+		settings = activity.getSettings();
 
 		summary = (TextView)activity.findViewById(R.id.textView1);
 	}
@@ -40,7 +43,10 @@ public class MySummary implements Presenter, Axis.ChangeListener {
 		if( model.getCurrentStation().isEmpty() )
     		summary.setText(activity.getString(R.string.NoData));
     	else
-    		summary.setText(model.getSummary(stamp, activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE));
+    		summary.setText(model.getSummary(
+    				stamp, activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE,
+					settings.getSpeedFactor(), settings.getSpeedLabel()
+			));
 	}
 
 	@Override
