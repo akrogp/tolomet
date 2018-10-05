@@ -1,5 +1,4 @@
 Corto:
-- Target a última versión de Android (permisos, etc)
 - Cambiar tema de regiones
 - Actualizar widget con pantalla encendida
 - Alertas meteorológicas (Fili/FVDA)
@@ -7,12 +6,10 @@ Corto:
 - Mejorar gestión ubicación
 - Resolución del Widget en móvil de Fernando
 - Mirar weathercloud
-- Rango velocidad inferior a 40 km/h
 
 Medio:
 - Rutas de estaciones (Mario)
 - Eje y con etiquetas N, NE, ... en lugar de grados (Aníbal)
-- Otras unidades (nudos)
 - Todas las de Weather Underground
 - Actualización automática del listado de estaciones
 
@@ -23,6 +20,9 @@ Largo:
 - Gráficas con predicción (meteoblue)
 
 Hecho:
+X Rango velocidad inferior a 40 km/h -> lo descarto porque tendría que ser 24 y 32 y sería confuso
+x Otras unidades (nudos)
+x Target a última versión de Android (permisos, etc)
 x Estación La Covatilla de AEMET
 x Hora canaria!!
 x Fiochi
