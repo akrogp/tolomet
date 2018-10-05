@@ -39,27 +39,40 @@ public abstract class WidgetSettingsActivity extends SettingsActivity {
         if( appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID )
             finish();
         else {
-            Set<String> favs = appSettings.getFavorites();
-            List<String> entries = new ArrayList<>();
-            List<String> values = new ArrayList<>();
-            for( String fav : favs ) {
-                if( fav.isEmpty() )
-                    continue;
-                Station station = model.findStation(fav);
-                if( station != null ) {
-                    entries.add(station.getName());
-                    values.add(station.getId());
-                }
-            }
-            if( entries.isEmpty() )
-                showFavoriteDialog();
-            else {
-                ListPreference listPreference = (ListPreference) findPreference(STATION_KEY);
-                listPreference.setEntries(entries.toArray(new String[0]));
-                listPreference.setEntryValues(values.toArray(new String[0]));
-                onSharedPreferenceChanged(null,listPreference.getKey());
+            buildFavorites();
+            showSpeedUnits();
+        }
+    }
+
+    private void buildFavorites() {
+        Set<String> favs = appSettings.getFavorites();
+        List<String> entries = new ArrayList<>();
+        List<String> values = new ArrayList<>();
+        for( String fav : favs ) {
+            if( fav.isEmpty() )
+                continue;
+            Station station = model.findStation(fav);
+            if( station != null ) {
+                entries.add(station.getName());
+                values.add(station.getId());
             }
         }
+        if( entries.isEmpty() )
+            showFavoriteDialog();
+        else {
+            ListPreference listPreference = (ListPreference) findPreference(STATION_KEY);
+            listPreference.setEntries(entries.toArray(new String[0]));
+            listPreference.setEntryValues(values.toArray(new String[0]));
+            onSharedPreferenceChanged(null,listPreference.getKey());
+        }
+    }
+
+    private void showSpeedUnits() {
+        String units = " ("+appSettings.getSpeedLabel()+")";
+        EditTextPreference pref = (EditTextPreference) findPreference(WMAX_KEY);
+        pref.setTitle(getString(R.string.max_wind_prompt)+units);
+        pref = (EditTextPreference) findPreference(WMIN_KEY);
+        pref.setTitle(getString(R.string.min_wind_prompt)+units);
     }
 
     @Override
@@ -116,4 +129,6 @@ public abstract class WidgetSettingsActivity extends SettingsActivity {
 
     public static String STATION_KEY = "wstation0";
     public static String SPOT_KEY = "wspot";
+    public static String WMAX_KEY = "wmaxWind0";
+    public static String WMIN_KEY = "wminWind0";
 }

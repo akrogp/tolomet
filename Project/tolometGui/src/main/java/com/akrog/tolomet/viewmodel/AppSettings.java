@@ -141,8 +141,12 @@ public class AppSettings {
 		editor.putLong("stamp-update", stamp);
 		editor.commit();
 	}
-	
+
 	private int getPrefValue( String key, int idDefault, int idArray, boolean max, Measurement meas ) {
+		return getPrefValue(key, idDefault, idArray, max, meas, 1.0F);
+	}
+	
+	private int getPrefValue( String key, int idDefault, int idArray, boolean max, Measurement meas, float factor ) {
 		int res = Integer.parseInt(settings.getString(key, context.getString(idDefault)));
 		if( res != INVALID )
 			return res;
@@ -161,7 +165,9 @@ public class AppSettings {
 			mapArrays.put(idArray, values);
 		}
 		
-		int auto = max ? meas.getMaximum().intValue() : meas.getMinimum().intValue();
+		int auto = max ?
+				(int)Math.ceil(meas.getMaximum().intValue()*factor) :
+				(int)Math.floor(meas.getMinimum().intValue()*factor);
 		for( int i = 0; i < values.size(); i++ ) {
 			int value = values.get(i);
 			if( value <= auto )
@@ -179,7 +185,32 @@ public class AppSettings {
 	}
 	
 	public int getSpeedRange(Measurement meas) {
-		return getPrefValue("pref_speedRange", R.string.pref_speedRangeDefault, R.array.pref_rangeValues, true, meas);
+		return getPrefValue("pref_speedRange", R.string.pref_speedRangeDefault, R.array.pref_rangeValues, true, meas, getSpeedFactor());
+	}
+
+	public int getSpeedUnit() {
+		return Integer.parseInt(settings.getString(PREF_UNIT, "0"));
+	}
+
+	public String getSpeedLabel() {
+		String[] labels = context.getResources().getStringArray(R.array.pref_speedUnitEntries);
+		return labels[getSpeedUnit()];
+	}
+
+	public static float getSpeedFactor(int speedUnit) {
+		switch( speedUnit ) {
+			case UNIT_MS:
+				return 1000.0F/3600.0F;
+			case UNIT_KNOT:
+				return 1.0F/1.852F;
+			case UNIT_KMH:
+			default:
+				return 1.0F;
+		}
+	}
+
+	public float getSpeedFactor() {
+		return getSpeedFactor(getSpeedUnit());
 	}
 	
 	public int getMinMarker() {		
@@ -232,8 +263,9 @@ public class AppSettings {
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("wcountry",getCountry());
         editor.putString("wconstraints","1");
+        editor.putString("wunit", getSpeedUnit()+"");
         editor.commit();
-		return WidgetSettings.getSpot(settings);
+		return WidgetSettings.getSpot(settings, getSpeedFactor());
 	}
 
 	public void setUpdateMode(int mode) {
@@ -329,4 +361,11 @@ public class AppSettings {
 	public final static int AUTO_UPDATES=2;
     public final static int COLOR_NORMAL = 0;
     public final static int COLOR_DALTONIC = 1;
+	public final static int UNIT_KMH = 0;
+	public final static int UNIT_MS = 1;
+	public final static int UNIT_KNOT = 2;
+	public final static String PREF_UNIT = "pref_speedUnit";
+	public final static String PREF_SPEED_RANGE = "pref_speedRange";
+	public final static String PREF_MARKER_MIN = "pref_minMarker";
+	public final static String PREF_MARKER_MAX = "pref_maxMarker";
 }

@@ -61,6 +61,13 @@
 	        android:defaultValue="@string/pref_maxPresDefault" />
 	</PreferenceCategory>
 	<PreferenceCategory android:title="@string/pref_catWind">
+		<ListPreference
+			android:key="pref_speedUnit"
+			android:title="@string/pref_speedUnit"
+			android:dialogTitle="@string/pref_speedUnit"
+			android:entries="@array/pref_speedUnitEntries"
+			android:entryValues="@array/pref_speedUnitValues"
+			android:defaultValue="@string/pref_speedUnitDefault" />
         <ListPreference
 	        android:key="pref_speedRange"
 	        android:title="@string/pref_speedRange"

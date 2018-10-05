@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 <string-array name="pref_minSpeedEntries">
     <item>5 km/h</item>
     <item>10 km/h</item>
     <item>15 km/h</item>
 </string-array>
-<string-array name="pref_minSpeedValues">
+<string-array name="pref_minSpeedValues" tools:ignore="MissingTranslation">
     <item>5</item>
     <item>10</item>
     <item>15</item>
+</string-array>
+<string-array name="pref_speedUnitEntries"  tools:ignore="MissingTranslation">
+    <item>km/h</item>
+    <item>m/s</item>
+    <item>knot</item>
+</string-array>
+<string-array name="pref_speedUnitValues" tools:ignore="MissingTranslation">
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
 </string-array>
 <string-array name="pref_maxSpeedEntries">
     <item>20 km/h</item>
@@ -19,7 +29,7 @@
     <item>45 km/h</item>
     <item>50 km/h</item>
 </string-array>
-<string-array name="pref_maxSpeedValues">
+<string-array name="pref_maxSpeedValues" tools:ignore="MissingTranslation">
     <item>20</item>
     <item>25</item>
     <item>30</item>
@@ -36,7 +46,7 @@
     <item>120 km/h</item>
     <item>160 km/h</item>
 </string-array>
-<string-array name="pref_rangeValues">    
+<string-array name="pref_rangeValues" tools:ignore="MissingTranslation">
     <item>-1000</item>
     <item>40</item>
     <item>48</item>
@@ -50,7 +60,7 @@
     <item>0 ºC</item>
     <item>10 ºC</item>
 </string-array>
-<string-array name="pref_minTempValues">
+<string-array name="pref_minTempValues" tools:ignore="MissingTranslation">
     <item>-1000</item>
     <item>-10</item>
     <item>0</item>
@@ -63,7 +73,7 @@
     <item>40 ºC</item>
     <item>50 ºC</item>
 </string-array>
-<string-array name="pref_maxTempValues">
+<string-array name="pref_maxTempValues" tools:ignore="MissingTranslation">
     <item>-1000</item>
     <item>20</item>
     <item>30</item>
@@ -89,7 +99,7 @@
     <item>980 mb</item>
     <item>1000 mb</item>
 </string-array>
-<string-array name="pref_minPresValues">
+<string-array name="pref_minPresValues" tools:ignore="MissingTranslation">
     <item>-1000</item>
     <item>700</item>
     <item>720</item>
@@ -116,7 +126,7 @@
     <item>1050 mb</item>
     <item>1086 mb (maximum historic)</item>
 </string-array>
-<string-array name="pref_maxPresValues">
+<string-array name="pref_maxPresValues" tools:ignore="MissingTranslation">
     <item>-1000</item>
     <item>1020</item>
     <item>1030</item>
@@ -128,7 +138,7 @@
     <item>Simple</item>
     <item>Full</item>
 </string-array>
-<string-array name="pref_modeGraphsValues">
+<string-array name="pref_modeGraphsValues" tools:ignore="MissingTranslation">
     <item>0</item>
     <item>1</item>
 </string-array>
@@ -137,7 +147,7 @@
     <item>Smart</item>
     <item>Continuous</item>
 </string-array>
-<string-array name="pref_modeUpdateValues">
+<string-array name="pref_modeUpdateValues" tools:ignore="MissingTranslation">
     <item>0</item>
     <item>1</item>
     <item>2</item>
@@ -146,7 +156,7 @@
     <item>Normal</item>
     <item>Red-green daltonic</item>
 </string-array>
-<string-array name="pref_modeColorsValues">
+<string-array name="pref_modeColorsValues" tools:ignore="MissingTranslation">
     <item>0</item>
     <item>1</item>
 </string-array>
@@ -157,7 +167,7 @@
     <item>English</item>
     <item>Français</item>
 </string-array>
-<string-array name="pref_modeLangValues">
+<string-array name="pref_modeLangValues" tools:ignore="MissingTranslation">
     <item></item>
     <item>es</item>
     <item>eu</item>
