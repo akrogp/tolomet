@@ -12,12 +12,12 @@ import android.os.AsyncTask;
 import android.support.v4.os.AsyncTaskCompat;
 import android.util.Log;
 
+import com.akrog.tolomet.BuildConfig;
 import com.akrog.tolomet.R;
-import com.akrog.tolomet.Tolomet;
-import com.akrog.tolomet.viewmodel.AppSettings;
-import com.akrog.tolomet.viewmodel.DbTolomet;
 import com.akrog.tolomet.io.TimeoutTask;
 import com.akrog.tolomet.providers.WindProviderType;
+import com.akrog.tolomet.viewmodel.AppSettings;
+import com.akrog.tolomet.viewmodel.DbTolomet;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -87,14 +87,9 @@ public class Updater {
 
     private Notification download(long stamp) throws Exception {
         GaeClient client = new GaeClient();
-        Context context = Tolomet.getAppContext();
-        int version = 0;
-        try {
-            version = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
-        } catch( Exception e ) {}
         return client.checkNotifications(
                 android.os.Build.VERSION.SDK_INT,
-                version, DbTolomet.getInstance().getVersion(),
+                BuildConfig.VERSION_CODE, DbTolomet.getInstance().getVersion(),
                 stamp, Locale.getDefault().getLanguage()
         );
     }
