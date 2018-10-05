@@ -74,7 +74,7 @@
     <string name="pref_modeGraphsDefault">0</string>
     <string name="pref_modeUpdate">Actualisation des lectures</string>
     <string name="pref_modeUpdateDefault">1</string>
-    <string name="chart_speed">Vit. (km/h)</string>
+    <string name="chart_speed">Vit.</string>
     <string name="chart_speedMed">Vit Moy.</string>
     <string name="chart_speedMax">Vit Max.</string>
     <string name="chart_covered">100&#37; humedad</string>
