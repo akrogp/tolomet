@@ -14,9 +14,11 @@ public class WidgetService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, final int startId) {
+        if( task != null )
+            return super.onStartCommand(intent, flags, startId);
         final WidgetProvider widgetProvider = new WidgetProvider(this.getApplicationContext());
         //final int widgetSize = intent.getIntExtra(WidgetReceiver.EXTRA_WIDGET_SIZE, WidgetReceiver.WIDGET_SIZE_MEDIUM);
-        AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
+        task = new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
                 widgetProvider.downloadData();
@@ -27,12 +29,14 @@ public class WidgetService extends Service {
             protected void onPostExecute(Void v) {
                 widgetProvider.updateWidgets();
                 stopSelf();
+                task = null;
             }
 
             @Override
             protected void onCancelled() {
                 stopSelf();
                 super.onCancelled();
+                task = null;
             }
         };
         AsyncTaskCompat.executeParallel(task);
@@ -44,4 +48,6 @@ public class WidgetService extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
+
+    private AsyncTask<Void, Void, Void> task;
 }
