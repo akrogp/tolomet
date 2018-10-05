@@ -38,7 +38,7 @@ public class Api {
     }
 
     private Notification checkAppVersion(int appVersion, String lang) {
-        if( appVersion >= 583 )
+        if( appVersion >= 600 )
             return null;
         Notification info = new Notification();
 
@@ -147,11 +147,14 @@ public class Api {
                     "Información de permisos",
                     "Information about permissions");
         }
-        else if( appVersion < 583 ) {
-            info.setAppVersion("5.8.3");
+        if( appVersion < 600 ) {
+            info.setAppVersion("6.0");
             addImprovement(info, lang,
-                    "Solucionado problema con los widgets",
-                    "Solved problem with widgets");
+                    "Posibilidad de cambiar unidades a km/h, nudos, m/s",
+                    "Support for different speed units: km/h, knots, m/s");
+            addImprovement(info, lang,
+                    "Mejorada actualización de widgets",
+                    "Improved widget support");
         }
 
         return info;
