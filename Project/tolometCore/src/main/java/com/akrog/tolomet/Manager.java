@@ -95,11 +95,11 @@ public class Manager {
 		station.getProvider().cancel();
 	}
 
-	public String getSummary( Station station, boolean large ) {
-		return getSummary(station, null, large);
+	public String getSummary( Station station, boolean large, float factor, String unit ) {
+		return getSummary(station, null, large, factor, unit);
 	}
 	
-	public String getSummary( Station station, Long stamp, boolean large ) {
+	public String getSummary( Station station, Long stamp, boolean large, float factor, String unit ) {
 		if( !checkStation(station) )
 			return null;
 
@@ -124,11 +124,13 @@ public class Manager {
 		if( strDir != null )
 			str.append(String.format(" | %dº (%s)", dir.intValue(), strDir));
 		if( med != null )
-			str.append(String.format(" | %.1f", med));
+			str.append(String.format(" | %.1f", med.floatValue()*factor));
 		if( max != null )
-			str.append(String.format("~%.1f", max));
-		if( med != null || max != null )
-			str.append(" km/h");
+			str.append(String.format("~%.1f", max.floatValue()*factor));
+		if( med != null || max != null ) {
+			str.append(' ');
+			str.append(unit);
+		}
 
 		return large ? str.toString() : str.toString().replaceAll(" ", "");
 	}

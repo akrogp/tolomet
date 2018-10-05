@@ -197,9 +197,10 @@ public class AppSettings {
 			case UNIT_MS:
 				factor = 1000.0F/3600.0F;
 				break;
-			case UNIT_KMH:
+			case UNIT_KNOT:
 				factor = 1.0F/1.852F;
 				break;
+			case UNIT_KMH:
 			default:
 				factor = 1.0F;
 				break;
