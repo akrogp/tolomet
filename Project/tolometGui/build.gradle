@@ -9,8 +9,8 @@ android {
         applicationId "com.akrog.tolomet"
         targetSdkVersion 26
         minSdkVersion 14
-        versionCode 582
-        versionName "5.8.2"
+        versionCode 583
+        versionName "5.8.3"
         multiDexEnabled true
     }
     buildTypes {
