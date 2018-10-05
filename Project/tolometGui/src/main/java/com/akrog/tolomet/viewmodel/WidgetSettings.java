@@ -17,7 +17,7 @@ public class WidgetSettings {
     }
 
     public FlySpot getSpot() {
-        return getSpot(settings);
+        return getSpot(settings, 1.0F);
     }
 
     public void setSpot( FlySpot spot ) {
@@ -30,7 +30,7 @@ public class WidgetSettings {
         new File(path).delete();
     }
 
-    public static FlySpot getSpot(SharedPreferences settings) {
+    public static FlySpot getSpot(SharedPreferences settings, float factor) {
         FlySpot spot = new FlySpot();
         spot.setName(settings.getString("wspot",null));
         spot.setCountry(settings.getString("wcountry",null));
@@ -40,8 +40,8 @@ public class WidgetSettings {
             constraint.setStation(settings.getString("wstation"+i, null));
             constraint.setMinDir(getInt(settings,"wminDir"+i,0));
             constraint.setMaxDir(getInt(settings,"wmaxDir"+i,360));
-            constraint.setMinWind(getInt(settings,"wminWind"+i,0));
-            constraint.setMaxWind(getInt(settings,"wmaxWind"+i,0));
+            constraint.setMinWind(getFloat(settings,"wminWind"+i,0)/factor);
+            constraint.setMaxWind(getFloat(settings,"wmaxWind"+i,0)/factor);
             constraint.setMaxHum(getInt(settings,"wmaxHum"+i,100));
             spot.getConstraints().add(constraint);
         }
@@ -53,6 +53,13 @@ public class WidgetSettings {
         if( value.isEmpty() )
             return def;
         return Integer.parseInt(value);
+    }
+
+    private static float getFloat(SharedPreferences settings, String key, float def) {
+        String value = settings.getString(key,String.valueOf(def));
+        if( value.isEmpty() )
+            return def;
+        return Float.parseFloat(value);
     }
 
     public static void setSpot( SharedPreferences settings, FlySpot spot ) {
