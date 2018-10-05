@@ -141,8 +141,12 @@ public class AppSettings {
 		editor.putLong("stamp-update", stamp);
 		editor.commit();
 	}
-	
+
 	private int getPrefValue( String key, int idDefault, int idArray, boolean max, Measurement meas ) {
+		return getPrefValue(key, idDefault, idArray, max, meas, 1.0F);
+	}
+	
+	private int getPrefValue( String key, int idDefault, int idArray, boolean max, Measurement meas, float factor ) {
 		int res = Integer.parseInt(settings.getString(key, context.getString(idDefault)));
 		if( res != INVALID )
 			return res;
@@ -161,7 +165,9 @@ public class AppSettings {
 			mapArrays.put(idArray, values);
 		}
 		
-		int auto = max ? meas.getMaximum().intValue() : meas.getMinimum().intValue();
+		int auto = max ?
+				(int)Math.ceil(meas.getMaximum().intValue()*factor) :
+				(int)Math.floor(meas.getMinimum().intValue()*factor);
 		for( int i = 0; i < values.size(); i++ ) {
 			int value = values.get(i);
 			if( value <= auto )
@@ -179,7 +185,7 @@ public class AppSettings {
 	}
 	
 	public int getSpeedRange(Measurement meas) {
-		return getPrefValue("pref_speedRange", R.string.pref_speedRangeDefault, R.array.pref_rangeValues, true, meas);
+		return getPrefValue("pref_speedRange", R.string.pref_speedRangeDefault, R.array.pref_rangeValues, true, meas, getSpeedFactor());
 	}
 
 	public int getSpeedUnit() {
