@@ -197,21 +197,20 @@ public class AppSettings {
 		return labels[getSpeedUnit()];
 	}
 
-	public float getSpeedFactor() {
-		float factor;
-		switch( getSpeedUnit() ) {
+	public static float getSpeedFactor(int speedUnit) {
+		switch( speedUnit ) {
 			case UNIT_MS:
-				factor = 1000.0F/3600.0F;
-				break;
+				return 1000.0F/3600.0F;
 			case UNIT_KNOT:
-				factor = 1.0F/1.852F;
-				break;
+				return 1.0F/1.852F;
 			case UNIT_KMH:
 			default:
-				factor = 1.0F;
-				break;
+				return 1.0F;
 		}
-		return factor;
+	}
+
+	public float getSpeedFactor() {
+		return getSpeedFactor(getSpeedUnit());
 	}
 	
 	public int getMinMarker() {		
@@ -264,6 +263,7 @@ public class AppSettings {
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("wcountry",getCountry());
         editor.putString("wconstraints","1");
+        editor.putString("wunit", getSpeedUnit()+"");
         editor.commit();
 		return WidgetSettings.getSpot(settings, getSpeedFactor());
 	}

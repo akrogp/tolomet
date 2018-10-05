@@ -10,6 +10,7 @@ public class FlySpot {
     private String name;
     private String country;
     private final List<FlyConstraint> constraints = new ArrayList<>();
+    private int speedUnits;
 
     public String getName() {
         return name;
@@ -38,5 +39,13 @@ public class FlySpot {
             if( !constraint.isValid() )
                 return false;
         return true;
+    }
+
+    public int getSpeedUnits() {
+        return speedUnits;
+    }
+
+    public void setSpeedUnits(int speedUnits) {
+        this.speedUnits = speedUnits;
     }
 }

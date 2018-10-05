@@ -34,6 +34,7 @@ public class WidgetSettings {
         FlySpot spot = new FlySpot();
         spot.setName(settings.getString("wspot",null));
         spot.setCountry(settings.getString("wcountry",null));
+        spot.setSpeedUnits(getInt(settings, "wunit", 0));
         int len = Integer.parseInt(settings.getString("wconstraints","0"));
         for( int i = 0; i < len; i++ ) {
             FlyConstraint constraint = new FlyConstraint();
@@ -66,6 +67,7 @@ public class WidgetSettings {
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("wspot", spot.getName());
         editor.putString("wcountry", spot.getCountry());
+        editor.putString("wunit", spot.getSpeedUnits()+"");
         int len = spot.getConstraints().size();
         editor.putString("wconstraints", ""+len);
         for( int i = 0; i < len; i++ ) {
