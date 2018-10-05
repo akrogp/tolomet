@@ -71,7 +71,9 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 		this.activity = activity;
 		settings = activity.getSettings();
 		windSpeedMed = new Graph(meteo.getWindSpeedMed(), -1.0f, activity.getString(R.string.chart_speedMed), LINE_GREEN, POINT_GREEN);
+		windSpeedMed.setyFactor(settings.getSpeedFactor());
 		windSpeedMax = new Graph(meteo.getWindSpeedMax(), -1.0f, activity.getString(R.string.chart_speedMax), LINE_RED, POINT_RED);
+		windSpeedMax.setyFactor(settings.getSpeedFactor());
 		markerCloud = new Marker(100.0f, activity.getString(R.string.chart_covered), LINE_BLUE);
 		markerCloudSimple = new Marker(100.0f, activity.getString(R.string.chart_covered), POINT_GRAY);
 		markerNorth = new Marker(0, activity.getString(R.string.markerNorth), LINE_BLUE);
@@ -187,7 +189,9 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 		chartWind.getXAxis().setTicksPerStep(6);
 
 		chartWind.addY1Graph(windDirection);
+		windSpeedMed.setyFactor(settings.getSpeedFactor());
 		chartWind.addY2Graph(windSpeedMed);
+		windSpeedMax.setyFactor(settings.getSpeedFactor());
         chartWind.addY2Graph(windSpeedMax);             
         
         //chartWind.addY1Marker(markerSouth);
@@ -230,8 +234,10 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
         chartWind.getXAxis().setLabel(activity.getString(R.string.Time));
         chartWind.getXAxis().setSteps(4);
         chartWind.getXAxis().setTicksPerStep(6); 
-            
+
+        windSpeedMed.setyFactor(settings.getSpeedFactor());
         chartWind.addY1Graph(windSpeedMed);
+        windSpeedMax.setyFactor(settings.getSpeedFactor());
         chartWind.addY2Graph(windSpeedMax);             
 
         chartWind.addY1Marker(markerVmin);
