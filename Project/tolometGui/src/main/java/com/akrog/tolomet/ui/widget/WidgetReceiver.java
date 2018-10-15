@@ -53,18 +53,16 @@ public abstract class WidgetReceiver extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        // Update is carried out by a custom FORCE_WIDGET_UPDATE action
+        if(Tolomet.isNetworkAvailable())
+            startService(context);
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         String action = intent.getAction();
-        if( AppWidgetManager.ACTION_APPWIDGET_UPDATE.equals(action)
-                || FORCE_WIDGET_UPDATE.equals(action)
-                || Intent.ACTION_USER_PRESENT.equals(action) )
-            if(Tolomet.isNetworkAvailable())
-                startService(context);
+        if( FORCE_WIDGET_UPDATE.equals(action) || Intent.ACTION_USER_PRESENT.equals(action) )
+            onUpdate(context, null, null);
     }
 
     private void startService(Context context) {
