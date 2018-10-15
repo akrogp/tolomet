@@ -65,7 +65,7 @@ public class WidgetService extends Service {
 
     private Notification createNotification() {
         return new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.ic_wind_unknown)
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(getString(R.string.notification_widget))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
