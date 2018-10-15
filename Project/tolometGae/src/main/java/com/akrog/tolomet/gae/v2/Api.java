@@ -38,7 +38,7 @@ public class Api {
     }
 
     private Notification checkAppVersion(int appVersion, String lang) {
-        if( appVersion >= 600 )
+        if( appVersion >= 601 )
             return null;
         Notification info = new Notification();
 
@@ -152,6 +152,15 @@ public class Api {
             addImprovement(info, lang,
                     "Posibilidad de cambiar unidades a km/h, nudos, m/s",
                     "Support for different speed units: km/h, knots, m/s");
+            addImprovement(info, lang,
+                    "Mejorada actualización de widgets",
+                    "Improved widget support");
+        }
+        if( appVersion == 600 ) {
+            info.setAppVersion("6.0.1");
+            addImprovement(info, lang,
+                    "Añadida estación PiouPiou de La Rhune",
+                    "Included PiouPiou La Rhune station");
             addImprovement(info, lang,
                     "Mejorada actualización de widgets",
                     "Improved widget support");
