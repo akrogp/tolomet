@@ -75,10 +75,7 @@ public class UpdateActivity extends ProgressActivity {
         List<ProviderWrapper> providers = new ArrayList<>(WindProviderType.values().length);
         for( WindProviderType type : WindProviderType.values() ) {
             ProviderWrapper wrapper = new ProviderWrapper(type);
-            if( type == WindProviderType.Euskalmet )
-                wrapper.setIconId(R.drawable.euskalmet);
-            else if( type == WindProviderType.Aemet )
-                wrapper.setIconId(R.drawable.aemet);
+            setIcon(wrapper);
             wrapper.setDate(DATE_FORMAT.format(defaultDate));
             if( map != null ) {
                 DbTolomet.ProviderInfo info = map.get(type.name());
@@ -89,6 +86,38 @@ public class UpdateActivity extends ProgressActivity {
             providers.add(wrapper);
         }
         return providers;
+    }
+
+    private void setIcon(ProviderWrapper wrapper) {
+        int iconId;
+        WindProviderType type = wrapper.getType();
+        if( type == WindProviderType.Euskalmet )
+            iconId = R.drawable.euskalmet;
+        else if( type == WindProviderType.Aemet )
+            iconId = R.drawable.aemet;
+        else if( type == WindProviderType.Holfuy )
+            iconId = R.drawable.holfuy;
+        else if( type == WindProviderType.PiouPiou )
+            iconId = R.drawable.ic_piou;
+        else if( type == WindProviderType.Ffvl )
+            iconId = R.drawable.ffvl;
+        else if( type == WindProviderType.LaRioja )
+            iconId = R.drawable.larioja;
+        else if( type == WindProviderType.MeteoGalicia )
+            iconId = R.drawable.galicia;
+        else if( type == WindProviderType.Meteocat )
+            iconId = R.drawable.meteocat;
+        else if( type == WindProviderType.MeteoNavarra )
+            iconId = R.drawable.navarra;
+        else if( type == WindProviderType.Metar )
+            iconId = R.drawable.ic_metar;
+        else if( type == WindProviderType.MeteoClimatic )
+            iconId = R.drawable.meteoclimatic;
+        else if( type == WindProviderType.MeteoFrance )
+            iconId = R.drawable.meteofrance;
+        else
+            iconId = 0;
+        wrapper.setIconId(iconId);
     }
 
     private void sortProviders(List<ProviderWrapper> providers) {
