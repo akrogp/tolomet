@@ -68,13 +68,19 @@
         android:id="@+id/settings_item"
         android:title="@string/Settings"
         android:icon="@drawable/ic_settings"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/update_item"
+        android:title="@string/UpdateStations"
+        android:icon="@drawable/ic_sync"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/help_item"
         android:title="@string/Help"
         android:icon="@drawable/ic_help"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 
     <item android:id="@+id/about_item"
         android:title="@string/About"
