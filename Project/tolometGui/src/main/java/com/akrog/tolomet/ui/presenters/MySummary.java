@@ -4,21 +4,21 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.akrog.tolomet.ui.activities.BaseActivity;
+import com.akrog.tolomet.ui.activities.ToolbarActivity;
 import com.akrog.tolomet.viewmodel.AppSettings;
 import com.akrog.tolomet.viewmodel.Model;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.ui.view.Axis;
 
 public class MySummary implements Presenter, Axis.ChangeListener {
-	private BaseActivity activity;
+	private ToolbarActivity activity;
 	private AppSettings settings;
 	private final Model model = Model.getInstance();
 	private TextView summary;
 	private Long stamp = null;
 	
 	@Override
-	public void initialize(BaseActivity activity, Bundle bundle) {
+	public void initialize(ToolbarActivity activity, Bundle bundle) {
 		this.activity = activity;
 		settings = activity.getSettings();
 

@@ -17,9 +17,9 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.akrog.tolomet.BuildConfig;
+import com.akrog.tolomet.ui.activities.ToolbarActivity;
 import com.akrog.tolomet.ui.dialogs.AboutDialog;
 import com.akrog.tolomet.ui.activities.AppSettingsActivity;
-import com.akrog.tolomet.ui.activities.BaseActivity;
 import com.akrog.tolomet.ui.activities.ChartsActivity;
 import com.akrog.tolomet.ui.activities.HelpActivity;
 import com.akrog.tolomet.ui.activities.InfoActivity;
@@ -48,7 +48,7 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 	private enum ShareOptions {GENERIC, WHATSAPP};
 
 	@Override
-	public void initialize(BaseActivity activity, Bundle bundle) {
+	public void initialize(ToolbarActivity activity, Bundle bundle) {
 		this.activity = activity;
 		settings = activity.getSettings();
 
@@ -193,13 +193,13 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 			activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
 		} else {
 			Intent intent = new Intent(activity, MapActivity.class);
-			activity.startActivityForResult(intent, BaseActivity.MAP_REQUEST);
+			activity.startActivityForResult(intent, ToolbarActivity.MAP_REQUEST);
 		}
 	}
 
 	private void onSettingsItem() {
 		activity.startActivityForResult(
-				new Intent(activity, AppSettingsActivity.class), BaseActivity.SETTINGS_REQUEST);
+				new Intent(activity, AppSettingsActivity.class), ToolbarActivity.SETTINGS_REQUEST);
 	}
 
     private void onHelpItem() {
@@ -373,7 +373,7 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
         void run(Intent intent);
     }
 
-    private BaseActivity activity;
+    private ToolbarActivity activity;
 	private final Model model = Model.getInstance();
 	private AppSettings settings;
 	private Toolbar toolbar;
