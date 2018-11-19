@@ -3,6 +3,7 @@ package com.akrog.tolomet.viewmodel;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 
 import com.akrog.tolomet.Country;
 import com.akrog.tolomet.R;
@@ -18,8 +19,11 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -143,6 +147,27 @@ public class DbTolomet extends SQLiteAssetHelper {
         return info;
     }
 
+    public Map<String, ProviderInfo> getProviderCounts() {
+        WindProviderType[] types = WindProviderType.values();
+        String[] providers = new String[types.length];
+        for( int i = 0; i < types.length; i++ )
+            providers[i] = types[i].name();
+        SQLiteDatabase lite = getReadableDatabase();
+        Cursor cursor = lite.rawQuery(
+            "SELECT provider, COUNT(*) FROM Station WHERE provider IN (" +
+            TextUtils.join(",", Collections.nCopies(providers.length, "?")) +
+            ") GROUP BY provider",providers);
+        Map<String, ProviderInfo> result = new HashMap<>();
+        while( cursor.moveToNext() ) {
+            ProviderInfo info = new ProviderInfo();
+            String provider = cursor.getString(0);
+            info.setStationCount(cursor.getInt(1));
+            result.put(provider, info);
+        }
+        cursor.close();
+        return result;
+    }
+
     public Set<String> findCountries() {
         Set<String> countries = new HashSet<>();
         SQLiteDatabase lite = getReadableDatabase();
@@ -227,6 +252,27 @@ public class DbTolomet extends SQLiteAssetHelper {
         }
         public int getStationCount() {
             return stationCount;
+        }
+    }
+
+    public static class ProviderInfo {
+        private int stationCount;
+        private Date date;
+
+        public int getStationCount() {
+            return stationCount;
+        }
+
+        public void setStationCount(int stationCount) {
+            this.stationCount = stationCount;
+        }
+
+        public Date getDate() {
+            return date;
+        }
+
+        public void setDate(Date date) {
+            this.date = date;
         }
     }
 

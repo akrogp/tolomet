@@ -136,4 +136,5 @@
     <string name="notification_widget" tools:ignore="MissingTranslation">Updating widgets</string>
     <string name="widget_channel_name" tools:ignore="MissingTranslation">Widget</string>
     <string name="UpdateStations">Update stations</string>
+    <string name="stations">stations</string>
 </resources>

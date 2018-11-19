@@ -49,6 +49,10 @@ public class ProviderAdapter extends ArrayAdapter<ProviderWrapper> {
         textView = itemView.findViewById(R.id.date);
         textView.setText(provider.getDate());
 
+        textView = itemView.findViewById(R.id.count);
+        textView.setVisibility(provider.getStations() < 0 ? View.GONE : View.VISIBLE);
+        textView.setText(provider.getStations()+" "+context.getString(R.string.stations));
+
         CheckBox checkBox = itemView.findViewById(R.id.checkbox);
         checkBox.setChecked(provider.isChecked());
         checkBox.setVisibility(type.isDynamic() ? View.VISIBLE : View.GONE);
