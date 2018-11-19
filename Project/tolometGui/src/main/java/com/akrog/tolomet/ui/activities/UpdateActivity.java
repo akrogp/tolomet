@@ -10,8 +10,11 @@ import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolomet.ui.adapters.ProviderAdapter;
 import com.akrog.tolomet.viewmodel.ProviderWrapper;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class UpdateActivity extends ProgressActivity {
@@ -22,6 +25,13 @@ public class UpdateActivity extends ProgressActivity {
         setContentView(R.layout.activity_update);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        Date defaultDate;
+        try {
+            defaultDate = DATE_FORMAT.parse("19/11/2018 18:20:00");
+        } catch (ParseException e) {
+            e.printStackTrace();
+            defaultDate = new Date();
+        }
         List<ProviderWrapper> providers = new ArrayList<>(WindProviderType.values().length);
         for( WindProviderType type : WindProviderType.values() ) {
             ProviderWrapper wrapper = new ProviderWrapper(type);
@@ -29,6 +39,7 @@ public class UpdateActivity extends ProgressActivity {
                 wrapper.setIconId(R.drawable.euskalmet);
             else if( type == WindProviderType.Aemet )
                 wrapper.setIconId(R.drawable.aemet);
+            wrapper.setDate(DATE_FORMAT.format(defaultDate));
             providers.add(wrapper);
         }
         Collections.sort(providers, (p1, p2) -> {
@@ -67,4 +78,6 @@ public class UpdateActivity extends ProgressActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 }

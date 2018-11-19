@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,8 +46,13 @@ public class ProviderAdapter extends ArrayAdapter<ProviderWrapper> {
         TextView textView = itemView.findViewById(R.id.name);
         textView.setText(type.toString());
 
+        textView = itemView.findViewById(R.id.date);
+        textView.setText(provider.getDate());
+
         CheckBox checkBox = itemView.findViewById(R.id.checkbox);
+        checkBox.setChecked(provider.isChecked());
         checkBox.setVisibility(type.isDynamic() ? View.VISIBLE : View.GONE);
+        checkBox.setOnClickListener(view -> provider.setChecked(((CompoundButton)view).isChecked()));
         return itemView;
     }
 }
