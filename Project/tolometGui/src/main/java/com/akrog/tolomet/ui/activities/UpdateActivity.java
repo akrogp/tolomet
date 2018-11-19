@@ -13,6 +13,7 @@ public class UpdateActivity extends ProgressActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        beginProgress();
     }
 
     @Override
@@ -24,6 +25,7 @@ public class UpdateActivity extends ProgressActivity {
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
+                endProgress();
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
         }
