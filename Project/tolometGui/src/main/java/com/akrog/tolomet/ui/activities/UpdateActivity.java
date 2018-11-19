@@ -2,8 +2,11 @@ package com.akrog.tolomet.ui.activities;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.akrog.tolomet.R;
@@ -20,7 +23,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-public class UpdateActivity extends ProgressActivity {
+public class UpdateActivity extends ProgressActivity implements AdapterView.OnItemClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,14 +56,20 @@ public class UpdateActivity extends ProgressActivity {
             }
         });
         updateList(null);
+        updateFab();
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(view -> download());
+    }
+
+    private void download() {
     }
 
     private void updateList(Map<String, DbTolomet.ProviderInfo> map) {
-        List<ProviderWrapper> providers = buildWrappers(map);
+        providers = buildWrappers(map);
         sortProviders(providers);
 
         ListView list = findViewById(R.id.list_providers);
-        ProviderAdapter adapter = new ProviderAdapter(this, providers.toArray(new ProviderWrapper[0]));
+        ProviderAdapter adapter = new ProviderAdapter(this, providers.toArray(new ProviderWrapper[0]), this);
         list.setAdapter(adapter);
     }
 
@@ -154,6 +163,24 @@ public class UpdateActivity extends ProgressActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        updateFab();
+    }
+
+    private void updateFab() {
+        boolean enabled = false;
+        if( providers != null )
+            for( ProviderWrapper provider : providers )
+                if( provider.isChecked() ) {
+                    enabled = true;
+                    break;
+                }
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setVisibility(enabled ? View.VISIBLE : View.GONE);
+    }
+
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     private AsyncTask<Void,Void,Map<String,DbTolomet.ProviderInfo>> task;
+    private List<ProviderWrapper> providers;
 }

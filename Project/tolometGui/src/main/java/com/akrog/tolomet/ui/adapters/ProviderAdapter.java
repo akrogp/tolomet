@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -19,12 +20,13 @@ import com.akrog.tolomet.viewmodel.ProviderWrapper;
 public class ProviderAdapter extends ArrayAdapter<ProviderWrapper> {
     private final Context context;
     private final ProviderWrapper[] providers;
+    private final AdapterView.OnItemClickListener listener;
 
-
-    public ProviderAdapter(Context context, ProviderWrapper[] providers) {
+    public ProviderAdapter(Context context, ProviderWrapper[] providers, AdapterView.OnItemClickListener listener) {
         super(context, -1, providers);
         this.context = context;
         this.providers = providers;
+        this.listener = listener;
     }
 
     @NonNull
@@ -56,8 +58,10 @@ public class ProviderAdapter extends ArrayAdapter<ProviderWrapper> {
         CheckBox checkBox = itemView.findViewById(R.id.checkbox);
         checkBox.setChecked(provider.isChecked());
         checkBox.setVisibility(type.isDynamic() ? View.VISIBLE : View.GONE);
-        checkBox.setOnClickListener(view -> provider.setChecked(((CompoundButton)view).isChecked()));
-
+        checkBox.setOnClickListener(view -> {
+            provider.setChecked(((CompoundButton)view).isChecked());
+            listener.onItemClick(null, null, position, providers.length);
+        });
         itemView.setOnClickListener(view -> checkBox.performClick());
 
         return itemView;
