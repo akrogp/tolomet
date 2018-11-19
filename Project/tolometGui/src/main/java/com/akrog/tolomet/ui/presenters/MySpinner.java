@@ -15,7 +15,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.akrog.tolomet.model.Consumer;
-import com.akrog.tolomet.ui.activities.BaseActivity;
+import com.akrog.tolomet.ui.activities.ToolbarActivity;
 import com.akrog.tolomet.Country;
 import com.akrog.tolomet.ui.activities.MapActivity;
 import com.akrog.tolomet.viewmodel.Model;
@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class MySpinner implements OnItemSelectedListener, Presenter {
-	private BaseActivity activity;
+	private ToolbarActivity activity;
 	private final Model model = Model.getInstance();
 	private AppSettings settings;
 	private Spinner spinner;
@@ -48,7 +48,7 @@ public class MySpinner implements OnItemSelectedListener, Presenter {
 	private boolean shownFavDialog = false;
 
 	@Override
-	public void initialize(BaseActivity activity, Bundle bundle) {
+	public void initialize(ToolbarActivity activity, Bundle bundle) {
 		this.activity = activity;
 		settings = activity.getSettings();
 		

@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.v4.os.AsyncTaskCompat;
 import android.widget.Toast;
 
-import com.akrog.tolomet.ui.activities.BaseActivity;
+import com.akrog.tolomet.ui.activities.ToolbarActivity;
 import com.akrog.tolomet.Meteo;
 import com.akrog.tolomet.viewmodel.Model;
 import com.akrog.tolomet.R;
@@ -33,7 +33,7 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 	private static final int LINE_GRAY = Color.rgb(200, 200, 200);
 	private static final int POINT_GRAY = Color.rgb(100, 100, 100);
     private static final DateFormat df = new SimpleDateFormat("EEE (dd/MMM)");
-	private BaseActivity activity;
+	private ToolbarActivity activity;
 	private final Model model = Model.getInstance();
 	private AppSettings settings;
 	private final Meteo meteo = new Meteo();
@@ -67,7 +67,7 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 	}
 
 	@Override
-	public void initialize(BaseActivity activity, Bundle bundle) {
+	public void initialize(ToolbarActivity activity, Bundle bundle) {
 		this.activity = activity;
 		settings = activity.getSettings();
 		windSpeedMed = new Graph(meteo.getWindSpeedMed(), -1.0f, activity.getString(R.string.chart_speedMed), LINE_GREEN, POINT_GREEN);

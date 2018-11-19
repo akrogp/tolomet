@@ -14,7 +14,7 @@ import com.akrog.tolomet.Station;
 /**
  * Created by gorka on 21/03/16.
  */
-public abstract class BrowserActivity extends BaseActivity {
+public abstract class BrowserActivity extends ToolbarActivity {
     @Override
     public void createSpinnerView(Bundle savedInstanceState, int layoutResId, int... buttonIds) {
         super.createSpinnerView(savedInstanceState, layoutResId, buttonIds);

@@ -22,7 +22,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class ChartsActivity extends BaseActivity {
+public class ChartsActivity extends ToolbarActivity {
 	public static final String PATH = "chart";
 	
 	// Creation and state

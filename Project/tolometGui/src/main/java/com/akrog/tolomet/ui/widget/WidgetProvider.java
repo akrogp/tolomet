@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
-import com.akrog.tolomet.ui.activities.BaseActivity;
+import com.akrog.tolomet.ui.activities.ToolbarActivity;
 import com.akrog.tolomet.ui.activities.ChartsActivity;
 import com.akrog.tolomet.viewmodel.AppSettings;
 import com.akrog.tolomet.viewmodel.Model;
@@ -205,7 +205,7 @@ public class WidgetProvider {
     private PendingIntent getTolometIntent(StationData data) {
         Intent clickIntent = new Intent(context, ChartsActivity.class);
         //clickIntent.putExtra(WidgetReceiver.EXTRA_WIDGET_SIZE, widgetSize);
-        clickIntent.putExtra(BaseActivity.EXTRA_STATION, data.id);
+        clickIntent.putExtra(ToolbarActivity.EXTRA_STATION, data.id);
         // http://stackoverflow.com/questions/3168484/pendingintent-works-correctly-for-the-first-notification-but-incorrectly-for-the#comment3283736_3168653
         clickIntent.setAction(Long.toString(System.currentTimeMillis()));
         return PendingIntent.getActivity(context,0,clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);

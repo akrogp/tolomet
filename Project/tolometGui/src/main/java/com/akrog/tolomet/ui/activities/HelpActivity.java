@@ -5,7 +5,7 @@ import android.os.Bundle;
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Station;
 
-public class HelpActivity extends BaseActivity {
+public class HelpActivity extends ToolbarActivity {
     public static final String PATH = "help";
 
     @Override
