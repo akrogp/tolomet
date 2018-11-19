@@ -131,6 +131,6 @@
     <string name="gps_rationale">El acceso al GPS es necesario para poder mostrar las estaciones más cercanas a tu ubicación actual</string>
     <string name="storage_rationale">El acceso al almacenamiento externo es necesario para guardar las capturas de pantalla que se comparten</string>
     <string name="notification_widget">Actualizando widgets</string>
-    <string name="UpdateStations">Actualizar estaciones</string>
+    <string name="UpdateStations">Descargar estaciones</string>
     <string name="stations">estaciones</string>
 </resources>

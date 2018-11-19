@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/home/gorka/Aplicaciones/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/device/ic_airplanemode_active_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/home/gorka/Aplicaciones/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/file/ic_cloud_download_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,7 +28,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_metar" />
+                            <entry key="outputName" value="ic_download" />
                             <entry key="sourceFile" value="$PROJECT_DIR$/../Media/piou.svg" />
                           </map>
                         </option>

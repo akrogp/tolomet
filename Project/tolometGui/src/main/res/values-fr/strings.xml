@@ -127,6 +127,6 @@
     <string name="delst">Eliminées</string>
     <string name="pref_modeLang">Langue</string>
     <string name="pref_modeLangDefault"/>
-    <string name="UpdateStations">Update stations</string>
+    <string name="UpdateStations">Download stations</string>
     <string name="stations">stations</string>
 </resources>
