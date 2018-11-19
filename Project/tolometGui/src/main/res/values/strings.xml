@@ -135,6 +135,6 @@
     <string name="storage_rationale" tools:ignore="MissingTranslation">External storage access is required for saving the screenshot to share</string>
     <string name="notification_widget" tools:ignore="MissingTranslation">Updating widgets</string>
     <string name="widget_channel_name" tools:ignore="MissingTranslation">Widget</string>
-    <string name="UpdateStations">Update stations</string>
+    <string name="UpdateStations">Download stations</string>
     <string name="stations">stations</string>
 </resources>
