@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.akrog.tolomet.BuildConfig;
 import com.akrog.tolomet.ui.activities.ToolbarActivity;
+import com.akrog.tolomet.ui.activities.UpdateActivity;
 import com.akrog.tolomet.ui.dialogs.AboutDialog;
 import com.akrog.tolomet.ui.activities.AppSettingsActivity;
 import com.akrog.tolomet.ui.activities.ChartsActivity;
@@ -146,6 +147,9 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 			case R.id.settings_item:
 				onSettingsItem();
 				return true;
+			case R.id.update_item:
+				onUpdateItem();
+				break;
             case R.id.help_item:
                 onHelpItem();
                 return true;
@@ -200,6 +204,10 @@ public class MyToolbar implements Toolbar.OnMenuItemClickListener, Presenter, Go
 	private void onSettingsItem() {
 		activity.startActivityForResult(
 				new Intent(activity, AppSettingsActivity.class), ToolbarActivity.SETTINGS_REQUEST);
+	}
+
+	private void onUpdateItem() {
+		activity.startActivity(new Intent(activity, UpdateActivity.class));
 	}
 
     private void onHelpItem() {

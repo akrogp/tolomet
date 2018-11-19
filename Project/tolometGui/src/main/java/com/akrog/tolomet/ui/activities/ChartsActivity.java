@@ -36,7 +36,7 @@ public class ChartsActivity extends ToolbarActivity {
 				R.id.info_item, R.id.map_item, R.id.origin_item,
 				R.id.share_item, //R.id.whatsapp_item,
 				R.id.fly_item,
-				R.id.help_item, R.id.settings_item, R.id.about_item, R.id.report_item);
+				R.id.help_item, R.id.settings_item, R.id.update_item, R.id.about_item, R.id.report_item);
 
         updater.initialize(this);
         presenters.add(charts);
