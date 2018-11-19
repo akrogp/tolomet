@@ -132,4 +132,5 @@
     <string name="storage_rationale">El acceso al almacenamiento externo es necesario para guardar las capturas de pantalla que se comparten</string>
     <string name="notification_widget">Actualizando widgets</string>
     <string name="UpdateStations">Actualizar estaciones</string>
+    <string name="stations">estaciones</string>
 </resources>

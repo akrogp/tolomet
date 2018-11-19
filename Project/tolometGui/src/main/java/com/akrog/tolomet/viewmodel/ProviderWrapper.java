@@ -5,7 +5,7 @@ import com.akrog.tolomet.providers.WindProviderType;
 public class ProviderWrapper {
     private final WindProviderType type;
     private int iconId;
-    private int stations;
+    private int stations = -1;
     private String date;
     private boolean checked;
 
