@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.akrog.tolomet.R;
+import com.akrog.tolomet.Station;
 import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolomet.ui.adapters.ProviderAdapter;
 import com.akrog.tolomet.viewmodel.DbTolomet;
@@ -62,6 +63,12 @@ public class UpdateActivity extends ProgressActivity implements AdapterView.OnIt
     }
 
     private void download() {
+        new AsyncTask<Void,Void,List<Station>>() {
+            @Override
+            protected List<Station> doInBackground(Void... voids) {
+                return WindProviderType.Euskalmet.getProvider().downloadStations();
+            }
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void updateList(Map<String, DbTolomet.ProviderInfo> map) {
