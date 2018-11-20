@@ -8,6 +8,7 @@ import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -77,7 +78,12 @@ public class RedVigiaProvider implements WindProvider {
         return String.format("http://www.redvigia.es/Boyas/Detalle/%s#detalle_meteorologia",code);
 	}
 
-	private Downloader downloader;
+    @Override
+    public List<Station> downloadStations() {
+        return null;
+    }
+
+    private Downloader downloader;
     private final DateFormat df;
     private final NumberFormat nf = NumberFormat.getInstance(Locale.FRANCE);;
 }

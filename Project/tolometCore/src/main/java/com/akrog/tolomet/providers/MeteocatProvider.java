@@ -175,5 +175,10 @@ public class MeteocatProvider implements WindProvider {
 		return getInfoUrl(code);
 	}
 
+	@Override
+	public List<Station> downloadStations() {
+		return null;
+	}
+
 	private Downloader downloader; 
 }

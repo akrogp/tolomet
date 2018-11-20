@@ -6,6 +6,7 @@ import com.akrog.tolomet.io.Downloader;
 import com.akrog.tolomet.io.Downloader.FakeBrowser;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 
 public class EuskalmetProvider implements WindProvider {
@@ -18,6 +19,11 @@ public class EuskalmetProvider implements WindProvider {
 	@Override
 	public String getUserUrl(String code) {
 		return "http://www.euskalmet.euskadi.eus/s07-5853x/es/meteorologia/lectur.apl?e=5&campo="+code;
+	}
+
+	@Override
+	public List<Station> downloadStations() {
+		return null;
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 
 public class AemetProvider implements WindProvider {
@@ -17,6 +18,11 @@ public class AemetProvider implements WindProvider {
 	@Override
 	public String getUserUrl(String code) {
 		return getInfoUrl(code);
+	}
+
+	@Override
+	public List<Station> downloadStations() {
+		return null;
 	}
 
 	@Override
