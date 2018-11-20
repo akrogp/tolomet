@@ -124,6 +124,8 @@ public class UpdateActivity extends ProgressActivity implements AdapterView.OnIt
             iconId = R.drawable.meteoclimatic;
         else if( type == WindProviderType.MeteoFrance )
             iconId = R.drawable.meteofrance;
+        else if( type == WindProviderType.WeatherUnderground )
+            iconId = R.drawable.wunder;
         else
             iconId = 0;
         wrapper.setIconId(iconId);
