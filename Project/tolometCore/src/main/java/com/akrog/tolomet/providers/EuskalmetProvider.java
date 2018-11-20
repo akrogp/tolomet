@@ -5,6 +5,10 @@ import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
 import com.akrog.tolomet.io.Downloader.FakeBrowser;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -43,7 +47,7 @@ public class EuskalmetProvider implements WindProvider {
 					station.setName(value);
 				else if( key.equals("dataXML") ) {
 					Matcher code = PATTERN_CODE.matcher(value);
-					if( !code.find() )
+					if( !code.find() || !downloadCoords(station, value))
 						return null;
 					station.setCode(code.group(1));
 				}
@@ -51,6 +55,36 @@ public class EuskalmetProvider implements WindProvider {
 			result.add(station);
 		}
 		return result;
+	}
+
+	private boolean downloadCoords(Station station, String url) {
+		Downloader dw = new Downloader();
+		dw.setUrl(url);
+		try {
+			String xml = dw.download();
+			XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();
+			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+			parser.setInput(new StringReader(xml));
+			parser.nextTag();
+			parser.require(XmlPullParser.START_TAG, null, "stationData");
+			while(parser.next() != XmlPullParser.END_TAG) {
+				if (parser.getEventType() != XmlPullParser.START_TAG)
+            		continue;
+				String name = parser.getName();
+				/*if (parser.next() != XmlPullParser.TEXT)
+					continue;*/
+				String text = parser.getText();
+				if( name.equals("latitudeUTM") ) {
+					station.setLatitude(Double.parseDouble(text));
+				} else if( name.equals("longitudeUTM")) {
+					station.setLongitude(Double.parseDouble(text));
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
