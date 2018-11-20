@@ -5,9 +5,12 @@ import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
 import com.akrog.tolomet.io.Downloader.FakeBrowser;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class EuskalmetProvider implements WindProvider {
 	
@@ -23,7 +26,31 @@ public class EuskalmetProvider implements WindProvider {
 
 	@Override
 	public List<Station> downloadStations() {
-		return null;
+		Downloader dw = new Downloader();
+		dw.setUrl("http://opendata.euskadi.eus/contenidos/ds_meteorologicos/estaciones_meteorologicas/opendata/estaciones.json");
+		String data = dw.download().replaceAll("\n","");
+		Matcher object = PATTERN_OBJECT.matcher(data);
+		List<Station> result = new ArrayList<>();
+		while( object.find() ) {
+			Matcher field = PATTERN_FIELD.matcher(object.group(1));
+			Station station = new Station();
+			station.setRegion(183);
+			station.setProviderType(WindProviderType.Euskalmet);
+			while( field.find() ) {
+				String key = field.group(1);
+				String value = field.group(2);
+				if (key.equals("documentName"))
+					station.setName(value);
+				else if( key.equals("dataXML") ) {
+					Matcher code = PATTERN_CODE.matcher(value);
+					if( !code.find() )
+						return null;
+					station.setCode(code.group(1));
+				}
+			}
+			result.add(station);
+		}
+		return result;
 	}
 
 	@Override
@@ -164,4 +191,7 @@ public class EuskalmetProvider implements WindProvider {
 	
 	private final char separator = '.';	
 	private Downloader downloader;
+	private static final Pattern PATTERN_FIELD = Pattern.compile("\"([^\"]*)\" ?: ?\"([^\"}]*)\"");
+	private static final Pattern PATTERN_OBJECT = Pattern.compile("\\{([^\\}]*)\\}");
+	private static final Pattern PATTERN_CODE = Pattern.compile("station_([^\\/]*)\\/");
 }
