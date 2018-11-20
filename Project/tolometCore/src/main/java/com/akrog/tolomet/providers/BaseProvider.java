@@ -4,6 +4,7 @@ import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class BaseProvider implements WindProvider {
@@ -64,6 +65,11 @@ public abstract class BaseProvider implements WindProvider {
 	public int getRefresh(String code) {
 		Integer refresh = mapRefresh.get(code);
 		return refresh == null ? defRefresh : refresh;
+	}
+
+	@Override
+	public List<Station> downloadStations() {
+		return null;
 	}
 
 	private Downloader downloader;

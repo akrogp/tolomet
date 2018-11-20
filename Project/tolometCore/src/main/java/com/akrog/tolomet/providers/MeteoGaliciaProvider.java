@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -155,6 +156,11 @@ public class MeteoGaliciaProvider implements WindProvider {
 	@Override
 	public String getUserUrl(String code) {
 		return "http://www2.meteogalicia.es/galego/observacion/estacions/estacions.asp?idEst="+code;
+	}
+
+	@Override
+	public List<Station> downloadStations() {
+		return null;
 	}
 
 	private Map<String,String> urlParams;

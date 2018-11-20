@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
 
@@ -97,6 +98,11 @@ public class MeteoNavarraProvider implements WindProvider {
 	@Override
 	public String getUserUrl(String code) {
 		return "http://meteo.navarra.es/estaciones/estacion.cfm?IDEstacion="+code.substring(2);
+	}
+
+	@Override
+	public List<Station> downloadStations() {
+		return null;
 	}
 
 	private long toEpoch( String str ) {

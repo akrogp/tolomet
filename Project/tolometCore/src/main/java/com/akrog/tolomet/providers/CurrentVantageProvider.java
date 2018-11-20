@@ -5,6 +5,7 @@ import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -101,6 +102,11 @@ public class CurrentVantageProvider implements WindProvider {
 	@Override
 	public String getUserUrl(String code) {
 		return URL;
+	}
+
+	@Override
+	public List<Station> downloadStations() {
+		return null;
 	}
 
 	private Downloader downloader;
