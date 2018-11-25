@@ -71,21 +71,26 @@ public class UpdateActivity extends ProgressActivity implements AdapterView.OnIt
     }
 
     private void download() {
-        updateTask = new AsyncTask<Void,Void,List<Station>>() {
+        updateTask = new AsyncTask<Void,Void,Void>() {
             @Override
             protected void onPreExecute() {
                 beginProgress();
             }
 
             @Override
-            protected List<Station> doInBackground(Void... voids) {
-                List<Station> stations = WindProviderType.Euskalmet.getProvider().downloadStations();
-                DbTolomet.getInstance().updateStations(stations);
-                return stations;
+            protected Void doInBackground(Void... voids) {
+                for( ProviderWrapper provider : providers ) {
+                    if( !provider.isChecked() )
+                        continue;
+                    List<Station> stations = provider.getType().getProvider().downloadStations();
+                    if( stations != null )
+                        DbTolomet.getInstance().updateStations(stations);
+                }
+                return null;
             }
 
             @Override
-            protected void onPostExecute(List<Station> stations) {
+            protected void onPostExecute(Void aVoid) {
                 updateTask = null;
                 count();
                 endProgress();
@@ -207,6 +212,6 @@ public class UpdateActivity extends ProgressActivity implements AdapterView.OnIt
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     private AsyncTask<Void,Void,Map<String,DbTolomet.ProviderInfo>> countTask;
-    private AsyncTask<Void,Void,List<Station>> updateTask;
+    private AsyncTask<Void,Void,Void> updateTask;
     private List<ProviderWrapper> providers;
 }
