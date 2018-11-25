@@ -18,6 +18,7 @@ public abstract class ProgressActivity extends BaseActivity {
     public boolean beginProgress() {
         if( inProgress )
             return false;
+        lockScreenOrientation();
         ProgressBar progressBar = getProgressBar();
         progressBar.setIndeterminate(true);
         progressBar.setVisibility(View.VISIBLE);
@@ -32,6 +33,7 @@ public abstract class ProgressActivity extends BaseActivity {
         progressBar.setVisibility(View.GONE);
         inProgress = false;
         listCancel.clear();
+        unlockScreenOrientation();
         return true;
     }
 
