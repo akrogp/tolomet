@@ -1,5 +1,6 @@
 package com.akrog.tolomet.viewmodel;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -236,6 +237,29 @@ public class DbTolomet extends SQLiteAssetHelper {
         }
         cursor.close();
         return list;
+    }
+
+    public void updateStations(List<Station> stations) {
+        SQLiteDatabase lite = getWritableDatabase();
+        lite.beginTransaction();
+        try {
+            for( Station station : stations ) {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(COL_STA_ID, station.getId());
+                contentValues.put(COL_STA_CODE, station.getCode());
+                contentValues.put(COL_STA_NAME, station.getName());
+                contentValues.put(COL_STA_PROV, station.getProviderType().name());
+                contentValues.put(COL_STA_REG, station.getRegion());
+                contentValues.put(COL_STA_LAT, station.getLatitude());
+                contentValues.put(COL_STA_LON, station.getLongitude());
+                lite.insertWithOnConflict(TAB_STATION, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+            }
+            lite.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            lite.endTransaction();
+        }
     }
 
     public static class Counts {

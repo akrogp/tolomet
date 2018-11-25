@@ -32,7 +32,7 @@ public class UpdateActivity extends ProgressActivity implements AdapterView.OnIt
         setContentView(R.layout.activity_update);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        task = new AsyncTask<Void,Void,Map<String,DbTolomet.ProviderInfo>>() {
+        countTask = new AsyncTask<Void,Void,Map<String,DbTolomet.ProviderInfo>>() {
             @Override
             protected void onPreExecute() {
                 beginProgress();
@@ -45,15 +45,15 @@ public class UpdateActivity extends ProgressActivity implements AdapterView.OnIt
 
             @Override
             protected void onPostExecute(Map<String, DbTolomet.ProviderInfo> map) {
-                task = null;
+                countTask = null;
                 updateList(map);
                 endProgress();
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         addCancelListenner(() -> {
-            if( task != null ) {
-                task.cancel(true);
-                task = null;
+            if( countTask != null ) {
+                countTask.cancel(true);
+                countTask = null;
             }
         });
         updateList(null);
@@ -63,12 +63,30 @@ public class UpdateActivity extends ProgressActivity implements AdapterView.OnIt
     }
 
     private void download() {
-        new AsyncTask<Void,Void,List<Station>>() {
+        updateTask = new AsyncTask<Void,Void,List<Station>>() {
+            @Override
+            protected void onPreExecute() {
+                beginProgress();
+            }
+
             @Override
             protected List<Station> doInBackground(Void... voids) {
-                return WindProviderType.Euskalmet.getProvider().downloadStations();
+                List<Station> stations = WindProviderType.Euskalmet.getProvider().downloadStations();
+                DbTolomet.getInstance().updateStations(stations);
+                return stations;
+            }
+
+            @Override
+            protected void onPostExecute(List<Station> stations) {
+                recreate();
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        addCancelListenner(() -> {
+            if( updateTask != null ) {
+                updateTask.cancel(true);
+                updateTask = null;
+            }
+        });
     }
 
     private void updateList(Map<String, DbTolomet.ProviderInfo> map) {
@@ -190,6 +208,7 @@ public class UpdateActivity extends ProgressActivity implements AdapterView.OnIt
     }
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-    private AsyncTask<Void,Void,Map<String,DbTolomet.ProviderInfo>> task;
+    private AsyncTask<Void,Void,Map<String,DbTolomet.ProviderInfo>> countTask;
+    private AsyncTask<Void,Void,List<Station>> updateTask;
     private List<ProviderWrapper> providers;
 }

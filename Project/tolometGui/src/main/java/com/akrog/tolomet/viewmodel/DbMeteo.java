@@ -58,7 +58,7 @@ public class DbMeteo extends SQLiteAssetHelper {
             lite.setTransactionSuccessful();
         } catch (Exception e) {
         } finally {
-            lite.endTransaction();;
+            lite.endTransaction();
         }
     }
 
