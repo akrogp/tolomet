@@ -3,6 +3,8 @@ package com.akrog.tolomet;
 import com.akrog.tolomet.providers.WindProvider;
 import com.akrog.tolomet.providers.WindProviderType;
 
+import java.util.Date;
+
 
 public class Station {		
 	private final Meteo meteo = new Meteo();
@@ -11,6 +13,7 @@ public class Station {
 	private String country;
 	private double latitude, longitude;
 	private WindProviderType providerType;
+	private Date updated;
 	private boolean favorite;
 	private int special;
 	private float distance;
@@ -185,6 +188,14 @@ public class Station {
 	
 	public WindProvider getProvider() {
 		return providerType.getProvider();
+	}
+
+	public Date getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Date updated) {
+		this.updated = updated;
 	}
 
 	public boolean isFavorite() {

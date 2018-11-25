@@ -99,22 +99,16 @@ public class UpdateActivity extends ProgressActivity implements AdapterView.OnIt
     }
 
     private List<ProviderWrapper> buildWrappers(Map<String,DbTolomet.ProviderInfo> map) {
-        Date defaultDate;
-        try {
-            defaultDate = DATE_FORMAT.parse("19/11/2018 18:20:00");
-        } catch (ParseException e) {
-            e.printStackTrace();
-            defaultDate = new Date();
-        }
         List<ProviderWrapper> providers = new ArrayList<>(WindProviderType.values().length);
         for( WindProviderType type : WindProviderType.values() ) {
             ProviderWrapper wrapper = new ProviderWrapper(type);
             setIcon(wrapper);
-            wrapper.setDate(DATE_FORMAT.format(defaultDate));
             if( map != null ) {
                 DbTolomet.ProviderInfo info = map.get(type.name());
                 if (info != null) {
                     wrapper.setStations(info.getStationCount());
+                    if( info.getDate() != null )
+                        wrapper.setDate(DATE_FORMAT.format(info.getDate()));
                 }
             }
             providers.add(wrapper);

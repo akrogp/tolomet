@@ -17,6 +17,8 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -41,6 +43,7 @@ public class DbTolomet extends SQLiteAssetHelper {
     public static final String COL_STA_REG = "region";
     public static final String COL_STA_LAT = "latitude";
     public static final String COL_STA_LON = "longitude";
+    public static final String COL_STA_UPD = "updated";
     public static final String COL_REG_ID = "id";
     public static final String COL_REG_NAME = "name";
     public static final String COL_REG_COUN = "country";
@@ -155,14 +158,22 @@ public class DbTolomet extends SQLiteAssetHelper {
             providers[i] = types[i].name();
         SQLiteDatabase lite = getReadableDatabase();
         Cursor cursor = lite.rawQuery(
-            "SELECT provider, COUNT(*) FROM Station WHERE provider IN (" +
+            "SELECT provider, updated, COUNT(*) FROM Station WHERE provider IN (" +
             TextUtils.join(",", Collections.nCopies(providers.length, "?")) +
             ") GROUP BY provider",providers);
         Map<String, ProviderInfo> result = new HashMap<>();
         while( cursor.moveToNext() ) {
             ProviderInfo info = new ProviderInfo();
             String provider = cursor.getString(0);
-            info.setStationCount(cursor.getInt(1));
+            String date = cursor.getString(1);
+            if( date != null ) {
+                try {
+                    info.setDate(DATE_FORMAT.parse(date));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+            info.setStationCount(cursor.getInt(2));
             result.put(provider, info);
         }
         cursor.close();
@@ -240,6 +251,7 @@ public class DbTolomet extends SQLiteAssetHelper {
     }
 
     public void updateStations(List<Station> stations) {
+        Date now = new Date();
         SQLiteDatabase lite = getWritableDatabase();
         lite.beginTransaction();
         try {
@@ -252,6 +264,9 @@ public class DbTolomet extends SQLiteAssetHelper {
                 contentValues.put(COL_STA_REG, station.getRegion());
                 contentValues.put(COL_STA_LAT, station.getLatitude());
                 contentValues.put(COL_STA_LON, station.getLongitude());
+                if( station.getUpdated() == null )
+                    station.setUpdated(now);
+                contentValues.put(COL_STA_UPD, DATE_FORMAT.format(station.getUpdated()));
                 lite.insertWithOnConflict(TAB_STATION, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
             }
             lite.setTransactionSuccessful();
@@ -301,7 +316,8 @@ public class DbTolomet extends SQLiteAssetHelper {
     }
 
     private static final String DB_NAME = "Tolomet.db";
-    private static final int DB_VERSION = 8;
+    private static final int DB_VERSION = 9;
     private static DbTolomet instance;
     private List<Country> countries;
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 }
