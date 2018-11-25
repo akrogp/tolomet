@@ -32,6 +32,24 @@ public class UpdateActivity extends ProgressActivity implements AdapterView.OnIt
         setContentView(R.layout.activity_update);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        addCancelListenner(() -> {
+            if( countTask != null ) {
+                countTask.cancel(true);
+                countTask = null;
+            }
+            if( updateTask != null ) {
+                updateTask.cancel(true);
+                updateTask = null;
+            }
+        });
+        count();
+        updateList(null);
+        updateFab();
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(view -> download());
+    }
+
+    private void count() {
         countTask = new AsyncTask<Void,Void,Map<String,DbTolomet.ProviderInfo>>() {
             @Override
             protected void onPreExecute() {
@@ -50,16 +68,6 @@ public class UpdateActivity extends ProgressActivity implements AdapterView.OnIt
                 endProgress();
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        addCancelListenner(() -> {
-            if( countTask != null ) {
-                countTask.cancel(true);
-                countTask = null;
-            }
-        });
-        updateList(null);
-        updateFab();
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(view -> download());
     }
 
     private void download() {
@@ -78,15 +86,11 @@ public class UpdateActivity extends ProgressActivity implements AdapterView.OnIt
 
             @Override
             protected void onPostExecute(List<Station> stations) {
-                recreate();
+                updateTask = null;
+                count();
+                endProgress();
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        addCancelListenner(() -> {
-            if( updateTask != null ) {
-                updateTask.cancel(true);
-                updateTask = null;
-            }
-        });
     }
 
     private void updateList(Map<String, DbTolomet.ProviderInfo> map) {
