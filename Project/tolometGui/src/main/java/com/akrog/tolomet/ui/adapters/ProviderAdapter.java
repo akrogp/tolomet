@@ -50,6 +50,7 @@ public class ProviderAdapter extends ArrayAdapter<ProviderWrapper> {
 
         textView = itemView.findViewById(R.id.date);
         textView.setText(provider.getDate());
+        textView.setVisibility(provider.getDate() == null ? View.GONE : View.VISIBLE);
 
         textView = itemView.findViewById(R.id.count);
         textView.setVisibility(provider.getStations() < 0 ? View.GONE : View.VISIBLE);
