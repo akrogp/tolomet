@@ -4,10 +4,13 @@ import com.akrog.tolomet.Header;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
 import com.akrog.tolomet.io.Downloader.FakeBrowser;
+import com.ibm.util.CoordinateConversion;
 
 import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -44,7 +47,7 @@ public class EuskalmetProvider implements WindProvider {
 				String key = field.group(1);
 				String value = field.group(2);
 				if (key.equals("documentName"))
-					station.setName(value);
+					station.setName(value.toUpperCase());
 				else if( key.equals("dataXML") ) {
 					Matcher code = PATTERN_CODE.matcher(value);
 					if( !code.find() || !downloadCoords(station, value))
@@ -52,14 +55,24 @@ public class EuskalmetProvider implements WindProvider {
 					station.setCode(code.group(1));
 				}
 			}
+			utm2ll(station);
 			result.add(station);
 		}
 		return result;
 	}
 
+	private void utm2ll(Station station) {
+		String utm = String.format("30 T %f %f", station.getLongitude(), station.getLatitude());
+		CoordinateConversion conv = new CoordinateConversion();
+		double[] ll = conv.utm2LatLon(utm);
+		station.setLatitude(ll[0]);
+		station.setLongitude(ll[1]);
+	}
+
 	private boolean downloadCoords(Station station, String url) {
 		Downloader dw = new Downloader();
 		dw.setUrl(url);
+		int fields = 2;
 		try {
 			String xml = dw.download();
 			XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();
@@ -67,24 +80,29 @@ public class EuskalmetProvider implements WindProvider {
 			parser.setInput(new StringReader(xml));
 			parser.nextTag();
 			parser.require(XmlPullParser.START_TAG, null, "stationData");
-			while(parser.next() != XmlPullParser.END_TAG) {
+			while(fields > 0 && parser.next() != XmlPullParser.END_DOCUMENT) {
 				if (parser.getEventType() != XmlPullParser.START_TAG)
             		continue;
 				String name = parser.getName();
-				/*if (parser.next() != XmlPullParser.TEXT)
-					continue;*/
-				String text = parser.getText();
 				if( name.equals("latitudeUTM") ) {
-					station.setLatitude(Double.parseDouble(text));
+					station.setLatitude(readDouble(parser));
+					fields--;
 				} else if( name.equals("longitudeUTM")) {
-					station.setLongitude(Double.parseDouble(text));
+					station.setLongitude(readDouble(parser));
+					fields--;
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
-		return true;
+		return fields == 0;
+	}
+
+	private Double readDouble(XmlPullParser parser) throws IOException, XmlPullParserException {
+		if (parser.next() == XmlPullParser.TEXT)
+			return Double.parseDouble(parser.getText());
+		return null;
 	}
 
 	@Override
