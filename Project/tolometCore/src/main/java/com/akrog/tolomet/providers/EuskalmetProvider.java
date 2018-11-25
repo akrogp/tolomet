@@ -47,12 +47,12 @@ public class EuskalmetProvider implements WindProvider {
 				String key = field.group(1);
 				String value = field.group(2);
 				if (key.equals("documentName"))
-					station.setName(value.toUpperCase());
+					station.setName(value);
 				else if( key.equals("dataXML") ) {
 					Matcher code = PATTERN_CODE.matcher(value);
 					if( !code.find() || !downloadCoords(station, value))
 						return null;
-					station.setCode(code.group(1));
+					station.setCode(code.group(1).toUpperCase());
 				}
 			}
 			utm2ll(station);
