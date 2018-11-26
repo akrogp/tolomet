@@ -2,10 +2,12 @@ package com.akrog.tolomet.providers;
 
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
+import com.akrog.tolomet.io.ShpDownloader;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -102,6 +104,20 @@ public class MeteoNavarraProvider implements WindProvider {
 
 	@Override
 	public List<Station> downloadStations() {
+		ShpDownloader shp = new ShpDownloader();
+		shp.setUrl("http://idena.navarra.es/descargas/METEOR_Sym_EstMetAuto.zip");
+		String data = shp.download();
+		String[] rows = data.split("\n");
+		List<Station> stations = new ArrayList<>(rows.length);
+		for( String row : rows ) {
+			String[] cols = row.split("\t");
+			if( !cols[2].endsWith("GN") )
+				continue;
+			Station station = new Station();
+			station.setName(cols[2].replaceAll(" GN", ""));
+			stations.add(station);
+		}
+		//return stations;
 		return null;
 	}
 
