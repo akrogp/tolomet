@@ -2,7 +2,7 @@ package com.akrog.tolomet.providers;
 
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
-import com.akrog.tolomet.io.ShpDownloader;
+import com.ibm.util.CoordinateConversion;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MeteoNavarraProvider implements WindProvider {
@@ -104,21 +105,60 @@ public class MeteoNavarraProvider implements WindProvider {
 
 	@Override
 	public List<Station> downloadStations() {
-		ShpDownloader shp = new ShpDownloader();
-		shp.setUrl("http://idena.navarra.es/descargas/METEOR_Sym_EstMetAuto.zip");
-		String data = shp.download();
-		String[] rows = data.split("\n");
-		List<Station> stations = new ArrayList<>(rows.length);
-		for( String row : rows ) {
-			String[] cols = row.split("\t");
-			if( !cols[2].endsWith("GN") )
+		List<Station> stations = new ArrayList<>();
+		Downloader dw = new Downloader();
+		dw.setUrl("http://meteo.navarra.es/estaciones/mapadeestaciones.cfm");
+		String data = dw.download("relieve");
+		Matcher matcher = LAYER_PATTERN.matcher(data);
+		while( matcher.find() ) {
+			if( matcher.group(3).contains("MAN") )
+				continue;
+			if( !matcher.group(5).endsWith("GN") )
 				continue;
 			Station station = new Station();
-			station.setName(cols[2].replaceAll(" GN", ""));
+			station.setName(matcher.group(5).replaceAll(" GN", ""));
+			station.setCode("GN"+matcher.group(1));
+			station.setCountry("ES");
+			station.setRegion(182);
+			station.setProviderType(WindProviderType.MeteoNavarra);
+			if( !downloadCoords(station) )
+				return null;
+			utm2ll(station);
 			stations.add(station);
 		}
-		//return stations;
-		return null;
+		return stations;
+	}
+
+	private void utm2ll(Station station) {
+		String utm = String.format("30 T %f %f", station.getLongitude(), station.getLatitude());
+		CoordinateConversion conv = new CoordinateConversion();
+		double[] ll = conv.utm2LatLon(utm);
+		station.setLatitude(ll[0]);
+		station.setLongitude(ll[1]);
+	}
+
+	private boolean downloadCoords(Station station) {
+    	Downloader dw = new Downloader();
+    	dw.setUrl("http://meteo.navarra.es/estaciones/estacion.cfm");
+    	dw.addParam("IDEstacion", station.getCode().substring(2));
+    	String[] lines = dw.download("fotos").split("\n");
+    	int fields = 2;
+    	for( String line : lines ) {
+    		if( line.contains("X:") ) {
+				station.setLongitude(Integer.parseInt(line.split("X:")[1]));
+				fields--;
+			} else if (line.contains("Y:") ) {
+    			StringBuilder sb = new StringBuilder();
+    			String str = line.split("Y:")[1];
+    			for( int i = 0; i < str.length() && Character.isDigit(str.charAt(i)); i++ )
+    				sb.append(str.charAt(i));
+    			station.setLatitude(Integer.parseInt(sb.toString()));
+    			fields--;
+			}
+			if( fields <= 0 )
+				break;
+		}
+		return fields == 0;
 	}
 
 	private long toEpoch( String str ) {
@@ -135,6 +175,7 @@ public class MeteoNavarraProvider implements WindProvider {
 	}
 
 	private static final Pattern END_PATTERN = Pattern.compile("[a-zA-Z]");
+    private static final Pattern LAYER_PATTERN = Pattern.compile("doLayer1\\((.*),(.*),'(.*)','(.*)','(.*)',(.*),(.*), ?(.*), ?(.*)\\);");
 	private final char separator = '.';
 	private Downloader downloader;
     private final DateFormat df;
