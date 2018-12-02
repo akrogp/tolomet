@@ -4,8 +4,12 @@ import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
 import com.akrog.tolomet.io.ExcelDownloader;
 
+import java.io.BufferedReader;
+import java.io.StringReader;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
 
 public class LaRiojaProvider implements WindProvider {
@@ -54,6 +58,32 @@ public class LaRiojaProvider implements WindProvider {
 
 	@Override
 	public List<Station> downloadStations() {
+		Downloader dw = new Downloader();
+		dw.setUrl("https://ias1.larioja.org/opendata/download?r=Y2Q9OTR8Y2Y9MDM=");
+		String csv = dw.download(null, "ISO-8859-15");
+		try(BufferedReader br = new BufferedReader(new StringReader(csv))) {
+			Set<String> set = new HashSet<>();
+			String line;
+			while( (line=br.readLine()) != null ) {
+				String[] fields = line.split(";");
+				String code = fields[0].trim();
+				if( !Character.isDigit(code.charAt(0)) )
+					continue;
+				code = Integer.parseInt(code)+"";
+				if( set.contains(code) )
+					continue;
+				set.add(code);
+				Station station = new Station();
+				station.setCode(code);
+				station.setName(fields[1].trim());
+				station.setRegion(179);
+				station.setCountry("ES");
+				station.setProviderType(WindProviderType.LaRioja);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 		return null;
 	}
 

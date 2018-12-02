@@ -42,14 +42,18 @@ public class Downloader {
     }
 	
 	public String download() {
-		return download(null);
+		return download(null, null);
 	}
 
-    public String download( final String stop ) {
+	public String download( final String stop) {
+    	return download(stop, null);
+	}
+
+    public String download( final String stop, final String charset ) {
 		task = new TimeoutTask<String>(timeout, retries) {
 			@Override
 			public String call() throws Exception {
-				return rawDownload(stop);
+				return rawDownload(stop, charset);
 			}
 		};
         String result = "";
@@ -68,7 +72,7 @@ public class Downloader {
         return error;
     }
 
-	private String rawDownload( String stop ) {
+	private String rawDownload( String stop, String charset ) {
 		/*CookieManager manager = new CookieManager();
         manager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
         CookieHandler.setDefault(manager);*/
@@ -93,7 +97,7 @@ public class Downloader {
             InputStream is = con.getInputStream();
             if( isGzipped() )
                 is = new GZIPInputStream(is);
-    		result = parseInput(is,stop);
+    		result = parseInput(is, stop, charset);
     	} catch( Exception e ) {
     		e.printStackTrace();
     		//onCancelled();
@@ -141,8 +145,12 @@ public class Downloader {
 		return cancelled;
 	}
 	
-	protected String parseInput( InputStream is, String stop ) throws Exception {		
-		BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+	protected String parseInput( InputStream is, String stop, String charset ) throws Exception {
+		BufferedReader rd;
+		if( charset == null )
+			rd = new BufferedReader(new InputStreamReader(is));
+		else
+			rd = new BufferedReader(new InputStreamReader(is, charset));
 		StringBuilder builder = new StringBuilder();
 		String line;		
 		while( (line=rd.readLine()) != null ) {
