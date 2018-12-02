@@ -5,7 +5,7 @@ public enum WindProviderType {
 	Euskalmet("EU", new EuskalmetProvider(), WindProviderQuality.Good, true),
 	MeteoNavarra("GN", new MeteoNavarraProvider(), WindProviderQuality.Good, true),
 	Aemet("AE", new AemetProvider(), WindProviderQuality.Poor, false),
-	LaRioja("RI", new LaRiojaProvider(), WindProviderQuality.Good, false),
+	LaRioja("RI", new LaRiojaProvider(), WindProviderQuality.Good, true),
 	MeteoGalicia("GA", new MeteoGaliciaProvider(), WindProviderQuality.Good, false),
 	RedVigia("RV", new RedVigiaProvider(), WindProviderQuality.Poor, false),
 	Meteocat("CA", new MeteocatProvider(), WindProviderQuality.Medium, false),

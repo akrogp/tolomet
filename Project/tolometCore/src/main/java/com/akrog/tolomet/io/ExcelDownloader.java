@@ -13,7 +13,7 @@ public class ExcelDownloader extends Downloader {
 	}
 
 	@Override
-	protected String parseInput(java.io.InputStream is, String stop ) throws Exception {
+	protected String parseInput(java.io.InputStream is, String stop, String charset ) throws Exception {
 		Workbook workbook = Workbook.getWorkbook(is);
 		Sheet sheet = workbook.getSheet(0);
 		int x, y;
