@@ -65,6 +65,7 @@ public class UpdateActivity extends ProgressActivity implements AdapterView.OnIt
             protected void onPostExecute(Map<String, DbTolomet.ProviderInfo> map) {
                 countTask = null;
                 updateList(map);
+                updateFab();
                 endProgress();
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
