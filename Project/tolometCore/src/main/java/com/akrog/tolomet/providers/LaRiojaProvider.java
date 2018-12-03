@@ -1,16 +1,20 @@
 package com.akrog.tolomet.providers;
 
 import com.akrog.tolomet.Station;
+import com.akrog.tolomet.Utils;
 import com.akrog.tolomet.io.Downloader;
 import com.akrog.tolomet.io.ExcelDownloader;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LaRiojaProvider implements WindProvider {
 	@Override
@@ -58,6 +62,7 @@ public class LaRiojaProvider implements WindProvider {
 
 	@Override
 	public List<Station> downloadStations() {
+		List<Station> stations = new ArrayList<>();
 		Downloader dw = new Downloader();
 		dw.setUrl("https://ias1.larioja.org/opendata/download?r=Y2Q9OTR8Y2Y9MDM=");
 		String csv = dw.download(null, "ISO-8859-15");
@@ -79,12 +84,28 @@ public class LaRiojaProvider implements WindProvider {
 				station.setRegion(179);
 				station.setCountry("ES");
 				station.setProviderType(WindProviderType.LaRioja);
+				if( !downloadCoords(station) )
+					return null;
+				Utils.utm2ll(station);
+				stations.add(station);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
-		return null;
+		return stations;
+	}
+
+	private boolean downloadCoords(Station station) {
+		Downloader dw = new Downloader();
+		dw.setUrl(getInfoUrl(station.getCode()));
+		String data = dw.download();
+		Matcher matcher = COORDS_PATTERN.matcher(data);
+		if( !matcher.find() )
+			return false;
+		station.setLatitude(Double.parseDouble(matcher.group(2).replaceAll("\\.", "")));
+		station.setLongitude(Double.parseDouble(matcher.group(1).replaceAll("\\.", "")));
+		return true;
 	}
 
 	private String download(String code, Calendar now, int codigoP ) {
@@ -179,6 +200,7 @@ public class LaRiojaProvider implements WindProvider {
 	    return cal.getTimeInMillis();
 	}
 
+	private static final Pattern COORDS_PATTERN = Pattern.compile(">([0-9\\.]*)/([0-9\\.]*)<");
 	private final char separator = '.';
 	private Downloader downloader;
 }
