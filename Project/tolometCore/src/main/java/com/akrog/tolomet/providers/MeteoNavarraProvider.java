@@ -1,6 +1,7 @@
 package com.akrog.tolomet.providers;
 
 import com.akrog.tolomet.Station;
+import com.akrog.tolomet.Utils;
 import com.akrog.tolomet.io.Downloader;
 import com.ibm.util.CoordinateConversion;
 
@@ -123,18 +124,10 @@ public class MeteoNavarraProvider implements WindProvider {
 			station.setProviderType(WindProviderType.MeteoNavarra);
 			if( !downloadCoords(station) )
 				return null;
-			utm2ll(station);
+			Utils.utm2ll(station);
 			stations.add(station);
 		}
 		return stations;
-	}
-
-	private void utm2ll(Station station) {
-		String utm = String.format("30 T %f %f", station.getLongitude(), station.getLatitude());
-		CoordinateConversion conv = new CoordinateConversion();
-		double[] ll = conv.utm2LatLon(utm);
-		station.setLatitude(ll[0]);
-		station.setLongitude(ll[1]);
 	}
 
 	private boolean downloadCoords(Station station) {

@@ -2,6 +2,7 @@ package com.akrog.tolomet.providers;
 
 import com.akrog.tolomet.Header;
 import com.akrog.tolomet.Station;
+import com.akrog.tolomet.Utils;
 import com.akrog.tolomet.io.Downloader;
 import com.akrog.tolomet.io.Downloader.FakeBrowser;
 import com.ibm.util.CoordinateConversion;
@@ -55,18 +56,10 @@ public class EuskalmetProvider implements WindProvider {
 					station.setCode(code.group(1).toUpperCase());
 				}
 			}
-			utm2ll(station);
+			Utils.utm2ll(station);
 			result.add(station);
 		}
 		return result;
-	}
-
-	private void utm2ll(Station station) {
-		String utm = String.format("30 T %f %f", station.getLongitude(), station.getLatitude());
-		CoordinateConversion conv = new CoordinateConversion();
-		double[] ll = conv.utm2LatLon(utm);
-		station.setLatitude(ll[0]);
-		station.setLongitude(ll[1]);
 	}
 
 	private boolean downloadCoords(Station station, String url) {
