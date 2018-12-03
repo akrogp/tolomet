@@ -13,6 +13,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MeteocatProvider implements WindProvider {
 	@Override
@@ -177,7 +179,51 @@ public class MeteocatProvider implements WindProvider {
 
 	@Override
 	public List<Station> downloadStations() {
-		return null;
+		List<Station> stations = new ArrayList<>();
+		Downloader dw = new Downloader();
+		dw.setUrl("http://www.meteo.cat/observacions/llistat-xema");
+		String data = dw.download();
+		int tr1 = -1, tr2;
+		while( (tr1 = data.indexOf("<tr>", tr1+1)) >= 0 && (tr2 = data.indexOf("</tr>", tr1+1)) >= 0 ) {
+			int td1 = tr1;
+			Station station = new Station(null, -1);
+			int i = 0;
+			while( station != null && (td1 = data.indexOf("<td>", td1+1)) >= 0 && td1 < tr2 ) {
+				int td2 = data.indexOf("</td>", td1+1);
+				String cell = data.substring(td1 + 4, td2);
+				switch( i ) {
+					case 2:	// Name and code
+						int a1 = cell.indexOf(">");
+						int c1 = cell.indexOf(" [");
+						int c2 = cell.indexOf("]");
+						if( a1 < 0 || c1 < 0 || c2 < 0 ) {
+							station = null;
+							break;
+						}
+						station.setName(cell.substring(a1+1, c1));
+						station.setCode(cell.substring(c1+2, c2));
+						break;
+					case 3:	// Latitude
+						station.setLatitude(Double.parseDouble(cell.replace(',', '.')));
+						break;
+					case 4:	// Longitude
+						station.setLongitude(Double.parseDouble(cell.replace(',', '.')));
+						break;
+					case 8:	// Status
+						if( !cell.equalsIgnoreCase("Operativa") )
+							station = null;
+						break;
+				}
+				i++;
+			}
+			if( station == null || station.getName() == null )
+				continue;
+			station.setCountry("ES");
+			station.setRegion(173);
+			station.setProviderType(WindProviderType.Meteocat);
+			stations.add(station);
+		}
+		return stations;
 	}
 
 	private Downloader downloader; 
