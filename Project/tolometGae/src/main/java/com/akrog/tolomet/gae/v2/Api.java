@@ -38,7 +38,7 @@ public class Api {
     }
 
     private Notification checkAppVersion(int appVersion, String lang) {
-        if( appVersion >= 601 )
+        if( appVersion >= 610 )
             return null;
         Notification info = new Notification();
 
@@ -164,6 +164,12 @@ public class Api {
             addImprovement(info, lang,
                     "Mejorada actualización de widgets",
                     "Improved widget support");
+        }
+        if( appVersion < 610 ) {
+            info.setAppVersion("6.1");
+            addImprovement(info, lang,
+                    "Añadidas nuevas estaciones del norte de España",
+                    "Included new stations from the north of Spain");
         }
 
         return info;
