@@ -5,5 +5,5 @@
     android:configure="com.akrog.tolomet.ui.widget.MediumWidgetSettingsActivity"
     android:minHeight="62dp"
     android:minWidth="110dp"
-    android:updatePeriodMillis="0" >
+    android:updatePeriodMillis="3600000" >
 </appwidget-provider>
