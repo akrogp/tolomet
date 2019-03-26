@@ -10,12 +10,11 @@ import android.support.v4.os.AsyncTaskCompat;
 
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Station;
-import com.akrog.tolomet.viewmodel.AppSettings;
-import com.akrog.tolomet.viewmodel.DbMeteo;
-import com.akrog.tolomet.gae.Updater;
 import com.akrog.tolomet.ui.presenters.MyCharts;
 import com.akrog.tolomet.ui.presenters.MySummary;
 import com.akrog.tolomet.ui.presenters.Presenter;
+import com.akrog.tolomet.viewmodel.AppSettings;
+import com.akrog.tolomet.viewmodel.DbMeteo;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,7 +37,7 @@ public class ChartsActivity extends ToolbarActivity {
 				R.id.fly_item,
 				R.id.help_item, R.id.settings_item, R.id.update_item, R.id.about_item, R.id.report_item);
 
-        updater.initialize(this);
+        //updater.initialize(this);
         presenters.add(charts);
         presenters.add(summary);
         for( Presenter presenter : presenters)
@@ -269,7 +268,7 @@ public class ChartsActivity extends ToolbarActivity {
             model.getCurrentStation().getMeteo().clear(cal.getTimeInMillis());
         }
         redraw();
-        updater.start();
+        //updater.start();
     }
 
 	@Override
@@ -294,7 +293,7 @@ public class ChartsActivity extends ToolbarActivity {
 	private final List<Presenter> presenters = new ArrayList<Presenter>();
 	private final MySummary summary = new MySummary();
 	private final MyCharts charts = new MyCharts(summary);
-	private final Updater updater = new Updater();
+	//private final Updater updater = new Updater();
 	private final Handler handler = new Handler();
 	private Runnable timer;
     private AsyncTask<Void, Void, Station> thread;
