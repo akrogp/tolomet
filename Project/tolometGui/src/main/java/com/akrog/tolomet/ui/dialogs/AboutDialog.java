@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.akrog.tolomet.BuildConfig;
 import com.akrog.tolomet.R;
+import com.akrog.tolomet.viewmodel.DbTolomet;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,7 +35,11 @@ public class AboutDialog extends Dialog {
 		tv = (TextView)findViewById(R.id.info_text);
 		String versionName = BuildConfig.VERSION_NAME;
 		//Log.i("ChartsActivity",GoogleApiAvailability.getInstance().getOpenSourceSoftwareLicenseInfo(context));
-		tv.setText(Html.fromHtml(readRawTextFile(R.raw.info).replaceAll("\\$VER\\$", versionName)));
+		String info =
+			readRawTextFile(R.raw.info)
+			.replaceAll("\\$VER\\$", versionName)
+			.replaceAll("\\$DB\\$", String.valueOf(DbTolomet.getInstance().getVersion()));
+		tv.setText(Html.fromHtml(info));
 		tv.setLinkTextColor(Color.WHITE);
 		Linkify.addLinks(tv, Linkify.ALL);
 	}
