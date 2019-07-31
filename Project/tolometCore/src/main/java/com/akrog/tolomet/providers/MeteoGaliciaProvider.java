@@ -70,25 +70,32 @@ public class MeteoGaliciaProvider implements WindProvider {
 				continue;
 			date = toEpoch(element.getAttribute("Data"));
 			for( XmlElement meas : element.getSubElements() ) {					
-				String attr = meas.getAttribute("ID");
-				if( attr.equals("82") || attr.equals("10124") ) {
+				//String attr = meas.getAttribute("ID");
+				String attr = meas.getAttribute("Variable").toLowerCase();
+				//if( attr.equals("82") || attr.equals("10124") ) {
+                if( attr.startsWith("direcc") ) {
 					val = Integer.parseInt(getContent(meas));
 					station.getMeteo().getWindDirection().put(date, val);
-				} else if( attr.equals("81") ) {
+				//} else if( attr.equals("81") ) {
+                } else if( attr.startsWith("veloci") ) {
 					station.getMeteo().getWindSpeedMed().put(date, getSpeed(meas));
-				} else if( attr.equals("10003") ) {
+				//} else if( attr.equals("10003") ) {
+                } else if( attr.startsWith("refacho") ) {
 					station.getMeteo().getWindSpeedMax().put(date, getSpeed(meas));
-				} else if( attr.equals("86") ) {
+				//} else if( attr.equals("86") ) {
+                } else if( attr.startsWith("humi") ) {
 					try {
 						val = Float.parseFloat(getContent(meas));
 						station.getMeteo().getAirHumidity().put(date, val);
 					} catch( Exception e ) {}
-				} else if( attr.equals("83") ) {
+				//} else if( attr.equals("83") ) {
+                } else if( attr.startsWith("temp") ) {
 					try {
 						val = Float.parseFloat(getContent(meas));
 						station.getMeteo().getAirTemperature().put(date, val);
 					} catch( Exception e ) {}
-				} else if( attr.equals("10002") ) {
+				//} else if( attr.equals("10002") ) {
+                } else if( attr.startsWith("pres") ) {
 					try {
 						val = Float.parseFloat(getContent(meas));
 						station.getMeteo().getAirPressure().put(date, val);
