@@ -1,5 +1,5 @@
-<b>Tolomet</b> (v$VER$)<br/>
-Copyright 2012-2017, Gorka Prieto<br/><br/>
+<b>Tolomet</b> (v$VER$ - db$DB$)<br/>
+Copyright 2012-2019, Gorka Prieto<br/><br/>
 Thanks to:<br/>
 - Fran Echarte (Euskara translator)<br/>
 - Jean Lombart (French translator)<br/>
