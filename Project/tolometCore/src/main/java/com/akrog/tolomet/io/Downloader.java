@@ -11,7 +11,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.zip.GZIPInputStream;
 
@@ -22,6 +24,7 @@ public class Downloader {
 	private String query;
 	private String method;
 	private final List<Entry<String,Object>> params = new ArrayList<Entry<String,Object>>();
+	private final Map<String,String> headers = new HashMap<>();
 	protected boolean usingLinebreak = true;
 	private boolean cancelled = false;
     private boolean gzipped = false;
@@ -94,6 +97,7 @@ public class Downloader {
     			con = (HttpURLConnection)url.openConnection();
     		}
     		applyBrowserProperties(con);
+    		applyHeaders(con);
             InputStream is = con.getInputStream();
             if( isGzipped() )
                 is = new GZIPInputStream(is);
@@ -107,8 +111,14 @@ public class Downloader {
         }
         return result;
 	}
-	
-	public void setBrowser( FakeBrowser fakeBrowser ) {
+
+    private void applyHeaders(HttpURLConnection con) {
+        for( Entry<String, String> header : headers.entrySet() ) {
+            con.setRequestProperty(header.getKey(), header.getValue());
+        }
+    }
+
+    public void setBrowser( FakeBrowser fakeBrowser ) {
 		this.fakeBrowser = fakeBrowser;
 	}
 	
@@ -196,6 +206,10 @@ public class Downloader {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public void setHeader(String name, String value) {
+    	headers.put(name, value);
 	}
 	
 	public void addParam( final String name, final Object value ) {
