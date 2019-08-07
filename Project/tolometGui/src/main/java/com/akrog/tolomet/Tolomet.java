@@ -12,7 +12,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.multidex.MultiDexApplication;
+
+import androidx.multidex.MultiDexApplication;
+
+import com.google.firebase.FirebaseApp;
 
 import java.io.File;
 
@@ -25,6 +28,7 @@ public class Tolomet extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
+        FirebaseApp.initializeApp(context);
     }
 
     public static Context getAppContext() {

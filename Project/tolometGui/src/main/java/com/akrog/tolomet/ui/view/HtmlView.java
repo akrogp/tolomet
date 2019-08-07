@@ -1,9 +1,10 @@
 package com.akrog.tolomet.ui.view;
 
 import android.content.Context;
-import android.support.v7.widget.AppCompatTextView;
 import android.text.Html;
 import android.util.AttributeSet;
+
+import androidx.appcompat.widget.AppCompatTextView;
 
 /**
  * Created by gorka on 4/11/16.

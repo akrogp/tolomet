@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v4.os.AsyncTaskCompat;
 import android.util.Log;
 
 import com.akrog.tolomet.BuildConfig;
@@ -71,7 +70,7 @@ public class Updater {
                 Log.d(TAG,"cancelled");
             }
         };
-        AsyncTaskCompat.executeParallel(task);
+        task.execute();
     }
 
     private Long checkStamp() {

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.os.AsyncTaskCompat;
 import android.widget.Toast;
 
 import com.akrog.tolomet.ui.activities.ToolbarActivity;
@@ -378,6 +377,6 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
                 downloader.cancel(true);
             }
         });
-        AsyncTaskCompat.executeParallel(downloader);
+        downloader.execute();
 	}
 }

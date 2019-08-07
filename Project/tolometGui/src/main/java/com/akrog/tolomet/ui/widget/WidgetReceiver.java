@@ -6,7 +6,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 
 import com.akrog.tolomet.Tolomet;
 import com.akrog.tolomet.viewmodel.WidgetSettings;

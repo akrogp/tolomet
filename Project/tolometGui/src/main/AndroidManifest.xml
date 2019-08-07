@@ -13,7 +13,8 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".ui.activities.ChartsActivity"
             android:label="@string/title_activity_tolomet"
@@ -139,7 +140,7 @@
 
         <!-- Share Files -->
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="com.akrog.tolomet.ui.FileProvider"
             android:exported="false"
             android:grantUriPermissions="true">

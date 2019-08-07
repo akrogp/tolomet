@@ -8,9 +8,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.os.AsyncTaskCompat;
+
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 
 import com.akrog.tolomet.R;
 
@@ -53,7 +53,7 @@ public class WidgetService extends Service {
                 task = null;
             }
         };
-        AsyncTaskCompat.executeParallel(task);
+        task.execute();
         return super.onStartCommand(intent, flags, startId);
     }
 
