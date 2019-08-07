@@ -20,7 +20,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <android.support.v7.widget.GridLayout
+        <androidx.gridlayout.widget.GridLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:useDefaultMargins="true"
@@ -107,7 +107,7 @@
             <com.akrog.tolomet.ui.view.HtmlView
                 android:layout_width="0dp" app:layout_gravity="fill_horizontal"
                 android:text="@string/help_widget"/>
-        </android.support.v7.widget.GridLayout>
+        </androidx.gridlayout.widget.GridLayout>
     </ScrollView>
 
 </LinearLayout>

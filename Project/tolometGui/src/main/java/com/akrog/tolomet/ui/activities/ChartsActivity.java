@@ -1,12 +1,12 @@
 package com.akrog.tolomet.ui.activities;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.os.AsyncTaskCompat;
 
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.Station;
@@ -64,7 +64,8 @@ public class ChartsActivity extends ToolbarActivity {
         super.onStop();
     }
 
-    @Override
+    @SuppressLint("MissingSuperCall")
+	@Override
     protected void onNewIntent(Intent intent) {
         if( intent != null )
             setIntent(intent);
@@ -154,7 +155,7 @@ public class ChartsActivity extends ToolbarActivity {
 				//logFile("onCancelled2");
             }
         };
-        AsyncTaskCompat.executeParallel(thread);
+        thread.execute();
 	}
 
 	/*private void logFile(String msg) {

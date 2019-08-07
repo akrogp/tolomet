@@ -2,8 +2,7 @@ package com.akrog.tolomet.ui.activities;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.NavUtils;
+import androidx.core.app.NavUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,12 +14,11 @@ import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolomet.ui.adapters.ProviderAdapter;
 import com.akrog.tolomet.viewmodel.DbTolomet;
 import com.akrog.tolomet.viewmodel.ProviderWrapper;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
