@@ -31,10 +31,10 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data
-                    android:host="tolomet-gae.appspot.com"
+                    android:host="tolomet.page.link"
                     android:scheme="http"/>
                 <data
-                    android:host="tolomet-gae.appspot.com"
+                    android:host="tolomet.page.link"
                     android:scheme="https"/>
             </intent-filter>
         </activity>

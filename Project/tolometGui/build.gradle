@@ -48,7 +48,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:' + playVer
     //implementation "android.arch.lifecycle:extensions:1.1.1"
     implementation 'com.google.firebase:firebase-core:' + fireVer
-    implementation 'com.google.firebase:firebase-invites:' + fireVer
+    //implementation 'com.google.firebase:firebase-invites:' + fireVer
+    implementation 'com.google.firebase:firebase-dynamic-links:' + fireVer
 
     //implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
     implementation 'com.github.castorflex.smoothprogressbar:library:1.1.0'
