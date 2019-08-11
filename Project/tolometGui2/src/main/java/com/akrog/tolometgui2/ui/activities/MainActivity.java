@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -14,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.akrog.tolometgui2.BuildConfig;
 import com.akrog.tolometgui2.R;
+import com.akrog.tolometgui2.ui.adapters.SpinnerAdapter;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity
@@ -23,8 +25,12 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        ((Spinner)toolbar.findViewById(R.id.spinner)).setAdapter(new SpinnerAdapter(this));
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
