@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+<string-array name="pref_minSpeedEntries" tools:ignore="MissingTranslation">
+    <item>5 km/h</item>
+    <item>10 km/h</item>
+    <item>15 km/h</item>
+</string-array>
+<string-array name="pref_minSpeedValues" tools:ignore="MissingTranslation">
+    <item>5</item>
+    <item>10</item>
+    <item>15</item>
+</string-array>
+<string-array name="pref_speedUnitEntries"  tools:ignore="MissingTranslation">
+    <item>km/h</item>
+    <item>m/s</item>
+    <item>knot</item>
+</string-array>
+<string-array name="pref_speedUnitValues" tools:ignore="MissingTranslation">
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
+</string-array>
+<string-array name="pref_maxSpeedEntries" tools:ignore="MissingTranslation">
+    <item>20 km/h</item>
+    <item>25 km/h</item>
+    <item>30 km/h</item>
+    <item>35 km/h</item>
+    <item>40 km/h</item>
+    <item>45 km/h</item>
+    <item>50 km/h</item>
+</string-array>
+<string-array name="pref_maxSpeedValues" tools:ignore="MissingTranslation">
+    <item>20</item>
+    <item>25</item>
+    <item>30</item>
+    <item>35</item>
+    <item>40</item>
+    <item>45</item>
+    <item>50</item>
+</string-array>
+<string-array name="pref_rangeEntries" tools:ignore="MissingTranslation">
+    <item>Auto</item>
+    <item>40 km/h</item>
+    <item>48 km/h</item>
+    <item>80 km/h</item>
+    <item>120 km/h</item>
+    <item>160 km/h</item>
+</string-array>
+<string-array name="pref_rangeValues" tools:ignore="MissingTranslation">
+    <item>-1000</item>
+    <item>40</item>
+    <item>48</item>
+    <item>80</item>
+    <item>120</item>
+    <item>160</item>
+</string-array>
+<string-array name="pref_minTempEntries">
+    <item>Auto</item>
+    <item>-10 ºC</item>
+    <item>0 ºC</item>
+    <item>10 ºC</item>
+</string-array>
+<string-array name="pref_minTempValues" tools:ignore="MissingTranslation">
+    <item>-1000</item>
+    <item>-10</item>
+    <item>0</item>
+    <item>10</item>
+</string-array>
+<string-array name="pref_maxTempEntries">
+    <item>Auto</item>
+    <item>20 ºC</item>
+    <item>30 ºC</item>
+    <item>40 ºC</item>
+    <item>50 ºC</item>
+</string-array>
+<string-array name="pref_maxTempValues" tools:ignore="MissingTranslation">
+    <item>-1000</item>
+    <item>20</item>
+    <item>30</item>
+    <item>40</item>
+    <item>50</item>
+</string-array>
+<string-array name="pref_minPresEntries">
+    <item>Auto</item>
+    <item>700 mb</item>
+    <item>720 mb</item>
+    <item>740 mb</item>
+    <item>760 mb</item>
+    <item>780 mb</item>
+    <item>800 mb</item>
+    <item>820 mb</item>
+    <item>840 mb</item>
+    <item>860 mb</item>
+    <item>880 mb</item>
+    <item>900 mb</item>
+    <item>920 mb</item>
+    <item>940 mb</item>
+    <item>960 mb</item>
+    <item>980 mb</item>
+    <item>1000 mb</item>
+</string-array>
+<string-array name="pref_minPresValues" tools:ignore="MissingTranslation">
+    <item>-1000</item>
+    <item>700</item>
+    <item>720</item>
+    <item>740</item>
+    <item>760</item>
+    <item>780</item>
+    <item>800</item>
+    <item>820</item>
+    <item>840</item>
+    <item>860</item>
+    <item>880</item>
+    <item>900</item>
+    <item>920</item>
+    <item>940</item>
+    <item>960</item>
+    <item>980</item>
+    <item>1000</item>
+</string-array>
+<string-array name="pref_maxPresEntries">
+    <item>Auto</item>
+    <item>1020 mb</item>
+    <item>1030 mb</item>
+    <item>1040 mb</item>
+    <item>1050 mb</item>
+    <item>1086 mb (maximum historic)</item>
+</string-array>
+<string-array name="pref_maxPresValues" tools:ignore="MissingTranslation">
+    <item>-1000</item>
+    <item>1020</item>
+    <item>1030</item>
+    <item>1040</item>
+    <item>1050</item>
+    <item>1086</item>
+</string-array>
+<string-array name="pref_modeGraphsEntries">
+    <item>Simple</item>
+    <item>Full</item>
+</string-array>
+<string-array name="pref_modeGraphsValues" tools:ignore="MissingTranslation">
+    <item>0</item>
+    <item>1</item>
+</string-array>
+<string-array name="pref_modeUpdateEntries">
+    <item>Manual</item>
+    <item>Smart</item>
+    <item>Continuous</item>
+</string-array>
+<string-array name="pref_modeUpdateValues" tools:ignore="MissingTranslation">
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
+</string-array>
+<string-array name="pref_modeColorsEntries">
+    <item>Normal</item>
+    <item>Red-green daltonic</item>
+</string-array>
+<string-array name="pref_modeColorsValues" tools:ignore="MissingTranslation">
+    <item>0</item>
+    <item>1</item>
+</string-array>
+<string-array name="pref_modeLangEntries">
+    <item>Auto</item>
+    <item>Español</item>
+    <item>Euskara</item>
+    <item>English</item>
+    <item>Français</item>
+</string-array>
+<string-array name="pref_modeLangValues" tools:ignore="MissingTranslation">
+    <item></item>
+    <item>es</item>
+    <item>eu</item>
+    <item>en</item>
+    <item>fr</item>
+</string-array>
+</resources>

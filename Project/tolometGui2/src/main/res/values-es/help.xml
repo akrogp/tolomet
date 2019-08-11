@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="help_intro">En las diferentes pantallas de Tolomet puedes encontrar las siguientes
+        acciones:
+    </string>
+    <string name="help_favorite">Añade o elimina la estación seleccionada a la lista de estaciones
+        favoritas. Esta lista te permite acceder rápidamente a las estaciones que más consultes y
+        además es necesaria en el caso de querer usar la estación en un widget.
+    </string>
+    <string name="help_refresh">Actualiza el contenido de la pantalla actual. En el caso de la
+        pantalla de gráficas intenta descargar una nueva lectura desde el servidor. Si el tiempo
+        transcurrido desde la última lectura no es suficiente, te muestra un aviso y no trata de
+        descargar la lectura para no saturar al servidor.
+    </string>
+    <string name="help_charts">Esta es la pantalla inicial. Muestra un despleglable desde el que se
+        puede seleccionar una estación y ver las gráficas con las lecturas de la estación seleccionada.
+        Las gráficas mostradas dependerán de los ajustes del usuario, experimenta con los modos de
+        visualización <i>simple</i> y <i>completa</i> para elegir el que más te guste. Puedes
+        desplazarte por las gráficas para ver lecturas anteriores del mismo día o incluso lecturas
+        de días anteriores en el caso de que el proveedor meteorológico correspondiente lo permita.
+    </string>
+    <string name="help_info">Muestra detalles sobre la estación seleccionada. Para ello se emplea
+        un navegador dentro de Tolomet que te muestra la información sobre la propia página web del
+        proveedor meteorológico correspondiente.
+    </string>
+    <string name="help_map"><![CDATA[
+        Muestra un mapa con las estaciones conocidas. Puedes seleccionar una estación tanto desde
+        el desplegable como navegando por el mapa y haciendo click. Cada estación se muestra como
+        una chincheta <font color="#008800">verde</font>, <font color="#888800">amarilla</font> o
+        <font color="#880000">roja</font> dependiendo de la frecuencia de las lecturas
+        proporcionadas. En caso de que alejes mucho el zoom, las estaciones se muestran agrupadas
+        por regiones (en <font color="#4A2364">morado</font>) o por países
+        (en <font color="#000088">azul</font>).
+        ]]>
+    </string>
+    <string name="help_origin">Muestra las lecturas de la estación seleccionada en la propia página
+        web del proveedor meteorológico empleando un navegador dentro de Tolomet. Esto es útil en el
+        caso de que en la pantalla de gráficas se indique que no hay datos disponibles y quieras
+        comprobar si se trata de un fallo del proveedor meteorológico o de Tolomet. En este último
+        caso puedes informarme del fallo empleando el icono de informar que se explica más abajo.
+        Esta pantalla también puede resultar de utilidad en caso de que desees consultar otro tipo
+        de lecturas que no estén disponibles desde la pantalla de gráficas.
+    </string>
+    <string name="help_browser">Esta acción es similar a la anterior sólo que emplea un navegador
+        web externo en lugar del intenro de Tolomet. Esto puede resultar de utilidad en caso de que
+        quieras añadir la dirección de la estación a tus marcadores del navegador o usar otras
+        características del navegador. Tienes que tener en cuenta que algunos proveedores
+        meteorológicos (Ej. Euskalmet) muestran un resultado diferente dependiendo de si te estás
+        conectando desde un navegador web de un móvil o de un PC. En este caso deberías emplear un
+        navegador que tenga la opción de visualizar el sitio web como en un PC.
+    </string>
+    <string name="help_share">Permite compartir fácilmente la actual pantalla de Tolomet con otros
+        usuarios empleando la aplicación que selecciones de una lista. Típicamente se proporciona
+        tanto una captura de pantalla (donde sólo se ve la aplicación Tolomet) y un mensaje de texto
+        por defecto que puedes cambiar antes de enviar.
+    </string>
+    <string name="help_whatsapp">Lo mismo que la acción anterior pero empleando WhatsApp directamente
+        en lugar de preguntarte qué aplicación deseas emplear para compartir el contenido.
+    </string>
+    <string name="help_fly">Cambia entre modo vuelo y aterrizado. En modo vuelo la pantalla
+        permanecerá siempre encendida y se desactiva la rotación de la misma. Esto sólo afecta a
+        Tolomet, no a otras aplicaciones que tengas en el teléfono. En modo vuelo las lecturas se
+        van descargando automáticamente según la frecuencia de actualización del proveedor
+        meteorológico correspondiente o cada minuto en caso de que se retrase la lectura.
+    </string>
+    <string name="help_settings">Los ajustes permiten personalizar tu experiencia con Tolomet,
+        modificando tanto su apariencia (tipos de gráficas, escalado de ejes, etc.) como su
+        comportamiento (cada cuánto actualizar las lecturas, etc.).
+    </string>
+    <string name="help_report">Esta acción te permite enviarme un comentario sobre su experiencia
+        con Tolomet: informar de un fallo, sugerir nuevas características, ofrecerte a traducirlo
+        a otros idiomas o invitarme a volar en tu zona ;). Al clickar abre tu cliente de e-mail con
+        un asunto y cuerpo de mensaje por defecto. Puedes añadir tu comentario en el cuerpo del
+        mensaje, pero no elimines las líneas que se muestran por defecto ya que me proporcionan
+        información técnica que me puede ayudar a mejorar Tolomet para tu tipo de dispositivo en
+        concreto.
+    </string>
+    <string name="help_widget"><![CDATA[
+        Los widgets sólo están disponibles si tienes Tolomet instalado en la memoria interna.
+        Te permiten consultar de un vistazo rápido cuáles son las condiciones de vuelo
+        actuales en tus zonas de vuelo favoritas. Hay disponibles tres tamaños diferentes de widget
+        que muestran más o menos información. Cuando añades un widget se te abre una pantalla
+        de configuración para que indiques la zona de vuelo y tus condiciones de vuelo preferidas.
+        La zona de vuelo se indica mediante cualquiera de las estaciones que tengas en favoritos y
+        un nombre que puede ser diferente al de la estación. La dirección de viento preferida se
+        indica mediante un par de valores en grados (entre 0 y 360): <u>desde</u> y <u>hasta</u>.
+        Por ejemplo el par [desde=0, hasta=90] indicaría que todas las direcciones de viento entre
+        el norte y el este son buenas, mientras que el par [desde=270, hasta=90] indicaría que
+        cualquier componente norte (tanto de oeste como de este) es buena. El icono del widget se
+        muestra de color <font color="#880000">rojo</font> si cualquiera de las lecturas no está
+        dentro de tus condiciones de vuelo preferidas, en <font color="#888800">amarillo</font> en
+        caso de no haber información disponible o si las condicioens están en transición de malas a
+        buenas, y en <font color="#008800">verde</font> si las condiciones se han mantenido buenas
+        durante las dos últimas lecturas. Si haces click en el icono se actualizan las lecturas (en
+        caso de ser necesario), y si haces click en el texto se abre Tolomet en la estación
+        correspondiente.
+        ]]>
+    </string>
+</resources>

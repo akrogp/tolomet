@@ -3,35 +3,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group android:id="@+id/drawer_main_group" android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+            android:id="@+id/nav_charts"
+            android:icon="@drawable/ic_charts"
+            android:title="@string/Charts" />
+
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
+            android:id="@+id/nav_info"
+            android:icon="@drawable/ic_info_outline"
+            android:title="@string/Info" />
+
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:id="@+id/nav_maps"
+            android:icon="@drawable/ic_map"
+            android:title="@string/Map" />
+
         <item
-            android:id="@+id/nav_tools"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/menu_tools" />
+            android:id="@+id/nav_origin"
+            android:icon="@drawable/ic_origin"
+            android:title="@string/Origin" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Configurar">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="@string/menu_share" />
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_settings"
+                android:title="@string/Settings" />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="@string/menu_send" />
+                android:id="@+id/nav_discover"
+                android:icon="@drawable/ic_download"
+                android:title="@string/UpdateStations" />
+        </menu>
+    </item>
+    <item android:title="Ayuda">
+        <menu>
+            <item
+                android:id="@+id/nav_help"
+                android:icon="@drawable/ic_help"
+                android:title="@string/Manual" />
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_copyright_black"
+                android:title="@string/About" />
+            <item
+                android:id="@+id/nav_report"
+                android:icon="@drawable/ic_mail"
+                android:title="@string/Report" />
         </menu>
     </item>
 
