@@ -15,7 +15,7 @@ import androidx.core.content.ContextCompat;
 import com.akrog.tolometgui2.R;
 
 public class SpinnerAdapter extends BaseAdapter implements android.widget.SpinnerAdapter {
-    private static final String[] SAMPLE = {"Punta Galea", "Orduña", "Orozko"};
+    private static final String[] SAMPLE = {"Punta Galea (Faro)", "Orduña", "Orozko"};
     private enum Command {FAV, NEAR, FIND, SEP};
     private final Context context;
     private final LayoutInflater inflater;
@@ -28,7 +28,7 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
         for( String item : SAMPLE )
             max = Math.max(max, item.length());
         StringBuilder sb = new StringBuilder(max);
-        max *= 2;
+        max += 5;
         while( max-- > 0 )
             sb.append('_');
         separator = sb.toString();
