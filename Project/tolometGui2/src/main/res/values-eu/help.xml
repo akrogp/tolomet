@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="help_intro">Tolomet-eko pantailetan hurrengo ekintzak egin ahalko dituzu:
+    </string>
+    <string name="help_favorite">Gehitu edo ezabatu aukeratutako estazioa gogokoen estazioen listan.
+        Lista honek ahalbidetzen dizu maizen erabiliko dituzun estazioak atzitzea. Eta gainera
+        beharrezkoa da widget batean estazioa erabili ahal izateko.
+    </string>
+    <string name="help_refresh">Oraingo pantailako edukia eguneratzen du. Grafikoen pantailaren
+        kasuan zerbitzaritik bertatik saiatzen da irakurketa berri bat beskargatzen. Baldin aurreko
+        irakurketatik iragarotako denbora nahikoa ez bada, ohartarazpen bat erakusten du eta bertan
+        behera uzten du datuen eskaera zerbitzaria ez gainkargatzeko
+    </string>
+    <string name="help_charts">Hau hasierako pantaila da. Menu zabalgarria erakusten du; bertotik
+        estazio jakin bat hautatuta grafikoak eta irakurketak ikusi ahal izango dira.
+        Erabiltzaileak ezarpenetan jarritako aukeren araberakoak izango dira erakutsitako grafikoak.
+        Animatu probatzen bistaratze modu biak <i>bakuna</i> eta <i>osoa</i> eta aukeratu
+        gustokoena. Grafikoz grafiko desplazatu zaitezke egun bereko edo/eta aurreko egunetako
+        irakurketak bistaratzeko; beti ere hornitzaile meteorologikoak ahalbidetzen badu.
+    </string>
+    <string name="help_info">Aukeratutako estazioaren gaineko xehetasunak erakusten du. Horretarako
+        Tolomet-en barruan nabigatzaile batek erakutsiko du informazioa kasuan kasuko hornitzaile
+        meteorologikoko webgune propioan dagoen moduan.
+    </string>
+    <string name="help_map"><![CDATA[
+        Ezagututako estazioen mapa erakusten du. Aukeratu ahal duzu estazioa bai menu zabalgarrian
+        bai mapan nabigatuz eta klik eginez. Estazio bakoitza kolorezko txintxeta baten bidez
+        adierazten da <font color="#008800">berdea</font>, <font color="#888800">horia</font> edo
+        <font color="#880000">gorria</font> hornitutako irakurketen maiztasunen arabera. Zooma
+        erabilita asko urruntzen bazara estazioak eskualdeka agertuko dira
+        (<font color="#4A2364">morean</font>) edo herrialdeka
+        (<font color="#000088">urdinean</font>).
+        ]]>
+    </string>
+    <string name="help_origin">Erakusten ditu aukeratutako estazioko irakurketak Tolomet-en barruko
+        nabigatzaile baten bidez eta hornitzailearen webgunean. Hau interesgarria izan daiteke,
+        adibidez, grafikoen pantailak datu eskuragarririk ez dagoela adierazi eta  zuk egiaztatu
+        nahi duzunean hornitzaileko errorea den ala Tolometekoa. Azken kasu honetan erroreaz informa
+        diezadakezu informatzeko ikonoa erabiliz; beherago azalduko den moduan.
+        Pantaila honek ere erabilgarria izan daiteke grafikoetan agertzen ez diren datuak
+        kontsultatu ahal izateko.
+    </string>
+    <string name="help_browser">Ekintza hau eta aurrekoa antzerakoak dira; diferentzia datza
+        erabilitako nabigatzailean. Oraingo honetan Tolomet-ez kanpoko nabigatzailea erabiltzen da.
+        Aukera hau erabili beharko zenuke estazioaren helbidea zure nabigatzaileko laster-marketan
+        gorde nahiko bazenu edo/eta nabigatzailearen beste ezaugarri batzuek erabili nahiko
+        bazenitu. Kontuan izan hornitzaile meteorologiko batzuek (adibidez Euskalmet) emaitza
+        diferenteak erakusten dituztela konektatzeko erabili duzun gailuaren arabera; PC, mobila.
+        Kasu honetan, webgunea PC baten bidez bistaratzen den moduan erakusteko aukera izan beharko
+        lukeen nabigatzaile bat erabili beharko zenuke.
+    </string>
+    <string name="help_share">Ahalbidetzen du erraz partekatzea Tolometeko oraingo pantaila beste
+        erabiltzaile batzuekin, lista batetik aukeratutako aplikazioa jakin bat erabiliz. Zehazki
+        bai pantaila-argazkia (non Tolomet aplikazioa besterik ikusten ez den) eta bai testu-mezu
+        lehenetsia ematen dira; testu-mezua aldatu daiteke bidali baino lehen.
+    </string>
+    <string name="help_whatsapp">Aurreko ekintzan bezala, informazioa partekatzeko, baina kasu
+        honetan zuzen-zuzenean WhatsApp erabilita.
+    </string>
+    <string name="help_fly">Aldatzen du hegaldi-moduaren eta lurreratuta-moduaren artean.
+        Hegaldi-moduan pantaila beti piztuta mantenduko da eta biraketa automatikoa desgaituko da.
+        Ezaugarri honek Tolomet-i bakarrik erasaten dio, ez ordea mobilean dituzun beste
+        aplikazioei. Hegaldi moduan irakurketak automatikoki deskargatzen dira kasuan kasuko
+        hornitzaile meteorologikoko eguneratze-maiztasunaren arabera edo minutu oro irakurketa
+        atzeratzen bada.
+    </string>
+    <string name="help_settings">Ezarpenek ahalbidetzen dute Tolomet apparen erabilera
+        pertsonalizatzea; bai itxura aldatuz (grafiko motak, ardatzen eskalak eta abar) bai apparen
+        portaera (noiztik behin berriztu irakurketak eta abar).
+    </string>
+    <string name="help_report">Ekintza honek Tolomet-en gaineko iradokizunak eta iruzkinak niri
+        helaraztea ahalbidetuko dizu. Honen bidez ere erroreen berri eman, beste hizkuntza batera
+        itzultzeko zure burua eskeini edo/eta zure hegaldi-eremuan hegaz egiteko gonbita egin
+        ahalko didazu ;). Klik egitean zure posta elektronikoko bezeroa zabalduko da gai eta
+        mezuaren gorputz lehenetsiak izanik. Mezuaren gorputzean zure iruzkina gehitu ahal duzu
+        baina, arren, ez ezabatu lehenetsita agertzen diren lerroak; izan ere lerro hauek
+        informazio teknikoa dakartzate eta lagungarriak dira oso Tolomet appa fintzeko eta
+        hobetzeko hain zuzen ere zure gailuan, hau da zure dispositiboan.
+    </string>
+    <string name="help_widget"><![CDATA[
+        Widget-ak begi kolpe batez erakutsiko dizkizu zure zonalde gogokoetan zeintzuk diren
+        hegaldirako oraingo baldintzak. Widget-ak hiru tamaina ditu eta horren arabera informazio
+        gehiago edo gutxiago erakusten du. Widget bat gehitzean konfigurazio-pantaila bat
+        zabaltzen da, non adieraziko dituzun hegaldi-zona eta hegaldi-baldintza gogokoak.
+        Hegaldi-zona adierazten da, alde batetik, laster-marketan edo gogokoetan dituzun estazioen
+        bidez eta, beste aldetik, izen baten bidez; izen hau estazio-izenaz bestelakoa izan daiteke.
+        Haizearen norabide gogokoa adierazten da bi balioen bidez, gradutan emanda (0-360 tartekoak):
+        <u>nondik</u> eta <u>nora</u>. Adibidez ondoko bikoteak [nondik=0, nora=90] adierazten du
+        iparretik ekialdera dauden haize-norabide guztiak onak direla, berriz hurrengo bikoteak
+        [nondik=270, nora=90] adierazten du ipar osagaiko haize guztiak onak direla (bai
+        mendebaldetik zein ekialdetik). Widget ikonoaren kolorea
+        <font color="#880000">gorria</font> da baldin irakurketetako baten bat bederen ez badago
+        hegaldi-baldintza gogokoen barruan. Widget ikonoaren kolorea
+        <font color="#888800">horia</font> da baldin informazio eskuragarririk ez badago edo
+        baldintzak txarrak izatetik onak izatera aldatzen ari badira. Widget ikonoaren kolorea
+        <font color="#008800">berdea</font> da baldin hegaldi-baldintzak onak izan badira azken
+        bi irakurketetarako. Ikonoaren gainean klik eginez gero eguneratzen dira irakurketak
+        (beharrezkoa denean bakarrik), eta testuan klik eginez gero Tolomet zabaltzen da kasuan
+        kasuko estazioan.
+        ]]>
+    </string>
+</resources>
