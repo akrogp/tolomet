@@ -1,14 +1,10 @@
 package com.akrog.tolometgui2.ui.activities;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
@@ -16,43 +12,26 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.akrog.tolomet.Station;
 import com.akrog.tolometgui2.BuildConfig;
 import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.model.Model;
-import com.akrog.tolometgui2.ui.adapters.SpinnerAdapter;
 import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemSelectedListener {
+public class MainActivity extends ToolbarActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
     private Model model;
-    private Spinner spinner;
-    private SpinnerAdapter spinnerAdapter;
-    private boolean autoSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        autoSelected = true;
         model = ViewModelProviders.of(this).get(Model.class);
         model.selectNone();
         model.liveCurrentStation().observe(this, station -> ((TextView)findViewById(R.id.text_test)).setText(String.valueOf(station)));
 
         Toolbar toolbar = configureToolbar();
         configureDrawer(toolbar);
-    }
-
-    private Toolbar configureToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        spinner = toolbar.findViewById(R.id.spinner);
-        spinnerAdapter = new SpinnerAdapter(this, model.getSelStations());
-        spinner.setAdapter(spinnerAdapter);
-        spinner.setOnItemSelectedListener(this);
-        return toolbar;
     }
 
     private void configureDrawer(Toolbar toolbar) {
@@ -124,49 +103,5 @@ public class MainActivity extends BaseActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        Station station = (Station)adapterView.getSelectedItem();
-        model.setCurrentStation(station);
-        if( i == SpinnerAdapter.Command.FAV.ordinal() )
-            model.selectFavorites();
-        else if( i == SpinnerAdapter.Command.NEAR.ordinal() )
-            selectNearest(() -> {}, () -> {
-                spinnerAdapter.notifyDataSetChanged();
-                spinner.performClick();
-            });
-        if( station == null ) {
-            spinnerAdapter.notifyDataSetChanged();
-            if( autoSelected )
-                autoSelected = false;
-            else
-                spinner.performClick();
-        }
-    }
-
-    private void selectNearest(Runnable onNothing, Runnable onFound) {
-        final Context activity = this;
-        askLocation(ll -> {
-            if( ll == null ) {
-                Toast.makeText(activity, R.string.error_gps, Toast.LENGTH_SHORT).show();
-                onNothing.run();
-            } else {
-                model.selectNearest(ll.getLatitude(), ll.getLongitude());
-                if (model.getSelStations().isEmpty()) {
-                    Toast.makeText(activity, R.string.warn_near, Toast.LENGTH_SHORT).show();
-                    onNothing.run();
-                } else
-                    onFound.run();
-            }
-        }, () -> {
-            Toast.makeText(activity, R.string.warn_near,Toast.LENGTH_SHORT).show();
-            onNothing.run();
-        }, true);
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
     }
 }
