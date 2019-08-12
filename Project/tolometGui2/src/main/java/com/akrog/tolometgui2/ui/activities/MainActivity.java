@@ -23,20 +23,26 @@ import com.akrog.tolometgui2.ui.adapters.SpinnerAdapter;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemSelectedListener {
+    private Model model;
+    private Spinner spinner;
+    private boolean autoSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Model model = ViewModelProviders.of(this).get(Model.class);
+        autoSelected = true;
+        model = ViewModelProviders.of(this).get(Model.class);
+        model.selectNone();
+        model.liveCurrentStation().observe(this, station -> ((TextView)findViewById(R.id.text_test)).setText(String.valueOf(station)));
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        Spinner spinner = toolbar.findViewById(R.id.spinner);
-        configureSpinner(model, spinner);
+        spinner = toolbar.findViewById(R.id.spinner);
+        configureSpinner();
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -51,23 +57,10 @@ public class MainActivity extends AppCompatActivity
         textVersion.setText(String.format("(v%s - db%d)", BuildConfig.VERSION_NAME, 0));
     }
 
-    private void configureSpinner(Model model, Spinner spinner) {
-        model.selectNearest(43.4069133,-2.9667213);
-
+    private void configureSpinner() {
         SpinnerAdapter adapter = new SpinnerAdapter(this, model.getSelStations());
         spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Station station = (Station)spinner.getSelectedItem();
-                if( station != null )
-                    model.setCurrentStation(station);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
+        spinner.setOnItemSelectedListener(this);
     }
 
     @Override
@@ -121,5 +114,26 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        Station station = (Station)adapterView.getSelectedItem();
+        model.setCurrentStation(station);
+        if( i == SpinnerAdapter.Command.FAV.ordinal() )
+            model.selectFavorites();
+        else if( i == SpinnerAdapter.Command.NEAR.ordinal() )
+            model.selectNearest(43.4069133,-2.9667213);
+        if( station == null ) {
+            ((SpinnerAdapter)spinner.getAdapter()).notifyDataSetChanged();
+            if( autoSelected )
+                autoSelected = false;
+            else
+                spinner.performClick();
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
     }
 }

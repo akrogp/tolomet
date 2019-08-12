@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 public class SpinnerAdapter extends BaseAdapter implements android.widget.SpinnerAdapter {
-    private enum Command {FAV, NEAR, FIND, SEP};
+    public enum Command {FAV, NEAR, FIND, SEP};
     private final Map<WindProviderType, Integer> mapProviders = new HashMap<>();
 
     private final Context context;
