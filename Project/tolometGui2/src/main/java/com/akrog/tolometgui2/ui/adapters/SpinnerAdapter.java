@@ -12,36 +12,57 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
+import com.akrog.tolomet.Station;
+import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolometgui2.R;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class SpinnerAdapter extends BaseAdapter implements android.widget.SpinnerAdapter {
-    private static final String[] SAMPLE = {"Punta Galea (Faro)", "Orduña", "Orozko"};
     private enum Command {FAV, NEAR, FIND, SEP};
+    private final Map<WindProviderType, Integer> mapProviders = new HashMap<>();
+
     private final Context context;
+    private final List<Station> stations;
     private final LayoutInflater inflater;
     private final String separator;
 
-    public SpinnerAdapter(@NonNull Context context) {
+    public SpinnerAdapter(@NonNull Context context, List<Station> stations) {
         this.context = context;
+        this.stations = stations;
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         int max = 0;
-        for( String item : SAMPLE )
-            max = Math.max(max, item.length());
+        for( Station station : stations )
+            max = Math.max(max, station.getName().length());
         StringBuilder sb = new StringBuilder(max);
         max += 5;
         while( max-- > 0 )
             sb.append('_');
         separator = sb.toString();
+        mapProviders.put(WindProviderType.Aemet, R.drawable.aemet);
+        mapProviders.put(WindProviderType.Euskalmet, R.drawable.euskalmet);
+        mapProviders.put(WindProviderType.Ffvl, R.drawable.ffvl);
+        mapProviders.put(WindProviderType.MeteoGalicia, R.drawable.galicia);
+        mapProviders.put(WindProviderType.Holfuy, R.drawable.holfuy);
+        mapProviders.put(WindProviderType.LaRioja, R.drawable.larioja);
+        mapProviders.put(WindProviderType.Meteocat, R.drawable.meteocat);
+        mapProviders.put(WindProviderType.MeteoClimatic, R.drawable.meteoclimatic);
+        mapProviders.put(WindProviderType.MeteoFrance, R.drawable.meteofrance);
+        mapProviders.put(WindProviderType.MeteoNavarra, R.drawable.navarra);
+        mapProviders.put(WindProviderType.WeatherUnderground, R.drawable.wunder);
     }
 
     @Override
     public int getCount() {
-        return Command.values().length + SAMPLE.length;
+        return Command.values().length + stations.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return null;
+        int off = Command.SEP.ordinal()+1;
+        return i < off ? null : stations.get(i-off);
     }
 
     @Override
@@ -65,6 +86,7 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
 
     @Override
     public View getDropDownView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        Station station = (Station)getItem(position);
         if( convertView == null )
             convertView = inflater.inflate(R.layout.spinner_row, parent, false);
         ((TextView)convertView.findViewById(R.id.station_title)).setText(getDropDownText(position));
@@ -85,7 +107,7 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
             paddingTop = paddingBottom = 0;
         }
         else
-            iconId = R.drawable.euskalmet;
+            iconId = mapProviders.containsKey(station.getProviderType()) ? mapProviders.get(station.getProviderType()) : R.drawable.ic_widget;
         if( iconId == 0)
             icon.setVisibility(View.GONE);
         else {
@@ -97,9 +119,10 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
     }
 
     private String getText(int position) {
-        if( position <= Command.SEP.ordinal() )
+        Station station = (Station)getItem(position);
+        if( station == null )
             return context.getString(R.string.select);
-        return SAMPLE[position-Command.values().length];
+        return station.toString();
     }
 
     private String getDropDownText(int position) {
@@ -111,6 +134,9 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
             return "Buscar por nombre";
         if( position == Command.SEP.ordinal() )
             return separator;
-        return SAMPLE[position-Command.values().length];
+        Station station = (Station)getItem(position);
+        if( station.getDistance() > 0.0F )
+            return String.format("%s @ %.1f km", station.getName(), station.getDistance()/1000);
+        return station.getName();
     }
 }

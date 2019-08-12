@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -12,9 +13,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProviders;
 
+import com.akrog.tolomet.Station;
 import com.akrog.tolometgui2.BuildConfig;
 import com.akrog.tolometgui2.R;
+import com.akrog.tolometgui2.model.Model;
 import com.akrog.tolometgui2.ui.adapters.SpinnerAdapter;
 import com.google.android.material.navigation.NavigationView;
 
@@ -26,10 +30,13 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Model model = ViewModelProviders.of(this).get(Model.class);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        ((Spinner)toolbar.findViewById(R.id.spinner)).setAdapter(new SpinnerAdapter(this));
+        Spinner spinner = toolbar.findViewById(R.id.spinner);
+        configureSpinner(model, spinner);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -42,6 +49,25 @@ public class MainActivity extends AppCompatActivity
         View headerView = navigationView.getHeaderView(0);
         TextView textVersion = headerView.findViewById(R.id.textVersion);
         textVersion.setText(String.format("(v%s - db%d)", BuildConfig.VERSION_NAME, 0));
+    }
+
+    private void configureSpinner(Model model, Spinner spinner) {
+        model.selectNearest(43.4069133,-2.9667213);
+
+        SpinnerAdapter adapter = new SpinnerAdapter(this, model.getSelStations());
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Station station = (Station)spinner.getSelectedItem();
+                if( station != null )
+                    model.setCurrentStation(station);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
     }
 
     @Override
