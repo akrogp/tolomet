@@ -1,6 +1,8 @@
 package com.akrog.tolometgui2.ui.activities;
 
 import android.content.Context;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
@@ -19,39 +21,94 @@ public abstract class ToolbarActivity extends BaseActivity implements AdapterVie
     private Spinner spinner;
     private SpinnerAdapter spinnerAdapter;
     private boolean autoSelected;
+    private Menu menu;
 
     protected Toolbar configureToolbar() {
-        autoSelected = true;
         model = ViewModelProviders.of(this).get(Model.class);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         spinner = toolbar.findViewById(R.id.spinner);
         spinnerAdapter = new SpinnerAdapter(this, model.getSelStations());
+        int pos = spinnerAdapter.getPosition(model.getCurrentStation());
+        autoSelected = pos == 0;
         spinner.setAdapter(spinnerAdapter);
+        spinner.setSelection(pos);
         spinner.setOnItemSelectedListener(this);
+
         return toolbar;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        this.menu = menu;
+        getMenuInflater().inflate(R.menu.main, menu);
+        model.liveCurrentStation().observe(this, station -> updateMenu(station));
+        updateMenu(null);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        Station station = model.getCurrentStation();
+
+        //noinspection SimplifiableIfStatement
+
+        if( id == R.id.favorite_item ) {
+            settings.setFavorite(station,!item.isChecked());
+            model.selectStation(station);
+        }
+        else if (id == R.id.action_settings) {
+            return true;
+        }
+
+        updateMenu(station);
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         Station station = (Station)adapterView.getSelectedItem();
         model.setCurrentStation(station);
-        if( i == SpinnerAdapter.Command.FAV.ordinal() )
+        if( i == SpinnerAdapter.Command.FAV.ordinal() ) {
             model.selectFavorites();
-        else if( i == SpinnerAdapter.Command.NEAR.ordinal() )
+            spinnerAdapter.notifyDataSetChanged(SpinnerAdapter.Command.FAV);
+        } else if( i == SpinnerAdapter.Command.NEAR.ordinal() )
             selectNearest(() -> {}, () -> {
-                spinnerAdapter.notifyDataSetChanged();
+                spinnerAdapter.notifyDataSetChanged(SpinnerAdapter.Command.NEAR);
                 spinner.performClick();
             });
         if( station == null ) {
-            spinnerAdapter.notifyDataSetChanged();
             if( autoSelected )
                 autoSelected = false;
             else
                 spinner.performClick();
         }
+    }
+
+    private void updateMenu(Station station) {
+        MenuItem favItem = menu.findItem(R.id.favorite_item);
+        int favIcon;
+        if( station == null || !station.isFavorite() )
+            favIcon = R.drawable.ic_favorite_outline;
+        else
+            favIcon = R.drawable.ic_favorite;
+        favItem.setIcon(favIcon);
+        favItem.setChecked(station != null && station.isFavorite());
+        setEnabled(favItem, station != null);
+    }
+
+    private void setEnabled( MenuItem item, boolean enabled ) {
+        item.setEnabled(enabled);
+        item.getIcon().setAlpha(enabled?0xFF:0x42);
     }
 
     private void selectNearest(Runnable onNothing, Runnable onFound) {

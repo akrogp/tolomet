@@ -23,24 +23,22 @@ import java.util.Map;
 public class SpinnerAdapter extends BaseAdapter implements android.widget.SpinnerAdapter {
     public enum Command {FAV, NEAR, FIND, SEP};
     private final Map<WindProviderType, Integer> mapProviders = new HashMap<>();
+    private final Map<Command, String> mapCommands = new HashMap<>();
 
     private final Context context;
     private final List<Station> stations;
     private final LayoutInflater inflater;
-    private final String separator;
 
     public SpinnerAdapter(@NonNull Context context, List<Station> stations) {
         this.context = context;
         this.stations = stations;
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        int max = 0;
-        for( Station station : stations )
-            max = Math.max(max, station.getName().length());
-        StringBuilder sb = new StringBuilder(max);
-        max += 5;
-        while( max-- > 0 )
-            sb.append('_');
-        separator = sb.toString();
+
+        mapCommands.put(Command.FAV, context.getString(R.string.menu_fav));
+        mapCommands.put(Command.NEAR, context.getString(R.string.menu_close));
+        mapCommands.put(Command.FIND, "Buscar por nombre");
+        mapCommands.put(Command.SEP, buildSeparator(Command.FAV));
+
         mapProviders.put(WindProviderType.Aemet, R.drawable.aemet);
         mapProviders.put(WindProviderType.Euskalmet, R.drawable.euskalmet);
         mapProviders.put(WindProviderType.Ffvl, R.drawable.ffvl);
@@ -70,6 +68,29 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
         return i;
     }
 
+    public void notifyDataSetChanged(Command command) {
+        mapCommands.put(Command.SEP, command == null ? null : buildSeparator(command));
+        super.notifyDataSetChanged();
+    }
+
+    private String buildSeparator(Command command) {
+        return String.format("=== %s ===", mapCommands.get(command));
+    }
+
+    public int getPosition(Station station) {
+        if( station == null )
+            return 0;
+        int off = 1;
+        for( Station item : stations ) {
+            if( item.getId().equals(station.getId()) )
+                break;
+            off++;
+        }
+        if( off > stations.size() )
+            return 0;
+        return Command.SEP.ordinal() + off;
+    }
+
     /*@Override
     public boolean isEnabled(int position) {
         return position <= Command.SEP.ordinal() ? false : true;
@@ -89,23 +110,21 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
         Station station = (Station)getItem(position);
         if( convertView == null )
             convertView = inflater.inflate(R.layout.spinner_row, parent, false);
-        ((TextView)convertView.findViewById(R.id.station_title)).setText(getDropDownText(position));
+
+        TextView textView = convertView.findViewById(R.id.station_title);
+        textView.setText(getDropDownText(position));
+        textView.setAlpha(position == Command.SEP.ordinal() ? 0.6F : 1.0F);
+
         ImageView icon = convertView.findViewById(R.id.station_icon);
         int iconId;
-        int padding = (int)context.getResources().getDimension(R.dimen.spinner_sep);
-        int paddingTop = padding, paddingBottom = padding;
         if( position == Command.FAV.ordinal() )
-            iconId = R.drawable.ic_widget;
+            iconId = R.drawable.ic_spinner_favorite;
         else if( position == Command.NEAR.ordinal() )
-            iconId = R.drawable.ic_widget;
-        else if( position == Command.FIND.ordinal() ) {
-            iconId = R.drawable.ic_widget;
-            paddingBottom = 0;
-        }
-        else if( position == Command.SEP.ordinal() ) {
+            iconId = R.drawable.ic_spinner_gps;
+        else if( position == Command.FIND.ordinal() )
+            iconId = R.drawable.ic_spinner_search;
+        else if( position == Command.SEP.ordinal() )
             iconId = 0;
-            paddingTop = paddingBottom = 0;
-        }
         else
             iconId = mapProviders.containsKey(station.getProviderType()) ? mapProviders.get(station.getProviderType()) : R.drawable.ic_widget;
         if( iconId == 0)
@@ -114,7 +133,6 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
             icon.setImageDrawable(ContextCompat.getDrawable(context, iconId));
             icon.setVisibility(View.VISIBLE);
         }
-        convertView.findViewById(R.id.spinner_layout).setPadding(0,paddingTop,0,paddingBottom);
         return convertView;
     }
 
@@ -126,14 +144,8 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
     }
 
     private String getDropDownText(int position) {
-        if( position == Command.FAV.ordinal() )
-            return context.getString(R.string.menu_fav);
-        if( position == Command.NEAR.ordinal() )
-            return context.getString(R.string.menu_close);
-        if( position == Command.FIND.ordinal() )
-            return "Buscar por nombre";
-        if( position == Command.SEP.ordinal() )
-            return separator;
+        if( position < Command.values().length )
+            return mapCommands.get(Command.values()[position]);
         Station station = (Station)getItem(position);
         if( station.getDistance() > 0.0F )
             return String.format("%s @ %.1f km", station.getName(), station.getDistance()/1000);

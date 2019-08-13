@@ -86,36 +86,27 @@ public class AppSettings {
     }
 
     public void setFavorite(Station station, boolean fav) {
+        station.setFavorite(fav);
         if( fav )
             addFavorite(station);
         else
             removeFavorite(station);
     }
 
-    /*public void saveSpinner(MySpinner.State state) {
+    public void saveStation(Station station) {
         SharedPreferences.Editor editor = settings.edit();
-        editor.putInt("spinner-type", state.getType().getValue());
-        editor.putInt("spinner-sel", state.getPos());
-        editor.putString("spinner-vowel", ""+state.getVowel());
-        editor.putInt("spinner-region", state.getRegion());
-        editor.putString("spinner-country", state.getCountry());
+        editor.putString("station", station == null ? null : station.getId());
         editor.commit();
     }
 
-    public MySpinner.State loadSpinner() {
-        MySpinner.State state = new MySpinner.State();
-        try {
-            int value = settings.getInt("spinner-type", MySpinner.Type.StartMenu.getValue());
-            state.setType(MySpinner.Type.values()[value-MySpinner.Type.StartMenu.getValue()]);
-            state.setPos(settings.getInt("spinner-sel", 0));
-            state.setVowel(settings.getString("spinner-vowel", "#").charAt(0));
-            state.setRegion(settings.getInt("spinner-region", 0));
-            state.setCountry(settings.getString("spinner-country", Locale.getDefault().getCountry()));
-        } catch( Exception e ) {
-            e.printStackTrace();
-        }
-        return state;
-    }*/
+    public Station loadStation() {
+        String id = settings.getString("station", null);
+        if( id == null )
+            return null;
+        Station station = DbTolomet.getInstance().findStation(id);
+        station.setFavorite(getFavorites().contains(station.getId()));
+        return station;
+    }
 
     public long getCheckStamp() {
         return settings.getLong("stamp-check", 0);
