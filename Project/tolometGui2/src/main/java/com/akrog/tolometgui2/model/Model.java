@@ -49,6 +49,17 @@ public class Model extends ViewModel {
         selection.clear();
     }
 
+    public void selectStation(Station station) {
+        selection.clear();
+        if( station == null )
+            return;
+        if( station.isFavorite() )
+            selectFavorites();
+        else
+            selection.add(station);
+        currentStation.setValue(station);
+    }
+
     public void selectFavorites() {
         selection.clear();
         AppSettings settings = AppSettings.getInstance();

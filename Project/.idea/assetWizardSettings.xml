@@ -155,7 +155,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/home/gorka/Aplicaciones/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/file/ic_cloud_download_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/home/gorka/Aplicaciones/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_search_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -165,12 +165,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="assetSourceType" value="FILE" />
-                            <entry key="height" value="52" />
-                            <entry key="outputName" value="nav_drawer" />
+                            <entry key="outputName" value="ic_spinner_search" />
                             <entry key="overrideSize" value="true" />
                             <entry key="sourceFile" value="$PROJECT_DIR$/../Media/nav-drawer.svg" />
-                            <entry key="width" value="82" />
                           </map>
                         </option>
                       </PersistentState>
