@@ -9,28 +9,37 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.akrog.tolometgui2.BuildConfig;
 import com.akrog.tolometgui2.R;
-import com.akrog.tolometgui2.model.Model;
+import com.akrog.tolometgui2.ui.fragments.ChartsFragment;
+import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends ToolbarActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private Model model;
+    private MainViewModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        model = ViewModelProviders.of(this).get(Model.class);
+        model = ViewModelProviders.of(this).get(MainViewModel.class);
         model.selectStation(settings.loadStation());
-        model.liveCurrentStation().observe(this, station -> ((TextView)findViewById(R.id.text_test)).setText(String.valueOf(station)));
+        //model.liveCurrentStation().observe(this, station -> {});
 
         Toolbar toolbar = configureToolbar();
         configureDrawer(toolbar);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        ChartsFragment chartsFragment = new ChartsFragment();
+        fragmentTransaction.add(R.id.content_layout, chartsFragment);
+        fragmentTransaction.commit();
     }
 
     @Override

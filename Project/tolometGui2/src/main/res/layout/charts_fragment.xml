@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragments.ChartsFragment">
+
+    <com.akrog.tolometgui2.ui.views.AdaptativeTextView
+        android:id="@+id/textSummary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/summary"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/layoutCharts"
+        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/textSummary"
+        android:weightSum="1.0">
+
+        <com.akrog.tolometgui2.ui.views.MyPlot
+            android:id="@+id/chartAir"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".5"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="1dp"/>
+
+        <com.akrog.tolometgui2.ui.views.MyPlot
+            android:id="@+id/chartWind"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight=".5" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
