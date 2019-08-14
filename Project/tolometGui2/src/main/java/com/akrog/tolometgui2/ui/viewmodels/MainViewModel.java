@@ -1,4 +1,4 @@
-package com.akrog.tolometgui2.model;
+package com.akrog.tolometgui2.ui.viewmodels;
 
 import android.location.Location;
 
@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModel;
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.providers.WindProviderType;
+import com.akrog.tolometgui2.model.AppSettings;
+import com.akrog.tolometgui2.model.DbTolomet;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,8 +21,8 @@ import java.util.List;
  * Created by gorka on 6/10/16.
  */
 
-public class Model extends ViewModel {
-    private static Model instance;
+public class MainViewModel extends ViewModel {
+    private static MainViewModel instance;
     private final Manager manager;
     private final DbTolomet db = DbTolomet.getInstance();
     //private final DbMeteo cache = DbMeteo.getInstance();
@@ -28,7 +30,7 @@ public class Model extends ViewModel {
     private final MutableLiveData<Station> currentStation = new MutableLiveData<>();
     private Command command = Command.FAV;
 
-    public Model() {
+    public MainViewModel() {
         manager = new Manager();
     }
 

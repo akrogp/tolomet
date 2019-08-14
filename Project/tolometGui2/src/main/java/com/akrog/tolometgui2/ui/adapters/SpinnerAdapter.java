@@ -15,7 +15,7 @@ import androidx.core.content.ContextCompat;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolometgui2.R;
-import com.akrog.tolometgui2.model.Model;
+import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,21 +25,21 @@ import java.util.Map;
 public class SpinnerAdapter extends BaseAdapter implements android.widget.SpinnerAdapter {
     ;
     private final Map<WindProviderType, Integer> mapProviders = new HashMap<>();
-    private final Map<Model.Command, String> mapCommands = new HashMap<>();
-    private final List<Model.Command> listCommands = new ArrayList<>();
+    private final Map<MainViewModel.Command, String> mapCommands = new HashMap<>();
+    private final List<MainViewModel.Command> listCommands = new ArrayList<>();
     private final Context context;
     private final List<Station> stations;
     private final LayoutInflater inflater;
 
-    public SpinnerAdapter(@NonNull Context context, List<Station> stations, Model.Command command) {
+    public SpinnerAdapter(@NonNull Context context, List<Station> stations, MainViewModel.Command command) {
         this.context = context;
         this.stations = stations == null ? new ArrayList<>(0) : stations;
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        mapCommands.put(Model.Command.SEL, "=== " + context.getString(R.string.select) + " ===");
-        mapCommands.put(Model.Command.FAV, context.getString(R.string.menu_fav));
-        mapCommands.put(Model.Command.NEAR, context.getString(R.string.menu_close));
-        mapCommands.put(Model.Command.FIND, "Buscar por nombre");
+        mapCommands.put(MainViewModel.Command.SEL, "=== " + context.getString(R.string.select) + " ===");
+        mapCommands.put(MainViewModel.Command.FAV, context.getString(R.string.menu_fav));
+        mapCommands.put(MainViewModel.Command.NEAR, context.getString(R.string.menu_close));
+        mapCommands.put(MainViewModel.Command.FIND, "Buscar por nombre");
         buildList(command);
 
         mapProviders.put(WindProviderType.Aemet, R.drawable.aemet);
@@ -55,11 +55,11 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
         mapProviders.put(WindProviderType.WeatherUnderground, R.drawable.wunder);
     }
 
-    private void buildList(Model.Command command) {
-        mapCommands.put(Model.Command.SEP, command == null ? null : buildSeparator(command));
+    private void buildList(MainViewModel.Command command) {
+        mapCommands.put(MainViewModel.Command.SEP, command == null ? null : buildSeparator(command));
         listCommands.clear();
-        for( Model.Command item : Model.Command.values() ) {
-            if (command == null && item == Model.Command.SEP)
+        for( MainViewModel.Command item : MainViewModel.Command.values() ) {
+            if (command == null && item == MainViewModel.Command.SEP)
                 continue;
             if( item != command )
                 listCommands.add(item);
@@ -73,11 +73,11 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
 
     @Override
     public Object getItem(int i) {
-        Model.Command cmd = getCommand(i);
+        MainViewModel.Command cmd = getCommand(i);
         return cmd == null ? getStation(i) : cmd;
     }
 
-    public Model.Command getCommand(int i) {
+    public MainViewModel.Command getCommand(int i) {
         return i < listCommands.size() ? listCommands.get(i) : null;
     }
 
@@ -90,7 +90,7 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
         return i;
     }
 
-    private String buildSeparator(Model.Command command) {
+    private String buildSeparator(MainViewModel.Command command) {
         if( command == null )
             return null;
         return String.format("=== %s ===", mapCommands.get(command));
@@ -112,7 +112,7 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
 
     @Override
     public boolean isEnabled(int position) {
-        return getCommand(position) != Model.Command.SEP;
+        return getCommand(position) != MainViewModel.Command.SEP;
     }
 
     @NonNull
@@ -129,22 +129,22 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
         if( convertView == null )
             convertView = inflater.inflate(R.layout.spinner_row, parent, false);
 
-        Model.Command cmd = getCommand(position);
+        MainViewModel.Command cmd = getCommand(position);
         Station station = getStation(position);
 
         TextView textTitle = convertView.findViewById(R.id.station_title);
         textTitle.setText(getDropDownText(position));
-        textTitle.setAlpha(cmd == Model.Command.SEP || cmd == Model.Command.SEL ? 0.6F : 1.0F);
+        textTitle.setAlpha(cmd == MainViewModel.Command.SEP || cmd == MainViewModel.Command.SEL ? 0.6F : 1.0F);
 
         ImageView icon = convertView.findViewById(R.id.station_icon);
         int iconId;
-        if( cmd == Model.Command.FAV )
+        if( cmd == MainViewModel.Command.FAV )
             iconId = R.drawable.ic_spinner_favorite;
-        else if( cmd == Model.Command.NEAR )
+        else if( cmd == MainViewModel.Command.NEAR )
             iconId = R.drawable.ic_spinner_gps;
-        else if( cmd == Model.Command.FIND )
+        else if( cmd == MainViewModel.Command.FIND )
             iconId = R.drawable.ic_spinner_search;
-        else if( cmd == Model.Command.SEP || cmd == Model.Command.SEL )
+        else if( cmd == MainViewModel.Command.SEP || cmd == MainViewModel.Command.SEL )
             iconId = 0;
         else
             iconId = mapProviders.containsKey(station.getProviderType()) ? mapProviders.get(station.getProviderType()) : -1;
@@ -170,7 +170,7 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
     }
 
     private String getDropDownText(int position) {
-        Model.Command cmd = getCommand(position);
+        MainViewModel.Command cmd = getCommand(position);
         if( cmd != null )
             return mapCommands.get(cmd);
         Station station = getStation(position);

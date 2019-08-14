@@ -13,18 +13,18 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.akrog.tolomet.Station;
 import com.akrog.tolometgui2.R;
-import com.akrog.tolometgui2.model.Model;
+import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
 import com.akrog.tolometgui2.ui.adapters.SpinnerAdapter;
 
 public abstract class ToolbarActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
-    private Model model;
+    private MainViewModel model;
     private Spinner spinner;
     private SpinnerAdapter spinnerAdapter;
     private boolean skipClick;
     private Menu menu;
 
     protected Toolbar configureToolbar() {
-        model = ViewModelProviders.of(this).get(Model.class);
+        model = ViewModelProviders.of(this).get(MainViewModel.class);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -87,10 +87,10 @@ public abstract class ToolbarActivity extends BaseActivity implements AdapterVie
         Station station = spinnerAdapter.getStation(i);
         model.setCurrentStation(station);
 
-        Model.Command cmd = spinnerAdapter.getCommand(i);
-        if( cmd == Model.Command.FAV )
+        MainViewModel.Command cmd = spinnerAdapter.getCommand(i);
+        if( cmd == MainViewModel.Command.FAV )
             model.selectFavorites();
-        else if( cmd == Model.Command.NEAR )
+        else if( cmd == MainViewModel.Command.NEAR )
             selectNearest(() -> {}, () -> spinner.performClick());
         if( cmd != null )
             spinner.performClick();
