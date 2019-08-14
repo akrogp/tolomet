@@ -31,7 +31,7 @@ public abstract class ToolbarActivity extends BaseActivity implements AdapterVie
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         spinner = toolbar.findViewById(R.id.spinner);
-        spinnerAdapter = new SpinnerAdapter(this, model.getSelStations());
+        spinnerAdapter = new SpinnerAdapter(this, model.getSelStations(), model.getCurrentStation().isFavorite() ? SpinnerAdapter.Command.FAV : null);
         int pos = spinnerAdapter.getPosition(model.getCurrentStation());
         autoSelected = pos == 0;
         spinner.setAdapter(spinnerAdapter);
@@ -76,14 +76,16 @@ public abstract class ToolbarActivity extends BaseActivity implements AdapterVie
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        Station station = (Station)adapterView.getSelectedItem();
+        Station station = spinnerAdapter.getStation(i);
+        SpinnerAdapter.Command cmd = spinnerAdapter.getCommand(i);
         model.setCurrentStation(station);
-        if( i == SpinnerAdapter.Command.FAV.ordinal() ) {
+        if( cmd == SpinnerAdapter.Command.FAV ) {
             model.selectFavorites();
-            spinnerAdapter.notifyDataSetChanged(SpinnerAdapter.Command.FAV);
-        } else if( i == SpinnerAdapter.Command.NEAR.ordinal() )
+            spinnerAdapter.notifyDataSetChanged(cmd);
+            spinner.performClick();
+        } else if( cmd == SpinnerAdapter.Command.NEAR )
             selectNearest(() -> {}, () -> {
-                spinnerAdapter.notifyDataSetChanged(SpinnerAdapter.Command.NEAR);
+                spinnerAdapter.notifyDataSetChanged(cmd);
                 spinner.performClick();
             });
         if( station == null ) {
