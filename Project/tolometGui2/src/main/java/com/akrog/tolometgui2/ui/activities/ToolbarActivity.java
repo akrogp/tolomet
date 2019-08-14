@@ -49,8 +49,8 @@ public abstract class ToolbarActivity extends BaseActivity implements AdapterVie
         // Inflate the menu; this adds items to the action bar if it is present.
         this.menu = menu;
         getMenuInflater().inflate(R.menu.main, menu);
-        model.liveCurrentStation().observe(this, station -> updateMenu(station));
         updateMenu(null);
+        model.liveCurrentStation().observe(this, station -> updateMenu(station));
         return true;
     }
 
@@ -106,6 +106,7 @@ public abstract class ToolbarActivity extends BaseActivity implements AdapterVie
         favItem.setIcon(favIcon);
         favItem.setChecked(station != null && station.isFavorite());
         setEnabled(favItem, station != null);
+        setEnabled(menu.findItem(R.id.refresh_item), station != null);
     }
 
     private void setEnabled( MenuItem item, boolean enabled ) {
