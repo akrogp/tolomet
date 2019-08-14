@@ -8,6 +8,16 @@
     android:paddingTop="@dimen/spinner_sep"
     android:paddingBottom="@dimen/spinner_sep">
 
+    <TextView
+        android:id="@+id/station_type"
+        android:layout_width="@dimen/icon_provider"
+        android:layout_height="0dp"
+        android:paddingStart="8dp"
+        android:paddingLeft="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
     <ImageView
         android:id="@+id/station_icon"
         android:src="@drawable/euskalmet"
@@ -15,7 +25,7 @@
         android:layout_height="0dp"
         android:paddingStart="8dp"
         android:paddingLeft="8dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/station_type"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 

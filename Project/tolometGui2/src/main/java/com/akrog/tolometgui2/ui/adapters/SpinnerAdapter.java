@@ -135,9 +135,9 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
         Command cmd = getCommand(position);
         Station station = getStation(position);
 
-        TextView textView = convertView.findViewById(R.id.station_title);
-        textView.setText(getDropDownText(position));
-        textView.setAlpha(cmd == Command.SEP ? 0.6F : 1.0F);
+        TextView textTitle = convertView.findViewById(R.id.station_title);
+        textTitle.setText(getDropDownText(position));
+        textTitle.setAlpha(cmd == Command.SEP ? 0.6F : 1.0F);
 
         ImageView icon = convertView.findViewById(R.id.station_icon);
         int iconId;
@@ -151,14 +151,17 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
             iconId = 0;
         else
             iconId = mapProviders.containsKey(station.getProviderType()) ? mapProviders.get(station.getProviderType()) : -1;
-        if( iconId == 0)
+        if( iconId <= 0)
             icon.setVisibility(View.GONE);
-        else if( iconId == -1 )
-            icon.setVisibility(View.INVISIBLE);
         else {
             icon.setImageDrawable(ContextCompat.getDrawable(context, iconId));
             icon.setVisibility(View.VISIBLE);
         }
+
+        TextView textType = convertView.findViewById(R.id.station_type);
+        textType.setText(iconId == -1 ? station.getProviderType().getCode() : "");
+        textType.setVisibility(iconId == -1 ? View.VISIBLE : View.GONE);
+
         return convertView;
     }
 
