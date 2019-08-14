@@ -11,7 +11,6 @@ import com.akrog.tolomet.Station;
 import com.akrog.tolomet.providers.WindProviderType;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -25,8 +24,9 @@ public class Model extends ViewModel {
     private final Manager manager;
     private final DbTolomet db = DbTolomet.getInstance();
     //private final DbMeteo cache = DbMeteo.getInstance();
-    private final List<Station> selection = new ArrayList<Station>();
+    private final MutableLiveData<List<Station>> selection = new MutableLiveData<>();
     private final MutableLiveData<Station> currentStation = new MutableLiveData<>();
+    private Command command = Command.FAV;
 
     public Model() {
         manager = new Manager();
@@ -40,46 +40,50 @@ public class Model extends ViewModel {
         return findStation(Station.buildId(type,code));
     }
 
-    private void setSelection(Collection<Station> stations) {
-        selection.clear();
-        selection.addAll(stations);
-    }
-
     public void selectNone() {
-        selection.clear();
+        command = null;
+        selection.postValue(null);
     }
 
     public void selectStation(Station station) {
-        selection.clear();
-        if( station == null )
+        currentStation.postValue(station);
+        if( station == null ) {
+            selectNone();
             return;
-        if( station.isFavorite() )
+        }
+        if( station.isFavorite() ) {
             selectFavorites();
-        else
-            selection.add(station);
-        currentStation.setValue(station);
+            return;
+        }
+        command = null;
+        List<Station> stations = new ArrayList<>(1);
+        stations.add(station);
+        selection.postValue(stations);
     }
 
     public void selectFavorites() {
-        selection.clear();
+        command = Command.FAV;
+        List<Station> favs = new ArrayList<>();
         AppSettings settings = AppSettings.getInstance();
         for( String stationId : settings.getFavorites() ) {
             try {
                 Station station = db.findStation(stationId);
-                selection.add(station);
+                favs.add(station);
             } catch (Exception e) {
                 settings.removeFavorite(stationId);
             }
         }
-        Collections.sort(selection, new Comparator<Station>() {
+        Collections.sort(favs, new Comparator<Station>() {
             @Override
             public int compare(Station s1, Station s2) {
                 return s1.getName().compareTo(s2.getName());
             }
         });
+        selection.postValue(favs);
     }
 
     public void selectNearest(double lat, double lon) {
+        command = Command.NEAR;
         List<Station> stations = db.findCloseStations(lat, lon, 5.0);
         float[] dist = new float[1];
         for( Station station : stations ) {
@@ -97,7 +101,7 @@ public class Model extends ViewModel {
                 return (int)Math.signum(s1.getDistance()-s2.getDistance());
             }
         });
-        setSelection(close);
+        selection.postValue(close);
     }
 
     public void setCurrentStation(Station station) {
@@ -113,7 +117,19 @@ public class Model extends ViewModel {
     }
 
     public List<Station> getSelStations() {
+        return selection.getValue();
+    }
+
+    public LiveData<List<Station>> liveSelStations() {
         return selection;
+    }
+
+    public Command getCommand() {
+        return command;
+    }
+
+    public void setCommand(Command command) {
+        this.command = command;
     }
 
     public int getRefresh() {
@@ -245,4 +261,6 @@ public class Model extends ViewModel {
     public boolean checkStation(Station station) {
         return manager.checkStation(station);
     }
+
+    public enum Command {SEL, FAV, NEAR, FIND, SEP}
 }
