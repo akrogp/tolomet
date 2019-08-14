@@ -20,7 +20,7 @@ public abstract class ToolbarActivity extends BaseActivity implements AdapterVie
     private Model model;
     private Spinner spinner;
     private SpinnerAdapter spinnerAdapter;
-    private boolean autoSelected;
+    private boolean skipClick;
     private Menu menu;
 
     protected Toolbar configureToolbar() {
@@ -31,12 +31,15 @@ public abstract class ToolbarActivity extends BaseActivity implements AdapterVie
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         spinner = toolbar.findViewById(R.id.spinner);
-        spinnerAdapter = new SpinnerAdapter(this, model.getSelStations(), model.getCurrentStation().isFavorite() ? SpinnerAdapter.Command.FAV : null);
-        int pos = spinnerAdapter.getPosition(model.getCurrentStation());
-        autoSelected = pos == 0;
-        spinner.setAdapter(spinnerAdapter);
-        spinner.setSelection(pos);
         spinner.setOnItemSelectedListener(this);
+        model.liveSelStations().observe(this, stations -> {
+            skipClick = true;
+            Station station = model.getCurrentStation();
+            spinnerAdapter = new SpinnerAdapter(this, stations, model.getCommand());
+            int pos = spinnerAdapter.getPosition(station);
+            spinner.setAdapter(spinnerAdapter);
+            spinner.setSelection(pos);
+        });
 
         return toolbar;
     }
@@ -76,24 +79,21 @@ public abstract class ToolbarActivity extends BaseActivity implements AdapterVie
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        Station station = spinnerAdapter.getStation(i);
-        SpinnerAdapter.Command cmd = spinnerAdapter.getCommand(i);
-        model.setCurrentStation(station);
-        if( cmd == SpinnerAdapter.Command.FAV ) {
-            model.selectFavorites();
-            spinnerAdapter.notifyDataSetChanged(cmd);
-            spinner.performClick();
-        } else if( cmd == SpinnerAdapter.Command.NEAR )
-            selectNearest(() -> {}, () -> {
-                spinnerAdapter.notifyDataSetChanged(cmd);
-                spinner.performClick();
-            });
-        if( station == null ) {
-            if( autoSelected )
-                autoSelected = false;
-            else
-                spinner.performClick();
+        if( skipClick ) {
+            skipClick = false;
+            return;
         }
+
+        Station station = spinnerAdapter.getStation(i);
+        model.setCurrentStation(station);
+
+        Model.Command cmd = spinnerAdapter.getCommand(i);
+        if( cmd == Model.Command.FAV )
+            model.selectFavorites();
+        else if( cmd == Model.Command.NEAR )
+            selectNearest(() -> {}, () -> spinner.performClick());
+        if( cmd != null )
+            spinner.performClick();
     }
 
     private void updateMenu(Station station) {
@@ -121,7 +121,7 @@ public abstract class ToolbarActivity extends BaseActivity implements AdapterVie
                 onNothing.run();
             } else {
                 model.selectNearest(ll.getLatitude(), ll.getLongitude());
-                if (model.getSelStations().isEmpty()) {
+                if (model.getSelStations() == null || model.getSelStations().isEmpty()) {
                     Toast.makeText(activity, R.string.warn_near, Toast.LENGTH_SHORT).show();
                     onNothing.run();
                 } else

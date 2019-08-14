@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolometgui2.R;
+import com.akrog.tolometgui2.model.Model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,22 +23,23 @@ import java.util.List;
 import java.util.Map;
 
 public class SpinnerAdapter extends BaseAdapter implements android.widget.SpinnerAdapter {
-    public enum Command {FAV, NEAR, FIND, SEP};
+    ;
     private final Map<WindProviderType, Integer> mapProviders = new HashMap<>();
-    private final Map<Command, String> mapCommands = new HashMap<>();
-    private final List<Command> listCommands = new ArrayList<>();
+    private final Map<Model.Command, String> mapCommands = new HashMap<>();
+    private final List<Model.Command> listCommands = new ArrayList<>();
     private final Context context;
     private final List<Station> stations;
     private final LayoutInflater inflater;
 
-    public SpinnerAdapter(@NonNull Context context, List<Station> stations, Command command) {
+    public SpinnerAdapter(@NonNull Context context, List<Station> stations, Model.Command command) {
         this.context = context;
-        this.stations = stations;
+        this.stations = stations == null ? new ArrayList<>(0) : stations;
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        mapCommands.put(Command.FAV, context.getString(R.string.menu_fav));
-        mapCommands.put(Command.NEAR, context.getString(R.string.menu_close));
-        mapCommands.put(Command.FIND, "Buscar por nombre");
+        mapCommands.put(Model.Command.SEL, "=== " + context.getString(R.string.select) + " ===");
+        mapCommands.put(Model.Command.FAV, context.getString(R.string.menu_fav));
+        mapCommands.put(Model.Command.NEAR, context.getString(R.string.menu_close));
+        mapCommands.put(Model.Command.FIND, "Buscar por nombre");
         buildList(command);
 
         mapProviders.put(WindProviderType.Aemet, R.drawable.aemet);
@@ -53,11 +55,11 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
         mapProviders.put(WindProviderType.WeatherUnderground, R.drawable.wunder);
     }
 
-    private void buildList(Command command) {
-        mapCommands.put(Command.SEP, command == null ? null : buildSeparator(command));
+    private void buildList(Model.Command command) {
+        mapCommands.put(Model.Command.SEP, command == null ? null : buildSeparator(command));
         listCommands.clear();
-        for( Command item : Command.values() ) {
-            if (command == null && item == Command.SEP)
+        for( Model.Command item : Model.Command.values() ) {
+            if (command == null && item == Model.Command.SEP)
                 continue;
             if( item != command )
                 listCommands.add(item);
@@ -71,11 +73,11 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
 
     @Override
     public Object getItem(int i) {
-        Command cmd = getCommand(i);
+        Model.Command cmd = getCommand(i);
         return cmd == null ? getStation(i) : cmd;
     }
 
-    public Command getCommand(int i) {
+    public Model.Command getCommand(int i) {
         return i < listCommands.size() ? listCommands.get(i) : null;
     }
 
@@ -88,12 +90,7 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
         return i;
     }
 
-    public void notifyDataSetChanged(Command command) {
-        buildList(command);
-        super.notifyDataSetChanged();
-    }
-
-    private String buildSeparator(Command command) {
+    private String buildSeparator(Model.Command command) {
         if( command == null )
             return null;
         return String.format("=== %s ===", mapCommands.get(command));
@@ -115,7 +112,7 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
 
     @Override
     public boolean isEnabled(int position) {
-        return getCommand(position) != Command.SEP;
+        return getCommand(position) != Model.Command.SEP;
     }
 
     @NonNull
@@ -132,22 +129,22 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
         if( convertView == null )
             convertView = inflater.inflate(R.layout.spinner_row, parent, false);
 
-        Command cmd = getCommand(position);
+        Model.Command cmd = getCommand(position);
         Station station = getStation(position);
 
         TextView textTitle = convertView.findViewById(R.id.station_title);
         textTitle.setText(getDropDownText(position));
-        textTitle.setAlpha(cmd == Command.SEP ? 0.6F : 1.0F);
+        textTitle.setAlpha(cmd == Model.Command.SEP || cmd == Model.Command.SEL ? 0.6F : 1.0F);
 
         ImageView icon = convertView.findViewById(R.id.station_icon);
         int iconId;
-        if( cmd == Command.FAV )
+        if( cmd == Model.Command.FAV )
             iconId = R.drawable.ic_spinner_favorite;
-        else if( cmd == Command.NEAR )
+        else if( cmd == Model.Command.NEAR )
             iconId = R.drawable.ic_spinner_gps;
-        else if( cmd == Command.FIND )
+        else if( cmd == Model.Command.FIND )
             iconId = R.drawable.ic_spinner_search;
-        else if( cmd == Command.SEP )
+        else if( cmd == Model.Command.SEP || cmd == Model.Command.SEL )
             iconId = 0;
         else
             iconId = mapProviders.containsKey(station.getProviderType()) ? mapProviders.get(station.getProviderType()) : -1;
@@ -173,7 +170,7 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
     }
 
     private String getDropDownText(int position) {
-        Command cmd = getCommand(position);
+        Model.Command cmd = getCommand(position);
         if( cmd != null )
             return mapCommands.get(cmd);
         Station station = getStation(position);
