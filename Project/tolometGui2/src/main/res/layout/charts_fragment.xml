@@ -11,7 +11,8 @@
         android:id="@+id/textSummary"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/summary"
+        android:gravity="center_horizontal"
+        android:text="@string/NoData"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,33 +20,33 @@
 
     <LinearLayout
         android:id="@+id/layoutCharts"
-        android:layout_height="match_parent"
         android:layout_width="0dp"
+        android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
+        android:weightSum="1.0"
+        app:layout_constraintBottom_toTopOf="@+id/textSummary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/textSummary"
-        android:weightSum="1.0">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.akrog.tolometgui2.ui.views.MyPlot
             android:id="@+id/chartAir"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight=".5"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="1dp"
             android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp" />
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginBottom="1dp"
+            android:layout_weight=".5" />
 
         <com.akrog.tolometgui2.ui.views.MyPlot
             android:id="@+id/chartWind"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginBottom="0dp"
             android:layout_marginLeft="2dp"
+            android:layout_marginTop="1dp"
             android:layout_marginRight="2dp"
+            android:layout_marginBottom="0dp"
             android:layout_weight=".5" />
     </LinearLayout>
 
