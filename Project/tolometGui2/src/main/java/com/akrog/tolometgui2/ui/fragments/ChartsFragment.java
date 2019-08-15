@@ -3,6 +3,8 @@ package com.akrog.tolometgui2.ui.fragments;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -20,7 +22,7 @@ public class ChartsFragment extends Fragment {
     private AppSettings settings;
     private MainViewModel model;
     private ChartsViewModel chartsModel;
-
+    private Menu menu;
     private final Handler handler = new Handler();
     private Runnable timer;
 
@@ -29,9 +31,21 @@ public class ChartsFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.charts_fragment, container, false);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        this.menu = menu;
+        inflater.inflate(R.menu.charts, menu);
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.akrog.tolometgui2.ui.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,8 +15,10 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.akrog.tolomet.Station;
 import com.akrog.tolometgui2.R;
-import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
 import com.akrog.tolometgui2.ui.adapters.SpinnerAdapter;
+import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
+
+import java.lang.reflect.Method;
 
 public abstract class ToolbarActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
     private MainViewModel model;
@@ -54,6 +58,25 @@ public abstract class ToolbarActivity extends BaseActivity implements AdapterVie
         return true;
     }
 
+    @SuppressLint("RestrictedApi")
+    @Override
+    protected boolean onPrepareOptionsPanel(View view, Menu menu) {
+        Log.i(getClass().getSimpleName(), "called");
+        if (menu != null) {
+            if (menu.getClass().getSimpleName().equals("MenuBuilder")) {
+                try {
+                    Method m = menu.getClass().getDeclaredMethod(
+                            "setOptionalIconsVisible", Boolean.TYPE);
+                    m.setAccessible(true);
+                    m.invoke(menu, true);
+                } catch (Exception e) {
+                    Log.e(getClass().getSimpleName(), "onMenuOpened...unable to set icons for overflow menu", e);
+                }
+            }
+        }
+        return super.onPrepareOptionsPanel(view, menu);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -67,8 +90,7 @@ public abstract class ToolbarActivity extends BaseActivity implements AdapterVie
         if( id == R.id.favorite_item ) {
             settings.setFavorite(station,!item.isChecked());
             model.selectStation(station);
-        }
-        else if (id == R.id.action_settings) {
+        } else if (id == R.id.share_item) {
             return true;
         }
 
@@ -107,6 +129,7 @@ public abstract class ToolbarActivity extends BaseActivity implements AdapterVie
         favItem.setChecked(station != null && station.isFavorite());
         setEnabled(favItem, station != null);
         setEnabled(menu.findItem(R.id.refresh_item), station != null);
+        setEnabled(menu.findItem(R.id.share_item), true);
     }
 
     private void setEnabled( MenuItem item, boolean enabled ) {
