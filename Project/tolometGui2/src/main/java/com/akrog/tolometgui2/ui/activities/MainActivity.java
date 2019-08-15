@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.akrog.tolometgui2.BuildConfig;
 import com.akrog.tolometgui2.R;
+import com.akrog.tolometgui2.model.DbTolomet;
 import com.akrog.tolometgui2.ui.fragments.ChartsFragment;
 import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
 import com.google.android.material.navigation.NavigationView;
@@ -61,7 +62,7 @@ public class MainActivity extends ToolbarActivity
 
         View headerView = navigationView.getHeaderView(0);
         TextView textVersion = headerView.findViewById(R.id.textVersion);
-        textVersion.setText(String.format("(v%s - db%d)", BuildConfig.VERSION_NAME, 0));
+        textVersion.setText(String.format("(v%s - db%d)", BuildConfig.VERSION_NAME, DbTolomet.getInstance().getVersion()));
     }
 
     @Override
