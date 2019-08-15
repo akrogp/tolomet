@@ -20,17 +20,18 @@ import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
 
 import java.lang.reflect.Method;
 
-public abstract class ToolbarActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
+public abstract class ToolbarActivity extends ProgressActivity implements AdapterView.OnItemSelectedListener {
     private MainViewModel model;
     private Spinner spinner;
     private SpinnerAdapter spinnerAdapter;
+    Toolbar toolbar;
     private boolean skipClick;
     private Menu menu;
 
     protected Toolbar configureToolbar() {
         model = ViewModelProviders.of(this).get(MainViewModel.class);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
@@ -159,5 +160,23 @@ public abstract class ToolbarActivity extends BaseActivity implements AdapterVie
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
+    }
+
+    @Override
+    public boolean beginProgress() {
+        if( !super.beginProgress() )
+            return false;
+        toolbar.setEnabled(false);
+        spinner.setEnabled(false);
+        return true;
+    }
+
+    @Override
+    public boolean endProgress() {
+        if( !super.endProgress() )
+            return false;
+        toolbar.setEnabled(true);
+        spinner.setEnabled(true);
+        return true;
     }
 }
