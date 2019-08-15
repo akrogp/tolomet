@@ -1,5 +1,8 @@
 package com.akrog.tolometgui2.ui.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -10,25 +13,24 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.akrog.tolomet.Station;
 import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.model.AppSettings;
 import com.akrog.tolometgui2.ui.viewmodels.ChartsViewModel;
 import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
 
-public class ChartsFragment extends Fragment {
+import java.util.Calendar;
+
+public class ChartsFragment extends BaseFragment {
     private AppSettings settings;
     private MainViewModel model;
     private ChartsViewModel chartsModel;
     private Menu menu;
     private final Handler handler = new Handler();
     private Runnable timer;
-
-    public static ChartsFragment newInstance() {
-        return new ChartsFragment();
-    }
+    private AsyncTask<Void, Void, Station> thread;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,6 +74,73 @@ public class ChartsFragment extends Fragment {
     }
 
     private void downloadData() {
+        if (thread != null)
+            return;
+        if (alertNetwork()) {
+            model.loadCache();
+            return;
+        }
+        if( !beginProgress() )
+            return;
+        thread = new AsyncTask<Void, Void, Station>() {
+            @Override
+            protected Station doInBackground(Void... params) {
+                return model.safeRefresh();
+            }
+            @Override
+            protected void onPostExecute(Station station) {
+                super.onPostExecute(station);
+                endProgress();
+                if( station != null )
+                    model.getCurrentStation().getMeteo().merge(station.getMeteo());
+                onDownloaded();
+            }
+            @Override
+            protected void onCancelled() {
+                super.onCancelled();
+                //logFile("onCancelled1");
+                onPostExecute(null);
+                //logFile("onCancelled2");
+            }
+        };
+        thread.execute();
+    }
+
+    public void onDownloaded() {
+        thread = null;
+        if( isStopped() )
+            return;
+        if( !postTimer() && model.checkStation() && model.getCurrentStation().isEmpty() ) {
+            //logFile("No data => station:" + model.getCurrentStation().getId() + " empty:" + model.getCurrentStation().isEmpty());
+            new AlertDialog.Builder(getActivity()).setTitle(R.string.NoData)
+                    .setMessage(R.string.RedirectWeb)
+                    .setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            //startActivity(new Intent(ChartsActivity.this, ProviderActivity.class));
+                        }
+                    })
+                    .setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create().show();
+        } else {
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND, 0);
+            model.getCurrentStation().getMeteo().clear(cal.getTimeInMillis());
+        }
+        redraw();
+        //updater.start();
+    }
+
+    private void redraw() {
     }
 
     private void cancelTimer() {
