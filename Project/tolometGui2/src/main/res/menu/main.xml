@@ -16,8 +16,9 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/share_item"
         android:orderInCategory="100"
-        android:title="@string/Settings"
-        app:showAsAction="never" />
+        android:title="@string/Share"
+        android:icon="@drawable/ic_share"
+        app:showAsAction="ifRoom" />
 </menu>
