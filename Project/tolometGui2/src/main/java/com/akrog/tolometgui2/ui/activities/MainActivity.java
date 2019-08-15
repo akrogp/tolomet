@@ -57,6 +57,8 @@ public class MainActivity extends ToolbarActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
+        toolbar.setNavigationIcon(R.mipmap.ic_launcher);
+
         View headerView = navigationView.getHeaderView(0);
         TextView textVersion = headerView.findViewById(R.id.textVersion);
         textVersion.setText(String.format("(v%s - db%d)", BuildConfig.VERSION_NAME, 0));

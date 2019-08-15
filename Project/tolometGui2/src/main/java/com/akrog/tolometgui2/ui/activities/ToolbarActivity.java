@@ -111,7 +111,7 @@ public abstract class ToolbarActivity extends BaseActivity implements AdapterVie
 
     private void setEnabled( MenuItem item, boolean enabled ) {
         item.setEnabled(enabled);
-        item.getIcon().setAlpha(enabled?0xFF:0x42);
+        item.getIcon().setAlpha(enabled?0x8A:0x42);
     }
 
     private void selectNearest(Runnable onNothing, Runnable onFound) {

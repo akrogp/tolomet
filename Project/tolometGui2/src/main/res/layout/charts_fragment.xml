@@ -34,13 +34,18 @@
             android:layout_height="0dp"
             android:layout_weight=".5"
             android:layout_marginTop="0dp"
-            android:layout_marginBottom="1dp"/>
+            android:layout_marginBottom="1dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp" />
 
         <com.akrog.tolometgui2.ui.views.MyPlot
             android:id="@+id/chartWind"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="1dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
             android:layout_weight=".5" />
     </LinearLayout>
 
