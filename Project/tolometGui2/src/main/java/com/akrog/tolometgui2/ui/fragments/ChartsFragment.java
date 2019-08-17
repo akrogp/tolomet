@@ -18,6 +18,8 @@ import androidx.lifecycle.ViewModelProviders;
 import com.akrog.tolomet.Station;
 import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.model.AppSettings;
+import com.akrog.tolometgui2.ui.activities.ToolbarActivity;
+import com.akrog.tolometgui2.ui.presenters.MyCharts;
 import com.akrog.tolometgui2.ui.viewmodels.ChartsViewModel;
 import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
 
@@ -31,6 +33,7 @@ public class ChartsFragment extends BaseFragment {
     private final Handler handler = new Handler();
     private Runnable timer;
     private AsyncTask<Void, Void, Station> thread;
+    private MyCharts charts;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,7 +59,20 @@ public class ChartsFragment extends BaseFragment {
         settings = AppSettings.getInstance();
         model = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
         chartsModel = ViewModelProviders.of(this).get(ChartsViewModel.class);
+        charts = new MyCharts();
+        charts.initialize((ToolbarActivity)getActivity(), savedInstanceState);
         createTimer();
+    }
+
+    @Override
+    public void onStop() {
+        cancelTimer();
+        if (thread != null) {
+            model.cancel();
+            thread.cancel(true);
+            thread = null;
+        }
+        super.onStop();
     }
 
     private void createTimer() {
@@ -141,6 +157,7 @@ public class ChartsFragment extends BaseFragment {
     }
 
     private void redraw() {
+        charts.updateView();
     }
 
     private void cancelTimer() {
