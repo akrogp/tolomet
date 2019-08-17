@@ -1,13 +1,11 @@
 package com.akrog.tolometgui2.model.db;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.room.Transaction;
 
 import com.akrog.tolomet.Measurement;
 import com.akrog.tolomet.Meteo;
@@ -26,7 +24,6 @@ public abstract class MeteoDao {
     @Query("SELECT * FROM Meteo WHERE station = :station")
     public abstract LiveData<List<MeteoEntity>> loadMeasurements(String station);
 
-    @Transaction
     public void saveStation(Station station) {
         Map<Long, MeteoEntity> map = new HashMap<>(station.getMeteo().getWindDirection().size());
         Meteo meteo = station.getMeteo();
@@ -39,11 +36,8 @@ public abstract class MeteoDao {
         insertMeasurements(map.values());
     }
 
-    @Transaction
-    public LiveData<Station> loadStation(String stationId) {
-        LiveData<Station> liveStation = new MutableLiveData<>();
-        return Transformations.map(loadMeasurements(stationId), entities -> {
-            Station station = new Station();
+    public LiveData<Station> loadStation(Station station) {
+        return Transformations.map(loadMeasurements(station.getId()), entities -> {
             Meteo meteo = station.getMeteo();
             for( MeteoEntity e : entities ) {
                 meteo.getWindDirection().put(e.stamp, e.dir);
