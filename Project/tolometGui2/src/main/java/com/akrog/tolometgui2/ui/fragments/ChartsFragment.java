@@ -20,6 +20,7 @@ import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.model.AppSettings;
 import com.akrog.tolometgui2.ui.activities.ToolbarActivity;
 import com.akrog.tolometgui2.ui.presenters.MyCharts;
+import com.akrog.tolometgui2.ui.presenters.MySummary;
 import com.akrog.tolometgui2.ui.viewmodels.ChartsViewModel;
 import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
 
@@ -34,6 +35,7 @@ public class ChartsFragment extends BaseFragment {
     private Runnable timer;
     private AsyncTask<Void, Void, Station> thread;
     private MyCharts charts;
+    private MySummary summary;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,12 +58,24 @@ public class ChartsFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        ToolbarActivity activity = (ToolbarActivity)getActivity();
+
         settings = AppSettings.getInstance();
-        model = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
+        model = ViewModelProviders.of(activity).get(MainViewModel.class);
         chartsModel = ViewModelProviders.of(this).get(ChartsViewModel.class);
+
         charts = new MyCharts();
-        charts.initialize((ToolbarActivity)getActivity(), savedInstanceState);
+        charts.initialize(activity, savedInstanceState);
+
+        summary = new MySummary();
+        summary.initialize(activity, savedInstanceState);
+
         createTimer();
+        model.liveCurrentStation().observe(this, station -> {
+            if( station != null )
+                downloadData();
+        });
     }
 
     @Override
@@ -158,6 +172,7 @@ public class ChartsFragment extends BaseFragment {
 
     private void redraw() {
         charts.updateView();
+        summary.updateView();
     }
 
     private void cancelTimer() {
