@@ -10,6 +10,7 @@ import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolometgui2.model.AppSettings;
+import com.akrog.tolometgui2.model.DbMeteo;
 import com.akrog.tolometgui2.model.DbTolomet;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class MainViewModel extends ViewModel {
     private static MainViewModel instance;
     private final Manager manager;
     private final DbTolomet db = DbTolomet.getInstance();
-    //private final DbMeteo cache = DbMeteo.getInstance();
+    private final DbMeteo cache = DbMeteo.getInstance();
     private final MutableLiveData<List<Station>> selection = new MutableLiveData<>();
     private final MutableLiveData<Station> currentStation = new MutableLiveData<>();
     private Command command = Command.FAV;
@@ -212,28 +213,26 @@ public class MainViewModel extends ViewModel {
     public boolean refresh(Station station) {
         if( !checkStation(station) )
             return false;
-        //cache.refresh(station);
+        cache.refresh(station);
         if( !manager.refresh(station) )
             return false;
-        //cache.save(station);
+        cache.save(station);
         return true;
     }
 
     private boolean loadCache(Station station) {
-        return false;
-        /*if( !checkStation(station) )
+        if( !checkStation(station) )
             return false;
-        return cache.refresh(station) > 0;*/
+        return cache.refresh(station) > 0;
     }
 
     public boolean travel(Station station, long date) {
-        return false;
-        /*if( cache.travel(station, date) > 0 )
+        if( cache.travel(station, date) > 0 )
             return true;
         if( !manager.travel(station, date) )
             return false;
         cache.travelled(station, date);
-        return true;*/
+        return true;
     }
 
     public void cancel(Station station) {
