@@ -65,11 +65,11 @@ public class ChartsFragment extends BaseFragment {
         model = ViewModelProviders.of(activity).get(MainViewModel.class);
         chartsModel = ViewModelProviders.of(this).get(ChartsViewModel.class);
 
-        charts = new MyCharts();
-        charts.initialize(activity, savedInstanceState);
-
         summary = new MySummary();
         summary.initialize(activity, savedInstanceState);
+
+        charts = new MyCharts(summary);
+        charts.initialize(activity, savedInstanceState);
 
         createTimer();
         model.liveCurrentStation().observe(this, station -> {
