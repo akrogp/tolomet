@@ -4,14 +4,16 @@ import android.location.Location;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolometgui2.model.AppSettings;
-import com.akrog.tolometgui2.model.DbMeteo;
 import com.akrog.tolometgui2.model.DbTolomet;
+import com.akrog.tolometgui2.model.db.DbMeteo;
+import com.akrog.tolometgui2.model.db.MeteoDao;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,10 +25,9 @@ import java.util.List;
  */
 
 public class MainViewModel extends ViewModel {
-    private static MainViewModel instance;
     private final Manager manager;
     private final DbTolomet db = DbTolomet.getInstance();
-    private final DbMeteo cache = DbMeteo.getInstance();
+    private final MeteoDao cache = DbMeteo.getInstance().meteoDao();
     private final MutableLiveData<List<Station>> selection = new MutableLiveData<>();
     private final MutableLiveData<Station> currentStation = new MutableLiveData<>();
     private Command command = Command.FAV;
@@ -49,7 +50,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public void selectStation(Station station) {
-        currentStation.postValue(station);
+        setCurrentStation(station);
         if( station == null ) {
             selectNone();
             return;
@@ -108,7 +109,11 @@ public class MainViewModel extends ViewModel {
     }
 
     public void setCurrentStation(Station station) {
-        currentStation.postValue(station);
+        LiveData<Station> dbStation = DbMeteo.getInstance().meteoDao().loadStation(station);
+        Transformations.switchMap(dbStation, input -> {
+            currentStation.postValue(dbStation.getValue());
+            return currentStation;
+        });
     }
 
     public Station getCurrentStation() {
@@ -136,58 +141,39 @@ public class MainViewModel extends ViewModel {
     }
 
     public int getRefresh() {
-        return getRefresh(getCurrentStation());
+        return manager.getRefresh(getCurrentStation());
     }
 
     public String getInforUrl() {
-        return getInforUrl(getCurrentStation());
+        return manager.getInforUrl(getCurrentStation());
     }
 
     public String getUserUrl() {
-        return getUserUrl(getCurrentStation());
-    }
-
-    public boolean refresh() {
-        return refresh(getCurrentStation());
-    }
-
-    public Station safeRefresh() {
-        Station station = getCurrentStation().clone();
-        if( !refresh(station) && station.isEmpty() )
-            return null;
-        return station;
-    }
-
-    public boolean loadCache() {
-        return loadCache(getCurrentStation());
-    }
-
-    public boolean travel(long date) {
-        return travel(getCurrentStation(), date);
+        return manager.getUserUrl(getCurrentStation());
     }
 
     public void cancel() {
-        cancel(getCurrentStation());
+        manager.cancel(getCurrentStation());
     }
 
     public String getSummary(boolean large, float factor, String unit) {
-        return getSummary(getCurrentStation(), large, factor, unit);
+        return manager.getSummary(getCurrentStation(), large, factor, unit);
     }
 
     public String getSummary(Long stamp, boolean large, float factor, String unit) {
-        return getSummary(getCurrentStation(), stamp, large, factor, unit);
+        return manager.getSummary(getCurrentStation(), stamp, large, factor, unit);
     }
 
     public String getStamp() {
-        return getStamp(getCurrentStation());
+        return manager.getStamp(getCurrentStation());
     }
 
     public String getStamp(Long stamp) {
-        return getStamp(getCurrentStation(), stamp);
+        return manager.getStamp(getCurrentStation(), stamp);
     }
 
     public boolean isOutdated() {
-        return isOutdated(getCurrentStation());
+        return manager.isOutdated(getCurrentStation());
     }
 
     public String parseDirection(int degrees) {
@@ -195,72 +181,28 @@ public class MainViewModel extends ViewModel {
     }
 
     public boolean checkStation() {
-        return checkStation(getCurrentStation());
+        return manager.checkStation(getCurrentStation());
     }
 
-    public int getRefresh(Station station) {
-        return manager.getRefresh(station);
-    }
-
-    public String getInforUrl(Station station) {
-        return manager.getInforUrl(station);
-    }
-
-    public String getUserUrl(Station station) {
-        return manager.getUserUrl(station);
-    }
-
-    public boolean refresh(Station station) {
-        if( !checkStation(station) )
+    public boolean refresh() {
+        Station station = getCurrentStation();
+        if( !manager.checkStation(station) )
             return false;
-        cache.refresh(station);
-        if( !manager.refresh(station) )
+        Station clone = station.clone();
+        if( !manager.refresh(clone) )
             return false;
-        cache.save(station);
+        cache.saveStation(clone);
         return true;
     }
 
-    private boolean loadCache(Station station) {
-        if( !checkStation(station) )
-            return false;
-        return cache.refresh(station) > 0;
-    }
-
-    public boolean travel(Station station, long date) {
-        if( cache.travel(station, date) > 0 )
+    public boolean travel(long date) {
+        return false;
+        /*if( cache.travel(station, date) > 0 )
             return true;
         if( !manager.travel(station, date) )
             return false;
         cache.travelled(station, date);
-        return true;
-    }
-
-    public void cancel(Station station) {
-        manager.cancel(station);
-    }
-
-    public String getSummary(Station station, boolean large, float factor, String unit) {
-        return manager.getSummary(station, large, factor, unit);
-    }
-
-    public String getSummary(Station station, Long stamp, boolean large, float factor, String unit) {
-        return manager.getSummary(station, stamp, large, factor, unit);
-    }
-
-    public String getStamp(Station station) {
-        return manager.getStamp(station);
-    }
-
-    public String getStamp(Station station, Long stamp) {
-        return manager.getStamp(station, stamp);
-    }
-
-    public boolean isOutdated(Station station) {
-        return manager.isOutdated(station);
-    }
-
-    public boolean checkStation(Station station) {
-        return manager.checkStation(station);
+        return true;*/
     }
 
     public enum Command {SEL, FAV, NEAR, FIND, SEP}

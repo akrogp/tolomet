@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.akrog.tolomet.Station;
 import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.model.AppSettings;
 import com.akrog.tolometgui2.ui.activities.ToolbarActivity;
@@ -33,9 +32,10 @@ public class ChartsFragment extends BaseFragment {
     private Menu menu;
     private final Handler handler = new Handler();
     private Runnable timer;
-    private AsyncTask<Void, Void, Station> thread;
+    private AsyncTask<Void, Void, Boolean> thread;
     private MyCharts charts;
     private MySummary summary;
+    boolean test = true;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,8 +73,11 @@ public class ChartsFragment extends BaseFragment {
 
         createTimer();
         model.liveCurrentStation().observe(this, station -> {
-            if( station != null )
+            if( test ) {
                 downloadData();
+                test = false;
+            }
+            redraw();
         });
     }
 
@@ -106,30 +109,26 @@ public class ChartsFragment extends BaseFragment {
     private void downloadData() {
         if (thread != null)
             return;
-        if (alertNetwork()) {
-            model.loadCache();
+        if (alertNetwork())
             return;
-        }
         if( !beginProgress() )
             return;
-        thread = new AsyncTask<Void, Void, Station>() {
+        thread = new AsyncTask<Void, Void, Boolean>() {
             @Override
-            protected Station doInBackground(Void... params) {
-                return model.safeRefresh();
+            protected Boolean doInBackground(Void... params) {
+                return model.refresh();
             }
             @Override
-            protected void onPostExecute(Station station) {
-                super.onPostExecute(station);
+            protected void onPostExecute(Boolean ok) {
+                super.onPostExecute(ok);
                 endProgress();
-                if( station != null )
-                    model.getCurrentStation().getMeteo().merge(station.getMeteo());
                 onDownloaded();
             }
             @Override
             protected void onCancelled() {
                 super.onCancelled();
                 //logFile("onCancelled1");
-                onPostExecute(null);
+                onPostExecute(false);
                 //logFile("onCancelled2");
             }
         };
@@ -166,7 +165,7 @@ public class ChartsFragment extends BaseFragment {
             cal.set(Calendar.MILLISECOND, 0);
             model.getCurrentStation().getMeteo().clear(cal.getTimeInMillis());
         }
-        redraw();
+        //redraw();
         //updater.start();
     }
 
