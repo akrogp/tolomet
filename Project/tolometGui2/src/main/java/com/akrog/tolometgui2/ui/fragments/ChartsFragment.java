@@ -92,14 +92,10 @@ public class ChartsFragment extends BaseFragment {
         cancelTimer();
         if( settings.getUpdateMode() != AppSettings.AUTO_UPDATES )
             return;
-        timer = new Runnable() {
-            @Override
-            public void run() {
-                if( model.checkStation() )
-                    downloadData();
-            }
+        timer = () -> {
+            if( model.checkStation() )
+                downloadData();
         };
-        //timer.run();
     }
 
     private void downloadData() {
