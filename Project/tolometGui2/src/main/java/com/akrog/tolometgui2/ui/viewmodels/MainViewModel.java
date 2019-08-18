@@ -13,7 +13,7 @@ import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolometgui2.model.AppSettings;
 import com.akrog.tolometgui2.model.DbTolomet;
 import com.akrog.tolometgui2.model.db.DbMeteo;
-import com.akrog.tolometgui2.model.db.MeteoDao;
+import com.akrog.tolometgui2.model.db.TravelDao;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,7 +27,6 @@ import java.util.List;
 public class MainViewModel extends ViewModel {
     private final Manager manager;
     private final DbTolomet db = DbTolomet.getInstance();
-    private final MeteoDao cache = DbMeteo.getInstance().meteoDao();
     private final MutableLiveData<List<Station>> selection = new MutableLiveData<>();
     private final MutableLiveData<Station> currentStation = new MutableLiveData<>();
     private final LiveData<Station> currentMeteo = Transformations.switchMap(currentStation,
@@ -193,18 +192,20 @@ public class MainViewModel extends ViewModel {
         Station clone = station.clone();
         if( !manager.refresh(clone) )
             return false;
-        cache.saveStation(clone);
+        DbMeteo.getInstance().meteoDao().saveStation(clone);
         return true;
     }
 
     public boolean travel(long date) {
-        return false;
-        /*if( cache.travel(station, date) > 0 )
+        TravelDao travelDao = DbMeteo.getInstance().travelDao();
+        if( travelDao.hasTravelled(getCurrentStation(), date) )
             return true;
+        Station station = getCurrentStation().clone();
         if( !manager.travel(station, date) )
             return false;
-        cache.travelled(station, date);
-        return true;*/
+        DbMeteo.getInstance().meteoDao().saveStation(station);
+        travelDao.saveTravel(station, date);
+        return true;
     }
 
     public enum Command {SEL, FAV, NEAR, FIND, SEP}

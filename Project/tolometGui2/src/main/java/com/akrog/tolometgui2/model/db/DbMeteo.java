@@ -8,15 +8,20 @@ import com.akrog.tolometgui2.Tolomet;
 
 @Database(version = DbMeteo.VERSION, entities = {MeteoEntity.class, TravelEntity.class})
 public abstract class DbMeteo extends RoomDatabase {
-    public static final int VERSION = 1;
+    public static final int VERSION = 2;
     public static final String NAME = "Meteo2.db";
     private static DbMeteo instance;
 
     public abstract MeteoDao meteoDao();
 
+    public abstract TravelDao travelDao();
+
     synchronized public static DbMeteo getInstance() {
         if( instance == null )
-            instance = Room.databaseBuilder(Tolomet.getAppContext(), DbMeteo.class, NAME).build();
+            instance = Room
+                .databaseBuilder(Tolomet.getAppContext(), DbMeteo.class, NAME)
+                .fallbackToDestructiveMigration()
+                .build();
         return instance;
     }
 }
