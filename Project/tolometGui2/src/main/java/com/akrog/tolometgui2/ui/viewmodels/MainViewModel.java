@@ -30,6 +30,8 @@ public class MainViewModel extends ViewModel {
     private final MeteoDao cache = DbMeteo.getInstance().meteoDao();
     private final MutableLiveData<List<Station>> selection = new MutableLiveData<>();
     private final MutableLiveData<Station> currentStation = new MutableLiveData<>();
+    private final LiveData<Station> currentMeteo = Transformations.switchMap(currentStation,
+            station -> DbMeteo.getInstance().meteoDao().loadStation(station));
     private Command command = Command.FAV;
 
     public MainViewModel() {
@@ -109,11 +111,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public void setCurrentStation(Station station) {
-        LiveData<Station> dbStation = DbMeteo.getInstance().meteoDao().loadStation(station);
-        Transformations.switchMap(dbStation, input -> {
-            currentStation.postValue(dbStation.getValue());
-            return currentStation;
-        });
+        currentStation.postValue(station);
     }
 
     public Station getCurrentStation() {
@@ -122,6 +120,10 @@ public class MainViewModel extends ViewModel {
 
     public LiveData<Station> liveCurrentStation() {
         return currentStation;
+    }
+
+    public LiveData<Station> liveCurrentMeteo() {
+        return currentMeteo;
     }
 
     public List<Station> getSelStations() {

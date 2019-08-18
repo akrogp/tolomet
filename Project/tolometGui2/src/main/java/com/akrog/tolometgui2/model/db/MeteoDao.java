@@ -1,6 +1,7 @@
 package com.akrog.tolometgui2.model.db;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -33,10 +34,14 @@ public abstract class MeteoDao {
         merge(map, meteo.getAirTemperature(), (ent, val) -> ent.temp = val.floatValue());
         merge(map, meteo.getAirHumidity(), (ent, val) -> ent.hum = val.floatValue());
         merge(map, meteo.getAirPressure(), (ent, val) -> ent.pres = val.floatValue());
+        for( MeteoEntity ent : map.values() )
+            ent.station = station.getId();
         insertMeasurements(map.values());
     }
 
     public LiveData<Station> loadStation(Station station) {
+        if( station == null )
+            return new MutableLiveData<>();
         return Transformations.map(loadMeasurements(station.getId()), entities -> {
             Meteo meteo = station.getMeteo();
             for( MeteoEntity e : entities ) {
