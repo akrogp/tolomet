@@ -23,8 +23,6 @@ import com.akrog.tolometgui2.ui.presenters.MySummary;
 import com.akrog.tolometgui2.ui.viewmodels.ChartsViewModel;
 import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
 
-import java.util.Calendar;
-
 public class ChartsFragment extends BaseFragment {
     private AppSettings settings;
     private MainViewModel model;
@@ -35,7 +33,6 @@ public class ChartsFragment extends BaseFragment {
     private AsyncTask<Void, Void, Boolean> thread;
     private MyCharts charts;
     private MySummary summary;
-    boolean test = true;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,12 +69,11 @@ public class ChartsFragment extends BaseFragment {
         charts.initialize(activity, savedInstanceState);
 
         createTimer();
-        model.liveCurrentStation().observe(this, station -> {
-            if( test ) {
-                downloadData();
-                test = false;
-            }
+        model.liveCurrentStation().observe(this, station -> downloadData());
+        model.liveCurrentMeteo().observe(this, station -> {
             redraw();
+            if( station.isEmpty() )
+                askSource();
         });
     }
 
@@ -139,39 +135,32 @@ public class ChartsFragment extends BaseFragment {
         thread = null;
         if( isStopped() )
             return;
-        if( !postTimer() && model.checkStation() && model.getCurrentStation().isEmpty() ) {
-            //logFile("No data => station:" + model.getCurrentStation().getId() + " empty:" + model.getCurrentStation().isEmpty());
-            new AlertDialog.Builder(getActivity()).setTitle(R.string.NoData)
-                    .setMessage(R.string.RedirectWeb)
-                    .setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            //startActivity(new Intent(ChartsActivity.this, ProviderActivity.class));
-                        }
-                    })
-                    .setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .create().show();
-        } else {
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.HOUR_OF_DAY, 0);
-            cal.set(Calendar.MINUTE, 0);
-            cal.set(Calendar.SECOND, 0);
-            cal.set(Calendar.MILLISECOND, 0);
-            model.getCurrentStation().getMeteo().clear(cal.getTimeInMillis());
-        }
-        //redraw();
-        //updater.start();
+        postTimer();
     }
 
     private void redraw() {
         charts.updateView();
         summary.updateView();
+    }
+
+    private void askSource() {
+        //logFile("No data => station:" + model.getCurrentStation().getId() + " empty:" + model.getCurrentStation().isEmpty());
+        new AlertDialog.Builder(getActivity()).setTitle(R.string.NoData)
+            .setMessage(R.string.RedirectWeb)
+            .setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    //startActivity(new Intent(ChartsActivity.this, ProviderActivity.class));
+                }
+            })
+            .setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            })
+            .create().show();
     }
 
     private void cancelTimer() {
