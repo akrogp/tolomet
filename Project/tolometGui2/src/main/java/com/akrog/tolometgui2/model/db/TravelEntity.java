@@ -2,12 +2,11 @@ package com.akrog.tolometgui2.model.db;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
-@Entity(tableName = "Travel")
+@Entity(tableName = "Travel", primaryKeys = {"station", "date"})
 public class TravelEntity {
-    @PrimaryKey
     @NonNull
     public String station;
+    @NonNull
     public String date;
 }
