@@ -11,10 +11,6 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
-
 import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.model.AppSettings;
 import com.akrog.tolometgui2.ui.activities.ToolbarActivity;
@@ -22,6 +18,10 @@ import com.akrog.tolometgui2.ui.presenters.MyCharts;
 import com.akrog.tolometgui2.ui.presenters.MySummary;
 import com.akrog.tolometgui2.ui.viewmodels.ChartsViewModel;
 import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 
 public class ChartsFragment extends BaseFragment {
     private AppSettings settings;
@@ -86,6 +86,14 @@ public class ChartsFragment extends BaseFragment {
             thread = null;
         }
         super.onStop();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if( settings.getUpdateMode() >= AppSettings.SMART_UPDATES && model.isOutdated() )
+            downloadData();
+        redraw();
     }
 
     private void createTimer() {
