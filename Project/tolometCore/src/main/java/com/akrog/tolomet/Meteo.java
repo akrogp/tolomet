@@ -80,6 +80,23 @@ public class Meteo {
 		return stamp;
 	}
 
+	public Long getBegin() {
+		Long stamp = null;
+		Long tmp;
+		for( Measurement measurement : measurements ) {
+			tmp = measurement.getStamp();
+			if( tmp == null )
+				continue;
+			if( stamp == null ) {
+				stamp = tmp;
+				continue;
+			}
+			if( tmp < stamp )
+				stamp = tmp;
+		}
+		return stamp;
+	}
+
 	public Long getStamp(Long stamp) {
 		Long result = getStamp();
 		if( result == null || stamp == null )
