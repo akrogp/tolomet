@@ -150,7 +150,9 @@ public class Manager {
 	}
 	
 	public boolean isOutdated(Station station) {
-		if( station.isSpecial() || station.isEmpty() )
+		if( station == null || station.isSpecial() )
+			return false;
+		if( station.isEmpty() )
 			return true;
 		long stamp = station.getStamp();
 		if( Calendar.getInstance().getTimeInMillis()-stamp > getRefresh(station)*60*1000)
