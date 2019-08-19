@@ -8,10 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolometgui2.R;
@@ -21,6 +17,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 public class SpinnerAdapter extends BaseAdapter implements android.widget.SpinnerAdapter {
     ;
@@ -137,16 +137,14 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
         textTitle.setAlpha(cmd == MainViewModel.Command.SEP || cmd == MainViewModel.Command.SEL ? 0.6F : 1.0F);
 
         ImageView icon = convertView.findViewById(R.id.station_icon);
-        int iconId;
+        int iconId = 0;
         if( cmd == MainViewModel.Command.FAV )
             iconId = R.drawable.ic_spinner_favorite;
         else if( cmd == MainViewModel.Command.NEAR )
             iconId = R.drawable.ic_spinner_gps;
         else if( cmd == MainViewModel.Command.FIND )
             iconId = R.drawable.ic_spinner_search;
-        else if( cmd == MainViewModel.Command.SEP || cmd == MainViewModel.Command.SEL )
-            iconId = 0;
-        else
+        else if( station != null )
             iconId = mapProviders.containsKey(station.getProviderType()) ? mapProviders.get(station.getProviderType()) : -1;
         if( iconId <= 0)
             icon.setVisibility(View.GONE);

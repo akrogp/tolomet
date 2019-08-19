@@ -4,13 +4,13 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import androidx.lifecycle.ViewModelProviders;
-
 import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.model.AppSettings;
 import com.akrog.tolometgui2.ui.activities.ToolbarActivity;
 import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
 import com.akrog.tolometgui2.ui.views.Axis;
+
+import androidx.lifecycle.ViewModelProviders;
 
 public class MySummary implements Presenter, Axis.ChangeListener {
 	private ToolbarActivity activity;
@@ -43,7 +43,7 @@ public class MySummary implements Presenter, Axis.ChangeListener {
 
 	@Override
 	public void updateView() {
-		if( model.getCurrentStation().isEmpty() )
+		if( model.getCurrentStation() == null || model.getCurrentStation().isEmpty() )
     		summary.setText(activity.getString(R.string.NoData));
     	else
     		summary.setText(model.getSummary(
