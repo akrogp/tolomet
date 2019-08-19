@@ -165,9 +165,12 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_spinner_search" />
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="height" value="44" />
+                            <entry key="outputName" value="ic_toolbar" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="$PROJECT_DIR$/../Media/nav-drawer.svg" />
+                            <entry key="sourceFile" value="$PROJECT_DIR$/../Media/toolbar2.svg" />
+                            <entry key="width" value="44" />
                           </map>
                         </option>
                       </PersistentState>

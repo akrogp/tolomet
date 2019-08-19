@@ -6,8 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import androidx.lifecycle.ViewModelProviders;
-
 import com.akrog.tolomet.Meteo;
 import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.model.AppSettings;
@@ -23,6 +21,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import androidx.lifecycle.ViewModelProviders;
 
 ;
 
@@ -327,7 +327,7 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
             downloader.cancel(true);
     	meteo.clear();
         pastDate = null;
-    	if( !model.getCurrentStation().isSpecial() )
+    	if( model.getCurrentStation() != null && !model.getCurrentStation().isSpecial() )
     		meteo.merge(model.getCurrentStation().getMeteo());
         updateBoundaries();
         updateMarkers();
