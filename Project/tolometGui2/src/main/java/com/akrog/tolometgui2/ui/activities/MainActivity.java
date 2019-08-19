@@ -5,6 +5,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.akrog.tolometgui2.BuildConfig;
+import com.akrog.tolometgui2.R;
+import com.akrog.tolometgui2.model.DbTolomet;
+import com.akrog.tolometgui2.ui.fragments.ChartsFragment;
+import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
+import com.google.android.material.navigation.NavigationView;
+
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -12,13 +19,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
-
-import com.akrog.tolometgui2.BuildConfig;
-import com.akrog.tolometgui2.R;
-import com.akrog.tolometgui2.model.DbTolomet;
-import com.akrog.tolometgui2.ui.fragments.ChartsFragment;
-import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
-import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends ToolbarActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -58,7 +58,8 @@ public class MainActivity extends ToolbarActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        toolbar.setNavigationIcon(R.mipmap.ic_launcher);
+        //toolbar.setNavigationIcon(R.mipmap.ic_launcher);
+        toolbar.setNavigationIcon(R.drawable.ic_toolbar);
 
         View headerView = navigationView.getHeaderView(0);
         TextView textVersion = headerView.findViewById(R.id.textVersion);
