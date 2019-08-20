@@ -61,6 +61,13 @@ public class Measurement {
 		return times[times.length-1];
 	}
 
+	public Long getBegin() {
+		if( isEmpty() )
+			return null;
+		Long[] times = getTimes();
+		return times[0];
+	}
+
 	public Long getStamp(Long stamp) {
 		if( stamp == null || isEmpty() )
 			return null;

@@ -58,7 +58,6 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 	private Marker markerNorth, markerSouth, markerEast, markerWest;
 	private boolean simpleMode;
 	private final Axis.ChangeListener axisListener;
-    private Long pastDate;
     private AsyncTask<Void,Void,Void> downloader;
 
 	public MyCharts() {
@@ -293,11 +292,9 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
     	long x3 = System.currentTimeMillis()/round*round;
 
     	Calendar cal = Calendar.getInstance();
-        if( pastDate != null ) {
+    	Long pastDate = meteo.getBegin();
+        if( pastDate != null )
 			cal.setTimeInMillis(pastDate);
-			tail = false;
-			pastDate = null;
-		}
     	cal.set(Calendar.HOUR_OF_DAY, 0);
     	cal.set(Calendar.MINUTE, 0);
     	cal.set(Calendar.SECOND, 0);
@@ -331,8 +328,9 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
     	meteo.clear();
     	if( model.getCurrentStation() != null && !model.getCurrentStation().isSpecial() )
     		meteo.merge(model.getCurrentStation().getMeteo());
-        updateBoundaries(pastDate == null);
-        pastDate = null;
+    	Long begin = meteo.getBegin();
+    	Long limit = chartAir.getXAxis().getMinLimit().longValue();
+        updateBoundaries(begin == null || begin >= limit );
         updateMarkers();
     	chartAir.redraw();
         chartWind.redraw();
@@ -344,6 +342,7 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 
 	@Override
 	public void onBoundaryReached(final long requestedDate) {
+		Long pastDate = meteo.getBegin();
         if( settings.getUpdateMode() == 0 || downloader != null || (pastDate != null && requestedDate >= pastDate) )
             return;
 		if( !NetworkService.isNetworkAvailable())
@@ -359,9 +358,8 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
             }
             @Override
             protected void onPostExecute(Void aVoid) {
-                pastDate = requestedDate;
                 Toast.makeText(activity,
-                        df.format(new Date(pastDate)),
+                        df.format(new Date(requestedDate)),
                         Toast.LENGTH_SHORT
                 ).show();
                 downloader = null;
