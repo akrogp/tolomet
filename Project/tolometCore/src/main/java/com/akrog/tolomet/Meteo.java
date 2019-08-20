@@ -84,7 +84,7 @@ public class Meteo {
 		Long stamp = null;
 		Long tmp;
 		for( Measurement measurement : measurements ) {
-			tmp = measurement.getStamp();
+			tmp = measurement.getBegin();
 			if( tmp == null )
 				continue;
 			if( stamp == null ) {
