@@ -1,10 +1,12 @@
 package com.akrog.tolometgui2.model.db;
 
+import com.akrog.tolometgui2.Tolomet;
+
+import java.util.Calendar;
+
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-
-import com.akrog.tolometgui2.Tolomet;
 
 @Database(version = DbMeteo.VERSION, entities = {MeteoEntity.class, TravelEntity.class})
 public abstract class DbMeteo extends RoomDatabase {
@@ -23,5 +25,15 @@ public abstract class DbMeteo extends RoomDatabase {
                 .fallbackToDestructiveMigration()
                 .build();
         return instance;
+    }
+
+    public void trim() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY,0);
+        cal.set(Calendar.MINUTE,0);
+        cal.set(Calendar.SECOND,0);
+        cal.set(Calendar.MILLISECOND,0);
+        meteoDao().trim(cal.getTimeInMillis());
+        travelDao().trim(cal.getTime());
     }
 }

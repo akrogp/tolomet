@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.model.AppSettings;
+import com.akrog.tolometgui2.model.db.DbMeteo;
 import com.akrog.tolometgui2.ui.activities.ToolbarActivity;
 import com.akrog.tolometgui2.ui.presenters.MyCharts;
 import com.akrog.tolometgui2.ui.presenters.MySummary;
@@ -116,6 +117,7 @@ public class ChartsFragment extends BaseFragment {
         thread = new AsyncTask<Void, Void, Boolean>() {
             @Override
             protected Boolean doInBackground(Void... params) {
+                DbMeteo.getInstance().trim();
                 return model.refresh();
             }
             @Override

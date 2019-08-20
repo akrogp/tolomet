@@ -1,15 +1,15 @@
 package com.akrog.tolometgui2.model.db;
 
-import androidx.room.Dao;
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
-import androidx.room.Query;
-
 import com.akrog.tolomet.Station;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import androidx.room.Dao;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
 
 @Dao
 public abstract class TravelDao {
@@ -21,6 +21,9 @@ public abstract class TravelDao {
     @Query("SELECT COUNT(*) FROM Travel WHERE station = :station AND date = :date")
     public abstract int findTravel(String station, String date);
 
+    @Query("DELETE FROM Travel WHERE date < :date")
+    public abstract void trim(String date);
+
     public boolean hasTravelled(Station station, long dayStamp) {
         return findTravel(station.getId(), df.format(new Date(dayStamp))) > 0;
     }
@@ -30,5 +33,9 @@ public abstract class TravelDao {
         ent.station = station.getId();
         ent.date = df.format(new Date(dayStamp));
         insertTravel(ent);
+    }
+
+    public void trim(Date date) {
+        trim(df.format(date));
     }
 }
