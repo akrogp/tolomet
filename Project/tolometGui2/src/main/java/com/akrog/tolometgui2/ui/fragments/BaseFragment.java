@@ -1,24 +1,14 @@
 package com.akrog.tolometgui2.ui.fragments;
 
 import android.app.AlertDialog;
-import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.akrog.tolometgui2.R;
-import com.akrog.tolometgui2.ui.activities.ProgressActivity;
 import com.akrog.tolometgui2.ui.services.NetworkService;
 
-public abstract class BaseFragment extends Fragment {
-    private ProgressActivity activity;
-    private boolean stopped;
+import androidx.fragment.app.Fragment;
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        activity = (ProgressActivity)getActivity();
-    }
+public abstract class BaseFragment extends Fragment {
+    private boolean stopped;
 
     @Override
     public void onStart() {
@@ -35,15 +25,6 @@ public abstract class BaseFragment extends Fragment {
     protected boolean isStopped() {
         return stopped;
     }
-
-    public boolean beginProgress() {
-        return activity.beginProgress();
-    }
-
-    public boolean endProgress() {
-        return activity.endProgress();
-    }
-
 
     public boolean alertNetwork() {
         if( !NetworkService.isNetworkAvailable() ) {

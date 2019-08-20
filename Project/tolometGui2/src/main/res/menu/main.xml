@@ -10,12 +10,6 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/refresh_item"
-        android:title="@string/Refresh"
-        android:icon="@drawable/ic_sync"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/share_item"
         android:orderInCategory="100"
         android:title="@string/Share"

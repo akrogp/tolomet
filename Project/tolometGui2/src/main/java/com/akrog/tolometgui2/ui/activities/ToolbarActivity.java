@@ -10,15 +10,15 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.ViewModelProviders;
-
 import com.akrog.tolomet.Station;
 import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.ui.adapters.SpinnerAdapter;
 import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
 
 import java.lang.reflect.Method;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProviders;
 
 public abstract class ToolbarActivity extends ProgressActivity implements AdapterView.OnItemSelectedListener {
     private MainViewModel model;
@@ -129,13 +129,12 @@ public abstract class ToolbarActivity extends ProgressActivity implements Adapte
         favItem.setIcon(favIcon);
         favItem.setChecked(station != null && station.isFavorite());
         setEnabled(favItem, station != null);
-        setEnabled(menu.findItem(R.id.refresh_item), station != null);
         setEnabled(menu.findItem(R.id.share_item), true);
     }
 
     private void setEnabled( MenuItem item, boolean enabled ) {
         item.setEnabled(enabled);
-        item.getIcon().setAlpha(enabled?0x8A:0x42);
+        item.getIcon().setAlpha(enabled?0xFF:0x42);
     }
 
     private void selectNearest(Runnable onNothing, Runnable onFound) {
