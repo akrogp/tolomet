@@ -118,7 +118,7 @@ public class ChartsFragment extends ToolbarFragment {
     public void onRefresh() {
         if( !model.isOutdated() ) {
             if( charts.getZoomed() )
-                charts.updateView();
+                new Thread(() -> DbMeteo.getInstance().trim()).start();
             else {
                 AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
                 int minutes = model.getRefresh();
