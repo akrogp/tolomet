@@ -8,9 +8,11 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.akrog.tolomet.Station;
 import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.model.AppSettings;
 import com.akrog.tolometgui2.model.db.DbMeteo;
@@ -20,11 +22,13 @@ import com.akrog.tolometgui2.ui.presenters.MySummary;
 import com.akrog.tolometgui2.ui.viewmodels.ChartsViewModel;
 import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
 
+import java.util.Locale;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
-public class ChartsFragment extends BaseFragment {
+public class ChartsFragment extends ToolbarFragment {
     private AppSettings settings;
     private MainViewModel model;
     private ChartsViewModel chartsModel;
@@ -51,6 +55,7 @@ public class ChartsFragment extends BaseFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         this.menu = menu;
         inflater.inflate(R.menu.charts, menu);
+        updateMenu();
     }
 
     @Override
@@ -70,7 +75,10 @@ public class ChartsFragment extends BaseFragment {
         charts.initialize(activity, savedInstanceState);
 
         createTimer();
-        model.liveCurrentStation().observe(this, station -> downloadData());
+        model.liveCurrentStation().observe(this, station -> {
+            downloadData();
+            updateMenu();
+        });
         model.liveCurrentMeteo().observe(this, station -> {
             redraw();
             if( station.isEmpty() )
@@ -95,6 +103,43 @@ public class ChartsFragment extends BaseFragment {
         if( settings.getUpdateMode() >= AppSettings.SMART_UPDATES && model.isOutdated() )
             downloadData();
         redraw();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if( id == R.id.refresh_item )
+            onRefresh();
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void onRefresh() {
+        if( !model.isOutdated() ) {
+            if( charts.getZoomed() )
+                charts.updateView();
+            else {
+                AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                int minutes = model.getRefresh();
+                String message;
+                Locale locale = Locale.getDefault();
+                if( minutes > 60 && minutes%60 == 0 )
+                    message = String.format(locale, "%s %d %s", getString(R.string.Impatient), minutes/60, getString(R.string.hours));
+                else
+                    message = String.format(locale, "%s %d %s", getString(R.string.Impatient), minutes, getString(R.string.minutes));
+                alertDialog.setMessage(message);
+                alertDialog.show();
+            }
+        } else
+            downloadData();
+    }
+
+    private void updateMenu() {
+        if( menu == null )
+            return;
+        Station station = model.getCurrentStation();
+        setEnabled(menu.findItem(R.id.refresh_item), station != null);
     }
 
     private void createTimer() {
