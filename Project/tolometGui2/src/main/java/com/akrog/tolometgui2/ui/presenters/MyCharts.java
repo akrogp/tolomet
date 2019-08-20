@@ -135,7 +135,7 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 			createSimpleCharts();
 		else
 			createCompleteCharts();		
-		updateBoundaries();
+		updateBoundaries(true);
 		updateMarkers();
 	}
 
@@ -248,8 +248,8 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
         chartWind.addY1Marker(markerVmax);		
 	}
 
-	private void updateBoundaries() {
-    	updateTimeRange(true);
+	private void updateBoundaries(boolean tail) {
+    	updateTimeRange(tail);
         
         if( simpleMode )
         	updateBoundariesSimple();
@@ -293,8 +293,11 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
     	long x3 = System.currentTimeMillis()/round*round;
 
     	Calendar cal = Calendar.getInstance();
-        if( pastDate != null )
-            cal.setTimeInMillis(pastDate);
+        if( pastDate != null ) {
+			cal.setTimeInMillis(pastDate);
+			tail = false;
+			pastDate = null;
+		}
     	cal.set(Calendar.HOUR_OF_DAY, 0);
     	cal.set(Calendar.MINUTE, 0);
     	cal.set(Calendar.SECOND, 0);
@@ -326,10 +329,10 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
         if( downloader != null )
             downloader.cancel(true);
     	meteo.clear();
-        pastDate = null;
     	if( model.getCurrentStation() != null && !model.getCurrentStation().isSpecial() )
     		meteo.merge(model.getCurrentStation().getMeteo());
-        updateBoundaries();
+        updateBoundaries(pastDate == null);
+        pastDate = null;
         updateMarkers();
     	chartAir.redraw();
         chartWind.redraw();
@@ -361,12 +364,8 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
                         df.format(new Date(pastDate)),
                         Toast.LENGTH_SHORT
                 ).show();
-                updateTimeRange(false);
-                meteo.clear();
-                meteo.merge(model.getCurrentStation().getMeteo());
-                chartAir.redraw();
-                chartWind.redraw();
                 downloader = null;
+                //updateView();
 				activity.endProgress();
             }
             @Override
