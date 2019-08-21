@@ -143,6 +143,12 @@ public class ChartsFragment extends ToolbarFragment {
         redraw();
     }
 
+    @Override
+    public void onSettingsChanged() {
+        postTimer();
+        redraw();
+    }
+
     private void updateMenu() {
         if( menu == null )
             return;
