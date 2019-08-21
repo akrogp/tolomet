@@ -81,7 +81,7 @@ public class ChartsFragment extends ToolbarFragment {
         });
         model.liveCurrentMeteo().observe(this, station -> {
             redraw();
-            if( station.isEmpty() )
+            if( station != null && station.isEmpty() )
                 askSource();
         });
     }
