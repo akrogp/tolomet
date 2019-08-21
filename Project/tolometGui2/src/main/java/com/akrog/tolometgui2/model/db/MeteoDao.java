@@ -43,8 +43,11 @@ public abstract class MeteoDao {
     }
 
     public LiveData<Station> loadStation(Station station) {
-        if( station == null )
-            return new MutableLiveData<>();
+        if( station == null ) {
+            MutableLiveData<Station> result = new MutableLiveData<>();
+            result.setValue(null);
+            return result;
+        }
         return Transformations.map(loadMeasurements(station.getId()), entities -> {
             Meteo meteo = station.getMeteo();
             for( MeteoEntity e : entities ) {
