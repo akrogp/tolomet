@@ -80,6 +80,10 @@ public class DbTolomet extends SQLiteAssetHelper {
         return findGeoStations(lat-degrees, lon-degrees, lat+degrees, lon+degrees);
     }
 
+    public List<Station> searchStations(String text) {
+        return findStations("SELECT * FROM Station WHERE name LIKE ?", "%"+text+"%");
+    }
+
     public Map<String, ProviderInfo> getProviderCounts() {
         WindProviderType[] types = WindProviderType.values();
         String[] providers = new String[types.length];
@@ -126,10 +130,12 @@ public class DbTolomet extends SQLiteAssetHelper {
             station.setCode(cursor.getString(iCode));
             station.setName(cursor.getString(iName));
             station.setProviderType(WindProviderType.valueOf(cursor.getString(iProv)));
-            station.setRegion(cursor.getInt(iReg));
+            if( iReg >= 0 )
+                station.setRegion(cursor.getInt(iReg));
             station.setLatitude(cursor.getDouble(iLat));
             station.setLongitude(cursor.getDouble(iLon));
-            station.setCountry(cursor.getString(iCoun));
+            if( iCoun >= 0 )
+                station.setCountry(cursor.getString(iCoun));
             station.setFavorite(favs.contains(station.getId()));
             list.add(station);
         }
