@@ -13,11 +13,13 @@ import android.widget.Toast;
 import com.akrog.tolomet.Station;
 import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.ui.adapters.SpinnerAdapter;
+import com.akrog.tolometgui2.ui.fragments.SearchFragment;
 import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
 
 import java.lang.reflect.Method;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
 
 public abstract class ToolbarActivity extends ProgressActivity implements AdapterView.OnItemSelectedListener {
@@ -107,10 +109,16 @@ public abstract class ToolbarActivity extends ProgressActivity implements Adapte
             return;
         }
 
+        MainViewModel.Command cmd = spinnerAdapter.getCommand(i);
+        if( cmd == MainViewModel.Command.FIND ) {
+            DialogFragment dialog = new SearchFragment();
+            dialog.show(getSupportFragmentManager(), "SearchDialog");
+            return;
+        }
+
         Station station = spinnerAdapter.getStation(i);
         model.setCurrentStation(station);
 
-        MainViewModel.Command cmd = spinnerAdapter.getCommand(i);
         if( cmd == MainViewModel.Command.FAV )
             model.selectFavorites();
         else if( cmd == MainViewModel.Command.NEAR )

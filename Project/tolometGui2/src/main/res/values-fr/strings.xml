@@ -130,4 +130,5 @@
     <string name="UpdateStations">Download stations</string>
     <string name="stations">stations</string>
     <string name="Manual">Manual</string>
+    <string name="menu_search">Buscar por nombre</string>
 </resources>

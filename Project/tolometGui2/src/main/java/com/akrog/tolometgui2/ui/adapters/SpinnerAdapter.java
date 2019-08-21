@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.akrog.tolomet.Station;
-import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolometgui2.R;
+import com.akrog.tolometgui2.ui.services.ResourceService;
 import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
 
 import java.util.ArrayList;
@@ -23,8 +23,6 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 public class SpinnerAdapter extends BaseAdapter implements android.widget.SpinnerAdapter {
-    ;
-    private final Map<WindProviderType, Integer> mapProviders = new HashMap<>();
     private final Map<MainViewModel.Command, String> mapCommands = new HashMap<>();
     private final List<MainViewModel.Command> listCommands = new ArrayList<>();
     private final Context context;
@@ -39,20 +37,8 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
         mapCommands.put(MainViewModel.Command.SEL, "=== " + context.getString(R.string.select) + " ===");
         mapCommands.put(MainViewModel.Command.FAV, context.getString(R.string.menu_fav));
         mapCommands.put(MainViewModel.Command.NEAR, context.getString(R.string.menu_close));
-        mapCommands.put(MainViewModel.Command.FIND, "Buscar por nombre");
+        mapCommands.put(MainViewModel.Command.FIND, context.getString(R.string.menu_search));
         buildList(command);
-
-        mapProviders.put(WindProviderType.Aemet, R.drawable.aemet);
-        mapProviders.put(WindProviderType.Euskalmet, R.drawable.euskalmet);
-        mapProviders.put(WindProviderType.Ffvl, R.drawable.ffvl);
-        mapProviders.put(WindProviderType.MeteoGalicia, R.drawable.galicia);
-        mapProviders.put(WindProviderType.Holfuy, R.drawable.holfuy);
-        mapProviders.put(WindProviderType.LaRioja, R.drawable.larioja);
-        mapProviders.put(WindProviderType.Meteocat, R.drawable.meteocat);
-        mapProviders.put(WindProviderType.MeteoClimatic, R.drawable.meteoclimatic);
-        mapProviders.put(WindProviderType.MeteoFrance, R.drawable.meteofrance);
-        mapProviders.put(WindProviderType.MeteoNavarra, R.drawable.navarra);
-        mapProviders.put(WindProviderType.WeatherUnderground, R.drawable.wunder);
     }
 
     private void buildList(MainViewModel.Command command) {
@@ -137,7 +123,7 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
         textTitle.setAlpha(cmd == MainViewModel.Command.SEP || cmd == MainViewModel.Command.SEL ? 0.6F : 1.0F);
 
         ImageView icon = convertView.findViewById(R.id.station_icon);
-        int iconId = 0;
+        Integer iconId = 0;
         if( cmd == MainViewModel.Command.FAV )
             iconId = R.drawable.ic_spinner_favorite;
         else if( cmd == MainViewModel.Command.NEAR )
@@ -145,8 +131,8 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
         else if( cmd == MainViewModel.Command.FIND )
             iconId = R.drawable.ic_spinner_search;
         else if( station != null )
-            iconId = mapProviders.containsKey(station.getProviderType()) ? mapProviders.get(station.getProviderType()) : -1;
-        if( iconId <= 0)
+            iconId = ResourceService.getProviderIcon(station.getProviderType());
+        if( iconId == null || iconId == 0)
             icon.setVisibility(View.GONE);
         else {
             icon.setImageDrawable(ContextCompat.getDrawable(context, iconId));
@@ -154,8 +140,8 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
         }
 
         TextView textType = convertView.findViewById(R.id.station_type);
-        textType.setText(iconId == -1 ? station.getProviderType().getCode() : "");
-        textType.setVisibility(iconId == -1 ? View.VISIBLE : View.GONE);
+        textType.setText(iconId == null ? station.getProviderType().getCode() : "");
+        textType.setVisibility(iconId == null ? View.VISIBLE : View.GONE);
 
         return convertView;
     }

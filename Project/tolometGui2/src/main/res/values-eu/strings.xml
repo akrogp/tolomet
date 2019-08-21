@@ -133,4 +133,5 @@
     <string name="UpdateStations">Eguneratu estazioak</string>
     <string name="stations">estazioak</string>
     <string name="Manual">Manual</string>
+    <string name="menu_search">Buscar por nombre</string>
 </resources>
