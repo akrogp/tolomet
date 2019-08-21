@@ -22,6 +22,7 @@ import com.akrog.tolometgui2.ui.presenters.MySummary;
 import com.akrog.tolometgui2.ui.viewmodels.ChartsViewModel;
 import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
 
+import java.lang.ref.WeakReference;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
@@ -79,11 +80,7 @@ public class ChartsFragment extends ToolbarFragment {
             downloadData();
             updateMenu();
         });
-        model.liveCurrentMeteo().observe(this, station -> {
-            redraw();
-            if( station != null && station.isEmpty() )
-                askSource();
-        });
+        model.liveCurrentMeteo().observe(this, station -> redraw());
     }
 
     @Override
@@ -135,6 +132,17 @@ public class ChartsFragment extends ToolbarFragment {
             downloadData();
     }
 
+    @Override
+    public void onCancel() {
+        super.onCancel();
+        if( thread == null )
+            return;
+        model.cancel();
+        thread.cancel(true);
+        postTimer();
+        redraw();
+    }
+
     private void updateMenu() {
         if( menu == null )
             return;
@@ -159,26 +167,7 @@ public class ChartsFragment extends ToolbarFragment {
             return;
         if( !beginProgress() )
             return;
-        thread = new AsyncTask<Void, Void, Boolean>() {
-            @Override
-            protected Boolean doInBackground(Void... params) {
-                DbMeteo.getInstance().trim();
-                return model.refresh();
-            }
-            @Override
-            protected void onPostExecute(Boolean ok) {
-                super.onPostExecute(ok);
-                endProgress();
-                onDownloaded();
-            }
-            @Override
-            protected void onCancelled() {
-                super.onCancelled();
-                //logFile("onCancelled1");
-                onPostExecute(false);
-                //logFile("onCancelled2");
-            }
-        };
+        thread = new DownloadTask(this);
         thread.execute();
     }
 
@@ -187,6 +176,9 @@ public class ChartsFragment extends ToolbarFragment {
         if( isStopped() )
             return;
         postTimer();
+        Station station = model.getCurrentStation();
+        if( station != null && station.isEmpty() )
+            askSource();
     }
 
     private void redraw() {
@@ -232,5 +224,34 @@ public class ChartsFragment extends ToolbarFragment {
         }
         handler.postDelayed(timer, minutes*60*1000);
         return true;
+    }
+
+    private static class DownloadTask extends AsyncTask<Void, Void, Boolean> {
+        WeakReference<ChartsFragment> fragmentRef;
+
+        DownloadTask(ChartsFragment fragment) {
+            fragmentRef = new WeakReference<>(fragment);
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            ChartsFragment fragment = fragmentRef.get();
+            DbMeteo.getInstance().trim();
+            return fragment.model.refresh();
+        }
+        @Override
+        protected void onPostExecute(Boolean ok) {
+            ChartsFragment fragment = fragmentRef.get();
+            if( fragment == null || fragment.getActivity().isFinishing() )
+                return;
+            fragment.endProgress();
+            fragment.onDownloaded();
+        }
+        @Override
+        protected void onCancelled() {
+            //logFile("onCancelled1");
+            onPostExecute(false);
+            //logFile("onCancelled2");
+        }
     }
 }

@@ -22,4 +22,12 @@ public class ProgressFragment extends BaseFragment {
     public boolean endProgress() {
         return activity.endProgress();
     }
+
+    public void onCancel() {
+        activity.onCancel();
+    }
+
+    public void addCancelListenner( Runnable listenner ) {
+        activity.addCancelListenner(listenner);
+    }
 }

@@ -2,11 +2,6 @@ package com.akrog.tolometgui2.ui.viewmodels;
 
 import android.location.Location;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
-import androidx.lifecycle.ViewModel;
-
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.providers.WindProviderType;
@@ -19,6 +14,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
+import androidx.lifecycle.ViewModel;
 
 /**
  * Created by gorka on 6/10/16.
@@ -100,12 +100,7 @@ public class MainViewModel extends ViewModel {
             if( station.getDistance() < 50000.0F )
                 close.add(station);
         }
-        Collections.sort(close, new Comparator<Station>() {
-            @Override
-            public int compare(Station s1, Station s2) {
-                return (int)Math.signum(s1.getDistance()-s2.getDistance());
-            }
-        });
+        Collections.sort(close, (s1, s2) -> (int)Math.signum(s1.getDistance()-s2.getDistance()));
         selection.postValue(close);
     }
 
