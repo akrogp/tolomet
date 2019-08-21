@@ -35,4 +35,6 @@ public abstract class BaseFragment extends Fragment {
         }
         return false;
     }
+
+    public abstract void onSettingsChanged();
 }
