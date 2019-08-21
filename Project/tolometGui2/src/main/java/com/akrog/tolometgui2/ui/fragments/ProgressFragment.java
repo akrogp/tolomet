@@ -6,7 +6,7 @@ import com.akrog.tolometgui2.ui.activities.ProgressActivity;
 
 import androidx.annotation.Nullable;
 
-public class ProgressFragment extends BaseFragment {
+public abstract class ProgressFragment extends BaseFragment {
     private ProgressActivity activity;
 
     @Override
