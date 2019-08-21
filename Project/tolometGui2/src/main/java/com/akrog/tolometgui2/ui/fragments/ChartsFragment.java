@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.akrog.tolomet.Station;
 import com.akrog.tolometgui2.R;
@@ -19,10 +20,13 @@ import com.akrog.tolometgui2.model.db.DbMeteo;
 import com.akrog.tolometgui2.ui.activities.ToolbarActivity;
 import com.akrog.tolometgui2.ui.presenters.MyCharts;
 import com.akrog.tolometgui2.ui.presenters.MySummary;
+import com.akrog.tolometgui2.ui.services.WeakTask;
 import com.akrog.tolometgui2.ui.viewmodels.ChartsViewModel;
 import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
 
-import java.lang.ref.WeakReference;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
@@ -30,6 +34,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
 public class ChartsFragment extends ToolbarFragment {
+    private static final DateFormat df = new SimpleDateFormat("EEE (dd/MMM)");
     private AppSettings settings;
     private MainViewModel model;
     private ChartsViewModel chartsModel;
@@ -173,7 +178,7 @@ public class ChartsFragment extends ToolbarFragment {
             return;
         if( !beginProgress() )
             return;
-        thread = new DownloadTask(this);
+        thread = new DownloadTask(this, null);
         thread.execute();
     }
 
@@ -232,29 +237,44 @@ public class ChartsFragment extends ToolbarFragment {
         return true;
     }
 
-    private static class DownloadTask extends AsyncTask<Void, Void, Boolean> {
-        WeakReference<ChartsFragment> fragmentRef;
+    private static class DownloadTask extends WeakTask<ChartsFragment, Void, Void, Boolean> {
+        private final Long date;
 
-        DownloadTask(ChartsFragment fragment) {
-            fragmentRef = new WeakReference<>(fragment);
+        DownloadTask(ChartsFragment fragment, Long date) {
+            super(fragment);
+            this.date = date;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            ChartsFragment fragment = fragmentRef.get();
-            DbMeteo.getInstance().trim();
-            return fragment.model.refresh();
+            ChartsFragment fragment = getContext();
+            if( fragment == null )
+                return null;
+            if( date == null ) {
+                DbMeteo.getInstance().trim();
+                return fragment.model.refresh();
+            }
+            return fragment.model.travel(date);
         }
         @Override
         protected void onPostExecute(Boolean ok) {
-            ChartsFragment fragment = fragmentRef.get();
-            if( fragment == null || fragment.getActivity().isFinishing() )
+            ChartsFragment fragment = getContext();
+            if( fragment == null )
                 return;
+            if( date != null && ok )
+                Toast.makeText(fragment.getActivity(),
+                    df.format(new Date(date)),
+                    Toast.LENGTH_SHORT
+                ).show();
             fragment.endProgress();
             fragment.onDownloaded();
         }
         @Override
         protected void onCancelled() {
+            ChartsFragment fragment = getContext();
+            if( fragment == null )
+                return;
+            fragment.model.cancel();
             //logFile("onCancelled1");
             onPostExecute(false);
             //logFile("onCancelled2");

@@ -1,7 +1,6 @@
 package com.akrog.tolometgui2.ui.fragments;
 
 import android.app.Dialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,9 +13,9 @@ import com.akrog.tolomet.Station;
 import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.model.DbTolomet;
 import com.akrog.tolometgui2.ui.adapters.SearchAdapter;
+import com.akrog.tolometgui2.ui.services.WeakTask;
 import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,11 +72,9 @@ public class SearchFragment extends DialogFragment {
         return builder.create();
     }
 
-    private static class DbTask extends AsyncTask<String, Void, List<Station>> {
-        private WeakReference<SearchFragment> fragmentRef;
-
+    private static class DbTask extends WeakTask<SearchFragment, String, Void, List<Station>> {
         DbTask(SearchFragment context) {
-            fragmentRef = new WeakReference<>(context);
+            super(context);
         }
 
         @Override
@@ -87,8 +84,8 @@ public class SearchFragment extends DialogFragment {
 
         @Override
         protected void onPostExecute(List<Station> stations) {
-            SearchFragment fragment = fragmentRef.get();
-            if( fragment == null || fragment.getActivity().isFinishing() )
+            SearchFragment fragment = getContext();
+            if( fragment == null )
                 return;
             SearchAdapter adapter = new SearchAdapter(fragment.getActivity(), R.layout.spinner_row, stations);
             fragment.listView.setAdapter(adapter);
