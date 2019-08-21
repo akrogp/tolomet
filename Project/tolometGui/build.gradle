@@ -27,7 +27,8 @@ android {
 
 dependencies {
     def playVer = '17.0.0'
-    def fireVer = '17.0.0'
+    def fireCoreVer = '17.1.0'
+    def fireLinkVer = '17.0.0'
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation(project(':tolometCore')) {
@@ -47,9 +48,9 @@ dependencies {
     // Google
     implementation 'com.google.android.gms:play-services-maps:' + playVer
     //implementation "android.arch.lifecycle:extensions:1.1.1"
-    implementation 'com.google.firebase:firebase-core:' + fireVer
+    implementation 'com.google.firebase:firebase-core:' + fireCoreVer
     //implementation 'com.google.firebase:firebase-invites:' + fireVer
-    implementation 'com.google.firebase:firebase-dynamic-links:' + fireVer
+    implementation 'com.google.firebase:firebase-dynamic-links:' + fireLinkVer
 
     //implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
     implementation 'com.github.castorflex.smoothprogressbar:library:1.1.0'
