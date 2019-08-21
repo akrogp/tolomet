@@ -33,7 +33,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
-public class ChartsFragment extends ToolbarFragment {
+public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelListener {
     private static final DateFormat df = new SimpleDateFormat("EEE (dd/MMM)");
     private AppSettings settings;
     private MainViewModel model;
@@ -77,12 +77,12 @@ public class ChartsFragment extends ToolbarFragment {
         summary = new MySummary();
         summary.initialize(activity, savedInstanceState);
 
-        charts = new MyCharts(summary);
+        charts = new MyCharts(summary, this);
         charts.initialize(activity, savedInstanceState);
 
         createTimer();
         model.liveCurrentStation().observe(this, station -> {
-            downloadData();
+            downloadData(null);
             updateMenu();
         });
         model.liveCurrentMeteo().observe(this, station -> redraw());
@@ -103,7 +103,7 @@ public class ChartsFragment extends ToolbarFragment {
     public void onResume() {
         super.onResume();
         if( settings.getUpdateMode() >= AppSettings.SMART_UPDATES && model.isOutdated() )
-            downloadData();
+            downloadData(null);
         redraw();
     }
 
@@ -134,7 +134,12 @@ public class ChartsFragment extends ToolbarFragment {
                 alertDialog.show();
             }
         } else
-            downloadData();
+            downloadData(null);
+    }
+
+    @Override
+    public void onTravel(long date) {
+        downloadData(date);
     }
 
     @Override
@@ -167,18 +172,18 @@ public class ChartsFragment extends ToolbarFragment {
             return;
         timer = () -> {
             if( model.checkStation() )
-                downloadData();
+                downloadData(null);
         };
     }
 
-    private void downloadData() {
+    private void downloadData(Long date) {
         if (thread != null)
             return;
         if (alertNetwork())
             return;
         if( !beginProgress() )
             return;
-        thread = new DownloadTask(this, null);
+        thread = new DownloadTask(this, date);
         thread.execute();
     }
 

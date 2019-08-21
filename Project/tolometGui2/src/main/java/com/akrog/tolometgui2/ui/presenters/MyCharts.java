@@ -4,23 +4,18 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.akrog.tolomet.Meteo;
 import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.model.AppSettings;
 import com.akrog.tolometgui2.ui.activities.ToolbarActivity;
-import com.akrog.tolometgui2.ui.services.NetworkService;
 import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
 import com.akrog.tolometgui2.ui.views.Axis;
 import com.akrog.tolometgui2.ui.views.Graph;
 import com.akrog.tolometgui2.ui.views.Marker;
 import com.akrog.tolometgui2.ui.views.MyPlot;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import androidx.lifecycle.ViewModelProviders;
 
@@ -35,7 +30,6 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 	private static final int POINT_GREEN = Color.rgb(0, 100, 0);
 	private static final int LINE_GRAY = Color.rgb(200, 200, 200);
 	private static final int POINT_GRAY = Color.rgb(100, 100, 100);
-    private static final DateFormat df = new SimpleDateFormat("EEE (dd/MMM)");
 	private ToolbarActivity activity;
 	private MainViewModel model;
 	private AppSettings settings;
@@ -58,14 +52,16 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 	private Marker markerNorth, markerSouth, markerEast, markerWest;
 	private boolean simpleMode;
 	private final Axis.ChangeListener axisListener;
+	private final TravelListener travelListener;
     private AsyncTask<Void,Void,Void> downloader;
 
 	public MyCharts() {
-		this(null);
+		this(null, null);
 	}
 
-	public MyCharts(Axis.ChangeListener axisListener) {
+	public MyCharts(Axis.ChangeListener axisListener, TravelListener travelListener) {
 		this.axisListener = axisListener;
+		this.travelListener = travelListener;
 	}
 
 	@Override
@@ -342,43 +338,15 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 
 	@Override
 	public void onBoundaryReached(final long requestedDate) {
+		if( travelListener == null )
+			return;
 		Long pastDate = meteo.getBegin();
         if( settings.getUpdateMode() == 0 || downloader != null || (pastDate != null && requestedDate >= pastDate) )
             return;
-		if( !NetworkService.isNetworkAvailable())
-			return;
-        if( !activity.beginProgress() )
-            return;
-        downloader = new AsyncTask<Void,Void,Void>() {
-			@Override
-            protected Void doInBackground(Void... params) {
-                if( !model.travel(requestedDate) )
-					cancel(true);
-                return null;
-            }
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                Toast.makeText(activity,
-                        df.format(new Date(requestedDate)),
-                        Toast.LENGTH_SHORT
-                ).show();
-                downloader = null;
-                //updateView();
-				activity.endProgress();
-            }
-            @Override
-            protected void onCancelled() {
-                downloader = null;
-                model.cancel();
-				activity.endProgress();
-            }
-        };
-        activity.addCancelListenner(new Runnable() {
-            @Override
-            public void run() {
-                downloader.cancel(true);
-            }
-        });
-        downloader.execute();
+        travelListener.onTravel(requestedDate);
+	}
+
+	public interface TravelListener {
+		void onTravel(long date);
 	}
 }
