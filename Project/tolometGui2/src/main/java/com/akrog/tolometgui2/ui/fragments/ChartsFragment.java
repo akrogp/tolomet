@@ -159,6 +159,24 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
         redraw();
     }
 
+    @Override
+    public boolean beginProgress() {
+        if( !super.beginProgress() )
+            return false;
+        charts.setEnabled(false);
+        summary.setEnabled(false);
+        return true;
+    }
+
+    @Override
+    public boolean endProgress() {
+        if( !super.endProgress() )
+            return false;
+        charts.setEnabled(true);
+        summary.setEnabled(true);
+        return true;
+    }
+
     private void updateMenu() {
         if( menu == null )
             return;
