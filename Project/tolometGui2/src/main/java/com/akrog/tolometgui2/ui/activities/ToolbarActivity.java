@@ -111,6 +111,7 @@ public abstract class ToolbarActivity extends ProgressActivity implements Adapte
 
         MainViewModel.Command cmd = spinnerAdapter.getCommand(i);
         if( cmd == MainViewModel.Command.FIND ) {
+            spinner.setSelection(0);
             DialogFragment dialog = new SearchFragment();
             dialog.show(getSupportFragmentManager(), "SearchDialog");
             return;
@@ -123,7 +124,7 @@ public abstract class ToolbarActivity extends ProgressActivity implements Adapte
             model.selectFavorites();
         else if( cmd == MainViewModel.Command.NEAR )
             selectNearest(() -> {}, () -> spinner.performClick());
-        if( cmd != null )
+        if( cmd != null && cmd != MainViewModel.Command.SEL )
             spinner.performClick();
     }
 
