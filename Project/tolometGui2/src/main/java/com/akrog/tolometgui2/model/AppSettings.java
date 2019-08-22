@@ -128,6 +128,16 @@ public class AppSettings {
         editor.commit();
     }
 
+    public boolean isIntroAccepted() {
+        return settings.getBoolean("intro-ok", false);
+    }
+
+    public void setIntroAccepted(boolean ok) {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean("intro-ok", ok);
+        editor.commit();
+    }
+
     private int getPrefValue( String key, int idDefault, int idArray, boolean max, Measurement meas ) {
         return getPrefValue(key, idDefault, idArray, max, meas, 1.0F);
     }
