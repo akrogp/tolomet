@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.IntroActivity"
+    android:background="#AA000000">
+
+    <ImageView
+        android:id="@+id/toolbar_icon"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
+        app:srcCompat="@drawable/ic_toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/help_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_help_arrow"
+        app:layout_constraintStart_toEndOf="@id/toolbar_icon"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_icon" />
+
+    <TextView
+        android:id="@+id/help_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/intro_help"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large.Inverse"
+        android:background="@drawable/intro_border"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/help_arrow"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:padding="10dp"/>
+
+    <Button
+        android:id="@+id/help_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ok"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large.Inverse"
+        android:background="@drawable/intro_border"
+        app:layout_constraintTop_toBottomOf="@id/help_text"
+        app:layout_constraintEnd_toEndOf="@id/help_text"
+        android:layout_marginTop="10dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

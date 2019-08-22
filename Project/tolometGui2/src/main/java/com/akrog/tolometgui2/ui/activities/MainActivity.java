@@ -1,5 +1,6 @@
 package com.akrog.tolometgui2.ui.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +42,9 @@ public class MainActivity extends ToolbarActivity
         ChartsFragment chartsFragment = new ChartsFragment();
         fragmentTransaction.add(R.id.content_layout, chartsFragment);
         fragmentTransaction.commit();
+
+        if( !settings.isIntroAccepted() )
+            startActivity(new Intent(this, IntroActivity.class));
     }
 
     @Override

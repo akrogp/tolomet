@@ -127,7 +127,7 @@
     <string name="modst">Updated</string>
     <string name="delst">Removed</string>
     <string name="pref_modeLang">Language</string>
-    <string name="pref_modeLangDefault"/>
+    <string name="pref_modeLangDefault" />
     <string name="ok" tools:ignore="MissingTranslation">OK</string>
     <string name="permission_neccesary" tools:ignore="MissingTranslation">Permission required</string>
     <string name="gps_rationale" tools:ignore="MissingTranslation">GPS access is required for showing the stations close to your current location</string>
@@ -142,4 +142,5 @@
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
     <string name="Manual">Manual</string>
     <string name="menu_search">Search by name</string>
+    <string name="intro_help">Now you can navigate between screens by clicking the Tolomet icon</string>
 </resources>
