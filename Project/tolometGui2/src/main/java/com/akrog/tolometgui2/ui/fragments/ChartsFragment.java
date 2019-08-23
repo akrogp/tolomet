@@ -139,7 +139,8 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
 
     @Override
     public void onTravel(long date) {
-        downloadData(date);
+        if( settings.getUpdateMode() != 0 )
+            downloadData(date);
     }
 
     @Override

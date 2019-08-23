@@ -2,7 +2,6 @@ package com.akrog.tolometgui2.ui.presenters;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.akrog.tolomet.Meteo;
@@ -53,7 +52,6 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 	private boolean simpleMode;
 	private final Axis.ChangeListener axisListener;
 	private final TravelListener travelListener;
-    private AsyncTask<Void,Void,Void> downloader;
 
 	public MyCharts() {
 		this(null, null);
@@ -319,8 +317,6 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 
     @Override
     public void updateView() {
-        if( downloader != null )
-            downloader.cancel(true);
     	meteo.clear();
     	if( model.getCurrentStation() != null && !model.getCurrentStation().isSpecial() )
     		meteo.merge(model.getCurrentStation().getMeteo());
@@ -341,7 +337,7 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 		if( travelListener == null )
 			return;
 		Long pastDate = meteo.getBegin();
-        if( settings.getUpdateMode() == 0 || downloader != null || (pastDate != null && requestedDate >= pastDate) )
+        if( pastDate != null && requestedDate >= pastDate )
             return;
         travelListener.onTravel(requestedDate);
 	}
