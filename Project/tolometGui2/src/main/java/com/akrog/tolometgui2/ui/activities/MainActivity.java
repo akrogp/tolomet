@@ -40,7 +40,7 @@ public class MainActivity extends ToolbarActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         ChartsFragment chartsFragment = new ChartsFragment();
-        fragmentTransaction.add(R.id.content_layout, chartsFragment);
+        fragmentTransaction.replace(R.id.content_layout, chartsFragment);
         fragmentTransaction.commit();
 
         if( !settings.isIntroAccepted() )
@@ -62,7 +62,6 @@ public class MainActivity extends ToolbarActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        //toolbar.setNavigationIcon(R.mipmap.ic_launcher);
         toolbar.setNavigationIcon(R.drawable.ic_toolbar);
 
         View headerView = navigationView.getHeaderView(0);
