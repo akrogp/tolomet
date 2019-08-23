@@ -2,6 +2,7 @@ package com.akrog.tolometgui2.ui.fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,12 +12,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.akrog.tolomet.Station;
 import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.model.AppSettings;
 import com.akrog.tolometgui2.model.db.DbMeteo;
+import com.akrog.tolometgui2.ui.activities.BaseActivity;
 import com.akrog.tolometgui2.ui.activities.ToolbarActivity;
 import com.akrog.tolometgui2.ui.presenters.MyCharts;
 import com.akrog.tolometgui2.ui.presenters.MySummary;
@@ -42,6 +45,7 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
     private AsyncTask<Void, Void, Station> thread;
     private MyCharts charts;
     private MySummary summary;
+    private boolean flyNotified;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,6 +63,7 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         this.menu = menu;
         inflater.inflate(R.menu.charts, menu);
+        setScreenMode(settings.isFlying());
         updateEnabled();
     }
 
@@ -110,11 +115,13 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
 
         if( id == R.id.refresh_item )
             onRefresh();
+        else if( id == R.id.fly_item )
+            setScreenMode(!settings.isFlying());
 
         return super.onOptionsItemSelected(item);
     }
 
-    public void onRefresh() {
+    private void onRefresh() {
         if( !model.isOutdated() ) {
             if( charts.getZoomed() )
                 new Thread(() -> DbMeteo.getInstance().trim()).start();
@@ -132,6 +139,34 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
             }
         } else
             downloadData(null);
+    }
+
+    private void setScreenMode(boolean flying) {
+        if( menu == null )
+            return;
+        MenuItem itemMode = menu.findItem(R.id.fly_item);
+        BaseActivity activity = (BaseActivity)getActivity();
+        settings.setFlying(flying);
+        if( flying ) {
+            itemMode.setIcon(R.drawable.ic_land_mode);
+            itemMode.setTitle(R.string.LandMode);
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            settings.setUpdateMode(AppSettings.AUTO_UPDATES);
+            Toast.makeText(activity,R.string.Takeoff,Toast.LENGTH_SHORT).show();
+            flyNotified = true;
+        } else {
+            itemMode.setIcon(R.drawable.ic_flight_mode);
+            itemMode.setTitle(R.string.FlyMode);
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+            activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            settings.setUpdateMode(AppSettings.SMART_UPDATES);
+            if( flyNotified == true ) {
+                Toast.makeText(activity, R.string.Landed, Toast.LENGTH_SHORT).show();
+                flyNotified = false;
+            }
+        }
+        activity.onSettingsChanged();
     }
 
     @Override
