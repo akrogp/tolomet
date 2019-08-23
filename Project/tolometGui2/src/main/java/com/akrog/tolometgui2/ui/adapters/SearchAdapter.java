@@ -16,7 +16,6 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 
 public class SearchAdapter extends ArrayAdapter<Station> {
     public SearchAdapter(@NonNull Context context, int resource, @NonNull List<Station> stations) {
@@ -36,7 +35,7 @@ public class SearchAdapter extends ArrayAdapter<Station> {
         ImageView icon = convertView.findViewById(R.id.station_icon);
         Integer iconId = ResourceService.getProviderIcon(station.getProviderType());
         if( iconId != null ) {
-            icon.setImageDrawable(ContextCompat.getDrawable(getContext(), iconId));
+            icon.setImageResource(iconId);
             icon.setVisibility(View.VISIBLE);
         } else
             icon.setVisibility(View.GONE);

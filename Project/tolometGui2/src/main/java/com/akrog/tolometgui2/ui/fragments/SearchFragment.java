@@ -87,6 +87,7 @@ public class SearchFragment extends DialogFragment {
             SearchFragment fragment = getContext();
             if( fragment == null )
                 return;
+            stations.add(new Station()); // BUGFIX: last station not shown by ListView
             SearchAdapter adapter = new SearchAdapter(fragment.getActivity(), R.layout.spinner_row, stations);
             fragment.listView.setAdapter(adapter);
         }
