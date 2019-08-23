@@ -296,6 +296,17 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
         return true;
     }
 
+    @Override
+    public String getScreenshotSubject() {
+        return getString(R.string.ShareSubject);
+    }
+
+    @Override
+    public String getScreenshotText() {
+        return String.format("%s %s%s",
+            getString(R.string.ShareTextPre), model.getCurrentStation().getName(), getString(R.string.ShareTextPost));
+    }
+
     private static class DownloadTask extends WeakTask<ChartsFragment, Void, Void, Station> {
         private final Long date;
 

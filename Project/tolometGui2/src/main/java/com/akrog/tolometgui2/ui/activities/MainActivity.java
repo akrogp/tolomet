@@ -10,11 +10,16 @@ import com.akrog.tolometgui2.BuildConfig;
 import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.model.DbTolomet;
 import com.akrog.tolometgui2.ui.fragments.ChartsFragment;
+import com.akrog.tolometgui2.ui.fragments.ToolbarFragment;
+import com.akrog.tolometgui2.ui.services.StorageService;
 import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
 import com.google.android.material.navigation.NavigationView;
 
+import java.io.File;
+
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
@@ -24,6 +29,7 @@ import androidx.lifecycle.ViewModelProviders;
 public class MainActivity extends ToolbarActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private MainViewModel model;
+    private ToolbarFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,14 +43,18 @@ public class MainActivity extends ToolbarActivity
         Toolbar toolbar = configureToolbar();
         configureDrawer(toolbar);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        ChartsFragment chartsFragment = new ChartsFragment();
-        fragmentTransaction.replace(R.id.content_layout, chartsFragment);
-        fragmentTransaction.commit();
+        loadFragment(new ChartsFragment());
 
         if( !settings.isIntroAccepted() )
             startActivity(new Intent(this, IntroActivity.class));
+    }
+
+    private void loadFragment(ToolbarFragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.content_layout, fragment);
+        fragmentTransaction.commit();
+        this.fragment = fragment;
     }
 
     @Override
@@ -102,5 +112,45 @@ public class MainActivity extends ToolbarActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onScreenshot(File file) {
+        final Intent intent = new Intent();
+        final String text = fragment.getScreenshotText();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType("image/*");
+        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, fragment.getScreenshotSubject());
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, text);
+        //intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+        intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(this, StorageService.FILE_PROVIDER_AUTHORITY, file));
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        String relLink = fragment.getRelativeLink();
+        if( relLink == null )
+            shareScreenShot(intent);
+        /*else FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse(String.format("https://tolomet-gae.appspot.com/app/%s", relLink)))
+                .setDynamicLinkDomain("ekc2m.app.goo.gl")
+                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder()
+                        .setMinimumVersion(550)
+                        .build())
+                .buildShortDynamicLink()
+                .addOnCompleteListener(new OnCompleteListener<ShortDynamicLink>() {
+                    @Override
+                    public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+                        if( task.isSuccessful() )
+                            intent.putExtra(android.content.Intent.EXTRA_TEXT, String.format(
+                                    "%s\n\n%s",
+                                    text,
+                                    task.getResult().getShortLink().toString()));
+                        else
+                            task.getException().printStackTrace();
+                        listener.run(intent);
+                    }
+                });*/
+    }
+
+    private void shareScreenShot(Intent intent) {
+        startActivity(Intent.createChooser(intent, getString(R.string.ShareApp)));
     }
 }
