@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:installLocation="auto">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name=".Tolomet"
         android:allowBackup="true"
@@ -12,11 +17,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
         <activity
             android:name=".ui.activities.IntroActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.Transparent">
         </activity>
+
         <activity
             android:name=".ui.activities.MainActivity"
             android:label="@string/app_name"
@@ -27,11 +34,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
+        <!-- Share Files -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.akrog.tolomet.ui2.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+    </application>
 
 </manifest>

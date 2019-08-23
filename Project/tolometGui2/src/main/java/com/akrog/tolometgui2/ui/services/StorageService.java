@@ -7,6 +7,8 @@ import com.akrog.tolometgui2.Tolomet;
 import java.io.File;
 
 public class StorageService {
+    public static final String FILE_PROVIDER_AUTHORITY = "com.akrog.tolomet.ui2.FileProvider";
+
     public static File getAvailableCacheDir() {
         Context context = Tolomet.getAppContext();
         if( context == null )

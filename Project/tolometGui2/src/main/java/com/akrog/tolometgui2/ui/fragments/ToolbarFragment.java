@@ -7,4 +7,12 @@ public abstract class ToolbarFragment extends ProgressFragment {
         item.setEnabled(enabled);
         item.getIcon().setAlpha(enabled?0xFF:0x42);
     }
+
+    public abstract String getScreenshotSubject();
+
+    public abstract String getScreenshotText();
+
+    public String getRelativeLink() {
+        return null;
+    }
 }
