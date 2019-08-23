@@ -41,7 +41,7 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
     private Menu menu;
     private final Handler handler = new Handler();
     private Runnable timer;
-    private AsyncTask<Void, Void, Boolean> thread;
+    private AsyncTask<Void, Void, Station> thread;
     private MyCharts charts;
     private MySummary summary;
 
@@ -210,12 +210,11 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
         thread.execute();
     }
 
-    public void onDownloaded() {
+    public void onDownloaded(Station station) {
         thread = null;
         if( isStopped() )
             return;
         postTimer();
-        Station station = model.getCurrentStation();
         if( station != null && station.isEmpty() )
             askSource();
     }
@@ -265,7 +264,7 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
         return true;
     }
 
-    private static class DownloadTask extends WeakTask<ChartsFragment, Void, Void, Boolean> {
+    private static class DownloadTask extends WeakTask<ChartsFragment, Void, Void, Station> {
         private final Long date;
 
         DownloadTask(ChartsFragment fragment, Long date) {
@@ -274,7 +273,7 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected Station doInBackground(Void... params) {
             ChartsFragment fragment = getContext();
             if( fragment == null )
                 return null;
@@ -285,17 +284,17 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
             return fragment.model.travel(date);
         }
         @Override
-        protected void onPostExecute(Boolean ok) {
+        protected void onPostExecute(Station station) {
             ChartsFragment fragment = getContext();
             if( fragment == null )
                 return;
-            if( date != null && ok )
+            if( date != null && station != null )
                 Toast.makeText(fragment.getActivity(),
                     df.format(new Date(date)),
                     Toast.LENGTH_SHORT
                 ).show();
             fragment.endProgress();
-            fragment.onDownloaded();
+            fragment.onDownloaded(station);
         }
         @Override
         protected void onCancelled() {
@@ -304,7 +303,7 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
                 return;
             fragment.model.cancel();
             //logFile("onCancelled1");
-            onPostExecute(false);
+            onPostExecute(null);
             //logFile("onCancelled2");
         }
     }
