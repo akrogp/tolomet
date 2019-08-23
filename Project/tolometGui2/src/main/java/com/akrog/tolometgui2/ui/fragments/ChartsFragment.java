@@ -21,7 +21,6 @@ import com.akrog.tolometgui2.ui.activities.ToolbarActivity;
 import com.akrog.tolometgui2.ui.presenters.MyCharts;
 import com.akrog.tolometgui2.ui.presenters.MySummary;
 import com.akrog.tolometgui2.ui.services.WeakTask;
-import com.akrog.tolometgui2.ui.viewmodels.ChartsViewModel;
 import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
 
 import java.text.DateFormat;
@@ -37,7 +36,6 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
     private static final DateFormat df = new SimpleDateFormat("EEE (dd/MMM)");
     private AppSettings settings;
     private MainViewModel model;
-    private ChartsViewModel chartsModel;
     private Menu menu;
     private final Handler handler = new Handler();
     private Runnable timer;
@@ -72,7 +70,6 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
 
         settings = AppSettings.getInstance();
         model = ViewModelProviders.of(activity).get(MainViewModel.class);
-        chartsModel = ViewModelProviders.of(this).get(ChartsViewModel.class);
 
         summary = new MySummary();
         summary.initialize(activity, savedInstanceState);
