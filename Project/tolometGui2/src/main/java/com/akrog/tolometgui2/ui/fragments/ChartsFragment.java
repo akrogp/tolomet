@@ -61,7 +61,7 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         this.menu = menu;
         inflater.inflate(R.menu.charts, menu);
-        updateMenu();
+        updateEnabled();
     }
 
     @Override
@@ -83,7 +83,7 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
         createTimer();
         model.liveCurrentStation().observe(this, station -> {
             downloadData(null);
-            updateMenu();
+            updateEnabled();
         });
         model.liveCurrentMeteo().observe(this, station -> redraw());
     }
@@ -163,8 +163,7 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
     public boolean beginProgress() {
         if( !super.beginProgress() )
             return false;
-        charts.setEnabled(false);
-        summary.setEnabled(false);
+        updateEnabled(false);
         return true;
     }
 
@@ -172,16 +171,21 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
     public boolean endProgress() {
         if( !super.endProgress() )
             return false;
-        charts.setEnabled(true);
-        summary.setEnabled(true);
+        updateEnabled();
         return true;
     }
 
-    private void updateMenu() {
-        if( menu == null )
-            return;
-        Station station = model.getCurrentStation();
-        setEnabled(menu.findItem(R.id.refresh_item), station != null);
+    private void updateEnabled() {
+        updateEnabled(model.checkStation());
+    }
+
+    private void updateEnabled(boolean enabled) {
+        if( menu != null ) {
+            setEnabled(menu.findItem(R.id.refresh_item), enabled);
+            setEnabled(menu.findItem(R.id.fly_item), enabled);
+        }
+        charts.setEnabled(enabled);
+        summary.setEnabled(enabled);
     }
 
     private void createTimer() {
@@ -195,7 +199,7 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
     }
 
     private void downloadData(Long date) {
-        if (thread != null)
+        if (thread != null || !model.checkStation() )
             return;
         if (alertNetwork())
             return;
