@@ -20,7 +20,6 @@ import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 
 public class SpinnerAdapter extends BaseAdapter implements android.widget.SpinnerAdapter {
     private final Map<MainViewModel.Command, String> mapCommands = new HashMap<>();
@@ -135,7 +134,7 @@ public class SpinnerAdapter extends BaseAdapter implements android.widget.Spinne
         if( iconId == null || iconId == 0)
             icon.setVisibility(View.GONE);
         else {
-            icon.setImageDrawable(ContextCompat.getDrawable(context, iconId));
+            icon.setImageResource(iconId);
             icon.setVisibility(View.VISIBLE);
         }
 

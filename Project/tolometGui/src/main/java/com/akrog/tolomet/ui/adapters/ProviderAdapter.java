@@ -11,12 +11,12 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.akrog.tolomet.R;
 import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolomet.viewmodel.ProviderWrapper;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class ProviderAdapter extends ArrayAdapter<ProviderWrapper> {
     private final Context context;
@@ -44,7 +44,7 @@ public class ProviderAdapter extends ArrayAdapter<ProviderWrapper> {
         boolean enabled = provider.getIconId() > 0;
         icon.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
         if( enabled )
-            icon.setImageDrawable(context.getResources().getDrawable(provider.getIconId()));
+            icon.setImageResource(provider.getIconId());
 
         TextView textView = itemView.findViewById(R.id.name);
         textView.setText(type.toString());
