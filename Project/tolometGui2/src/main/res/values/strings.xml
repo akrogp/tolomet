@@ -143,7 +143,5 @@
     <string name="Manual">Manual</string>
     <string name="menu_search">Search by name</string>
     <string name="intro_help">Now you can navigate between screens by clicking the Tolomet icon</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Satellite">Satellite view</string>
 </resources>

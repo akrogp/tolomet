@@ -11,6 +11,7 @@ import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.model.DbTolomet;
 import com.akrog.tolometgui2.ui.fragments.ChartsFragment;
 import com.akrog.tolometgui2.ui.fragments.InfoFragment;
+import com.akrog.tolometgui2.ui.fragments.MapFragment;
 import com.akrog.tolometgui2.ui.fragments.ProviderFragment;
 import com.akrog.tolometgui2.ui.fragments.ToolbarFragment;
 import com.akrog.tolometgui2.ui.services.StorageService;
@@ -116,6 +117,8 @@ public class MainActivity extends ToolbarActivity
             loadFragment(new InfoFragment());
         else if (id == R.id.nav_origin)
             loadFragment(new ProviderFragment());
+        else if (id == R.id.nav_maps)
+            loadFragment(new MapFragment());
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

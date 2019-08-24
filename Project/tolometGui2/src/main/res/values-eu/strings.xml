@@ -135,4 +135,5 @@
     <string name="Manual">Manual</string>
     <string name="menu_search">Buscar por nombre</string>
     <string name="intro_help">Ahora puedes cambiar de pantalla pulsando el icono de Tolomet</string>
+    <string name="Satellite">Vista de satélite</string>
 </resources>

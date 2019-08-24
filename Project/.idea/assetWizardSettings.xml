@@ -155,7 +155,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/home/gorka/Aplicaciones/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_search_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/home/gorka/Aplicaciones/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/maps/ic_satellite_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -165,8 +165,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_help_arrow" />
+                            <entry key="outputName" value="ic_satellite" />
                             <entry key="sourceFile" value="$PROJECT_DIR$/../Media/help-arrow.svg" />
                           </map>
                         </option>

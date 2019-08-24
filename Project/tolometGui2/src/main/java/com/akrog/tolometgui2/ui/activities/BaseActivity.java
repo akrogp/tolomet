@@ -60,7 +60,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         return stopped;
     }
 
-    protected void requestPermission(String permission, int rationale, Runnable onGranted, Runnable onDenied) {
+    public void requestPermission(String permission, int rationale, Runnable onGranted, Runnable onDenied) {
         if (Build.VERSION.SDK_INT < 23)
             onGranted.run();
         else if (ActivityCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED ) {

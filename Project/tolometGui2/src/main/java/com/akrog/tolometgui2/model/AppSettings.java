@@ -251,6 +251,16 @@ public class AppSettings {
         return settings.getBoolean("pref_flying", false);
     }
 
+    public void setSatellite(boolean sat) {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean("pref_sat", sat);
+        editor.commit();
+    }
+
+    public boolean isSatellite() {
+        return settings.getBoolean("pref_sat", true);
+    }
+
     /*public FlySpot getSpot() {
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("wcountry",getCountry());
