@@ -2,6 +2,7 @@ package com.akrog.tolometgui2.ui.fragments;
 
 import android.Manifest;
 import android.content.Intent;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,17 +12,33 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.akrog.tolomet.Station;
 import com.akrog.tolometgui2.R;
+import com.akrog.tolometgui2.model.DbTolomet;
+import com.akrog.tolometgui2.ui.services.LocationService;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import androidx.annotation.Nullable;
 
-public class MapFragment extends ToolbarFragment implements OnMapReadyCallback {
+public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraIdleListener {
     private GoogleMap map;
+    private final Map<Marker,Station> marker2station = new HashMap<>();
+    private final Map<Station,Marker> station2marker = new HashMap<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,6 +61,19 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback {
         setMapType();
         requestPermission(Manifest.permission.ACCESS_FINE_LOCATION, R.string.gps_rationale,
             () -> map.setMyLocationEnabled(true), null);
+        map.setOnMarkerClickListener(this);
+        map.setOnCameraIdleListener(this);
+
+        model.liveCurrentStation().observe(this, station -> {
+            if( model.checkStation() )
+                zoom(station);
+        });
+
+        if( !model.checkStation() ) {
+            Location location = LocationService.getLocation(true);
+            if( location != null )
+                zoom(location.getLatitude(), location.getLongitude());
+        }
     }
 
     @Override
@@ -114,5 +144,78 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback {
     @Override
     public void onSettingsChanged() {
 
+    }
+
+    @Override
+    public void onCameraIdle() {
+        float minZoom = 5.0f;
+        CameraPosition cameraPosition = map.getCameraPosition();
+        if( cameraPosition.zoom < minZoom ) {
+            map.animateCamera(CameraUpdateFactory.zoomTo(minZoom));
+            return;
+        }
+        LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
+        List<Station> stations = DbTolomet.getInstance().findGeoStations(
+                bounds.northeast.latitude, bounds.northeast.longitude,
+                bounds.southwest.latitude, bounds.southwest.longitude);
+        updateStationMarkers(stations);
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Station station = marker2station.get(marker);
+        model.selectStation(station);
+        return true;
+    }
+
+    private void updateStationMarkers(List<Station> stations) {
+        for( Map.Entry<Station,Marker> entry : new ArrayList<>(station2marker.entrySet()) ) {
+            if( !stations.contains(entry.getKey()) ) {
+                station2marker.remove(entry.getKey());
+                marker2station.remove(entry.getValue());
+                entry.getValue().remove();
+            }
+        }
+
+        float hueHi = BitmapDescriptorFactory.HUE_GREEN;
+        float hueMi = BitmapDescriptorFactory.HUE_YELLOW;
+        float hueLo = BitmapDescriptorFactory.HUE_RED;
+        for( Station station : stations ) {
+            if( station2marker.containsKey(station) )
+                continue;
+            float hue;
+            switch( station.getProviderType().getQuality() ) {
+                case Good: hue = hueHi; break;
+                case Medium: hue = hueMi; break;
+                default: hue = hueLo; break;
+            }
+            Marker marker = map.addMarker(new MarkerOptions()
+                .position(new LatLng(station.getLatitude(), station.getLongitude()))
+                .icon(BitmapDescriptorFactory.defaultMarker(hue))
+                .title(station.getName())
+                .snippet(String.format("%s", station.getProviderType().name())));
+            station2marker.put(station, marker);
+            marker2station.put(marker,station);
+        }
+
+        showStation();
+    }
+
+    private void showStation() {
+        if( !model.checkStation() )
+            return;
+        Marker marker = station2marker.get(model.getCurrentStation());
+        if( marker == null )
+            return;
+        marker.showInfoWindow();
+    }
+
+    private void zoom(Station station) {
+        zoom(station.getLatitude(), station.getLongitude());
+    }
+
+    private void zoom(double lat, double lon) {
+        LatLng cam = new LatLng(lat, lon);
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(cam, 10));
     }
 }
