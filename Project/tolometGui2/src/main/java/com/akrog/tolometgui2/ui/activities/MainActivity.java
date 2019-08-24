@@ -10,6 +10,8 @@ import com.akrog.tolometgui2.BuildConfig;
 import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.model.DbTolomet;
 import com.akrog.tolometgui2.ui.fragments.ChartsFragment;
+import com.akrog.tolometgui2.ui.fragments.InfoFragment;
+import com.akrog.tolometgui2.ui.fragments.ProviderFragment;
 import com.akrog.tolometgui2.ui.fragments.ToolbarFragment;
 import com.akrog.tolometgui2.ui.services.StorageService;
 import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
@@ -28,6 +30,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 public class MainActivity extends ToolbarActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private NavigationView navView;
     private MainViewModel model;
     private ToolbarFragment fragment;
 
@@ -43,10 +46,18 @@ public class MainActivity extends ToolbarActivity
         Toolbar toolbar = configureToolbar();
         configureDrawer(toolbar);
 
-        loadFragment(new ChartsFragment());
+        navigate(R.id.nav_charts);
 
         if( !settings.isIntroAccepted() )
             startActivity(new Intent(this, IntroActivity.class));
+    }
+
+    public void navigate(int navId) {
+        MenuItem menuItem = navView.getMenu().findItem(navId);
+        if( menuItem != null ) {
+            menuItem.setChecked(true);
+            onNavigationItemSelected(menuItem);
+        }
     }
 
     private void loadFragment(ToolbarFragment fragment) {
@@ -65,16 +76,16 @@ public class MainActivity extends ToolbarActivity
 
     private void configureDrawer(Toolbar toolbar) {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
+        navView.setNavigationItemSelectedListener(this);
 
         toolbar.setNavigationIcon(R.drawable.ic_toolbar);
 
-        View headerView = navigationView.getHeaderView(0);
+        View headerView = navView.getHeaderView(0);
         TextView textVersion = headerView.findViewById(R.id.textVersion);
         textVersion.setText(String.format("(v%s - db%d)", BuildConfig.VERSION_NAME, DbTolomet.getInstance().getVersion()));
     }
@@ -99,15 +110,12 @@ public class MainActivity extends ToolbarActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_charts) {
-            // Handle the camera action
-        } else if (id == R.id.nav_help) {
-
-        } else if (id == R.id.nav_about) {
-
-        } else if (id == R.id.nav_report) {
-
-        }
+        if (id == R.id.nav_charts)
+            loadFragment(new ChartsFragment());
+        else if (id == R.id.nav_info)
+            loadFragment(new InfoFragment());
+        else if (id == R.id.nav_origin)
+            loadFragment(new ProviderFragment());
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

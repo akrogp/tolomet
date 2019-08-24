@@ -10,14 +10,14 @@
             android:title="@string/Charts" />
 
         <item
-            android:id="@+id/nav_info"
-            android:icon="@drawable/ic_info_outline"
-            android:title="@string/Info" />
-
-        <item
             android:id="@+id/nav_maps"
             android:icon="@drawable/ic_map"
             android:title="@string/Map" />
+
+        <item
+            android:id="@+id/nav_info"
+            android:icon="@drawable/ic_info_outline"
+            android:title="@string/Info" />
 
         <item
             android:id="@+id/nav_origin"
