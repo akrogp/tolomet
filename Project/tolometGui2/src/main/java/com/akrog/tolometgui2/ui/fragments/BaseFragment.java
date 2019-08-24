@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.model.AppSettings;
+import com.akrog.tolometgui2.ui.activities.BaseActivity;
 import com.akrog.tolometgui2.ui.services.NetworkService;
 
 import androidx.annotation.Nullable;
@@ -44,6 +45,10 @@ public abstract class BaseFragment extends Fragment {
             return true;
         }
         return false;
+    }
+
+    public void requestPermission(String permission, int rationale, Runnable onGranted, Runnable onDenied) {
+        ((BaseActivity)getActivity()).requestPermission(permission, rationale, onGranted, onDenied);
     }
 
     public abstract void onSettingsChanged();

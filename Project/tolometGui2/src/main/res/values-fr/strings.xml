@@ -132,4 +132,5 @@
     <string name="Manual">Manual</string>
     <string name="menu_search">Buscar por nombre</string>
     <string name="intro_help">Now you can navigate between screens by clicking the Tolomet icon</string>
+    <string name="Satellite">Satellite view</string>
 </resources>
