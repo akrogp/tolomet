@@ -40,9 +40,8 @@ import androidx.annotation.Nullable;
 
 public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener, ClusterManager.OnClusterItemClickListener<MapFragment.StationItem> {
     private GoogleMap map;
-    private final Map<Marker,Station> marker2station = new HashMap<>();
-    private final Map<Station,Marker> station2marker = new HashMap<>();
     private ClusterManager<StationItem> cluster;
+    private final Map<String, Marker> mapMarker = new HashMap<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,8 +71,10 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
         cluster.setRenderer(new StationRenderer(getActivity(), map, cluster));
 
         model.liveCurrentStation().observe(this, station -> {
-            if( model.checkStation() )
+            if( model.checkStation() ) {
                 zoom(station);
+                showStation();
+            }
         });
 
         if( !model.checkStation() ) {
@@ -149,7 +150,6 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
 
     @Override
     public void onSettingsChanged() {
-
     }
 
     @Override
@@ -165,10 +165,21 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
         List<Station> stations = DbTolomet.getInstance().findGeoStations(
                 bounds.northeast.latitude, bounds.northeast.longitude,
                 bounds.southwest.latitude, bounds.southwest.longitude);
+        mapMarker.clear();
         cluster.clearItems();
         for( Station station : stations )
             cluster.addItem(new StationItem(station));
         cluster.onCameraIdle();
+
+        //showStation();
+    }
+
+    private void showStation() {
+        if( model.checkStation() ) {
+            Marker marker = mapMarker.get(model.getCurrentStation().getId());
+            if( marker != null )
+                marker.showInfoWindow();
+        }
     }
 
     @Override
@@ -186,7 +197,7 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(cam, 10));
     }
 
-    private static class StationRenderer extends DefaultClusterRenderer<StationItem> {
+    private class StationRenderer extends DefaultClusterRenderer<StationItem> {
 
         public StationRenderer(Context context, GoogleMap map, ClusterManager<StationItem> clusterManager) {
             super(context, map, clusterManager);
@@ -205,6 +216,12 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
             }
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(hue));
             super.onBeforeClusterItemRendered(item, markerOptions);
+        }
+
+        @Override
+        protected void onClusterItemRendered(StationItem clusterItem, Marker marker) {
+            super.onClusterItemRendered(clusterItem, marker);
+            mapMarker.put(clusterItem.getStation().getId(), marker);
         }
     }
 
