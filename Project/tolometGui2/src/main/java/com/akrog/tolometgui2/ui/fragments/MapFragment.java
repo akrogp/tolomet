@@ -22,7 +22,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -31,17 +30,16 @@ import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import androidx.annotation.Nullable;
 
 public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener, ClusterManager.OnClusterItemClickListener<MapFragment.StationItem> {
     private GoogleMap map;
     private ClusterManager<StationItem> cluster;
-    private final Map<String, Marker> mapMarker = new HashMap<>();
+    private boolean resetZoom = true;
+    private Marker currentMarker;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,10 +69,8 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
         cluster.setRenderer(new StationRenderer(getActivity(), map, cluster));
 
         model.liveCurrentStation().observe(this, station -> {
-            if( model.checkStation() ) {
+            if( model.checkStation() )
                 zoom(station);
-                showStation();
-            }
         });
 
         if( !model.checkStation() ) {
@@ -154,32 +150,22 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
 
     @Override
     public void onCameraIdle() {
-        float minZoom = 5.0f;
-        CameraPosition cameraPosition = map.getCameraPosition();
-        if( cameraPosition.zoom < minZoom ) {
-            map.animateCamera(CameraUpdateFactory.zoomTo(minZoom));
-            cluster.onCameraIdle();
-            return;
-        }
         LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
         List<Station> stations = DbTolomet.getInstance().findGeoStations(
                 bounds.northeast.latitude, bounds.northeast.longitude,
                 bounds.southwest.latitude, bounds.southwest.longitude);
-        mapMarker.clear();
         cluster.clearItems();
-        for( Station station : stations )
-            cluster.addItem(new StationItem(station));
-        cluster.onCameraIdle();
-
-        //showStation();
-    }
-
-    private void showStation() {
-        if( model.checkStation() ) {
-            Marker marker = mapMarker.get(model.getCurrentStation().getId());
-            if( marker != null )
-                marker.showInfoWindow();
-        }
+        map.clear();
+        Station station = model.getCurrentStation();
+        String id = model.checkStation() ? station.getId() : null;
+        for( Station item : stations )
+            if( item.getId().equals(id) ) {
+                currentMarker = map.addMarker(configureMarker(null, station));
+                currentMarker.showInfoWindow();
+            }
+        else
+            cluster.addItem(new StationItem(item));
+        cluster.cluster();
     }
 
     @Override
@@ -190,11 +176,31 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
 
     private void zoom(Station station) {
         zoom(station.getLatitude(), station.getLongitude());
+        resetZoom = false;
     }
 
     private void zoom(double lat, double lon) {
         LatLng cam = new LatLng(lat, lon);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(cam, 10));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(cam, resetZoom ? 10 : map.getCameraPosition().zoom));
+    }
+
+    private MarkerOptions configureMarker(MarkerOptions options, Station station) {
+        if( options == null )
+            options = new MarkerOptions();
+        float hue;
+        float hueHi = BitmapDescriptorFactory.HUE_GREEN;
+        float hueMi = BitmapDescriptorFactory.HUE_YELLOW;
+        float hueLo = BitmapDescriptorFactory.HUE_RED;
+        switch( station.getProviderType().getQuality() ) {
+            case Good: hue = hueHi; break;
+            case Medium: hue = hueMi; break;
+            default: hue = hueLo; break;
+        }
+        return options
+            .icon(BitmapDescriptorFactory.defaultMarker(hue))
+            .position(new LatLng(station.getLatitude(), station.getLongitude()))
+            .title(station.getName())
+            .snippet(station.getProviderType().name());
     }
 
     private class StationRenderer extends DefaultClusterRenderer<StationItem> {
@@ -205,23 +211,15 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
 
         @Override
         protected void onBeforeClusterItemRendered(StationItem item, MarkerOptions markerOptions) {
-            float hue;
-            float hueHi = BitmapDescriptorFactory.HUE_GREEN;
-            float hueMi = BitmapDescriptorFactory.HUE_YELLOW;
-            float hueLo = BitmapDescriptorFactory.HUE_RED;
-            switch( item.getStation().getProviderType().getQuality() ) {
-                case Good: hue = hueHi; break;
-                case Medium: hue = hueMi; break;
-                default: hue = hueLo; break;
-            }
-            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(hue));
+            configureMarker(markerOptions, item.getStation());
             super.onBeforeClusterItemRendered(item, markerOptions);
         }
 
         @Override
         protected void onClusterItemRendered(StationItem clusterItem, Marker marker) {
             super.onClusterItemRendered(clusterItem, marker);
-            mapMarker.put(clusterItem.getStation().getId(), marker);
+            if( model.checkStation() && model.getCurrentStation().getId().equals(clusterItem.getStation().getId()) )
+                marker.showInfoWindow();
         }
     }
 
