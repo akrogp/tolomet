@@ -156,10 +156,9 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
                 bounds.southwest.latitude, bounds.southwest.longitude);
         cluster.clearItems();
         map.clear();
-        Station station = model.getCurrentStation();
-        String id = model.checkStation() ? station.getId() : null;
+        Station station = model.checkStation() ? model.getCurrentStation() : null;
         for( Station item : stations )
-            if( item.getId().equals(id) ) {
+            if( item.equals(station) ) {
                 currentMarker = map.addMarker(configureMarker(null, station));
                 currentMarker.showInfoWindow();
             }
