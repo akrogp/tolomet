@@ -20,11 +20,10 @@ import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.model.AppSettings;
 import com.akrog.tolometgui2.model.db.DbMeteo;
 import com.akrog.tolometgui2.ui.activities.BaseActivity;
-import com.akrog.tolometgui2.ui.activities.ToolbarActivity;
+import com.akrog.tolometgui2.ui.activities.MainActivity;
 import com.akrog.tolometgui2.ui.presenters.MyCharts;
 import com.akrog.tolometgui2.ui.presenters.MySummary;
 import com.akrog.tolometgui2.ui.services.WeakTask;
-import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -33,13 +32,10 @@ import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
 
 public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelListener {
     private static final DateFormat df = new SimpleDateFormat("EEE (dd/MMM)");
-    private AppSettings settings;
-    private MainViewModel model;
-    private Menu menu;
+    private static int[] LIVE_ITEMS = {R.id.refresh_item, R.id.fly_item};
     private final Handler handler = new Handler();
     private Runnable timer;
     private AsyncTask<Void, Void, Station> thread;
@@ -48,21 +44,24 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
     private boolean flyNotified;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.charts_fragment, container, false);
     }
 
     @Override
+    protected int getMenuResource() {
+        return R.menu.charts;
+    }
+
+    @Override
+    protected int[] getLiveMenuItems() {
+        return LIVE_ITEMS;
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        this.menu = menu;
-        inflater.inflate(R.menu.charts, menu);
+        super.onCreateOptionsMenu(menu, inflater);
         setScreenMode(settings.isFlying());
         updateEnabled();
     }
@@ -70,11 +69,6 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        ToolbarActivity activity = (ToolbarActivity)getActivity();
-
-        settings = AppSettings.getInstance();
-        model = ViewModelProviders.of(activity).get(MainViewModel.class);
 
         summary = new MySummary();
         summary.initialize(activity, savedInstanceState);
@@ -193,30 +187,8 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
     }
 
     @Override
-    public boolean beginProgress() {
-        if( !super.beginProgress() )
-            return false;
-        updateEnabled(false);
-        return true;
-    }
-
-    @Override
-    public boolean endProgress() {
-        if( !super.endProgress() )
-            return false;
-        updateEnabled();
-        return true;
-    }
-
-    private void updateEnabled() {
-        updateEnabled(model.checkStation());
-    }
-
-    private void updateEnabled(boolean enabled) {
-        if( menu != null ) {
-            setEnabled(menu.findItem(R.id.refresh_item), enabled);
-            setEnabled(menu.findItem(R.id.fly_item), enabled);
-        }
+    protected void updateEnabled(boolean enabled) {
+        super.updateEnabled(enabled);
         charts.setEnabled(enabled);
         summary.setEnabled(enabled);
     }
@@ -264,7 +236,7 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    //startActivity(new Intent(ChartsActivity.this, ProviderActivity.class));
+                    ((MainActivity)activity).navigate(R.id.nav_origin);
                 }
             })
             .setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
