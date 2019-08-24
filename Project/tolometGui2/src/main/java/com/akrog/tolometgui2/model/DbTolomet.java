@@ -84,6 +84,10 @@ public class DbTolomet extends SQLiteAssetHelper {
         return findStations("SELECT * FROM Station WHERE name LIKE ?", "%"+text+"%");
     }
 
+    public List<Station> allStations() {
+        return findStations("SELECT * FROM Station");
+    }
+
     public Map<String, ProviderInfo> getProviderCounts() {
         WindProviderType[] types = WindProviderType.values();
         String[] providers = new String[types.length];
