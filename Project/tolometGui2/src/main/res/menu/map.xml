@@ -9,4 +9,10 @@
         android:icon="@drawable/ic_satellite"
         android:checkable="true"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/browser_item"
+        android:title="@string/Browser"
+        android:icon="@drawable/ic_external"
+        app:showAsAction="never" />
 </menu>

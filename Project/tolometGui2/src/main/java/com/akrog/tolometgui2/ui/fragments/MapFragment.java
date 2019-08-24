@@ -1,6 +1,8 @@
 package com.akrog.tolometgui2.ui.fragments;
 
 import android.Manifest;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,6 +15,8 @@ import com.akrog.tolometgui2.R;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+
+import java.util.Locale;
 
 import androidx.annotation.Nullable;
 
@@ -66,9 +70,28 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback {
             item.setChecked(!item.isChecked());
             settings.setSatellite(item.isChecked());
             setMapType();
-        }
+        } else if( id == R.id.browser_item )
+            openBrowser();
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openBrowser() {
+        double lat, lon;
+        if( model.getCurrentStation() != null && !model.getCurrentStation().isSpecial() ) {
+            lat = model.getCurrentStation().getLatitude();
+            lon = model.getCurrentStation().getLongitude();
+        } else {
+            lat = map.getCameraPosition().target.latitude;
+            lon = map.getCameraPosition().target.longitude;
+        }
+        String url = getUrl(lat,lon);
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+    }
+
+    public static String getUrl( double lat, double lon ) {
+        return String.format(Locale.ENGLISH,
+                "http://maps.google.com/maps?q=loc:%f,%f", lat, lon);
     }
 
     private void setMapType() {
