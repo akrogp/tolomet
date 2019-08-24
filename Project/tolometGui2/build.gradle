@@ -50,6 +50,7 @@ dependencies {
 
     implementation 'com.google.android.material:material:1.0.0'
     implementation "com.google.android.gms:play-services-maps:$play_version"
+    implementation 'com.google.maps.android:android-maps-utils:0.5'
 
     implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
     implementation 'com.github.castorflex.smoothprogressbar:library:1.1.0'

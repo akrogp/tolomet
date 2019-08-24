@@ -1,6 +1,7 @@
 package com.akrog.tolometgui2.ui.fragments;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
@@ -26,8 +27,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.ClusterItem;
+import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -35,10 +38,11 @@ import java.util.Map;
 
 import androidx.annotation.Nullable;
 
-public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraIdleListener {
+public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener, ClusterManager.OnClusterItemClickListener<MapFragment.StationItem> {
     private GoogleMap map;
     private final Map<Marker,Station> marker2station = new HashMap<>();
     private final Map<Station,Marker> station2marker = new HashMap<>();
+    private ClusterManager<StationItem> cluster;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,8 +65,11 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
         setMapType();
         requestPermission(Manifest.permission.ACCESS_FINE_LOCATION, R.string.gps_rationale,
             () -> map.setMyLocationEnabled(true), null);
-        map.setOnMarkerClickListener(this);
+        cluster = new ClusterManager<StationItem>(getActivity(), map);
+        map.setOnMarkerClickListener(cluster);
         map.setOnCameraIdleListener(this);
+        cluster.setOnClusterItemClickListener(this);
+        cluster.setRenderer(new StationRenderer(getActivity(), map, cluster));
 
         model.liveCurrentStation().observe(this, station -> {
             if( model.checkStation() )
@@ -120,8 +127,7 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
     }
 
     public static String getUrl( double lat, double lon ) {
-        return String.format(Locale.ENGLISH,
-                "http://maps.google.com/maps?q=loc:%f,%f", lat, lon);
+        return String.format(Locale.ENGLISH, "http://maps.google.com/maps?q=loc:%f,%f", lat, lon);
     }
 
     private void setMapType() {
@@ -152,62 +158,23 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
         CameraPosition cameraPosition = map.getCameraPosition();
         if( cameraPosition.zoom < minZoom ) {
             map.animateCamera(CameraUpdateFactory.zoomTo(minZoom));
+            cluster.onCameraIdle();
             return;
         }
         LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
         List<Station> stations = DbTolomet.getInstance().findGeoStations(
                 bounds.northeast.latitude, bounds.northeast.longitude,
                 bounds.southwest.latitude, bounds.southwest.longitude);
-        updateStationMarkers(stations);
+        cluster.clearItems();
+        for( Station station : stations )
+            cluster.addItem(new StationItem(station));
+        cluster.onCameraIdle();
     }
 
     @Override
-    public boolean onMarkerClick(Marker marker) {
-        Station station = marker2station.get(marker);
-        model.selectStation(station);
+    public boolean onClusterItemClick(StationItem stationItem) {
+        model.selectStation(stationItem.getStation());
         return true;
-    }
-
-    private void updateStationMarkers(List<Station> stations) {
-        for( Map.Entry<Station,Marker> entry : new ArrayList<>(station2marker.entrySet()) ) {
-            if( !stations.contains(entry.getKey()) ) {
-                station2marker.remove(entry.getKey());
-                marker2station.remove(entry.getValue());
-                entry.getValue().remove();
-            }
-        }
-
-        float hueHi = BitmapDescriptorFactory.HUE_GREEN;
-        float hueMi = BitmapDescriptorFactory.HUE_YELLOW;
-        float hueLo = BitmapDescriptorFactory.HUE_RED;
-        for( Station station : stations ) {
-            if( station2marker.containsKey(station) )
-                continue;
-            float hue;
-            switch( station.getProviderType().getQuality() ) {
-                case Good: hue = hueHi; break;
-                case Medium: hue = hueMi; break;
-                default: hue = hueLo; break;
-            }
-            Marker marker = map.addMarker(new MarkerOptions()
-                .position(new LatLng(station.getLatitude(), station.getLongitude()))
-                .icon(BitmapDescriptorFactory.defaultMarker(hue))
-                .title(station.getName())
-                .snippet(String.format("%s", station.getProviderType().name())));
-            station2marker.put(station, marker);
-            marker2station.put(marker,station);
-        }
-
-        showStation();
-    }
-
-    private void showStation() {
-        if( !model.checkStation() )
-            return;
-        Marker marker = station2marker.get(model.getCurrentStation());
-        if( marker == null )
-            return;
-        marker.showInfoWindow();
     }
 
     private void zoom(Station station) {
@@ -217,5 +184,54 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
     private void zoom(double lat, double lon) {
         LatLng cam = new LatLng(lat, lon);
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(cam, 10));
+    }
+
+    private static class StationRenderer extends DefaultClusterRenderer<StationItem> {
+
+        public StationRenderer(Context context, GoogleMap map, ClusterManager<StationItem> clusterManager) {
+            super(context, map, clusterManager);
+        }
+
+        @Override
+        protected void onBeforeClusterItemRendered(StationItem item, MarkerOptions markerOptions) {
+            float hue;
+            float hueHi = BitmapDescriptorFactory.HUE_GREEN;
+            float hueMi = BitmapDescriptorFactory.HUE_YELLOW;
+            float hueLo = BitmapDescriptorFactory.HUE_RED;
+            switch( item.getStation().getProviderType().getQuality() ) {
+                case Good: hue = hueHi; break;
+                case Medium: hue = hueMi; break;
+                default: hue = hueLo; break;
+            }
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(hue));
+            super.onBeforeClusterItemRendered(item, markerOptions);
+        }
+    }
+
+    static class StationItem implements ClusterItem {
+        private final Station station;
+
+        public StationItem(Station station) {
+            this.station = station;
+        }
+
+        @Override
+        public LatLng getPosition() {
+            return new LatLng(station.getLatitude(), station.getLongitude());
+        }
+
+        @Override
+        public String getTitle() {
+            return station.getName();
+        }
+
+        @Override
+        public String getSnippet() {
+            return station.getProviderType().name();
+        }
+
+        public Station getStation() {
+            return station;
+        }
     }
 }
