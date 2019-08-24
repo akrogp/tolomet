@@ -74,6 +74,8 @@ public class Station {
 
 	@Override
 	public boolean equals(Object obj) {
+		if( obj == null )
+			return false;
 		if( !Station.class.isInstance(obj) )
 			return super.equals(obj);
 		return getId().equals(((Station)obj).getId());
