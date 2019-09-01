@@ -1,5 +1,6 @@
 package com.akrog.tolometgui2.ui.activities;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import com.akrog.tolometgui2.ui.fragments.ProviderFragment;
 import com.akrog.tolometgui2.ui.fragments.ToolbarFragment;
 import com.akrog.tolometgui2.ui.services.StorageService;
 import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
+import com.akrog.tolometgui2.ui.views.AndroidUtils;
 import com.google.android.material.navigation.NavigationView;
 
 import java.io.File;
@@ -128,12 +130,16 @@ public class MainActivity extends ToolbarActivity
         return true;
     }
 
-    @Override
-    public void getBitmap(Consumer<Bitmap> consumer) {
-        if( fragment instanceof MapFragment )
-            ((MapFragment)fragment).getBitmap(consumer);
-        else
-            super.getBitmap(consumer);
+    protected void saveScreenshot(String name, Consumer<File> onScreenShotReady) {
+        requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, R.string.storage_rationale,
+            () -> fragment.getBitmap(bitmap -> {
+                if( bitmap == null )
+                    return;
+                File file = AndroidUtils.saveScreenShot(bitmap, Bitmap.CompressFormat.PNG, 85, name);
+                if( file == null )
+                    return;
+                onScreenShotReady.accept(file);
+            }), null );
     }
 
     @Override
