@@ -16,6 +16,7 @@ import com.akrog.tolometgui2.ui.fragments.ChartsFragment;
 import com.akrog.tolometgui2.ui.fragments.InfoFragment;
 import com.akrog.tolometgui2.ui.fragments.MapFragment;
 import com.akrog.tolometgui2.ui.fragments.ProviderFragment;
+import com.akrog.tolometgui2.ui.fragments.SettingsContainerFragment;
 import com.akrog.tolometgui2.ui.fragments.ToolbarFragment;
 import com.akrog.tolometgui2.ui.services.StorageService;
 import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
@@ -67,6 +68,7 @@ public class MainActivity extends ToolbarActivity
     }
 
     private void loadFragment(ToolbarFragment fragment) {
+        showMenu(fragment.useStation());
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.content_layout, fragment);
@@ -124,6 +126,8 @@ public class MainActivity extends ToolbarActivity
             loadFragment(new ProviderFragment());
         else if (id == R.id.nav_maps)
             loadFragment(new MapFragment());
+        else if (id == R.id.nav_settings)
+            loadFragment(new SettingsContainerFragment());
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -147,7 +151,9 @@ public class MainActivity extends ToolbarActivity
         int id = item.getItemId();
         Station station = model.getCurrentStation();
         if (id == R.id.share_item) {
-            String name = String.format("%s_%d.png", station.toString(), System.currentTimeMillis());
+            String name = String.format("%s_%d.png",
+                fragment.useStation() && model.checkStation() ? station.toString() : getString(R.string.app_name),
+                System.currentTimeMillis());
             saveScreenshot(name, file -> onScreenshot(file));
         }
         return super.onOptionsItemSelected(item);

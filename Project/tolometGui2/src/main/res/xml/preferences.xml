@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/pref_modes">
+		<ListPreference
+			android:key="pref_modeLang"
+			android:title="@string/pref_modeLang"
+			android:dialogTitle="@string/pref_modeLang"
+			android:entries="@array/pref_modeLangEntries"
+			android:entryValues="@array/pref_modeLangValues"
+			android:defaultValue="@string/pref_modeLangDefault" />
+	    <ListPreference
+	        android:key="pref_modeGraphs"
+	        android:title="@string/pref_modeGraphs"
+	        android:dialogTitle="@string/pref_modeGraphs"
+	        android:entries="@array/pref_modeGraphsEntries"
+	        android:entryValues="@array/pref_modeGraphsValues"
+	        android:defaultValue="@string/pref_modeGraphsDefault" />
+		<ListPreference
+			android:key="pref_modeColors"
+			android:title="@string/pref_modeColors"
+			android:dialogTitle="@string/pref_modeColors"
+			android:entries="@array/pref_modeColorsEntries"
+			android:entryValues="@array/pref_modeColorsValues"
+			android:defaultValue="@string/pref_modeColorsDefault" />
+	    <ListPreference
+	        android:key="pref_modeUpdate"
+	        android:title="@string/pref_modeUpdate"
+	        android:dialogTitle="@string/pref_modeUpdate"
+	        android:entries="@array/pref_modeUpdateEntries"
+	        android:entryValues="@array/pref_modeUpdateValues"
+	        android:defaultValue="@string/pref_modeUpdateDefault" />
+	</PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_catAir">
+	    <ListPreference
+	        android:key="pref_minTemp"
+	        android:title="@string/pref_minTemp"
+	        android:dialogTitle="@string/pref_minTemp"
+	        android:entries="@array/pref_minTempEntries"
+	        android:entryValues="@array/pref_minTempValues"
+	        android:defaultValue="@string/pref_minTempDefault" />
+	    <ListPreference
+	        android:key="pref_maxTemp"
+	        android:title="@string/pref_maxTemp"
+	        android:dialogTitle="@string/pref_maxTemp"
+	        android:entries="@array/pref_maxTempEntries"
+	        android:entryValues="@array/pref_maxTempValues"
+	        android:defaultValue="@string/pref_maxTempDefault" />
+	    <ListPreference
+	        android:key="pref_minPres"
+	        android:title="@string/pref_minPres"
+	        android:dialogTitle="@string/pref_minPres"
+	        android:entries="@array/pref_minPresEntries"
+	        android:entryValues="@array/pref_minPresValues"
+	        android:defaultValue="@string/pref_minPresDefault" />
+	    <ListPreference
+	        android:key="pref_maxPres"
+	        android:title="@string/pref_maxPres"
+	        android:dialogTitle="@string/pref_maxPres"
+	        android:entries="@array/pref_maxPresEntries"
+	        android:entryValues="@array/pref_maxPresValues"
+	        android:defaultValue="@string/pref_maxPresDefault" />
+	</PreferenceCategory>
+	<PreferenceCategory android:title="@string/pref_catWind">
+		<ListPreference
+			android:key="pref_speedUnit"
+			android:title="@string/pref_speedUnit"
+			android:dialogTitle="@string/pref_speedUnit"
+			android:entries="@array/pref_speedUnitEntries"
+			android:entryValues="@array/pref_speedUnitValues"
+			android:defaultValue="@string/pref_speedUnitDefault" />
+        <ListPreference
+	        android:key="pref_speedRange"
+	        android:title="@string/pref_speedRange"
+	        android:dialogTitle="@string/pref_speedRange"
+	        android:entries="@array/pref_rangeEntries"
+	        android:entryValues="@array/pref_rangeValues"
+	        android:defaultValue="@string/pref_speedRangeDefault" />
+	    <ListPreference
+	        android:key="pref_minMarker"
+	        android:title="@string/pref_minMarker"
+	        android:dialogTitle="@string/pref_minMarker"
+	        android:entries="@array/pref_minSpeedEntries"
+	        android:entryValues="@array/pref_minSpeedValues"
+	        android:defaultValue="@string/pref_minMarkerDefault" />
+	    <ListPreference
+	        android:key="pref_maxMarker"
+	        android:title="@string/pref_maxMarker"
+	        android:dialogTitle="@string/pref_maxMarker"
+	        android:entries="@array/pref_maxSpeedEntries"
+	        android:entryValues="@array/pref_maxSpeedValues"
+	        android:defaultValue="@string/pref_maxMarkerDefault" />
+	</PreferenceCategory>
+</PreferenceScreen>

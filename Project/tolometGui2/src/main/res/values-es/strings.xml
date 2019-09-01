@@ -137,4 +137,6 @@
     <string name="menu_search">Buscar por nombre</string>
     <string name="intro_help">Ahora puedes cambiar de pantalla pulsando el icono de Tolomet</string>
     <string name="Satellite">Vista de satélite</string>
+    <string name="ShareSettingsSubject">Ajustes de Tolomet</string>
+    <string name="ShareSettingsText">Estos son mis ajustes</string>
 </resources>
