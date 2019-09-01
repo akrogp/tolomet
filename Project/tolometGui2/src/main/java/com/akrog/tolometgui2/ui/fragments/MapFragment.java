@@ -133,6 +133,7 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
         map.setMapType(settings.isSatellite() ? GoogleMap.MAP_TYPE_HYBRID : GoogleMap.MAP_TYPE_NORMAL);
     }
 
+    @Override
     public void getBitmap(Consumer<Bitmap> consumer) {
         map.snapshot(bitmap -> consumer.accept(bitmap));
     }

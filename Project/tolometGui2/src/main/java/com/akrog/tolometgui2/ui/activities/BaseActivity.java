@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,10 +13,7 @@ import android.os.Bundle;
 import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.model.AppSettings;
 import com.akrog.tolometgui2.ui.services.LocationService;
-import com.akrog.tolometgui2.ui.views.AndroidUtils;
 import com.gunhansancar.android.sdk.helper.LocaleHelper;
-
-import java.io.File;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,23 +37,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onStop() {
         stopped = true;
         super.onStop();
-    }
-
-    public void getBitmap(Consumer<Bitmap> consumer) {
-        Bitmap bitmap = AndroidUtils.getScreenShot(getWindow().getDecorView());
-        consumer.accept(bitmap);
-    }
-
-    protected void saveScreenshot(String name, Consumer<File> onScreenShotReady) {
-        requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, R.string.storage_rationale,
-            () -> getBitmap(bitmap -> {
-                if( bitmap == null )
-                    return;
-                File file = AndroidUtils.saveScreenShot(bitmap, Bitmap.CompressFormat.PNG, 85, name);
-                if( file == null )
-                    return;
-                onScreenShotReady.accept(file);
-            }), null );
     }
 
     protected boolean isStopped() {
