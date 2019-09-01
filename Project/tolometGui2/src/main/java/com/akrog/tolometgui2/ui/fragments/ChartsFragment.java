@@ -160,7 +160,7 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
                 flyNotified = false;
             }
         }
-        activity.onSettingsChanged();
+        //activity.onSettingsChanged(AppSettings.);
     }
 
     @Override

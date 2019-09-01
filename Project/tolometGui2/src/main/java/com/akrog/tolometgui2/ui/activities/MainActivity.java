@@ -22,6 +22,7 @@ import com.akrog.tolometgui2.ui.services.StorageService;
 import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
 import com.akrog.tolometgui2.ui.views.AndroidUtils;
 import com.google.android.material.navigation.NavigationView;
+import com.gunhansancar.android.sdk.helper.LocaleHelper;
 
 import java.io.File;
 
@@ -99,7 +100,9 @@ public class MainActivity extends ToolbarActivity
     }
 
     @Override
-    public void onSettingsChanged() {
+    public void onSettingsChanged(String key) {
+        if( key.equals(LocaleHelper.SELECTED_LANGUAGE) )
+            recreate();
     }
 
     @Override
