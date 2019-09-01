@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.model.AppSettings;
+import com.akrog.tolometgui2.ui.activities.BaseActivity;
 
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
@@ -65,10 +66,15 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
+        /*if( key.equals(LocaleHelper.SELECTED_LANGUAGE) ) {
+            getActivity().view recreate();
+            return;
+        }*/
         if( key.equals(AppSettings.PREF_UNIT) )
             setPreferenceEntries();
         Preference pref = findPreference(key);
         setSummary(pref);
+        ((BaseActivity)getActivity()).onSettingsChanged(key);
     }
 
     @Override

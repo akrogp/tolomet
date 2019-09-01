@@ -15,7 +15,7 @@ public abstract class WeakTask<Context extends Fragment,Progress,Params,Result> 
 
     public Context getContext() {
         Context context = reference.get();
-        if( context == null || context.getActivity().isFinishing() )
+        if( context == null || context.getActivity() == null || context.getActivity().isFinishing() )
             return null;
         return context;
     }

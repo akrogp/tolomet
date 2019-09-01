@@ -2,7 +2,6 @@ package com.akrog.tolometgui2.ui.activities;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -86,18 +85,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if( requestCode == SETTINGS_REQUEST ) {
-            if( data.getBooleanExtra(LocaleHelper.SELECTED_LANGUAGE,false) ) {
-                //Toast.makeText(this,"recreate",Toast.LENGTH_SHORT).show();
-                recreate();
-            } else
-                onSettingsChanged();
-        }
-    }
-
     protected void lockScreenOrientation() {
         int currentOrientation = getResources().getConfiguration().orientation;
         if (currentOrientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -117,7 +104,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             () -> onOk.accept(LocationService.getLocation(warning)), onError);
     }
 
-    public abstract void onSettingsChanged();
+    public abstract void onSettingsChanged(String key);
 
     public static final int SETTINGS_REQUEST = 0;
     protected final AppSettings settings = AppSettings.getInstance();
