@@ -68,7 +68,7 @@ public class MainActivity extends ToolbarActivity
     }
 
     private void loadFragment(ToolbarFragment fragment) {
-        showMenu(fragment.useStation());
+        showStationMenu(fragment.useStation());
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.content_layout, fragment);
