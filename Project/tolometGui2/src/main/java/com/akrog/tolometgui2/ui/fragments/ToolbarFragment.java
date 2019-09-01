@@ -78,4 +78,8 @@ public abstract class ToolbarFragment extends ProgressFragment {
     public String getRelativeLink() {
         return null;
     }
+
+    public boolean useStation() {
+        return true;
+    }
 }

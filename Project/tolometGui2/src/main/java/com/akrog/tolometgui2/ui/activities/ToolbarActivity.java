@@ -29,6 +29,7 @@ public abstract class ToolbarActivity extends ProgressActivity implements Adapte
     Toolbar toolbar;
     private boolean skipClick;
     private Menu menu;
+    private boolean menuVisible = true;
 
     protected Toolbar configureToolbar() {
         model = ViewModelProviders.of(this).get(MainViewModel.class);
@@ -53,12 +54,26 @@ public abstract class ToolbarActivity extends ProgressActivity implements Adapte
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         this.menu = menu;
         getMenuInflater().inflate(R.menu.main, menu);
-        updateMenu(null);
+        menu.findItem(R.id.favorite_item).setVisible(menuVisible);
+        updateMenu(menuVisible ? model.getCurrentStation() : null);
         model.liveCurrentStation().observe(this, station -> updateMenu(station));
         return true;
+    }
+
+    protected void showMenu(boolean visible) {
+        if( menu == null || visible == menuVisible )
+            return;
+        if( !visible ) {
+            spinner.setVisibility(View.GONE);
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+        } else {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            spinner.setVisibility(View.VISIBLE);
+        }
+        menuVisible = visible;
+        invalidateOptionsMenu();
     }
 
     @SuppressLint("RestrictedApi")

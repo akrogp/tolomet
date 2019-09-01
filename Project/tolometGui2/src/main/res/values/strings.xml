@@ -144,4 +144,6 @@
     <string name="menu_search">Search by name</string>
     <string name="intro_help">Now you can navigate between screens by clicking the Tolomet icon</string>
     <string name="Satellite">Satellite view</string>
+    <string name="ShareSettingsSubject">Tolomet settings</string>
+    <string name="ShareSettingsText">Here there are my custom settings</string>
 </resources>
