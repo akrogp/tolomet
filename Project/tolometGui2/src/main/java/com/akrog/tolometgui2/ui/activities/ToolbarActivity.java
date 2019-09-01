@@ -16,7 +16,6 @@ import com.akrog.tolometgui2.ui.adapters.SpinnerAdapter;
 import com.akrog.tolometgui2.ui.fragments.SearchFragment;
 import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
 
-import java.io.File;
 import java.lang.reflect.Method;
 
 import androidx.appcompat.widget.Toolbar;
@@ -89,22 +88,15 @@ public abstract class ToolbarActivity extends ProgressActivity implements Adapte
         int id = item.getItemId();
         Station station = model.getCurrentStation();
 
-        //noinspection SimplifiableIfStatement
-
         if( id == R.id.favorite_item ) {
             settings.setFavorite(station,!item.isChecked());
             model.selectStation(station);
-        } else if (id == R.id.share_item) {
-            String name = String.format("%s_%d.png", station.toString(), System.currentTimeMillis());
-            saveScreenshot(name, file -> onScreenshot(file));
         }
 
         updateMenu(station);
 
         return super.onOptionsItemSelected(item);
     }
-
-    protected abstract void onScreenshot(File file);
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

@@ -43,17 +43,21 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onStop();
     }
 
+    public void getBitmap(Consumer<Bitmap> consumer) {
+        Bitmap bitmap = AndroidUtils.getScreenShot(getWindow().getDecorView());
+        consumer.accept(bitmap);
+    }
+
     protected void saveScreenshot(String name, Consumer<File> onScreenShotReady) {
         requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, R.string.storage_rationale,
-            () -> {
-                Bitmap bitmap = AndroidUtils.getScreenShot(getWindow().getDecorView());
+            () -> getBitmap(bitmap -> {
                 if( bitmap == null )
                     return;
                 File file = AndroidUtils.saveScreenShot(bitmap, Bitmap.CompressFormat.PNG, 85, name);
                 if( file == null )
                     return;
                 onScreenShotReady.accept(file);
-            }, null );
+            }), null );
     }
 
     protected boolean isStopped() {
