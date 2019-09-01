@@ -3,6 +3,7 @@ package com.akrog.tolometgui2.ui.fragments;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.Nullable;
+import androidx.core.util.Consumer;
 
 public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener, ClusterManager.OnClusterItemClickListener<MapFragment.StationItem> {
     private GoogleMap map;
@@ -129,6 +131,10 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
 
     private void setMapType() {
         map.setMapType(settings.isSatellite() ? GoogleMap.MAP_TYPE_HYBRID : GoogleMap.MAP_TYPE_NORMAL);
+    }
+
+    public void getBitmap(Consumer<Bitmap> consumer) {
+        map.snapshot(bitmap -> consumer.accept(bitmap));
     }
 
     @Override

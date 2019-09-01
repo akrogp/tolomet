@@ -1,11 +1,13 @@
 package com.akrog.tolometgui2.ui.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.akrog.tolomet.Station;
 import com.akrog.tolometgui2.BuildConfig;
 import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.model.DbTolomet;
@@ -23,6 +25,7 @@ import java.io.File;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
+import androidx.core.util.Consumer;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
@@ -126,6 +129,24 @@ public class MainActivity extends ToolbarActivity
     }
 
     @Override
+    public void getBitmap(Consumer<Bitmap> consumer) {
+        if( fragment instanceof MapFragment )
+            ((MapFragment)fragment).getBitmap(consumer);
+        else
+            super.getBitmap(consumer);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        Station station = model.getCurrentStation();
+        if (id == R.id.share_item) {
+            String name = String.format("%s_%d.png", station.toString(), System.currentTimeMillis());
+            saveScreenshot(name, file -> onScreenshot(file));
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     protected void onScreenshot(File file) {
         final Intent intent = new Intent();
         final String text = fragment.getScreenshotText();
