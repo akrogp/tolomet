@@ -146,4 +146,6 @@
     <string name="Satellite">Satellite view</string>
     <string name="ShareSettingsSubject">Tolomet settings</string>
     <string name="ShareSettingsText">Here there are my custom settings</string>
+    <string name="UpdateSubject">Station providers</string>
+    <string name="UpdateText">Number of stations in the Tolomet database</string>
 </resources>

@@ -54,7 +54,8 @@ public abstract class BaseFragment extends Fragment {
         ((BaseActivity)getActivity()).requestPermission(permission, rationale, onGranted, onDenied);
     }
 
-    public abstract void onSettingsChanged();
+    public void onSettingsChanged() {
+    }
 
     public void getBitmap(Consumer<Bitmap> consumer) {
         Bitmap bitmap = AndroidUtils.getScreenShot(getActivity().getWindow().getDecorView());
