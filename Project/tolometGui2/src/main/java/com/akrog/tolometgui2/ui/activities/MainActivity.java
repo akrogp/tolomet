@@ -135,7 +135,7 @@ public class MainActivity extends ToolbarActivity
         int id = item.getItemId();
         if( loadFrament(id) )
             settings.saveScreen(id);
-        
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
