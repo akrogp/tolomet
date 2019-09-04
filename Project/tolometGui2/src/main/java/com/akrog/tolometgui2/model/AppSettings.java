@@ -280,6 +280,16 @@ public class AppSettings {
         return !settings.getString("pref_modeColors","0").equals("0");
     }
 
+    public void saveScreen(int id) {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt("pref_fragment",id);
+        editor.commit();
+    }
+
+    public int getScreen() {
+        return settings.getInt("pref_fragment", R.id.nav_charts);
+    }
+
     private void fixValues() {
         fixValues("pref_modeGraphs", R.array.pref_modeGraphsValues);
         fixValues("pref_modeUpdate", R.array.pref_modeUpdateValues );
