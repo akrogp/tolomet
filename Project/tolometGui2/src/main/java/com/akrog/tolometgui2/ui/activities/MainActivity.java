@@ -18,6 +18,7 @@ import com.akrog.tolometgui2.ui.fragments.MapFragment;
 import com.akrog.tolometgui2.ui.fragments.ProviderFragment;
 import com.akrog.tolometgui2.ui.fragments.SettingsContainerFragment;
 import com.akrog.tolometgui2.ui.fragments.ToolbarFragment;
+import com.akrog.tolometgui2.ui.fragments.UpdateFragment;
 import com.akrog.tolometgui2.ui.services.StorageService;
 import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
 import com.akrog.tolometgui2.ui.views.AndroidUtils;
@@ -79,6 +80,8 @@ public class MainActivity extends ToolbarActivity
             loadFragment(new MapFragment());
         else if (id == R.id.nav_settings)
             loadFragment(new SettingsContainerFragment());
+        else if (id == R.id.nav_discover)
+            loadFragment(new UpdateFragment());
         else
             ok = false;
         return ok;

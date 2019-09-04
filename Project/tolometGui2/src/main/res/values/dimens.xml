@@ -8,4 +8,5 @@
     <dimen name="nav_drawer_width">280dp</dimen>
     <dimen name="icon_provider">64px</dimen>
     <dimen name="spinner_sep">12dp</dimen>
+    <dimen name="default_margin">8dp</dimen>
 </resources>
