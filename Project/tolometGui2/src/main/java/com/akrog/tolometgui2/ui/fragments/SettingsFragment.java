@@ -1,11 +1,14 @@
 package com.akrog.tolometgui2.ui.fragments;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 
 import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.model.AppSettings;
 import com.akrog.tolometgui2.ui.activities.BaseActivity;
+import com.gunhansancar.android.sdk.helper.LocaleHelper;
 
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
@@ -66,15 +69,27 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
-        /*if( key.equals(LocaleHelper.SELECTED_LANGUAGE) ) {
-            getActivity().view recreate();
+        if( key.equals(LocaleHelper.SELECTED_LANGUAGE) ) {
+            recreate();
             return;
-        }*/
+        }
         if( key.equals(AppSettings.PREF_UNIT) )
             setPreferenceEntries();
         Preference pref = findPreference(key);
         setSummary(pref);
         ((BaseActivity)getActivity()).onSettingsChanged(key);
+    }
+
+    private void recreate() {
+        new Handler().post(() -> {
+            Intent intent = getActivity().getIntent();
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            getActivity().overridePendingTransition(0, 0);
+            getActivity().finish();
+            getActivity().overridePendingTransition(0, 0);
+            startActivity(intent);
+        });
     }
 
     @Override

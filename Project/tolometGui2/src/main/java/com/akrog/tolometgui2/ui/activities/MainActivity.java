@@ -22,7 +22,6 @@ import com.akrog.tolometgui2.ui.services.StorageService;
 import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
 import com.akrog.tolometgui2.ui.views.AndroidUtils;
 import com.google.android.material.navigation.NavigationView;
-import com.gunhansancar.android.sdk.helper.LocaleHelper;
 
 import java.io.File;
 
@@ -54,7 +53,7 @@ public class MainActivity extends ToolbarActivity
         Toolbar toolbar = configureToolbar();
         configureDrawer(toolbar);
 
-        navigate(R.id.nav_charts);
+        navigate(settings.getScreen());
 
         if( !settings.isIntroAccepted() )
             startActivity(new Intent(this, IntroActivity.class));
@@ -66,6 +65,23 @@ public class MainActivity extends ToolbarActivity
             menuItem.setChecked(true);
             onNavigationItemSelected(menuItem);
         }
+    }
+
+    private boolean loadFrament(int id) {
+        boolean ok = true;
+        if (id == R.id.nav_charts)
+            loadFragment(new ChartsFragment());
+        else if (id == R.id.nav_info)
+            loadFragment(new InfoFragment());
+        else if (id == R.id.nav_origin)
+            loadFragment(new ProviderFragment());
+        else if (id == R.id.nav_maps)
+            loadFragment(new MapFragment());
+        else if (id == R.id.nav_settings)
+            loadFragment(new SettingsContainerFragment());
+        else
+            ok = false;
+        return ok;
     }
 
     private void loadFragment(ToolbarFragment fragment) {
@@ -101,8 +117,6 @@ public class MainActivity extends ToolbarActivity
 
     @Override
     public void onSettingsChanged(String key) {
-        if( key.equals(LocaleHelper.SELECTED_LANGUAGE) )
-            recreate();
     }
 
     @Override
@@ -118,20 +132,10 @@ public class MainActivity extends ToolbarActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        if (id == R.id.nav_charts)
-            loadFragment(new ChartsFragment());
-        else if (id == R.id.nav_info)
-            loadFragment(new InfoFragment());
-        else if (id == R.id.nav_origin)
-            loadFragment(new ProviderFragment());
-        else if (id == R.id.nav_maps)
-            loadFragment(new MapFragment());
-        else if (id == R.id.nav_settings)
-            loadFragment(new SettingsContainerFragment());
-
+        if( loadFrament(id) )
+            settings.saveScreen(id);
+        
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
