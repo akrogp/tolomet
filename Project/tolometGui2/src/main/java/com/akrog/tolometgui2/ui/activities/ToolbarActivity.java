@@ -15,6 +15,7 @@ import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.ui.adapters.SpinnerAdapter;
 import com.akrog.tolometgui2.ui.fragments.SearchFragment;
 import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
+import com.akrog.tolometgui2.ui.views.AndroidUtils;
 
 import java.lang.reflect.Method;
 
@@ -186,8 +187,7 @@ public abstract class ToolbarActivity extends ProgressActivity implements Adapte
     public boolean beginProgress() {
         if( !super.beginProgress() )
             return false;
-        toolbar.setEnabled(false);
-        spinner.setEnabled(false);
+        updateEnabled(false);
         return true;
     }
 
@@ -195,8 +195,14 @@ public abstract class ToolbarActivity extends ProgressActivity implements Adapte
     public boolean endProgress() {
         if( !super.endProgress() )
             return false;
-        toolbar.setEnabled(true);
-        spinner.setEnabled(true);
+        updateEnabled(true);
         return true;
+    }
+
+    private void updateEnabled(boolean enabled) {
+        toolbar.setEnabled(enabled);
+        spinner.setEnabled(enabled);
+        if( menu != null )
+            AndroidUtils.setMenuItemEnabled(menu.findItem(R.id.favorite_item), enabled && model.checkStation());
     }
 }

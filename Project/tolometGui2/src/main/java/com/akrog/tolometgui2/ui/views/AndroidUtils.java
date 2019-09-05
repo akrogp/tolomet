@@ -3,6 +3,7 @@ package com.akrog.tolometgui2.ui.views;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.os.Environment;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.io.File;
@@ -49,5 +50,8 @@ public class AndroidUtils {
         return file;
     }
 
-
+    public static void setMenuItemEnabled(MenuItem item, boolean enabled) {
+        item.setEnabled(enabled);
+        item.getIcon().setAlpha(enabled?0xFF:0x42);
+    }
 }

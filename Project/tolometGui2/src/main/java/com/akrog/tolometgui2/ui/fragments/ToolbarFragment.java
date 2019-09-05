@@ -3,10 +3,10 @@ package com.akrog.tolometgui2.ui.fragments;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 
 import com.akrog.tolometgui2.ui.activities.ToolbarActivity;
 import com.akrog.tolometgui2.ui.viewmodels.MainViewModel;
+import com.akrog.tolometgui2.ui.views.AndroidUtils;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
@@ -63,12 +63,7 @@ public abstract class ToolbarFragment extends ProgressFragment {
     protected void updateEnabled(boolean enabled) {
         if( menu != null )
             for( int itemId : getLiveMenuItems() )
-                setEnabled(menu.findItem(itemId), enabled);
-    }
-
-    protected void setEnabled(MenuItem item, boolean enabled ) {
-        item.setEnabled(enabled);
-        item.getIcon().setAlpha(enabled?0xFF:0x42);
+                AndroidUtils.setMenuItemEnabled(menu.findItem(itemId), enabled);
     }
 
     public abstract String getScreenshotSubject();
