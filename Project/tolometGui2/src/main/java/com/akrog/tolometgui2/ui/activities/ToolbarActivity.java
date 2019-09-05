@@ -63,7 +63,7 @@ public abstract class ToolbarActivity extends ProgressActivity implements Adapte
     }
 
     protected void showStationMenu(boolean visible) {
-        if( menu == null || visible == stationMenuVisible)
+        if( visible == stationMenuVisible)
             return;
         if( !visible ) {
             spinner.setVisibility(View.GONE);
@@ -73,7 +73,8 @@ public abstract class ToolbarActivity extends ProgressActivity implements Adapte
             spinner.setVisibility(View.VISIBLE);
         }
         stationMenuVisible = visible;
-        invalidateOptionsMenu();
+        if( menu != null )
+            invalidateOptionsMenu();
     }
 
     @SuppressLint("RestrictedApi")
