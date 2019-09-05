@@ -59,7 +59,7 @@ public class UpdateFragment extends ToolbarFragment implements AdapterView.OnIte
 
     @Override
     protected int getMenuResource() {
-        return R.menu.update;
+        return R.menu.empty;
     }
 
     @Override

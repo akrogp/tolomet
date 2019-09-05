@@ -150,4 +150,6 @@
     <string name="UpdateText">Number of stations in the Tolomet database</string>
     <string name="HelpSubject">Tolomet help</string>
     <string name="HelpText">Manual page</string>
+    <string name="AboutSubject">About Tolomet</string>
+    <string name="AboutText" />
 </resources>

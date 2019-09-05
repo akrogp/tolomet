@@ -32,7 +32,7 @@ public class SettingsContainerFragment extends ToolbarFragment {
 
     @Override
     protected int getMenuResource() {
-        return R.menu.settings;
+        return R.menu.empty;
     }
 
     @Override
