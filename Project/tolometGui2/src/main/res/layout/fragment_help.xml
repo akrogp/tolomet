@@ -68,10 +68,10 @@
                 android:layout_width="0dp" android:layout_gravity="fill_horizontal"
                 android:text="@string/help_share"/>
 
-            <ImageView app:srcCompat="@drawable/ic_whatsapp"/>
+            <!--<ImageView app:srcCompat="@drawable/ic_whatsapp"/>
             <com.akrog.tolometgui2.ui.views.HtmlView
                 android:layout_width="0dp" android:layout_gravity="fill_horizontal"
-                android:text="@string/help_whatsapp"/>
+                android:text="@string/help_whatsapp"/>-->
 
             <LinearLayout android:orientation="vertical">
                 <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content"
