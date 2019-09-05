@@ -3,6 +3,8 @@ package com.akrog.tolometgui2.ui.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -88,6 +90,10 @@ public class MainActivity extends ToolbarActivity
             loadFragment(new HelpFragment());
         else if (id == R.id.nav_about)
             loadFragment(new AboutFragment());
+        else if (id == R.id.nav_report ) {
+            onReportItem();
+            ok = false;
+        }
         else
             ok = false;
         return ok;
@@ -142,12 +148,28 @@ public class MainActivity extends ToolbarActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if( loadFrament(id) )
+        boolean ok = loadFrament(id);
+        if( ok )
             settings.saveScreen(id);
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        return true;
+        return ok;
+    }
+
+    private void onReportItem() {
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+            "mailto","akrog.apps@gmail.com", null));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT,
+            getString(R.string.ReportSubject));
+        emailIntent.putExtra(Intent.EXTRA_TEXT, String.format(
+            "%s\n\n%s\n%s v%s (%d)\nAndroid %s (%d)\nPhone %s (%s)",
+            getString(R.string.ReportGreetings),
+            getString(R.string.ReportInfo),
+            getString(R.string.app_name), BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE,
+            Build.VERSION.RELEASE, Build.VERSION.SDK_INT,
+            Build.MANUFACTURER, Build.MODEL
+        ));
+        startActivity(Intent.createChooser(emailIntent, getString(R.string.ReportApp)));
     }
 
     protected void saveScreenshot(String name, Consumer<File> onScreenShotReady) {
