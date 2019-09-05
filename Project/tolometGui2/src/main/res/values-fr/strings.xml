@@ -137,4 +137,6 @@
     <string name="ShareSettingsText">Here there are my custom settings</string>
     <string name="UpdateSubject">Station providers</string>
     <string name="UpdateText">Number of stations in the Tolomet database</string>
+    <string name="HelpSubject">Tolomet help</string>
+    <string name="HelpText">Manual page</string>
 </resources>

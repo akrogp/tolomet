@@ -141,4 +141,6 @@
     <string name="ShareSettingsText">Estos son mis ajustes</string>
     <string name="UpdateSubject">Proveedores de estaciones meteo</string>
     <string name="UpdateText">Número de estaciones en la base de datos de Tolomet</string>
+    <string name="HelpSubject">Ayuda de Tolomet</string>
+    <string name="HelpText">Página de manual</string>
 </resources>
