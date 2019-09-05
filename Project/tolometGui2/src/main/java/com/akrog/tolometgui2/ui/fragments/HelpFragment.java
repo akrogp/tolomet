@@ -20,7 +20,7 @@ public class HelpFragment extends ToolbarFragment {
 
     @Override
     protected int getMenuResource() {
-        return R.menu.help;
+        return R.menu.empty;
     }
 
     @Override

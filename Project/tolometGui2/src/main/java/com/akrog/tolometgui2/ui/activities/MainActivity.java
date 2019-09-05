@@ -12,6 +12,7 @@ import com.akrog.tolomet.Station;
 import com.akrog.tolometgui2.BuildConfig;
 import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.model.DbTolomet;
+import com.akrog.tolometgui2.ui.fragments.AboutFragment;
 import com.akrog.tolometgui2.ui.fragments.ChartsFragment;
 import com.akrog.tolometgui2.ui.fragments.HelpFragment;
 import com.akrog.tolometgui2.ui.fragments.InfoFragment;
@@ -85,6 +86,8 @@ public class MainActivity extends ToolbarActivity
             loadFragment(new UpdateFragment());
         else if (id == R.id.nav_help)
             loadFragment(new HelpFragment());
+        else if (id == R.id.nav_about)
+            loadFragment(new AboutFragment());
         else
             ok = false;
         return ok;
