@@ -47,13 +47,13 @@
                     android:icon="@drawable/ic_help"
                     android:title="@string/Manual" />
                 <item
-                    android:id="@+id/nav_about"
-                    android:icon="@drawable/ic_copyright_black"
-                    android:title="@string/About" />
-                <item
                     android:id="@+id/nav_report"
                     android:icon="@drawable/ic_mail"
                     android:title="@string/Report" />
+                <item
+                    android:id="@+id/nav_about"
+                    android:icon="@drawable/ic_copyright_black"
+                    android:title="@string/About" />
             </group>
         </menu>
     </item>
