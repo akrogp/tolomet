@@ -318,8 +318,8 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
     @Override
     public void updateView() {
     	meteo.clear();
-    	if( model.getCurrentStation() != null && !model.getCurrentStation().isSpecial() )
-    		meteo.merge(model.getCurrentStation().getMeteo());
+    	if( model.checkStation() )
+    		meteo.merge(model.liveCurrentMeteo().getValue().getMeteo());
     	Long begin = meteo.getBegin();
     	Long limit = chartAir.getXAxis().getMinLimit().longValue();
         updateBoundaries(begin == null || begin >= limit );

@@ -50,6 +50,7 @@ public abstract class MeteoDao {
         }
         return Transformations.map(loadMeasurements(station.getId()), entities -> {
             Meteo meteo = station.getMeteo();
+            meteo.clear();
             for( MeteoEntity e : entities ) {
                 meteo.getWindDirection().put(e.stamp, e.dir);
                 meteo.getWindSpeedMed().put(e.stamp, e.med);

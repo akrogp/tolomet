@@ -33,7 +33,8 @@ public abstract class DbMeteo extends RoomDatabase {
         cal.set(Calendar.MINUTE,0);
         cal.set(Calendar.SECOND,0);
         cal.set(Calendar.MILLISECOND,0);
-        meteoDao().trim(cal.getTimeInMillis());
+        long stamp = cal.getTimeInMillis();
+        meteoDao().trim(stamp);
         travelDao().trim(cal.getTime());
     }
 }
