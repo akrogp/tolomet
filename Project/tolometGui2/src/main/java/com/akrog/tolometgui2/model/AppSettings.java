@@ -261,14 +261,13 @@ public class AppSettings {
         return settings.getBoolean("pref_sat", true);
     }
 
-    /*public FlySpot getSpot() {
+    public FlySpot getSpot() {
         SharedPreferences.Editor editor = settings.edit();
-        editor.putString("wcountry",getCountry());
         editor.putString("wconstraints","1");
         editor.putString("wunit", getSpeedUnit()+"");
         editor.commit();
         return WidgetSettings.getSpot(settings, getSpeedFactor());
-    }*/
+    }
 
     public void setUpdateMode(int mode) {
         SharedPreferences.Editor editor = settings.edit();
