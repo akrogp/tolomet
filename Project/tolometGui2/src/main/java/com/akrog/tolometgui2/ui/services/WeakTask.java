@@ -1,12 +1,13 @@
 package com.akrog.tolometgui2.ui.services;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 
 import java.lang.ref.WeakReference;
 
 import androidx.fragment.app.Fragment;
 
-public abstract class WeakTask<Context extends Fragment,Progress,Params,Result> extends AsyncTask<Progress,Params,Result> {
+public abstract class WeakTask<Context,Progress,Params,Result> extends AsyncTask<Progress,Params,Result> {
     private final WeakReference<Context> reference;
 
     public WeakTask(Context context) {
@@ -15,7 +16,17 @@ public abstract class WeakTask<Context extends Fragment,Progress,Params,Result> 
 
     public Context getContext() {
         Context context = reference.get();
-        if( context == null || context.getActivity() == null || context.getActivity().isFinishing() )
+        if( context == null )
+            return null;
+        Activity activity = null;
+        if( context instanceof Activity )
+            activity = (Activity)context;
+        else if( context instanceof Fragment ) {
+            activity = ((Fragment) context).getActivity();
+            if( activity == null )
+                return null;
+        }
+        if( activity != null && activity.isFinishing() )
             return null;
         return context;
     }

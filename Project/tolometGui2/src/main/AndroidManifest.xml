@@ -36,6 +36,7 @@
         </activity>
 
         <!-- Share Files -->
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.akrog.tolomet.ui2.FileProvider"
@@ -46,9 +47,84 @@
                 android:resource="@xml/file_paths"/>
         </provider>
 
+        <!-- API keys -->
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key"/>
+
+        <!-- Widgets -->
+
+        <activity
+            android:name=".widget.activities.SmallWidgetSettingsActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".widget.activities.MediumWidgetSettingsActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".widget.activities.LargeWidgetSettingsActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name=".widget.providers.SpotWidgetProvider"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.akrog.tolomet.FORCE_APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/medium_widget_provider"/>
+        </receiver>
+
+        <receiver
+            android:name=".widget.providers.SmallWidgetProvider"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/small_widget_provider"/>
+        </receiver>
+
+        <receiver
+            android:name=".widget.providers.LargeWidgetProvider"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/large_widget_provider"/>
+        </receiver>
+
+        <service android:name=".widget.services.WidgetService"/>
     </application>
 
 </manifest>

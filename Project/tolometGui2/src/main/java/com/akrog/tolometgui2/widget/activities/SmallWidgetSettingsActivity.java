@@ -1,11 +1,13 @@
 package com.akrog.tolometgui2.widget.activities;
 
+import com.akrog.tolometgui2.widget.providers.SpotWidgetProvider;
+
 /**
  * Created by gorka on 31/05/16.
  */
 public class SmallWidgetSettingsActivity extends WidgetSettingsActivity {
     @Override
     protected int getWidgetSize() {
-        return WidgetReceiver.WIDGET_SIZE_SMALL;
+        return SpotWidgetProvider.WIDGET_SIZE_SMALL;
     }
 }

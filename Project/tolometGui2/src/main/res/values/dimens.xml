@@ -9,4 +9,8 @@
     <dimen name="icon_provider">64px</dimen>
     <dimen name="spinner_sep">12dp</dimen>
     <dimen name="default_margin">8dp</dimen>
+    <dimen name="widget_margin">8dp</dimen>
+    <dimen name="widget_padding">4dp</dimen>
+    <dimen name="widget_text_small">14sp</dimen>
+    <dimen name="widget_text_medium">16sp</dimen>
 </resources>
