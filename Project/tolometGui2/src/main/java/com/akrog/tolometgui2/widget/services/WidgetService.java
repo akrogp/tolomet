@@ -5,11 +5,12 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.IBinder;
 
 import com.akrog.tolometgui2.R;
+import com.akrog.tolometgui2.Tolomet;
+import com.akrog.tolometgui2.ui.services.WeakTask;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -30,29 +31,7 @@ public class WidgetService extends Service {
     public int onStartCommand(Intent intent, int flags, final int startId) {
         if( task != null )
             return super.onStartCommand(intent, flags, startId);
-        final WidgetPopulator widgetProvider = new WidgetPopulator(this.getApplicationContext());
-        //final int widgetSize = intent.getIntExtra(WidgetReceiver.EXTRA_WIDGET_SIZE, WidgetReceiver.WIDGET_SIZE_MEDIUM);
-        task = new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-                widgetProvider.downloadData();
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void v) {
-                widgetProvider.updateWidgets();
-                stopSelf();
-                task = null;
-            }
-
-            @Override
-            protected void onCancelled() {
-                stopSelf();
-                super.onCancelled();
-                task = null;
-            }
-        };
+        task = new UpdateTask(this);
         task.execute();
         return super.onStartCommand(intent, flags, startId);
     }
@@ -84,6 +63,42 @@ public class WidgetService extends Service {
         notificationManager.createNotificationChannel(channel);
     }
 
-    private AsyncTask<Void, Void, Void> task;
+    private static class UpdateTask extends WeakTask<WidgetService, Void, Void, Void> {
+        private final WidgetPopulator widgetPopulator = new WidgetPopulator(Tolomet.getAppContext());
+
+        UpdateTask(WidgetService context) {
+            super(context);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            WidgetService service = getContext();
+            if( service == null )
+                return null;
+            widgetPopulator.downloadData();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void v) {
+            WidgetService service = getContext();
+            if( service == null )
+                return;
+            widgetPopulator.updateWidgets();
+            service.stopSelf();
+            service.task = null;
+        }
+
+        @Override
+        protected void onCancelled() {
+            WidgetService service = getContext();
+            if( service == null )
+                return;
+            service.stopSelf();
+            service.task = null;
+        }
+    }
+
+    private UpdateTask task;
     private static final String CHANNEL_ID = "com.akrog.tolomet.channel.widget";
 }

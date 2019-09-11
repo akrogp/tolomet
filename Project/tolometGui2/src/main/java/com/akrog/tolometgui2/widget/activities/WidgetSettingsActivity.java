@@ -9,6 +9,8 @@ import com.akrog.tolometgui2.model.AppSettings;
 import com.akrog.tolometgui2.model.FlySpot;
 import com.akrog.tolometgui2.model.WidgetSettings;
 import com.akrog.tolometgui2.widget.fragments.WidgetSettingsFragment;
+import com.akrog.tolometgui2.widget.providers.MediumWidgetProvider;
+import com.akrog.tolometgui2.widget.providers.SpotWidgetProvider;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -47,9 +49,9 @@ public abstract class WidgetSettingsActivity extends AppCompatActivity {
             Intent result = new Intent();
             result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             setResult(RESULT_OK, result);
-            Intent intent = new Intent(this, MediumWidgetReceiver.class);
-            intent.setAction(WidgetReceiver.FORCE_WIDGET_UPDATE);
-            intent.putExtra(WidgetReceiver.EXTRA_WIDGET_SIZE, getWidgetSize());
+            Intent intent = new Intent(this, MediumWidgetProvider.class);
+            intent.setAction(SpotWidgetProvider.FORCE_WIDGET_UPDATE);
+            intent.putExtra(SpotWidgetProvider.EXTRA_WIDGET_SIZE, getWidgetSize());
             sendBroadcast(intent);
         } else
             cancel();

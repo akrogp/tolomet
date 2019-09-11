@@ -42,6 +42,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 public class MainActivity extends ToolbarActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    public static final String EXTRA_STATION = "com.akrog.tolomet.ui.activities.MainActivity.station";
     private NavigationView navView;
     private MainViewModel model;
     private ToolbarFragment fragment;
@@ -62,6 +63,18 @@ public class MainActivity extends ToolbarActivity
 
         if( !settings.isIntroAccepted() )
             startActivity(new Intent(this, IntroActivity.class));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent intent = getIntent();
+        String id = intent.getStringExtra(EXTRA_STATION);
+        if( id != null ) {
+            intent.removeExtra(EXTRA_STATION);
+            Station station = model.findStation(id);
+            model.selectStation(station);
+        }
     }
 
     public void navigate(int navId) {

@@ -7,15 +7,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
-import com.akrog.tolomet.R;
+import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.Station;
-import com.akrog.tolomet.ui.activities.ChartsActivity;
-import com.akrog.tolomet.ui.activities.ToolbarActivity;
-import com.akrog.tolomet.viewmodel.AppSettings;
-import com.akrog.tolomet.viewmodel.FlyConstraint;
-import com.akrog.tolomet.viewmodel.FlySpot;
-import com.akrog.tolomet.viewmodel.Model;
-import com.akrog.tolomet.viewmodel.WidgetSettings;
+import com.akrog.tolometgui2.R;
+import com.akrog.tolometgui2.model.AppSettings;
+import com.akrog.tolometgui2.model.DbTolomet;
+import com.akrog.tolometgui2.model.FlyConstraint;
+import com.akrog.tolometgui2.model.FlySpot;
+import com.akrog.tolometgui2.model.WidgetSettings;
+import com.akrog.tolometgui2.ui.activities.MainActivity;
+import com.akrog.tolometgui2.widget.providers.LargeWidgetProvider;
+import com.akrog.tolometgui2.widget.providers.MediumWidgetProvider;
+import com.akrog.tolometgui2.widget.providers.SmallWidgetProvider;
+import com.akrog.tolometgui2.widget.providers.SpotWidgetProvider;
 
 /**
  * Created by gorka on 21/09/16.
@@ -46,11 +50,11 @@ public class WidgetPopulator {
         this.context = context;
         appWidgetManager = AppWidgetManager.getInstance(context);
         ComponentName comp;
-        comp = new ComponentName(context, SmallWidgetReceiver.class);
+        comp = new ComponentName(context, SmallWidgetProvider.class);
         smallWidgets = appWidgetManager.getAppWidgetIds(comp);
-        comp = new ComponentName(context, MediumWidgetReceiver.class);
+        comp = new ComponentName(context, MediumWidgetProvider.class);
         mediumWidgets = appWidgetManager.getAppWidgetIds(comp);
-        comp = new ComponentName(context, LargeWidgetReceiver.class);
+        comp = new ComponentName(context, LargeWidgetProvider.class);
         largeWidgets = appWidgetManager.getAppWidgetIds(comp);
     }
 
@@ -76,8 +80,7 @@ public class WidgetPopulator {
         if( !spot.isValid() )
             return null;
         FlyConstraint constraint = spot.getConstraints().get(0);
-        model.setCountry(spot.getCountry());
-        Station station = model.findStation(constraint.getStation());
+        Station station = DbTolomet.getInstance().findStation(constraint.getStation());
         if( station == null )
             return null;
         model.refresh(station);
@@ -178,9 +181,9 @@ public class WidgetPopulator {
     }
 
     public void updateWidgets() {
-        updateWidgets(smallData, smallWidgets, WidgetReceiver.WIDGET_SIZE_SMALL);
-        updateWidgets(mediumData, mediumWidgets, WidgetReceiver.WIDGET_SIZE_MEDIUM);
-        updateWidgets(largeData, largeWidgets, WidgetReceiver.WIDGET_SIZE_LARGE);
+        updateWidgets(smallData, smallWidgets, SpotWidgetProvider.WIDGET_SIZE_SMALL);
+        updateWidgets(mediumData, mediumWidgets, SpotWidgetProvider.WIDGET_SIZE_MEDIUM);
+        updateWidgets(largeData, largeWidgets, SpotWidgetProvider.WIDGET_SIZE_LARGE);
     }
 
     private void updateWidgets(WidgetData widgetData, int[] allWidgetIds, int widgetSize) {
@@ -203,17 +206,17 @@ public class WidgetPopulator {
     }
 
     private PendingIntent getTolometIntent(StationData data) {
-        Intent clickIntent = new Intent(context, ChartsActivity.class);
+        Intent clickIntent = new Intent(context, MainActivity.class);
         //clickIntent.putExtra(WidgetReceiver.EXTRA_WIDGET_SIZE, widgetSize);
-        clickIntent.putExtra(ToolbarActivity.EXTRA_STATION, data.id);
+        clickIntent.putExtra(MainActivity.EXTRA_STATION, data.id);
         // http://stackoverflow.com/questions/3168484/pendingintent-works-correctly-for-the-first-notification-but-incorrectly-for-the#comment3283736_3168653
         clickIntent.setAction(Long.toString(System.currentTimeMillis()));
         return PendingIntent.getActivity(context,0,clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private PendingIntent getUpdateIntent() {
-        Intent clickIntent = new Intent(context, MediumWidgetReceiver.class);
-        clickIntent.setAction(WidgetReceiver.FORCE_WIDGET_UPDATE);
+        Intent clickIntent = new Intent(context, MediumWidgetProvider.class);
+        clickIntent.setAction(SpotWidgetProvider.FORCE_WIDGET_UPDATE);
         //clickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, allWidgetIds);
         //clickIntent.putExtra(WidgetReceiver.EXTRA_WIDGET_SIZE, widgetSize);
         return PendingIntent.getBroadcast(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -221,17 +224,17 @@ public class WidgetPopulator {
 
     private boolean updateViews( RemoteViews remoteViews, StationData data, int widgetSize ) {
         switch( widgetSize ) {
-            case WidgetReceiver.WIDGET_SIZE_SMALL:
+            case SpotWidgetProvider.WIDGET_SIZE_SMALL:
                 remoteViews.setTextViewText(R.id.widget_station, data.name);
                 //remoteViews.setTextViewText(R.id.widget_date, data.date);
                 break;
-            case WidgetReceiver.WIDGET_SIZE_MEDIUM:
+            case SpotWidgetProvider.WIDGET_SIZE_MEDIUM:
                 remoteViews.setTextViewText(R.id.widget_station, data.name);
                 remoteViews.setTextViewText(R.id.widget_date, data.date);
                 remoteViews.setTextViewText(R.id.widget_direction, data.directionExt);
                 remoteViews.setTextViewText(R.id.widget_speed, data.speed);
                 break;
-            case WidgetReceiver.WIDGET_SIZE_LARGE:
+            case SpotWidgetProvider.WIDGET_SIZE_LARGE:
                 remoteViews.setTextViewText(R.id.widget_station, data.name);
                 remoteViews.setTextViewText(R.id.widget_date, data.date);
                 remoteViews.setTextViewText(R.id.widget_air, data.air);
@@ -251,7 +254,7 @@ public class WidgetPopulator {
 
     private final Context context;
     private final AppWidgetManager appWidgetManager;
-    private final Model model = Model.getInstance();
+    private final Manager model = new Manager();
     private final int[] smallWidgets, mediumWidgets, largeWidgets;
     private WidgetData smallData, mediumData, largeData;
 }
