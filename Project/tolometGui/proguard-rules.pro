@@ -14,7 +14,7 @@
 
 # Original Tolomet settings
 #-keep class !android.support.v7.internal.view.menu.**,android.support.v7.** {*;}
-#-keep class com.akrog.tolomet.** {*;}
+-keep class com.akrog.tolomet.** {*;}
 #-keep class org.xmlpull.** {*;}
 #-dontwarn org.xmlpull.v1.**
 
