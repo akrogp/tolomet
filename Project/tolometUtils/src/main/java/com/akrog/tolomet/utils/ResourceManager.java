@@ -137,5 +137,5 @@ public class ResourceManager {
     }
 
     private static final Logger logger = Logger.getLogger(ResourceManager.class.getName());
-    private static final String path = "/home/gorka/MyProjects/Android/Tolomet/Project/tolometCore/src/main/resources/res";
+    private static final String path = "/home/gorka/MyProjects/Android/Tolomet/Project/tolometCore/src/main/resources/data";
 }

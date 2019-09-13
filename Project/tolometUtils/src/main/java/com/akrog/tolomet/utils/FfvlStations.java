@@ -20,7 +20,7 @@ import fr.ffvl.Balises;
 public class FfvlStations {
     public FfvlStations() throws MalformedURLException {
         //url = new URL("http://data.ffvl.fr/xml/4D6F626942616C69736573/meteo/balise_list.xml");
-        url = new File("/home/gorka/MyProjects/Android/Tolomet/Project/tolometUtils/src/main/resources/res/ffvl.xml").toURI().toURL();
+        url = new File("/home/gorka/MyProjects/Android/Tolomet/Project/tolometUtils/src/main/resources/data/ffvl.xml").toURI().toURL();
     }
 
     public static void main( String[] args ) throws Exception {

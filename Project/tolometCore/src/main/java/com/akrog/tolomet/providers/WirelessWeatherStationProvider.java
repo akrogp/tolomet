@@ -79,7 +79,7 @@ public class WirelessWeatherStationProvider extends BaseProvider {
 
     private void createMapDir() {
         try {
-            BufferedReader rd = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/res/directions_es.csv")));
+            BufferedReader rd = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/data/directions_es.csv")));
             String[] dirs = rd.readLine().split(",");
             rd.close();
             mapDir = new HashMap<>();

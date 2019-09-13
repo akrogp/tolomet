@@ -17,7 +17,7 @@ import java.util.List;
 public class MeteoFranceStations {
     public MeteoFranceStations() throws MalformedURLException {
         //url = new URL("http://www.vigimeteo.com/PREV/obs/obsd2i_meta.txt");
-        url = new File("/home/gorka/MyProjects/Android/Tolomet/Project/tolometUtils/src/main/resources/res/vigimeteo.csv").toURI().toURL();
+        url = new File("/home/gorka/MyProjects/Android/Tolomet/Project/tolometUtils/src/main/resources/data/vigimeteo.csv").toURI().toURL();
     }
 
     public static void main( String[] args ) throws Exception {
