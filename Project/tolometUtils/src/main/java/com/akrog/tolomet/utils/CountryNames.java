@@ -21,8 +21,8 @@ public class CountryNames {
 		//String[] codes = {"es","en","eu","fr"};
 		String[] codes = {"fr"};
 		for( String code : codes ) {
-			//Ldml ldml = (Ldml)unmarshaller.unmarshal(CountryNames.class.getResourceAsStream(String.format("res/%s.xml", code)));
-            Ldml ldml = (Ldml)unmarshaller.unmarshal(new File(String.format("/home/gorka/MyProjects/Android/Tolomet/Project/tolometUtils/src/main/resources/res/%s.xml", code)));
+			//Ldml ldml = (Ldml)unmarshaller.unmarshal(CountryNames.class.getResourceAsStream(String.format("data/%s.xml", code)));
+            Ldml ldml = (Ldml)unmarshaller.unmarshal(new File(String.format("/home/gorka/MyProjects/Android/Tolomet/Project/tolometUtils/src/main/resources/data/%s.xml", code)));
 			PrintWriter pw = new PrintWriter(new GZIPOutputStream(new FileOutputStream(String.format("/home/gorka/%s.txt.gz", code))));
 			for(Territory territory : ldml.getLocaleDisplayNames().getTerritories().getTerritory() ) {
 				pw.print(territory.getType());

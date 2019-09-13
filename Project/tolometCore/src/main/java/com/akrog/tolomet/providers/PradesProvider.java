@@ -115,7 +115,7 @@ public class PradesProvider extends BaseProvider {
 		if( mapInfo == null ) {
 			mapInfo = new HashMap<String, String>();
 			try {
-				BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/res/prades.csv")));
+				BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/data/prades.csv")));
 				String line;
 				String[] fields;
 				while( (line=br.readLine()) != null ) {

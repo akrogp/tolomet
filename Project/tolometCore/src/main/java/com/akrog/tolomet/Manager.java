@@ -36,14 +36,14 @@ public class Manager {
 	}
 
 	private InputStream getLocalizedResource( String name ) {
-		InputStream is = getClass().getResourceAsStream(String.format("/res/%s", name.replaceAll("\\.", String.format("_%s.", lang.toLowerCase()))));
+		InputStream is = getClass().getResourceAsStream(String.format("/data/%s", name.replaceAll("\\.", String.format("_%s.", lang.toLowerCase()))));
 		if( is == null )
-			is = getClass().getResourceAsStream(String.format("/res/%s", name));
+			is = getClass().getResourceAsStream(String.format("/data/%s", name));
 		return is;
 	}
 	
 	private InputStream getCountryResource( String country, String name ) {
-		return getClass().getResourceAsStream(String.format("/res/%s", name.replaceAll("\\.", String.format("_%s.", country.toUpperCase()))));
+		return getClass().getResourceAsStream(String.format("/data/%s", name.replaceAll("\\.", String.format("_%s.", country.toUpperCase()))));
 	}
 
 	public int getRefresh( Station station ) {
