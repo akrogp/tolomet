@@ -3,7 +3,7 @@
     <string name="menu_settings">Paramètres</string>
     <string name="title_activity_tolomet">Tolomet</string>
     <string name="Refresh">Actualiser</string>
-    <string name="Info">Information</string>
+    <string name="Info">Détails de la station</string>
     <string name="Map">Carte</string>
     <string name="Settings">Paramètres</string>
     <string name="station_prompt">Station</string>
@@ -127,6 +127,18 @@
     <string name="delst">Eliminées</string>
     <string name="pref_modeLang">Langue</string>
     <string name="pref_modeLangDefault"/>
-    <string name="UpdateStations">Download stations</string>
+    <string name="UpdateStations">Télécharger stations</string>
     <string name="stations">stations</string>
+    <string name="Manual">Manual</string>
+    <string name="menu_search">Buscar por nombre</string>
+    <string name="intro_help">Now you can navigate between screens by clicking the Tolomet icon</string>
+    <string name="Satellite">Satellite view</string>
+    <string name="ShareSettingsSubject">Tolomet settings</string>
+    <string name="ShareSettingsText">Here there are my custom settings</string>
+    <string name="UpdateSubject">Station providers</string>
+    <string name="UpdateText">Number of stations in the Tolomet database</string>
+    <string name="HelpSubject">Tolomet help</string>
+    <string name="HelpText">Manual page</string>
+    <string name="AboutSubject">À propos de Tolomet</string>
+    <string name="AboutText" />
 </resources>

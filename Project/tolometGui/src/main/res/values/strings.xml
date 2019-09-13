@@ -3,7 +3,7 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_tolomet">Tolomet</string>
     <string name="Refresh">Update</string>
-    <string name="Info">Information</string>
+    <string name="Info">Station details</string>
     <string name="Map">Map</string>
     <string name="Settings">Settings</string>
     <string name="station_prompt">Station</string>
@@ -127,7 +127,7 @@
     <string name="modst">Updated</string>
     <string name="delst">Removed</string>
     <string name="pref_modeLang">Language</string>
-    <string name="pref_modeLangDefault"/>
+    <string name="pref_modeLangDefault" />
     <string name="ok" tools:ignore="MissingTranslation">OK</string>
     <string name="permission_neccesary" tools:ignore="MissingTranslation">Permission required</string>
     <string name="gps_rationale" tools:ignore="MissingTranslation">GPS access is required for showing the stations close to your current location</string>
@@ -137,4 +137,19 @@
     <string name="widget_channel_name" tools:ignore="MissingTranslation">Widget</string>
     <string name="UpdateStations">Download stations</string>
     <string name="stations">stations</string>
+    <string name="author_mail" translatable="false">akrog.apps@gmail.com</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="Manual">Manual</string>
+    <string name="menu_search">Search by name</string>
+    <string name="intro_help">Now you can navigate between screens by clicking the Tolomet icon</string>
+    <string name="Satellite">Satellite view</string>
+    <string name="ShareSettingsSubject">Tolomet settings</string>
+    <string name="ShareSettingsText">Here there are my custom settings</string>
+    <string name="UpdateSubject">Station providers</string>
+    <string name="UpdateText">Number of stations in the Tolomet database</string>
+    <string name="HelpSubject">Tolomet help</string>
+    <string name="HelpText">Manual page</string>
+    <string name="AboutSubject">About Tolomet</string>
+    <string name="AboutText" />
 </resources>

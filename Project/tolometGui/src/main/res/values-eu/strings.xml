@@ -3,7 +3,7 @@
     <string name="menu_settings">Ezarpenak</string>
     <string name="title_activity_tolomet">Tolomet</string>
     <string name="Refresh">Eguneratu</string>
-    <string name="Info">Informazioa</string>
+    <string name="Info">Estazioaren informazioa</string>
     <string name="Map">Mapa</string>
     <string name="Settings">Ezarpenak</string>
     <string name="station_prompt">Estazioa</string>
@@ -132,4 +132,16 @@
     <string name="notification_widget">Actualizando widgets</string>
     <string name="UpdateStations">Eguneratu estazioak</string>
     <string name="stations">estazioak</string>
+    <string name="Manual">Manual</string>
+    <string name="menu_search">Buscar por nombre</string>
+    <string name="intro_help">Ahora puedes cambiar de pantalla pulsando el icono de Tolomet</string>
+    <string name="Satellite">Vista de satélite</string>
+    <string name="ShareSettingsSubject">Ajustes de Tolomet</string>
+    <string name="ShareSettingsText">Estos son mis ajustes</string>
+    <string name="UpdateSubject">Proveedores de estaciones meteo</string>
+    <string name="UpdateText">Número de estaciones en la base de datos de Tolomet</string>
+    <string name="HelpSubject">Ayuda de Tolomet</string>
+    <string name="HelpText">Página de manual</string>
+    <string name="AboutSubject">Tolomet-i buruz</string>
+    <string name="AboutText" />
 </resources>
