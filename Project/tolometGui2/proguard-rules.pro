@@ -12,9 +12,15 @@
 #   public *;
 #}
 
+# Original Tolomet settings
+#-keep class !android.support.v7.internal.view.menu.**,android.support.v7.** {*;}
+#-keep class com.akrog.tolomet.** {*;}
+#-keep class org.xmlpull.** {*;}
+#-dontwarn org.xmlpull.v1.**
+
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+-keepattributes SourceFile,LineNumberTable
 
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
