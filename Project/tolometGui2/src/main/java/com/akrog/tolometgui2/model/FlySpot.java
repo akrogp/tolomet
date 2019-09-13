@@ -8,7 +8,6 @@ import java.util.List;
  */
 public class FlySpot {
     private String name;
-    private String country;
     private final List<FlyConstraint> constraints = new ArrayList<>();
     private int speedUnits;
 
@@ -20,20 +19,12 @@ public class FlySpot {
         this.name = name;
     }
 
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
     public List<FlyConstraint> getConstraints() {
         return constraints;
     }
 
     public boolean isValid() {
-        if( name == null || name.isEmpty() || country == null || country.isEmpty() )
+        if( name == null || name.isEmpty() )
             return false;
         for( FlyConstraint constraint : constraints )
             if( !constraint.isValid() )

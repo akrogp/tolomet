@@ -52,6 +52,7 @@ public abstract class WidgetSettingsActivity extends BaseActivity {
             intent.setAction(SpotWidgetProvider.FORCE_WIDGET_UPDATE);
             intent.putExtra(SpotWidgetProvider.EXTRA_WIDGET_SIZE, getWidgetSize());
             sendBroadcast(intent);
+            finish();
         } else
             cancel();
     }
