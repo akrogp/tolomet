@@ -11,6 +11,7 @@ import com.akrog.tolometgui2.Tolomet;
 import com.akrog.tolometgui2.model.AppSettings;
 import com.akrog.tolometgui2.model.DbTolomet;
 import com.akrog.tolometgui2.ui.activities.MainActivity;
+import com.akrog.tolometgui2.ui.fragments.SettingsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +19,18 @@ import java.util.Set;
 
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
-import androidx.preference.PreferenceFragmentCompat;
 
-public class WidgetSettingsFragment extends PreferenceFragmentCompat {
+public class WidgetSettingsFragment extends SettingsFragment {
     private AppSettings appSettings;
 
     @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        setPreferencesFromResource(R.xml.widget_preferences, rootKey);
+    protected int getResource() {
+        return R.xml.widget_preferences;
+    }
 
+    @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        super.onCreatePreferences(savedInstanceState, rootKey);
         appSettings = AppSettings.getInstance();
         buildFavorites();
         showSpeedUnits();
@@ -74,7 +78,9 @@ public class WidgetSettingsFragment extends PreferenceFragmentCompat {
         dialog.show();
     }
 
-    private void onSharedPreferenceChanged(SharedPreferences sp, String key) {
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
+        super.onSharedPreferenceChanged(sp, key);
         if( key.equals(STATION_KEY) ) {
             EditTextPreference name = (EditTextPreference)findPreference(SPOT_KEY);
             ListPreference station = (ListPreference)findPreference(STATION_KEY);

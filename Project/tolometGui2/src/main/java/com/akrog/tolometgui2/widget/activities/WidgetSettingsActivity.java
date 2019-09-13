@@ -8,13 +8,12 @@ import com.akrog.tolometgui2.R;
 import com.akrog.tolometgui2.model.AppSettings;
 import com.akrog.tolometgui2.model.FlySpot;
 import com.akrog.tolometgui2.model.WidgetSettings;
+import com.akrog.tolometgui2.ui.activities.BaseActivity;
 import com.akrog.tolometgui2.widget.fragments.WidgetSettingsFragment;
 import com.akrog.tolometgui2.widget.providers.MediumWidgetProvider;
 import com.akrog.tolometgui2.widget.providers.SpotWidgetProvider;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-public abstract class WidgetSettingsActivity extends AppCompatActivity {
+public abstract class WidgetSettingsActivity extends BaseActivity {
 
     protected abstract int getWidgetSize();
 
@@ -60,6 +59,10 @@ public abstract class WidgetSettingsActivity extends AppCompatActivity {
     private void cancel() {
         setResult(RESULT_CANCELED);
         finish();
+    }
+
+    @Override
+    public void onSettingsChanged(String key) {
     }
 
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
