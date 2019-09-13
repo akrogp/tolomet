@@ -26,7 +26,7 @@ public class SettingsContainerFragment extends ToolbarFragment {
         super.onActivityCreated(savedInstanceState);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.settings_container, new SettingsFragment());
+        fragmentTransaction.replace(R.id.settings_container, new AppSettingsFragment());
         fragmentTransaction.commit();
     }
 
