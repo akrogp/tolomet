@@ -80,7 +80,7 @@
         </activity>
 
         <receiver
-            android:name=".widget.providers.SpotWidgetProvider"
+            android:name=".widget.providers.MediumWidgetProvider"
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_name">
             <intent-filter>
