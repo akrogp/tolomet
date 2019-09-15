@@ -66,6 +66,13 @@ public class MainActivity extends ToolbarActivity
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if( intent != null )
+            setIntent(intent);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         Intent intent = getIntent();
