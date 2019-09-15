@@ -84,6 +84,15 @@ public class MainActivity extends ToolbarActivity
         }
     }
 
+    @Override
+    protected void updateMenu(Station station) {
+        super.updateMenu(station);
+        /*if( fragment.useStation() ) {
+            MenuItem shareItem = menu.findItem(R.id.share_item);
+            setEnabled(shareItem, model.checkStation());
+        }*/
+    }
+
     public void navigate(int navId) {
         MenuItem menuItem = navView.getMenu().findItem(navId);
         if( menuItem != null ) {
