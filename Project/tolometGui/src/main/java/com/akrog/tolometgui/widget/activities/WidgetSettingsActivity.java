@@ -64,6 +64,8 @@ public abstract class WidgetSettingsActivity extends BaseActivity {
 
     @Override
     public void onSettingsChanged(String key) {
+        FlySpot spot = appSettings.getSpot();
+        findViewById(R.id.ok_button).setEnabled(spot.isValid());
     }
 
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
