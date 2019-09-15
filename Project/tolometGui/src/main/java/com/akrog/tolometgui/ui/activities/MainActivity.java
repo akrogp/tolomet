@@ -89,7 +89,7 @@ public class MainActivity extends ToolbarActivity
         super.updateMenu(station);
         if( fragment.needsScreenshotStation() ) {
             MenuItem shareItem = menu.findItem(R.id.share_item);
-            setEnabled(shareItem, model.checkStation());
+            AndroidUtils.setMenuItemEnabled(shareItem, model.checkStation());
         }
     }
 

@@ -150,13 +150,8 @@ public abstract class ToolbarActivity extends ProgressActivity implements Adapte
             favIcon = R.drawable.ic_favorite;
         favItem.setIcon(favIcon);
         favItem.setChecked(station != null && station.isFavorite());
-        setEnabled(favItem, station != null);
-        setEnabled(menu.findItem(R.id.share_item), true);
-    }
-
-    protected void setEnabled( MenuItem item, boolean enabled ) {
-        item.setEnabled(enabled);
-        item.getIcon().setAlpha(enabled?0xFF:0x42);
+        AndroidUtils.setMenuItemEnabled(favItem, station != null);
+        AndroidUtils.setMenuItemEnabled(menu.findItem(R.id.share_item), true);
     }
 
     private void selectNearest(Runnable onNothing, Runnable onFound) {

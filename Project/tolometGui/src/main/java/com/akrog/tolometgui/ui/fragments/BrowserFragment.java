@@ -40,7 +40,11 @@ public abstract class BrowserFragment extends ToolbarFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        model.liveCurrentStation().observe(this, station -> reload());
+        model.liveCurrentStation().observe(this, station -> {
+            getActivity().findViewById(R.id.no_station).setVisibility(model.checkStation() ? View.GONE : View.VISIBLE);
+            getActivity().findViewById(R.id.web).setVisibility(model.checkStation() ? View.VISIBLE : View.GONE);
+            reload();
+        });
     }
 
     @Override

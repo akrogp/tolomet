@@ -152,4 +152,5 @@
     <string name="HelpText">Manual page</string>
     <string name="AboutSubject">About Tolomet</string>
     <string name="AboutText" />
+    <string name="do_select">Please, select a station first</string>
 </resources>

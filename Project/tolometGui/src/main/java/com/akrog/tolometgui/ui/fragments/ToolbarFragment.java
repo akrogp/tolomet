@@ -38,6 +38,7 @@ public abstract class ToolbarFragment extends ProgressFragment {
         super.onActivityCreated(savedInstanceState);
         activity = (ToolbarActivity)getActivity();
         model = ViewModelProviders.of(activity).get(MainViewModel.class);
+        model.liveCurrentStation().observe(this, station -> updateEnabled());
     }
 
     @Override
