@@ -29,7 +29,7 @@ public abstract class ToolbarActivity extends ProgressActivity implements Adapte
     private SpinnerAdapter spinnerAdapter;
     Toolbar toolbar;
     private boolean skipClick;
-    private Menu menu;
+    protected Menu menu;
     private boolean stationMenuVisible = true;
 
     protected Toolbar configureToolbar() {
@@ -141,7 +141,7 @@ public abstract class ToolbarActivity extends ProgressActivity implements Adapte
             spinner.performClick();
     }
 
-    private void updateMenu(Station station) {
+    protected void updateMenu(Station station) {
         MenuItem favItem = menu.findItem(R.id.favorite_item);
         int favIcon;
         if( station == null || !station.isFavorite() )
@@ -154,7 +154,7 @@ public abstract class ToolbarActivity extends ProgressActivity implements Adapte
         setEnabled(menu.findItem(R.id.share_item), true);
     }
 
-    private void setEnabled( MenuItem item, boolean enabled ) {
+    protected void setEnabled( MenuItem item, boolean enabled ) {
         item.setEnabled(enabled);
         item.getIcon().setAlpha(enabled?0xFF:0x42);
     }
