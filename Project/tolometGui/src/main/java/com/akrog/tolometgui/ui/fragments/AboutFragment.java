@@ -70,6 +70,11 @@ public class AboutFragment extends ToolbarFragment {
     }
 
     @Override
+    public boolean needsScreenshotStation() {
+        return false;
+    }
+
+    @Override
     public String getScreenshotSubject() {
         return getString(R.string.AboutSubject);
     }

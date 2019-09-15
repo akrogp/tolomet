@@ -86,6 +86,11 @@ public abstract class BrowserFragment extends ToolbarFragment {
     }
 
     @Override
+    public boolean needsScreenshotStation() {
+        return true;
+    }
+
+    @Override
     public String getScreenshotSubject() {
         return model.getCurrentStation().getName();
     }

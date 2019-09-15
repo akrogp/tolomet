@@ -87,10 +87,10 @@ public class MainActivity extends ToolbarActivity
     @Override
     protected void updateMenu(Station station) {
         super.updateMenu(station);
-        /*if( fragment.useStation() ) {
+        if( fragment.needsScreenshotStation() ) {
             MenuItem shareItem = menu.findItem(R.id.share_item);
             setEnabled(shareItem, model.checkStation());
-        }*/
+        }
     }
 
     public void navigate(int navId) {

@@ -271,14 +271,17 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
     }
 
     @Override
+    public boolean needsScreenshotStation() {
+        return true;
+    }
+
+    @Override
     public String getScreenshotSubject() {
         return getString(R.string.ShareSubject);
     }
 
     @Override
     public String getScreenshotText() {
-        if( !model.checkStation() )
-            return null;
         return String.format("%s %s%s",
             getString(R.string.ShareTextPre), model.getCurrentStation().getName(), getString(R.string.ShareTextPost));
     }

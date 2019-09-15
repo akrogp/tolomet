@@ -68,6 +68,11 @@ public class UpdateFragment extends ToolbarFragment implements AdapterView.OnIte
     }
 
     @Override
+    public boolean needsScreenshotStation() {
+        return false;
+    }
+
+    @Override
     public String getScreenshotSubject() {
         return getString(R.string.UpdateSubject);
     }

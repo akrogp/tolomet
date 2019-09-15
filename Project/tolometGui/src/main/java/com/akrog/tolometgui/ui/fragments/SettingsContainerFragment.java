@@ -41,6 +41,11 @@ public class SettingsContainerFragment extends ToolbarFragment {
     }
 
     @Override
+    public boolean needsScreenshotStation() {
+        return false;
+    }
+
+    @Override
     public String getScreenshotSubject() {
         return getString(R.string.ShareSettingsSubject);
     }
