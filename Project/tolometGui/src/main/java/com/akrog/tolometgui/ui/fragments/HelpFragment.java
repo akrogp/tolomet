@@ -29,6 +29,11 @@ public class HelpFragment extends ToolbarFragment {
     }
 
     @Override
+    public boolean needsScreenshotStation() {
+        return false;
+    }
+
+    @Override
     public String getScreenshotSubject() {
         return getString(R.string.HelpSubject);
     }

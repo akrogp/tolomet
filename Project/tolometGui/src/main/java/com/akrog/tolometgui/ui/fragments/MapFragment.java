@@ -139,6 +139,11 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
     }
 
     @Override
+    public boolean needsScreenshotStation() {
+        return false;
+    }
+
+    @Override
     public String getScreenshotSubject() {
         return getString(R.string.ShareMapSubject);
     }

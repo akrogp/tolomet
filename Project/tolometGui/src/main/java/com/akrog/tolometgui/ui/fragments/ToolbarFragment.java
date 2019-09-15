@@ -66,6 +66,8 @@ public abstract class ToolbarFragment extends ProgressFragment {
                 AndroidUtils.setMenuItemEnabled(menu.findItem(itemId), enabled);
     }
 
+    public abstract boolean needsScreenshotStation();
+
     public abstract String getScreenshotSubject();
 
     public abstract String getScreenshotText();
@@ -77,4 +79,5 @@ public abstract class ToolbarFragment extends ProgressFragment {
     public boolean useStation() {
         return true;
     }
+
 }
