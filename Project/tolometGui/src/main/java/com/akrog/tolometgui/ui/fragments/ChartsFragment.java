@@ -117,9 +117,10 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
 
     private void onRefresh() {
         if( !model.isOutdated() ) {
-            if( charts.getZoomed() )
+            if( charts.getZoomed() ) {
                 new Thread(() -> DbMeteo.getInstance().trim()).start();
-            else {
+                redraw();
+            } else {
                 AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
                 int minutes = model.getRefresh();
                 String message;
