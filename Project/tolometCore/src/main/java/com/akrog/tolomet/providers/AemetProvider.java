@@ -2,8 +2,15 @@ package com.akrog.tolomet.providers;
 
 import com.akrog.tolomet.Header;
 import com.akrog.tolomet.Station;
+import com.akrog.tolomet.Utils;
 import com.akrog.tolomet.io.Downloader;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -22,6 +29,32 @@ public class AemetProvider implements WindProvider {
 
 	@Override
 	public List<Station> downloadStations() {
+		try(BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/keys/aemet.txt")))) {
+			Downloader dw = new Downloader();
+			dw.setUrl("https://opendata.aemet.es/opendata/api/observacion/convencional/todas");
+			dw.setHeader("api_key", br.readLine());
+			String data = dw.download();
+			JSONObject resp = new JSONObject(data);
+
+			dw = new Downloader();
+			dw.setUrl(resp.getString("datos"));
+			data = dw.download();
+			JSONArray array = new JSONArray(data);
+			List<Station> stations = new ArrayList<>(array.length());
+			for( int i = 0; i < array.length(); i++ ) {
+				JSONObject json = array.getJSONObject(i);
+				Station station = new Station();
+				station.setName(Utils.reCapitalize(json.getString("ubi")));
+				station.setLatitude(json.getDouble("lat"));
+				station.setLongitude(json.getDouble("lon"));
+				station.setCode(json.getString("idema"));
+				station.setProviderType(WindProviderType.Aemet);
+				stations.add(station);
+			}
+			return stations;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 

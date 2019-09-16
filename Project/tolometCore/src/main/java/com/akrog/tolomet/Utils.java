@@ -16,4 +16,17 @@ public class Utils {
     public static void utm2ll(Station station) {
         utm2ll(station, 30, 'T');
     }
+
+    public static String reCapitalize(String str) {
+        StringBuilder sb = new StringBuilder(str.length());
+        char prev = ' ';
+        for( char ch : str.toCharArray() ) {
+            if( !Character.isLetter(prev) )
+                sb.append(Character.toUpperCase(ch));
+            else
+                sb.append(Character.toLowerCase(ch));
+            prev = ch;
+        }
+        return sb.toString();
+    }
 }
