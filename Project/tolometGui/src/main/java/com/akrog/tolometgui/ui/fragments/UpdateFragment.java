@@ -215,7 +215,7 @@ public class UpdateFragment extends ToolbarFragment implements AdapterView.OnIte
                     continue;
                 List<Station> stations = provider.getType().getProvider().downloadStations();
                 if( stations != null )
-                    DbTolomet.getInstance().updateStations(stations);
+                    DbTolomet.getInstance().updateStations(provider.getType(), stations);
             }
             return null;
         }

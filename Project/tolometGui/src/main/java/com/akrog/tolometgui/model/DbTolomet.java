@@ -147,11 +147,12 @@ public class DbTolomet extends SQLiteAssetHelper {
         return list;
     }
 
-    public void updateStations(List<Station> stations) {
+    public void updateStations(WindProviderType type, List<Station> stations) {
         Date now = new Date();
         SQLiteDatabase lite = getWritableDatabase();
         lite.beginTransaction();
         try {
+            lite.delete(TAB_STATION, COL_STA_PROV + "=?", new String[]{type.name()});
             for( Station station : stations ) {
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(COL_STA_ID, station.getId());
