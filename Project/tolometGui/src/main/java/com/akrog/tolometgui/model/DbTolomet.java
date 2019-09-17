@@ -38,6 +38,7 @@ public class DbTolomet extends SQLiteAssetHelper {
 
     private DbTolomet() {
         super(Tolomet.getAppContext(), DB_NAME, null, DB_VERSION);
+        setForcedUpgrade();
     }
 
     public static synchronized DbTolomet getInstance() {
@@ -214,7 +215,7 @@ public class DbTolomet extends SQLiteAssetHelper {
     }
 
     private static final String DB_NAME = "Tolomet.db";
-    private static final int DB_VERSION = 9;
+    private static final int DB_VERSION = 10;
     private static DbTolomet instance;
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 }
