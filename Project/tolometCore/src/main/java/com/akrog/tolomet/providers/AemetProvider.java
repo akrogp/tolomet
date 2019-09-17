@@ -38,7 +38,7 @@ public class AemetProvider implements WindProvider {
 
 			dw = new Downloader();
 			dw.setUrl(resp.getString("datos"));
-			data = dw.download();
+			data = dw.download(null, "latin1");
 			JSONArray array = new JSONArray(data);
 			List<Station> stations = new ArrayList<>(array.length());
 			for( int i = 0; i < array.length(); i++ ) {
