@@ -72,7 +72,7 @@ public abstract class BaseProvider implements WindProvider {
 		return null;
 	}
 
-	private Downloader downloader;
+	protected Downloader downloader;
 	private final int defRefresh;
 	private final Map<String, Integer> mapRefresh = new HashMap<String, Integer>();
 }

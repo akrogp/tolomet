@@ -10,7 +10,7 @@ public enum WindProviderType {
 	RedVigia("RV", new RedVigiaProvider(), WindProviderQuality.Poor, false),
 	Meteocat("CA", new MeteocatProvider(), WindProviderQuality.Medium, true),
 	CurrentVantage("RCNL", new CurrentVantageProvider(), WindProviderQuality.Poor, false),
-	Metar("MA", new MetarProvider(), WindProviderQuality.Poor, false),
+	Metar("MA", new MetarProvider(), WindProviderQuality.Poor, true),
 	Prades("PR", new PradesProvider(), WindProviderQuality.Medium, false),
 	Holfuy("HO", new HolfuyProvider(), WindProviderQuality.Good, false),
 	PiouPiou("PI", new PiouProvider(), WindProviderQuality.Medium, false),

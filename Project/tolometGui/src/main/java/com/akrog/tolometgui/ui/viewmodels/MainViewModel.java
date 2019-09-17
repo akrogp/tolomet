@@ -184,7 +184,8 @@ public class MainViewModel extends ViewModel {
         Station station = getCurrentStation();
         if( !manager.checkStation(station) )
             return null;
-        Station clone = station.clone();
+        //Station clone = station.clone();
+        Station clone = station;
         if( !manager.refresh(clone) )
             return null;
         DbMeteo.getInstance().meteoDao().saveStation(clone);

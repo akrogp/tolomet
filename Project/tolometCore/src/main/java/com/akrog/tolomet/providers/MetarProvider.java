@@ -2,9 +2,14 @@ package com.akrog.tolomet.providers;
 
 import com.akrog.tolomet.Header;
 import com.akrog.tolomet.Station;
+import com.akrog.tolomet.Utils;
 import com.akrog.tolomet.io.Downloader;
 
+import java.io.BufferedReader;
+import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 
 public class MetarProvider extends BaseProvider {
@@ -20,6 +25,51 @@ public class MetarProvider extends BaseProvider {
 	@Override
 	public String getUserUrl(String code) {
 		return getInfoUrl(code);
+	}
+
+	@Override
+	public List<Station> downloadStations() {
+		downloader = new Downloader();
+		downloader.setUrl("https://www.aviationweather.gov/docs/metar/stations.txt");
+		String data = downloader.download();
+		downloader = null;
+
+		List<Station> stations = new ArrayList<>();
+		String line, code;
+		try(BufferedReader br = new BufferedReader(new StringReader(data))) {
+			while( (line=br.readLine()) != null ) {
+				if( line.length() < 83 || line.startsWith("!") || line.startsWith("CD") )
+					continue;
+				code = line.substring(20, 24).trim();
+				if( code.isEmpty() )
+					continue;
+				Station station = new Station();
+				station.setProviderType(WindProviderType.Metar);
+				station.setCode(code);
+				station.setName(Utils.reCapitalize(line.substring(3, 20).trim()));
+				station.setLatitude(parseLatitude(line));
+				station.setLongitude(parseLongitude(line));
+				stations.add(station);
+			}
+			return stations;
+		} catch( Exception e ) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private static double parseLongitude(String line) {
+		double degrees = Integer.parseInt(line.substring(47, 50).trim());
+		double minutes = Integer.parseInt(line.substring(51, 53).trim());
+		double sig = line.charAt(53) == 'W' ? -1 : 1;
+		return sig*(degrees+minutes/60);
+	}
+
+	private static double parseLatitude(String line) {
+		double degrees = Integer.parseInt(line.substring(39, 41).trim());
+		double minutes = Integer.parseInt(line.substring(42, 44).trim());
+		double sig = line.charAt(44) == 'N' ? 1 : -1;
+		return sig*(degrees+minutes/60);
 	}
 
 	@Override
