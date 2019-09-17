@@ -27,18 +27,35 @@ public class AemetProvider implements WindProvider {
 		return getInfoUrl(code);
 	}
 
-	@Override
-	public List<Station> downloadStations() {
-		try(BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/keys/aemet.txt")))) {
+	private String download(String url) {
+		if( key == null )
+			try(BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/keys/aemet.txt")))) {
+				key = br.readLine();
+			} catch( Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		try {
 			Downloader dw = new Downloader();
-			dw.setUrl("https://opendata.aemet.es/opendata/api/observacion/convencional/todas");
-			dw.setHeader("api_key", br.readLine());
+			dw.setUrl(url);
+			dw.setHeader("api_key", key);
 			String data = dw.download();
 			JSONObject resp = new JSONObject(data);
 
 			dw = new Downloader();
 			dw.setUrl(resp.getString("datos"));
 			data = dw.download(null, "latin1");
+			return data;
+		} catch( Exception e ) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public List<Station> downloadStations() {
+		try {
+			String data = download("https://opendata.aemet.es/opendata/api/observacion/convencional/todas");
 			JSONArray array = new JSONArray(data);
 			List<Station> stations = new ArrayList<>(array.length());
 			for( int i = 0; i < array.length(); i++ ) {
@@ -178,4 +195,5 @@ public class AemetProvider implements WindProvider {
 	}	
 	
 	private Downloader downloader;
+	private String key;
 }
