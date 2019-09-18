@@ -80,6 +80,7 @@ public class MainActivity extends ToolbarActivity
         if( id != null ) {
             intent.removeExtra(EXTRA_STATION);
             Station station = model.findStation(id);
+            navigate(R.id.nav_charts);
             model.selectStation(station);
         }
     }
