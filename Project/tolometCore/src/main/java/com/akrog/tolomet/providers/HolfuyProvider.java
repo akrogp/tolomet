@@ -7,12 +7,15 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -32,6 +35,48 @@ public class HolfuyProvider extends BaseProvider {
     @Override
     public String getUserUrl(String code) {
         return "http://holfuy.com/en/data/"+code.substring(1);
+    }
+
+    @Override
+    public List<Station> downloadStations() {
+        try {
+            downloader = new Downloader();
+            downloader.setUrl("http://holfuy.hu/en/takeit/xml/dezso/stations.xml");
+            String data = downloader.download();
+            BufferedReader br = new BufferedReader(new StringReader(data));
+            String line;
+            Station station = null;
+            List<Station> result = new ArrayList<>();
+            while( (line = br.readLine()) != null ) {
+                line = line.trim();
+                if( line.equals("<STATION>") ) {
+                    station = new Station();
+                    station.setProviderType(WindProviderType.Holfuy);
+                } else if( line.equals("</STATION>") ) {
+                    if( station.getLatitude() != station.getLongitude() || station.getLatitude() != 0 )
+                        result.add(station);
+                } else if( line.startsWith("<ID>") )
+                    station.setCode(getXmlContent(line));
+                else if( line.startsWith("<NAME>") )
+                    station.setName(getXmlContent(line));
+                else if( line.startsWith("<LAT>"))
+                    station.setLatitude(Double.parseDouble(getXmlContent(line)));
+                else if( line.startsWith("<LONG>"))
+                    station.setLongitude(Double.parseDouble(getXmlContent(line)));
+            }
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            downloader = null;
+        }
+        return null;
+    }
+
+    private String getXmlContent(String line) {
+        int off1 = line.indexOf('>');
+        int off2 = line.indexOf('<', off1);
+        return line.substring(off1+1, off2);
     }
 
     @Override
