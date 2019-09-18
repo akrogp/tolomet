@@ -38,6 +38,19 @@ public class XmlParser {
 		
 		return result;
 	}
+
+	public static String getValue(String line) {
+		Matcher matcher = patternValue.matcher(line);
+		return matcher.find() ? matcher.group(1) : null;
+	}
+
+	public static String getAttribute(String line, String name) {
+		Matcher matcher = patternAttr.matcher(line);
+		while( matcher.find() )
+			if( matcher.group(1).equalsIgnoreCase(name) )
+				return matcher.group(2);
+		return null;
+	}
 	
 	private static String readLine( BufferedReader br ) throws IOException {
 		String line = br.readLine();
@@ -47,5 +60,6 @@ public class XmlParser {
 	}
 	
 	private final static Pattern patternName = Pattern.compile("^<(\\w+)");
+	private final static Pattern patternValue = Pattern.compile(">(.*)<");
 	private final static Pattern patternAttr = Pattern.compile("(\\w+)=\"(.+?)\"");
 }

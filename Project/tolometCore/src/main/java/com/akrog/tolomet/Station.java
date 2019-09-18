@@ -239,4 +239,12 @@ public class Station {
 	public Object getExtra() {
 		return extra;
 	}
+
+	public boolean isFilled() {
+		if( name == null || providerType == null )
+			return false;
+		if( latitude == 0 && longitude == 0 )
+			return false;
+		return true;
+	}
 }
