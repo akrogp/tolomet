@@ -2,6 +2,7 @@ package com.akrog.tolomet.providers;
 
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
+import com.akrog.tolomet.io.XmlParser;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -53,16 +54,17 @@ public class HolfuyProvider extends BaseProvider {
                     station = new Station();
                     station.setProviderType(WindProviderType.Holfuy);
                 } else if( line.equals("</STATION>") ) {
-                    if( station.getLatitude() != station.getLongitude() || station.getLatitude() != 0 )
+                    if( station.isFilled() )
                         result.add(station);
+                    station = null;
                 } else if( line.startsWith("<ID>") )
-                    station.setCode(getXmlContent(line));
+                    station.setCode(XmlParser.getValue(line));
                 else if( line.startsWith("<NAME>") )
-                    station.setName(getXmlContent(line));
+                    station.setName(XmlParser.getValue(line));
                 else if( line.startsWith("<LAT>"))
-                    station.setLatitude(Double.parseDouble(getXmlContent(line)));
+                    station.setLatitude(Double.parseDouble(XmlParser.getValue(line)));
                 else if( line.startsWith("<LONG>"))
-                    station.setLongitude(Double.parseDouble(getXmlContent(line)));
+                    station.setLongitude(Double.parseDouble(XmlParser.getValue(line)));
             }
             return result;
         } catch (Exception e) {
@@ -71,12 +73,6 @@ public class HolfuyProvider extends BaseProvider {
             downloader = null;
         }
         return null;
-    }
-
-    private String getXmlContent(String line) {
-        int off1 = line.indexOf('>');
-        int off2 = line.indexOf('<', off1);
-        return line.substring(off1+1, off2);
     }
 
     @Override

@@ -2,16 +2,21 @@ package com.akrog.tolomet.providers;
 
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
+import com.akrog.tolomet.io.XmlParser;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -42,6 +47,44 @@ public class FfvlProvider extends BaseProvider {
     @Override
     public boolean configureDownload(Downloader downloader, Station station, long date) {
         return false;
+    }
+
+    @Override
+    public List<Station> downloadStations() {
+        try {
+            downloader = new Downloader();
+            downloader.setUrl("http://data.ffvl.fr/xml/4D6F626942616C69736573/meteo/balise_list.xml");
+            String data = downloader.download();
+            data = data.replaceAll("><", ">\n<");
+            BufferedReader br = new BufferedReader(new StringReader(data));
+            String line;
+            Station station = null;
+            List<Station> result = new ArrayList<>();
+            while( (line = br.readLine()) != null ) {
+                line = line.trim();
+                if( line.equals("<balise>") ) {
+                    station = new Station();
+                    station.setProviderType(WindProviderType.Ffvl);
+                } else if( line.equals("</balise>") ) {
+                    if( station.isFilled() )
+                        result.add(station);
+                    station = null;
+                } else if( line.startsWith("<idBalise>") )
+                    station.setCode(XmlParser.getValue(line));
+                else if( line.startsWith("<nom>") )
+                    station.setName(StringEscapeUtils.unescapeXml(XmlParser.getValue(line)));
+                else if( line.startsWith("<coord") ) {
+                    station.setLatitude(Double.parseDouble(XmlParser.getAttribute(line, "lat")));
+                    station.setLongitude(Double.parseDouble(XmlParser.getAttribute(line, "lon")));
+                }
+            }
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            downloader = null;
+        }
+        return null;
     }
 
     @Override
