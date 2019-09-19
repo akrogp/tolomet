@@ -60,6 +60,8 @@ public class ProviderAdapter extends ArrayAdapter<ProviderAdapter.ProviderWrappe
         checkBox.setChecked(provider.isChecked());
         checkBox.setVisibility(type.isDynamic() ? View.VISIBLE : View.GONE);
         checkBox.setOnClickListener(view -> {
+            if( !provider.getType().isDynamic() )
+                return;
             provider.setChecked(((CompoundButton)view).isChecked());
             listener.onItemClick(null, null, position, providers.length);
         });
