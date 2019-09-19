@@ -148,10 +148,12 @@ public class UpdateFragment extends ToolbarFragment implements AdapterView.OnIte
                 return -1;
             if( t2.isDynamic() && !t1.isDynamic() )
                 return 1;
-            if( p1.getIconId() > 0 && p2.getIconId() <= 0 )
+            if( p1.getStations() != p2.getStations() )
+                return p2.getStations() - p1.getStations();
+            /*if( p1.getIconId() > 0 && p2.getIconId() <= 0 )
                 return -1;
             if( p2.getIconId() > 0 && p1.getIconId() <= 0 )
-                return 1;
+                return 1;*/
             if( t1.getQuality() != t2.getQuality() )
                 return t1.getQuality().ordinal() - t2.getQuality().ordinal();
             return t1.toString().compareTo(t2.toString());
