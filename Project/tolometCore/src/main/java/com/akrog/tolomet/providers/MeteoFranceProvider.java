@@ -1,10 +1,15 @@
 package com.akrog.tolomet.providers;
 
 import com.akrog.tolomet.Station;
+import com.akrog.tolomet.Utils;
 import com.akrog.tolomet.io.Downloader;
 
+import java.io.BufferedReader;
+import java.io.StringReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -36,6 +41,39 @@ public class MeteoFranceProvider extends BaseProvider {
     @Override
     public boolean configureDownload(Downloader downloader, Station station, long date) {
         return false;
+    }
+
+    @Override
+    public List<Station> downloadStations() {
+        try {
+            downloader = new Downloader();
+            downloader.setUrl("http://www.vigimeteo.com/PREV/obs/obsd2i_meta.txt");
+            String data = downloader.download();
+            List<Station> result = new ArrayList<>();
+            BufferedReader br = new BufferedReader(new StringReader(data));
+            String line;
+            String[] fields;
+            while( (line=br.readLine()) != null ) {
+                fields = line.split(";");
+                if( fields.length < 6 || fields[5].equals("0") )
+                    continue;
+                Station station = new Station();
+                station.setProviderType(WindProviderType.MeteoFrance);
+                station.setCode(fields[0]);
+                station.setName(Utils.reCapitalize(fields[4]));
+                station.setLongitude(Float.parseFloat(fields[1]));
+                station.setLatitude(Float.parseFloat(fields[2]));
+                if( station.isFilled() )
+                    result.add(station);
+            }
+            br.close();
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            downloader = null;
+        }
+        return null;
     }
 
     @Override

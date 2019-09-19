@@ -15,7 +15,7 @@ public enum WindProviderType {
 	Holfuy("HO", new HolfuyProvider(), WindProviderQuality.Good, true),
 	PiouPiou("PI", new PiouProvider(), WindProviderQuality.Medium, false),
 	Ffvl("FFVL", new FfvlProvider(), WindProviderQuality.Medium, true),
-    MeteoFrance("MF", new MeteoFranceProvider(), WindProviderQuality.Poor, false),
+    MeteoFrance("MF", new MeteoFranceProvider(), WindProviderQuality.Poor, true),
 	MeteoClimatic("MC", new MeteoClimaticProvider(), WindProviderQuality.Poor, true),
 	WeatherUnderground("WU", new WeatherUndergroundProvider(), WindProviderQuality.Medium, false),
     WirelessWeatherStation("WWS", new WirelessWeatherStationProvider(), WindProviderQuality.Medium, false),
