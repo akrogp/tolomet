@@ -10,8 +10,10 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 /**
@@ -63,6 +65,46 @@ public class PiouProvider extends BaseProvider {
         downloader.addParam("start",start);
         downloader.addParam("stop",stop);
         downloader.addParam("format","json");
+    }
+
+    @Override
+    public List<Station> downloadStations() {
+        try {
+            downloader = new Downloader();
+            downloader.setUrl("http://api.pioupiou.fr/v1/live-with-meta/all");
+            String data = downloader.download();
+            JSONObject json = new JSONObject(data);
+            JSONArray array = json.getJSONArray("data");
+            List<Station> result = new ArrayList<>();
+            for( int i = 0; i < array.length(); i++ ) {
+                JSONObject item = array.getJSONObject(i);
+                String id = item.getString("id");
+                if( id.equals("null") )
+                    continue;
+                JSONObject status = item.getJSONObject("status");
+                if( status.getString("state").equalsIgnoreCase("off") )
+                    continue;
+                Calendar cal = Calendar.getInstance();
+                if( !status.getString("date").startsWith(cal.get(Calendar.YEAR)+"") )
+                    continue;
+                JSONObject meta = item.getJSONObject("meta");
+                JSONObject location = item.getJSONObject("location");
+                Station station = new Station();
+                station.setCode(id);
+                station.setName(meta.getString("name"));
+                station.setLatitude(location.getDouble("latitude"));
+                station.setLongitude(location.getDouble("longitude"));
+                station.setProviderType(WindProviderType.PiouPiou);
+                if( station.isFilled() )
+                    result.add(station);
+            }
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            downloader = null;
+        }
+        return null;
     }
 
     @Override

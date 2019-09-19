@@ -29,5 +29,6 @@ public class ResourceService {
         mapProviders.put(WindProviderType.MeteoNavarra, R.drawable.navarra);
         mapProviders.put(WindProviderType.WeatherUnderground, R.drawable.wunder);
         mapProviders.put(WindProviderType.Metar, R.drawable.ic_metar);
+        mapProviders.put(WindProviderType.PiouPiou, R.drawable.ic_piou);
     }
 }
