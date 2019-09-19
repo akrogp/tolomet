@@ -20,7 +20,7 @@ public class PradesProvider extends BaseProvider {
 	public void configureDownload(Downloader downloader, Station station) {
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 		downloader.setUrl(String.format(
-			"http://www.meteoprades.cat/export/tolomet_%04d%02d%02d_%s.txt",
+			"https://www.meteoprades.net/export/tolomet_%04d%02d%02d_%s.txt",
 			cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH),
 			station.getCode() ));
 	}
