@@ -3,7 +3,10 @@ package com.akrog.tolometgui.ui.fragments;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,7 +20,9 @@ import android.view.ViewGroup;
 import com.akrog.tolomet.Station;
 import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.model.db.DbTolomet;
+import com.akrog.tolometgui.model.db.SpotEntity;
 import com.akrog.tolometgui.ui.services.LocationService;
+import com.akrog.tolometgui.ui.viewmodels.MapViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -36,12 +41,15 @@ import java.util.Locale;
 
 import androidx.annotation.Nullable;
 import androidx.core.util.Consumer;
+import androidx.lifecycle.ViewModelProviders;
 
-public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener, ClusterManager.OnClusterItemClickListener<MapFragment.StationItem> {
+public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener, ClusterManager.OnClusterItemClickListener<ClusterItem> {
     private GoogleMap map;
-    private ClusterManager<StationItem> cluster;
+    private ClusterManager<ClusterItem> cluster;
     private boolean resetZoom = true;
     private Marker currentMarker;
+    private Bitmap windBitmap;
+    private MapViewModel mapViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,6 +60,17 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        Canvas canvas = new Canvas();
+        Drawable drawable = getResources().getDrawable(R.drawable.ic_wind);
+        int pixels = (int)(48 * Resources.getSystem().getDisplayMetrics().density);
+        windBitmap = Bitmap.createBitmap(pixels, pixels, Bitmap.Config.ARGB_8888);
+        canvas.setBitmap(windBitmap);
+        drawable.setBounds(0, 0, pixels, pixels);
+        drawable.draw(canvas);
+
+        mapViewModel = ViewModelProviders.of(this).get(MapViewModel.class);
+
         MapView mapView = getView().findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
@@ -64,11 +83,11 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
         setMapType();
         requestPermission(Manifest.permission.ACCESS_FINE_LOCATION, R.string.gps_rationale,
             () -> map.setMyLocationEnabled(true), null);
-        cluster = new ClusterManager<StationItem>(getActivity(), map);
+        cluster = new ClusterManager<>(getActivity(), map);
         map.setOnMarkerClickListener(cluster);
         map.setOnCameraIdleListener(this);
         cluster.setOnClusterItemClickListener(this);
-        cluster.setRenderer(new StationRenderer(getActivity(), map, cluster));
+        cluster.setRenderer(new ItemRenderer(getActivity(), map, cluster));
 
         model.liveCurrentStation().observe(this, station -> {
             if( model.checkStation() )
@@ -169,26 +188,40 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
         List<Station> stations = DbTolomet.getInstance().findGeoStations(
                 bounds.northeast.latitude, bounds.northeast.longitude,
                 bounds.southwest.latitude, bounds.southwest.longitude);
+        List<SpotEntity> spots = DbTolomet.getInstance().findGeoSpots(
+                bounds.northeast.latitude, bounds.northeast.longitude,
+                bounds.southwest.latitude, bounds.southwest.longitude);
         cluster.clearItems();
-        //map.clear();
         if( currentMarker != null ) {
             currentMarker.remove();
             currentMarker = null;
         }
         Station station = model.checkStation() ? model.getCurrentStation() : null;
         for( Station item : stations )
-            if( item.equals(station) ) {
+            if( item.equals(station) )
                 currentMarker = map.addMarker(configureMarker(null, station));
-                currentMarker.showInfoWindow();
-            }
         else
             cluster.addItem(new StationItem(item));
+        for( SpotEntity spot : spots )
+            if( mapViewModel.getSpot() != null && mapViewModel.getSpot().getId().equals(spot.getId()) )
+                currentMarker = map.addMarker(configureMarker(null, spot));
+            else
+                cluster.addItem(new SpotItem(spot));
+        if( currentMarker != null )
+            currentMarker.showInfoWindow();
         cluster.cluster();
     }
 
     @Override
-    public boolean onClusterItemClick(StationItem stationItem) {
-        model.selectStation(stationItem.getStation());
+    public boolean onClusterItemClick(ClusterItem item) {
+        if (item instanceof StationItem) {
+            mapViewModel.setSpot(null);
+            model.selectStation(((StationItem) item).getStation());
+        } else {
+            mapViewModel.setSpot(((SpotItem)item).getSpot());
+            model.selectStation(null);
+            zoom(mapViewModel.getSpot().getLatitude(), mapViewModel.getSpot().getLongitude());
+        }
         return true;
     }
 
@@ -221,22 +254,37 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
             .snippet(station.getProviderType().name());
     }
 
-    private class StationRenderer extends DefaultClusterRenderer<StationItem> {
+    private MarkerOptions configureMarker(MarkerOptions options, SpotEntity spot) {
+        if( options == null )
+            options = new MarkerOptions();
+        return options
+                .icon(BitmapDescriptorFactory.fromBitmap(windBitmap))
+                .position(new LatLng(spot.getLatitude(), spot.getLongitude()))
+                .title(spot.getName())
+                .snippet(spot.getDesc());
+    }
 
-        public StationRenderer(Context context, GoogleMap map, ClusterManager<StationItem> clusterManager) {
+    private class ItemRenderer extends DefaultClusterRenderer<ClusterItem> {
+
+        public ItemRenderer(Context context, GoogleMap map, ClusterManager<ClusterItem> clusterManager) {
             super(context, map, clusterManager);
         }
 
         @Override
-        protected void onBeforeClusterItemRendered(StationItem item, MarkerOptions markerOptions) {
-            configureMarker(markerOptions, item.getStation());
+        protected void onBeforeClusterItemRendered(ClusterItem item, MarkerOptions markerOptions) {
+            if( item instanceof StationItem )
+                configureMarker(markerOptions, ((StationItem)item).getStation());
+            else
+                configureMarker(markerOptions, ((SpotItem)item).getSpot());
             super.onBeforeClusterItemRendered(item, markerOptions);
         }
 
         @Override
-        protected void onClusterItemRendered(StationItem clusterItem, Marker marker) {
+        protected void onClusterItemRendered(ClusterItem clusterItem, Marker marker) {
             super.onClusterItemRendered(clusterItem, marker);
-            if( model.checkStation() && model.getCurrentStation().getId().equals(clusterItem.getStation().getId()) )
+            if( !(clusterItem instanceof StationItem) )
+                return;
+            if( model.checkStation() && model.getCurrentStation().getId().equals(((StationItem)clusterItem).getStation().getId()) )
                 marker.showInfoWindow();
         }
     }
@@ -265,6 +313,33 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
 
         public Station getStation() {
             return station;
+        }
+    }
+
+    static class SpotItem implements ClusterItem {
+        private final SpotEntity spot;
+
+        public SpotItem(SpotEntity spot) {
+            this.spot = spot;
+        }
+
+        @Override
+        public LatLng getPosition() {
+            return new LatLng(spot.getLatitude(), spot.getLongitude());
+        }
+
+        @Override
+        public String getTitle() {
+            return spot.getName();
+        }
+
+        @Override
+        public String getSnippet() {
+            return spot.getDesc();
+        }
+
+        public SpotEntity getSpot() {
+            return spot;
         }
     }
 }
