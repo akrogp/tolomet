@@ -2,6 +2,7 @@ package com.akrog.tolomet.io;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -87,7 +88,7 @@ public class Downloader {
     			con = (HttpURLConnection)url.openConnection();
     			con.setDoOutput(true);
     			con.setDoInput(true);
-    			OutputStream os = con.getOutputStream();
+    			OutputStream os = getOutputStream(con);
     			BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
     			wr.write(getQuery());
     			wr.close();
@@ -98,7 +99,7 @@ public class Downloader {
     		}
     		applyBrowserProperties(con);
     		applyHeaders(con);
-            InputStream is = con.getInputStream();
+            InputStream is = getInputStream(con);
             if( isGzipped() )
                 is = new GZIPInputStream(is);
     		result = parseInput(is, stop, charset);
@@ -110,6 +111,14 @@ public class Downloader {
                 con.disconnect();
         }
         return result;
+	}
+
+	protected OutputStream getOutputStream(HttpURLConnection con) throws IOException {
+    	return con.getOutputStream();
+	}
+
+	protected InputStream getInputStream(HttpURLConnection con) throws IOException {
+		return con.getInputStream();
 	}
 
     private void applyHeaders(HttpURLConnection con) {
