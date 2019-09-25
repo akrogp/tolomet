@@ -16,9 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -113,32 +111,57 @@ public class DbTolomet extends SQLiteAssetHelper {
         return findStations("SELECT * FROM Station");
     }
 
-    public Map<String, ProviderInfo> getProviderCounts() {
+    public List<ProviderInfo> getProviderCounts() {
+        List<ProviderInfo> result = new ArrayList<>();
+        result.addAll(getStationProviderCounts());
+        result.addAll(getSpotProviderCounts());
+        return result;
+    }
+
+    public List<ProviderInfo> getStationProviderCounts() {
         WindProviderType[] types = WindProviderType.values();
         String[] providers = new String[types.length];
         for( int i = 0; i < types.length; i++ )
             providers[i] = types[i].name();
+        List<ProviderInfo> result = countProviders(providers, TAB_STATION);
+        for( ProviderInfo info : result )
+            info.setWindProviderType(WindProviderType.valueOf(info.getProvider()));
+        return result;
+    }
+
+    public List<ProviderInfo> getSpotProviderCounts() {
+        SpotProviderType[] types = SpotProviderType.values();
+        String[] providers = new String[types.length];
+        for( int i = 0; i < types.length; i++ )
+            providers[i] = types[i].name();
+        List<ProviderInfo> result = countProviders(providers, TAB_SPOT);
+        for( ProviderInfo info : result )
+            info.setSpotProviderType(SpotProviderType.valueOf(info.getProvider()));
+        return result;
+    }
+
+    private List<ProviderInfo> countProviders(String[] providers, String table) {
+        List<ProviderInfo> result = new ArrayList<>();
         SQLiteDatabase lite = getReadableDatabase();
-        Cursor cursor = lite.rawQuery(
-                "SELECT provider, updated, COUNT(*) FROM Station WHERE provider IN (" +
-                        TextUtils.join(",", Collections.nCopies(providers.length, "?")) +
-                        ") GROUP BY provider",providers);
-        Map<String, ProviderInfo> result = new HashMap<>();
-        while( cursor.moveToNext() ) {
-            ProviderInfo info = new ProviderInfo();
-            String provider = cursor.getString(0);
-            String date = cursor.getString(1);
-            if( date != null ) {
-                try {
-                    info.setDate(DATE_FORMAT.parse(date));
-                } catch (ParseException e) {
-                    e.printStackTrace();
+        try( Cursor cursor = lite.rawQuery(
+            "SELECT provider, updated, COUNT(*) FROM "+table+" WHERE provider IN (" +
+                    TextUtils.join(",", Collections.nCopies(providers.length, "?")) +
+                    ") GROUP BY provider",providers) ) {
+            while (cursor.moveToNext()) {
+                ProviderInfo info = new ProviderInfo();
+                info.setProvider(cursor.getString(0));
+                String date = cursor.getString(1);
+                if (date != null) {
+                    try {
+                        info.setDate(DATE_FORMAT.parse(date));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
+                info.setCount(cursor.getInt(2));
+                result.add(info);
             }
-            info.setStationCount(cursor.getInt(2));
-            result.put(provider, info);
         }
-        cursor.close();
         return result;
     }
 
@@ -254,33 +277,19 @@ public class DbTolomet extends SQLiteAssetHelper {
         }
     }
 
-    public static class Counts {
-        private String name;
-        private int stationCount;
-        public void setName(String name) {
-            this.name = name;
-        }
-        public String getName() {
-            return name;
-        }
-        public void setStationCount( int stationCount ) {
-            this.stationCount = stationCount;
-        }
-        public int getStationCount() {
-            return stationCount;
-        }
-    }
-
     public static class ProviderInfo {
-        private int stationCount;
+        private int count;
         private Date date;
+        private String provider;
+        private WindProviderType windProviderType;
+        private SpotProviderType spotProviderType;
 
-        public int getStationCount() {
-            return stationCount;
+        public int getCount() {
+            return count;
         }
 
-        public void setStationCount(int stationCount) {
-            this.stationCount = stationCount;
+        public void setCount(int count) {
+            this.count = count;
         }
 
         public Date getDate() {
@@ -289,6 +298,30 @@ public class DbTolomet extends SQLiteAssetHelper {
 
         public void setDate(Date date) {
             this.date = date;
+        }
+
+        public WindProviderType getWindProviderType() {
+            return windProviderType;
+        }
+
+        public void setWindProviderType(WindProviderType windProviderType) {
+            this.windProviderType = windProviderType;
+        }
+
+        public SpotProviderType getSpotProviderType() {
+            return spotProviderType;
+        }
+
+        public void setSpotProviderType(SpotProviderType spotProviderType) {
+            this.spotProviderType = spotProviderType;
+        }
+
+        public String getProvider() {
+            return provider;
+        }
+
+        public void setProvider(String provider) {
+            this.provider = provider;
         }
     }
 

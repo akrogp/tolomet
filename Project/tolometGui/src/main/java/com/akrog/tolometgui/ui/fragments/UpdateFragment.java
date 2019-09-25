@@ -8,25 +8,20 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.akrog.tolomet.Station;
 import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.model.db.DbTolomet;
 import com.akrog.tolometgui.ui.adapters.ProviderAdapter;
-import com.akrog.tolometgui.ui.services.ResourceService;
 import com.akrog.tolometgui.ui.services.WeakTask;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import androidx.annotation.Nullable;
 
 public class UpdateFragment extends ToolbarFragment implements AdapterView.OnItemClickListener {
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     private List<ProviderAdapter.ProviderWrapper> providers;
     private CountTask countTask;
     private UpdateTask updateTask;
@@ -51,7 +46,7 @@ public class UpdateFragment extends ToolbarFragment implements AdapterView.OnIte
             }
         });
         count();
-        updateList(null);
+        //updateList(null);
         updateFab();
         FloatingActionButton fab = getActivity().findViewById(R.id.fab);
         fab.setOnClickListener(view -> download());
@@ -112,52 +107,26 @@ public class UpdateFragment extends ToolbarFragment implements AdapterView.OnIte
             fab.hide();
     }
 
-    private void updateList(Map<String, DbTolomet.ProviderInfo> map) {
-        providers = buildWrappers(map);
-        sortProviders(providers);
+    private void updateList(List<DbTolomet.ProviderInfo> result) {
+        providers = buildWrappers(result);
+        Collections.sort(providers);
 
         ListView list = getActivity().findViewById(R.id.list_providers);
         ProviderAdapter adapter = new ProviderAdapter(getActivity(), providers.toArray(new ProviderAdapter.ProviderWrapper[0]), this);
         list.setAdapter(adapter);
     }
 
-    private List<ProviderAdapter.ProviderWrapper> buildWrappers(Map<String,DbTolomet.ProviderInfo> map) {
+    private List<ProviderAdapter.ProviderWrapper> buildWrappers(List<DbTolomet.ProviderInfo> list) {
+        /*DbTolomet.ProviderInfo elliot = new DbTolomet.ProviderInfo();
+        elliot.setSpotProviderType(SpotProviderType.ElliottParagliding);
+        elliot.setProvider(elliot.getSpotProviderType().name());
+        list.add(elliot);*/
         List<ProviderAdapter.ProviderWrapper> providers = new ArrayList<>(WindProviderType.values().length);
-        for( WindProviderType type : WindProviderType.values() ) {
-            ProviderAdapter.ProviderWrapper wrapper = new ProviderAdapter.ProviderWrapper(type);
-            Integer iconId = ResourceService.getProviderIcon(type);
-            wrapper.setIconId(iconId == null ? 0 : iconId);
-            if( map != null ) {
-                DbTolomet.ProviderInfo info = map.get(type.name());
-                if (info != null) {
-                    wrapper.setStations(info.getStationCount());
-                    if( info.getDate() != null )
-                        wrapper.setDate(DATE_FORMAT.format(info.getDate()));
-                }
-            }
+        for( DbTolomet.ProviderInfo info : list ) {
+            ProviderAdapter.ProviderWrapper wrapper = new ProviderAdapter.ProviderWrapper(info);
             providers.add(wrapper);
         }
         return providers;
-    }
-
-    private void sortProviders(List<ProviderAdapter.ProviderWrapper> providers) {
-        Collections.sort(providers, (p1, p2) -> {
-            WindProviderType t1 = p1.getType();
-            WindProviderType t2 = p2.getType();
-            if( t1.isDynamic() && !t2.isDynamic() )
-                return -1;
-            if( t2.isDynamic() && !t1.isDynamic() )
-                return 1;
-            if( p1.getStations() != p2.getStations() )
-                return p2.getStations() - p1.getStations();
-            /*if( p1.getIconId() > 0 && p2.getIconId() <= 0 )
-                return -1;
-            if( p2.getIconId() > 0 && p1.getIconId() <= 0 )
-                return 1;*/
-            if( t1.getQuality() != t2.getQuality() )
-                return t1.getQuality().ordinal() - t2.getQuality().ordinal();
-            return t1.toString().compareTo(t2.toString());
-        });
     }
 
     @Override
@@ -166,7 +135,7 @@ public class UpdateFragment extends ToolbarFragment implements AdapterView.OnIte
     }
 
 
-    private static class CountTask extends WeakTask<UpdateFragment, Void, Void, Map<String, DbTolomet.ProviderInfo>> {
+    private static class CountTask extends WeakTask<UpdateFragment, Void, Void, List<DbTolomet.ProviderInfo>> {
         CountTask(UpdateFragment fragment) {
             super(fragment);
         }
@@ -179,17 +148,17 @@ public class UpdateFragment extends ToolbarFragment implements AdapterView.OnIte
         }
 
         @Override
-        protected Map<String, DbTolomet.ProviderInfo> doInBackground(Void... voids) {
+        protected List<DbTolomet.ProviderInfo> doInBackground(Void... voids) {
             return DbTolomet.getInstance().getProviderCounts();
         }
 
         @Override
-        protected void onPostExecute(Map<String, DbTolomet.ProviderInfo> map) {
+        protected void onPostExecute(List<DbTolomet.ProviderInfo> result) {
             UpdateFragment fragment = getContext();
             if( fragment == null )
                 return;
             fragment.countTask = null;
-            fragment.updateList(map);
+            fragment.updateList(result);
             fragment.updateFab();
             fragment.endProgress();
         }
@@ -215,9 +184,7 @@ public class UpdateFragment extends ToolbarFragment implements AdapterView.OnIte
             for( ProviderAdapter.ProviderWrapper provider : fragment.providers ) {
                 if( !provider.isChecked() )
                     continue;
-                List<Station> stations = provider.getType().getProvider().downloadStations();
-                if( stations != null )
-                    DbTolomet.getInstance().updateStations(provider.getType(), stations);
+                provider.download();
             }
             return null;
         }

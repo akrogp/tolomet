@@ -4,7 +4,7 @@ import com.akrog.tolometgui.model.providers.ElliottProvider;
 import com.akrog.tolometgui.model.providers.SpotProvider;
 
 public enum SpotProviderType {
-    ELLIOTT(new ElliottProvider());
+    ElliottParagliding(new ElliottProvider());
 
     SpotProviderType(SpotProvider provider) {
         this.provider = provider;
