@@ -220,13 +220,18 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
         } else {
             mapViewModel.setSpot(((SpotItem)item).getSpot());
             model.selectStation(null);
-            zoom(mapViewModel.getSpot().getLatitude(), mapViewModel.getSpot().getLongitude());
+            zoom(mapViewModel.getSpot());
         }
         return true;
     }
 
     private void zoom(Station station) {
         zoom(station.getLatitude(), station.getLongitude());
+        resetZoom = false;
+    }
+
+    private void zoom(SpotEntity spot) {
+        zoom(spot.getLatitude(), spot.getLongitude());
         resetZoom = false;
     }
 
