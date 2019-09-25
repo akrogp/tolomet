@@ -11,8 +11,14 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.akrog.tolomet.providers.WindProviderType;
+import com.akrog.tolomet.Station;
 import com.akrog.tolometgui.R;
+import com.akrog.tolometgui.model.db.DbTolomet;
+import com.akrog.tolometgui.model.db.SpotEntity;
+import com.akrog.tolometgui.ui.services.ResourceService;
+
+import java.text.SimpleDateFormat;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,7 +43,6 @@ public class ProviderAdapter extends ArrayAdapter<ProviderAdapter.ProviderWrappe
             itemView = inflater.inflate(R.layout.item_provider, parent, false);
         }
         ProviderWrapper provider = providers[position];
-        WindProviderType type = provider.getType();
 
         ImageView icon = itemView.findViewById(R.id.icon);
         boolean enabled = provider.getIconId() > 0;
@@ -46,21 +51,21 @@ public class ProviderAdapter extends ArrayAdapter<ProviderAdapter.ProviderWrappe
             icon.setImageResource(provider.getIconId());
 
         TextView textView = itemView.findViewById(R.id.name);
-        textView.setText(type.toString());
+        textView.setText(provider.getName());
 
         textView = itemView.findViewById(R.id.date);
         textView.setText(provider.getDate());
         textView.setVisibility(provider.getDate() == null ? View.GONE : View.VISIBLE);
 
         textView = itemView.findViewById(R.id.count);
-        textView.setVisibility(provider.getStations() < 0 ? View.GONE : View.VISIBLE);
-        textView.setText(provider.getStations()+" "+context.getString(R.string.stations));
+        textView.setVisibility(provider.getCount() < 0 ? View.GONE : View.VISIBLE);
+        textView.setText(provider.getCount()+" "+context.getString(R.string.stations));
 
         CheckBox checkBox = itemView.findViewById(R.id.checkbox);
         checkBox.setChecked(provider.isChecked());
-        checkBox.setVisibility(type.isDynamic() ? View.VISIBLE : View.GONE);
+        checkBox.setVisibility(provider.isDynamic() ? View.VISIBLE : View.GONE);
         checkBox.setOnClickListener(view -> {
-            if( !provider.getType().isDynamic() )
+            if( !provider.isDynamic() )
                 return;
             provider.setChecked(((CompoundButton)view).isChecked());
             listener.onItemClick(null, null, position, providers.length);
@@ -70,39 +75,35 @@ public class ProviderAdapter extends ArrayAdapter<ProviderAdapter.ProviderWrappe
         return itemView;
     }
 
-    public static class ProviderWrapper {
-        private final WindProviderType type;
-        private int iconId;
-        private int stations = -1;
-        private String date;
+    public static class ProviderWrapper implements Comparable<ProviderWrapper> {
+        private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        private final DbTolomet.ProviderInfo info;
+        private final int iconId;
+        private final String date;
         private boolean checked;
 
-        public ProviderWrapper(WindProviderType type) {
-            this.type = type;
+        public ProviderWrapper(DbTolomet.ProviderInfo info) {
+            this.info = info;
+            if( info.getWindProviderType() != null ) {
+                Integer tmp = ResourceService.getProviderIcon(info.getWindProviderType());
+                iconId = tmp == null ? 0 : tmp;
+            } else if (info.getSpotProviderType() != null )
+                iconId = R.drawable.ic_wind;
+            else
+                iconId = 0;
+            this.date = info.getDate() == null ? null : DATE_FORMAT.format(info.getDate());
         }
 
-        public WindProviderType getType() {
-            return type;
-        }
-
-        public void setIconId(int iconId) {
-            this.iconId = iconId;
+        public String getName() {
+            return info.getProvider();
         }
 
         public int getIconId() {
             return iconId;
         }
 
-        public void setStations(int stations) {
-            this.stations = stations;
-        }
-
-        public int getStations() {
-            return stations;
-        }
-
-        public void setDate(String date) {
-            this.date = date;
+        public int getCount() {
+            return info.getCount();
         }
 
         public String getDate() {
@@ -115,6 +116,43 @@ public class ProviderAdapter extends ArrayAdapter<ProviderAdapter.ProviderWrappe
 
         public boolean isChecked() {
             return checked;
+        }
+
+        public boolean isDynamic() {
+            if( info.getWindProviderType() != null )
+                return info.getWindProviderType().isDynamic();
+            return info.getSpotProviderType() != null;
+        }
+
+        @Override
+        public int compareTo(ProviderWrapper p2) {
+            ProviderWrapper p1 = this;
+            if( p1.isDynamic() && !p2.isDynamic() )
+                return -1;
+            if( p2.isDynamic() && !p1.isDynamic() )
+                return 1;
+            if( p1.getCount() != p2.getCount() )
+                return p2.getCount() - p1.getCount();
+            /*if( p1.getIconId() > 0 && p2.getIconId() <= 0 )
+                return -1;
+            if( p2.getIconId() > 0 && p1.getIconId() <= 0 )
+                return 1;*/
+            if( p1.info.getWindProviderType() != null && p2.info.getWindProviderType() != null
+                    && p1.info.getWindProviderType().getQuality() != p2.info.getWindProviderType().getQuality() )
+                return p1.info.getWindProviderType().getQuality().ordinal() - p2.info.getWindProviderType().getQuality().ordinal();
+            return p1.getName().compareTo(p2.getName());
+        }
+
+        public void download() {
+            if( info.getWindProviderType() != null ) {
+                List<Station> stations = info.getWindProviderType().getProvider().downloadStations();
+                if( stations != null )
+                    DbTolomet.getInstance().updateStations(info.getWindProviderType(), stations);
+            } else if( info.getSpotProviderType() != null ) {
+                List<SpotEntity> spots = info.getSpotProviderType().getProvider().downloadSpots();
+                if( spots != null )
+                    DbTolomet.getInstance().updateSpots(info.getSpotProviderType(), spots);
+            }
         }
     }
 }
