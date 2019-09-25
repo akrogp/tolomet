@@ -1,8 +1,8 @@
 package com.akrog.tolometgui.model.providers;
 
 import com.akrog.tolomet.io.Downloader;
-import com.akrog.tolomet.io.ZipDownloader;
 import com.akrog.tolomet.io.XmlParser;
+import com.akrog.tolomet.io.ZipDownloader;
 import com.akrog.tolometgui.model.db.SpotEntity;
 import com.akrog.tolometgui.model.db.SpotProviderType;
 import com.akrog.tolometgui.model.db.SpotType;
@@ -34,7 +34,7 @@ public class ElliottProvider implements SpotProvider {
                 else if( line.startsWith("<name>") )
                     spot.setName(XmlParser.getValue(line));
                 else if( line.startsWith("<description>") )
-                    spot.setDesc(XmlParser.getValue(line));
+                    spot.setDesc(XmlParser.getExpandedValue(line));
                 else if( line.startsWith("<styleUrl>") ) {
                     if( line.contains("icon-503-DB4436") )
                         spot.setType(SpotType.LANDING);
