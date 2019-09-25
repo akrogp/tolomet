@@ -80,6 +80,9 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
             if( location != null )
                 zoom(location.getLatitude(), location.getLongitude());
         }
+
+        /*KmlLayer kml = new KmlLayer(map, R.raw.elliott, getActivity());
+        kml.addLayerToMap();*/
     }
 
     @Override
@@ -167,7 +170,11 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
                 bounds.northeast.latitude, bounds.northeast.longitude,
                 bounds.southwest.latitude, bounds.southwest.longitude);
         cluster.clearItems();
-        map.clear();
+        //map.clear();
+        if( currentMarker != null ) {
+            currentMarker.remove();
+            currentMarker = null;
+        }
         Station station = model.checkStation() ? model.getCurrentStation() : null;
         for( Station item : stations )
             if( item.equals(station) ) {
