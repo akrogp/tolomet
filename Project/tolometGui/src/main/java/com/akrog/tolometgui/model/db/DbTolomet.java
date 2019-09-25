@@ -188,7 +188,7 @@ public class DbTolomet extends SQLiteAssetHelper {
                 spot.setId(cursor.getString(iId));
                 spot.setName(cursor.getString(iName));
                 spot.setDesc(cursor.getString(iDesc));
-                spot.setProvider(SpotProvider.valueOf(cursor.getString(iProv)));
+                spot.setProvider(SpotProviderType.valueOf(cursor.getString(iProv)));
                 spot.setType(SpotType.valueOf(cursor.getString(iType)));
                 spot.setLatitude(cursor.getDouble(iLat));
                 spot.setLongitude(cursor.getDouble(iLon));
@@ -226,7 +226,7 @@ public class DbTolomet extends SQLiteAssetHelper {
         }
     }
 
-    public void updateSpots(SpotProvider type, List<SpotEntity> spots) {
+    public void updateSpots(SpotProviderType type, List<SpotEntity> spots) {
         Date now = new Date();
         SQLiteDatabase lite = getWritableDatabase();
         lite.beginTransaction();

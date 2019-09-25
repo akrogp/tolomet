@@ -8,7 +8,7 @@ public class SpotEntity {
     private String name, desc;
     private SpotType type;
     private Date updated;
-    private SpotProvider provider;
+    private SpotProviderType provider;
 
     public String getId() {
         return id;
@@ -66,11 +66,11 @@ public class SpotEntity {
         this.updated = updated;
     }
 
-    public SpotProvider getProvider() {
+    public SpotProviderType getProvider() {
         return provider;
     }
 
-    public void setProvider(SpotProvider provider) {
+    public void setProvider(SpotProviderType provider) {
         this.provider = provider;
     }
 }
