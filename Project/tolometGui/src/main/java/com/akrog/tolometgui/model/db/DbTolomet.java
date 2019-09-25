@@ -37,6 +37,16 @@ public class DbTolomet extends SQLiteAssetHelper {
     public static final String COL_STA_UPD = "updated";
     public static final String COL_REG_COUN = "country";
 
+    public static final String TAB_SPOT = "Spot";
+    public static final String COL_SPOT_ID = "id";
+    public static final String COL_SPOT_LAT = "latitude";
+    public static final String COL_SPOT_LON = "longitude";
+    public static final String COL_SPOT_NAME = "name";
+    public static final String COL_SPOT_DESC = "desc";
+    public static final String COL_SPOT_TYPE = "type";
+    public static final String COL_SPOT_UPD = "updated";
+    public static final String COL_SPOT_PROV = "provider";
+
     private DbTolomet() {
         super(Tolomet.getAppContext(), DB_NAME, null, DB_VERSION);
         setForcedUpgrade();
@@ -75,6 +85,19 @@ public class DbTolomet extends SQLiteAssetHelper {
         }
         return findStations(
                 "SELECT Station.*,Region.country FROM Station, Region WHERE Station.latitude BETWEEN ? AND ? AND Station.longitude BETWEEN ? AND ? AND Region.id=Station.region",
+                String.valueOf(lat1), String.valueOf(lat2), String.valueOf(lon1), String.valueOf(lon2));
+    }
+
+    public List<SpotEntity> findGeoSpots(double lat1, double lon1, double lat2, double lon2) {
+        double tmp;
+        if( lat2 < lat1 ) {
+            tmp = lat1; lat1 = lat2; lat2 = tmp;
+        }
+        if( lon2 < lon1 ) {
+            tmp = lon1; lon1 = lon2; lon2 = tmp;
+        }
+        return findSpots(
+                "SELECT * FROM "+TAB_SPOT+" WHERE "+COL_SPOT_LAT+" BETWEEN ? AND ? AND "+COL_SPOT_LON+" BETWEEN ? AND ?",
                 String.valueOf(lat1), String.valueOf(lat2), String.valueOf(lon1), String.valueOf(lon2));
     }
 
@@ -123,29 +146,55 @@ public class DbTolomet extends SQLiteAssetHelper {
         Set<String> favs = AppSettings.getInstance().getFavorites();
         List<Station> list = new ArrayList<>();
         SQLiteDatabase lite = getReadableDatabase();
-        Cursor cursor = lite.rawQuery(rawQuery, args);
-        int iCode = cursor.getColumnIndex(COL_STA_CODE);
-        int iName = cursor.getColumnIndex(COL_STA_NAME);
-        int iProv = cursor.getColumnIndex(COL_STA_PROV);
-        int iReg = cursor.getColumnIndex(COL_STA_REG);
-        int iLat = cursor.getColumnIndex(COL_STA_LAT);
-        int iLon = cursor.getColumnIndex(COL_STA_LON);
-        int iCoun = cursor.getColumnIndex(COL_REG_COUN);
-        while( cursor.moveToNext() ) {
-            Station station = new Station();
-            station.setCode(cursor.getString(iCode));
-            station.setName(cursor.getString(iName));
-            station.setProviderType(WindProviderType.valueOf(cursor.getString(iProv)));
-            if( iReg >= 0 )
-                station.setRegion(cursor.getInt(iReg));
-            station.setLatitude(cursor.getDouble(iLat));
-            station.setLongitude(cursor.getDouble(iLon));
-            if( iCoun >= 0 )
-                station.setCountry(cursor.getString(iCoun));
-            station.setFavorite(favs.contains(station.getId()));
-            list.add(station);
+        try( Cursor cursor = lite.rawQuery(rawQuery, args) ) {
+            int iCode = cursor.getColumnIndex(COL_STA_CODE);
+            int iName = cursor.getColumnIndex(COL_STA_NAME);
+            int iProv = cursor.getColumnIndex(COL_STA_PROV);
+            int iReg = cursor.getColumnIndex(COL_STA_REG);
+            int iLat = cursor.getColumnIndex(COL_STA_LAT);
+            int iLon = cursor.getColumnIndex(COL_STA_LON);
+            int iCoun = cursor.getColumnIndex(COL_REG_COUN);
+            while (cursor.moveToNext()) {
+                Station station = new Station();
+                station.setCode(cursor.getString(iCode));
+                station.setName(cursor.getString(iName));
+                station.setProviderType(WindProviderType.valueOf(cursor.getString(iProv)));
+                if (iReg >= 0)
+                    station.setRegion(cursor.getInt(iReg));
+                station.setLatitude(cursor.getDouble(iLat));
+                station.setLongitude(cursor.getDouble(iLon));
+                if (iCoun >= 0)
+                    station.setCountry(cursor.getString(iCoun));
+                station.setFavorite(favs.contains(station.getId()));
+                list.add(station);
+            }
         }
-        cursor.close();
+        return list;
+    }
+
+    private List<SpotEntity> findSpots(String rawQuery, String... args) {
+        List<SpotEntity> list = new ArrayList<>();
+        SQLiteDatabase lite = getReadableDatabase();
+        try( Cursor cursor = lite.rawQuery(rawQuery, args) ) {
+            int iId = cursor.getColumnIndex(COL_SPOT_ID);
+            int iName = cursor.getColumnIndex(COL_SPOT_NAME);
+            int iDesc = cursor.getColumnIndex(COL_SPOT_DESC);
+            int iProv = cursor.getColumnIndex(COL_SPOT_PROV);
+            int iType = cursor.getColumnIndex(COL_SPOT_TYPE);
+            int iLat = cursor.getColumnIndex(COL_SPOT_LAT);
+            int iLon = cursor.getColumnIndex(COL_SPOT_LON);
+            while (cursor.moveToNext()) {
+                SpotEntity spot = new SpotEntity();
+                spot.setId(cursor.getString(iId));
+                spot.setName(cursor.getString(iName));
+                spot.setDesc(cursor.getString(iDesc));
+                spot.setProvider(SpotProvider.valueOf(cursor.getString(iProv)));
+                spot.setType(SpotType.valueOf(cursor.getString(iType)));
+                spot.setLatitude(cursor.getDouble(iLat));
+                spot.setLongitude(cursor.getDouble(iLon));
+                list.add(spot);
+            }
+        }
         return list;
     }
 
@@ -168,6 +217,34 @@ public class DbTolomet extends SQLiteAssetHelper {
                     station.setUpdated(now);
                 contentValues.put(COL_STA_UPD, DATE_FORMAT.format(station.getUpdated()));
                 lite.insertWithOnConflict(TAB_STATION, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+            }
+            lite.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            lite.endTransaction();
+        }
+    }
+
+    public void updateSpots(SpotProvider type, List<SpotEntity> spots) {
+        Date now = new Date();
+        SQLiteDatabase lite = getWritableDatabase();
+        lite.beginTransaction();
+        try {
+            lite.delete(TAB_SPOT, COL_SPOT_PROV + "=?", new String[]{type.name()});
+            for( SpotEntity spot : spots ) {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(COL_SPOT_ID, spot.getId());
+                contentValues.put(COL_SPOT_NAME, spot.getName());
+                contentValues.put(COL_SPOT_DESC, spot.getDesc());
+                contentValues.put(COL_SPOT_PROV, spot.getProvider().name());
+                contentValues.put(COL_SPOT_TYPE, spot.getType().name());
+                contentValues.put(COL_SPOT_LAT, spot.getLatitude());
+                contentValues.put(COL_SPOT_LON, spot.getLongitude());
+                if( spot.getUpdated() == null )
+                    spot.setUpdated(now);
+                contentValues.put(COL_SPOT_UPD, DATE_FORMAT.format(spot.getUpdated()));
+                lite.insertWithOnConflict(TAB_SPOT, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
             }
             lite.setTransactionSuccessful();
         } catch (Exception e) {
@@ -216,7 +293,7 @@ public class DbTolomet extends SQLiteAssetHelper {
     }
 
     private static final String DB_NAME = "Tolomet.db";
-    private static final int DB_VERSION = 10;
+    private static final int DB_VERSION = 11;
     private static DbTolomet instance;
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 }
