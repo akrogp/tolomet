@@ -44,6 +44,15 @@ public class XmlParser {
 		return matcher.find() ? matcher.group(1) : null;
 	}
 
+	public static String getExpandedValue(String line) {
+		String value = getValue(line);
+		value = value.replaceAll("<!\\[CDATA\\[", "");
+		value = value.replaceAll("\\]\\]>", "");
+		//value = value.replaceAll("<br>", "\n");
+		value = value.replaceAll("<br>", ". ");
+		return value;
+	}
+
 	public static String getAttribute(String line, String name) {
 		Matcher matcher = patternAttr.matcher(line);
 		while( matcher.find() )
