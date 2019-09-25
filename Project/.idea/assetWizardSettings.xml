@@ -165,8 +165,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_satellite" />
-                            <entry key="sourceFile" value="$PROJECT_DIR$/../Media/help-arrow.svg" />
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="outputName" value="ic_wind" />
+                            <entry key="sourceFile" value="$PROJECT_DIR$/../Media/wind.svg" />
                           </map>
                         </option>
                       </PersistentState>
