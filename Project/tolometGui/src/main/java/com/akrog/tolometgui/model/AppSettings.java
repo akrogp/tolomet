@@ -9,6 +9,7 @@ import com.akrog.tolomet.Measurement;
 import com.akrog.tolomet.Station;
 import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.Tolomet;
+import com.akrog.tolometgui.model.db.DbTolomet;
 
 import java.util.ArrayList;
 import java.util.Arrays;

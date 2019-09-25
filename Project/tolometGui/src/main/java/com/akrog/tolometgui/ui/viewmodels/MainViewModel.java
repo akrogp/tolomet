@@ -6,7 +6,7 @@ import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolometgui.model.AppSettings;
-import com.akrog.tolometgui.model.DbTolomet;
+import com.akrog.tolometgui.model.db.DbTolomet;
 import com.akrog.tolometgui.model.db.DbMeteo;
 import com.akrog.tolometgui.model.db.TravelDao;
 

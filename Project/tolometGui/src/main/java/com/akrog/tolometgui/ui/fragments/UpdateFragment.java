@@ -11,7 +11,7 @@ import android.widget.ListView;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolometgui.R;
-import com.akrog.tolometgui.model.DbTolomet;
+import com.akrog.tolometgui.model.db.DbTolomet;
 import com.akrog.tolometgui.ui.adapters.ProviderAdapter;
 import com.akrog.tolometgui.ui.services.ResourceService;
 import com.akrog.tolometgui.ui.services.WeakTask;

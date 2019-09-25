@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.akrog.tolometgui.BuildConfig;
 import com.akrog.tolometgui.R;
-import com.akrog.tolometgui.model.DbTolomet;
+import com.akrog.tolometgui.model.db.DbTolomet;
 
 import java.io.BufferedReader;
 import java.io.IOException;

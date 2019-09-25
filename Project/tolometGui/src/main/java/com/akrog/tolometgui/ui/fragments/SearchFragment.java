@@ -11,7 +11,7 @@ import android.widget.ListView;
 
 import com.akrog.tolomet.Station;
 import com.akrog.tolometgui.R;
-import com.akrog.tolometgui.model.DbTolomet;
+import com.akrog.tolometgui.model.db.DbTolomet;
 import com.akrog.tolometgui.ui.adapters.SearchAdapter;
 import com.akrog.tolometgui.ui.services.WeakTask;
 import com.akrog.tolometgui.ui.viewmodels.MainViewModel;
