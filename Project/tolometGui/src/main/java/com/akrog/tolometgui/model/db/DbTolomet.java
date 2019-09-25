@@ -1,4 +1,4 @@
-package com.akrog.tolometgui.model;
+package com.akrog.tolometgui.model.db;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolometgui.Tolomet;
+import com.akrog.tolometgui.model.AppSettings;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.text.ParseException;
