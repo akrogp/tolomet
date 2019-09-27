@@ -3,10 +3,7 @@ package com.akrog.tolometgui.ui.fragments;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +19,7 @@ import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.model.db.DbTolomet;
 import com.akrog.tolometgui.model.db.SpotEntity;
 import com.akrog.tolometgui.ui.services.LocationService;
+import com.akrog.tolometgui.ui.services.ResourceService;
 import com.akrog.tolometgui.ui.viewmodels.MapViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -48,7 +46,6 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
     private ClusterManager<ClusterItem> cluster;
     private boolean resetZoom = true;
     private Marker currentMarker;
-    private Bitmap windBitmap;
     private MapViewModel mapViewModel;
 
     @Override
@@ -60,14 +57,6 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        Canvas canvas = new Canvas();
-        Drawable drawable = getResources().getDrawable(R.drawable.ic_wind);
-        int pixels = (int)(48 * Resources.getSystem().getDisplayMetrics().density);
-        windBitmap = Bitmap.createBitmap(pixels, pixels, Bitmap.Config.ARGB_8888);
-        canvas.setBitmap(windBitmap);
-        drawable.setBounds(0, 0, pixels, pixels);
-        drawable.draw(canvas);
 
         mapViewModel = ViewModelProviders.of(this).get(MapViewModel.class);
 
@@ -243,7 +232,7 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
     private MarkerOptions configureMarker(MarkerOptions options, Station station) {
         if( options == null )
             options = new MarkerOptions();
-        float hue;
+        /*float hue;
         float hueHi = BitmapDescriptorFactory.HUE_GREEN;
         float hueMi = BitmapDescriptorFactory.HUE_YELLOW;
         float hueLo = BitmapDescriptorFactory.HUE_RED;
@@ -251,9 +240,9 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
             case Good: hue = hueHi; break;
             case Medium: hue = hueMi; break;
             default: hue = hueLo; break;
-        }
+        }*/
         return options
-            .icon(BitmapDescriptorFactory.defaultMarker(hue))
+            .icon(BitmapDescriptorFactory.fromBitmap(ResourceService.getMarketBitmap(station)))
             .position(new LatLng(station.getLatitude(), station.getLongitude()))
             .title(station.getName())
             .snippet(station.getProviderType().name());
@@ -263,7 +252,7 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
         if( options == null )
             options = new MarkerOptions();
         return options
-                .icon(BitmapDescriptorFactory.fromBitmap(windBitmap))
+                .icon(BitmapDescriptorFactory.fromBitmap(ResourceService.getMarkerBitmap(spot)))
                 .position(new LatLng(spot.getLatitude(), spot.getLongitude()))
                 .title(spot.getName())
                 .snippet(spot.getDesc());
