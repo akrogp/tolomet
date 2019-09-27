@@ -232,15 +232,6 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
     private MarkerOptions configureMarker(MarkerOptions options, Station station) {
         if( options == null )
             options = new MarkerOptions();
-        /*float hue;
-        float hueHi = BitmapDescriptorFactory.HUE_GREEN;
-        float hueMi = BitmapDescriptorFactory.HUE_YELLOW;
-        float hueLo = BitmapDescriptorFactory.HUE_RED;
-        switch( station.getProviderType().getQuality() ) {
-            case Good: hue = hueHi; break;
-            case Medium: hue = hueMi; break;
-            default: hue = hueLo; break;
-        }*/
         return options
             .icon(BitmapDescriptorFactory.fromBitmap(ResourceService.getMarketBitmap(station)))
             .position(new LatLng(station.getLatitude(), station.getLongitude()))

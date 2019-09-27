@@ -146,4 +146,5 @@
     <string name="AboutSubject">Acerca de Tolomet</string>
     <string name="AboutText" />
     <string name="do_select">Por favor, primero selecciona una estación</string>
+    <string name="spots">lugares</string>
 </resources>
