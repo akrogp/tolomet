@@ -80,8 +80,10 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
         cluster.setRenderer(new ItemRenderer(getActivity(), map, cluster));
 
         model.liveCurrentStation().observe(this, station -> {
-            if( model.checkStation() )
+            if( model.checkStation() ) {
+                mapViewModel.setSpot(null);
                 zoom(station);
+            }
         });
 
         if( !model.checkStation() ) {
@@ -230,8 +232,8 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
     }
 
     private void zoom(SpotEntity spot) {
-        zoom(spot.getLatitude(), spot.getLongitude());
         resetZoom = false;
+        zoom(spot.getLatitude(), spot.getLongitude());
     }
 
     private void zoom(double lat, double lon) {
