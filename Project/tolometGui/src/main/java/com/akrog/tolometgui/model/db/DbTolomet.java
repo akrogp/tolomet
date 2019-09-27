@@ -326,7 +326,7 @@ public class DbTolomet extends SQLiteAssetHelper {
     }
 
     private static final String DB_NAME = "Tolomet.db";
-    private static final int DB_VERSION = 11;
+    private static final int DB_VERSION = 12;
     private static DbTolomet instance;
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 }
