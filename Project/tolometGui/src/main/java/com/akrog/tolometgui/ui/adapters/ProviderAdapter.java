@@ -84,13 +84,12 @@ public class ProviderAdapter extends ArrayAdapter<ProviderAdapter.ProviderWrappe
 
         public ProviderWrapper(DbTolomet.ProviderInfo info) {
             this.info = info;
-            if( info.getWindProviderType() != null ) {
-                Integer tmp = ResourceService.getProviderIcon(info.getWindProviderType());
-                iconId = tmp == null ? 0 : tmp;
-            } else if (info.getSpotProviderType() != null )
-                iconId = R.drawable.ic_wind;
-            else
-                iconId = 0;
+            Integer icon = null;
+            if( info.getWindProviderType() != null )
+                icon = ResourceService.getProviderIcon(info.getWindProviderType());
+            else if (info.getSpotProviderType() != null )
+                icon = ResourceService.getProviderIcon(info.getSpotProviderType());
+            iconId = icon == null ? 0 : icon;
             this.date = info.getDate() == null ? null : DATE_FORMAT.format(info.getDate());
         }
 
