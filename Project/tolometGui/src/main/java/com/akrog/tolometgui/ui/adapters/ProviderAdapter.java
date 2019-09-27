@@ -59,7 +59,7 @@ public class ProviderAdapter extends ArrayAdapter<ProviderAdapter.ProviderWrappe
 
         textView = itemView.findViewById(R.id.count);
         textView.setVisibility(provider.getCount() < 0 ? View.GONE : View.VISIBLE);
-        textView.setText(provider.getCount()+" "+context.getString(R.string.stations));
+        textView.setText(provider.getCount()+" "+context.getString(provider.info.getWindProviderType() != null ? R.string.stations : R.string.spots));
 
         CheckBox checkBox = itemView.findViewById(R.id.checkbox);
         checkBox.setChecked(provider.isChecked());
