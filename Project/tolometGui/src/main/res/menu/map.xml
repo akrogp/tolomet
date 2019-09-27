@@ -11,6 +11,13 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/flyspots_item"
+        android:title="@string/FlySpots"
+        android:icon="@drawable/ic_flyspots"
+        android:checkable="true"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/browser_item"
         android:title="@string/Browser"
         android:icon="@drawable/ic_external"

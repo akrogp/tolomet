@@ -262,6 +262,16 @@ public class AppSettings {
         return settings.getBoolean("pref_sat", true);
     }
 
+    public void setFlySpots(boolean sat) {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean("pref_flyspot", sat);
+        editor.commit();
+    }
+
+    public boolean isFlySpots() {
+        return settings.getBoolean("pref_flyspot", true);
+    }
+
     public FlySpot getSpot() {
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("wconstraints","1");

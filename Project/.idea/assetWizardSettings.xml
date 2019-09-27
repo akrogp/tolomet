@@ -166,8 +166,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_station_poor" />
-                            <entry key="sourceFile" value="$PROJECT_DIR$/../Media/station_poor.svg" />
+                            <entry key="outputName" value="ic_flyspots" />
+                            <entry key="sourceFile" value="$PROJECT_DIR$/../Media/flyspots.svg" />
                           </map>
                         </option>
                       </PersistentState>

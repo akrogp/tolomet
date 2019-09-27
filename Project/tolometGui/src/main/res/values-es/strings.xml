@@ -147,4 +147,5 @@
     <string name="AboutText" />
     <string name="do_select">Por favor, primero selecciona una estación</string>
     <string name="spots">lugares</string>
+    <string name="FlySpots">Zonas de vuelo</string>
 </resources>

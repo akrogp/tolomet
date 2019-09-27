@@ -34,6 +34,7 @@ import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -97,6 +98,7 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.findItem(R.id.satellite_item).setChecked(settings.isSatellite());
+        menu.findItem(R.id.flyspots_item).setChecked(settings.isFlySpots());
     }
 
     @Override
@@ -117,6 +119,10 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
             item.setChecked(!item.isChecked());
             settings.setSatellite(item.isChecked());
             setMapType();
+        } else if( id == R.id.flyspots_item ) {
+            item.setChecked(!item.isChecked());
+            settings.setFlySpots(item.isChecked());
+            onCameraIdle();
         } else if( id == R.id.browser_item )
             openBrowser();
 
@@ -177,9 +183,13 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
         List<Station> stations = DbTolomet.getInstance().findGeoStations(
                 bounds.northeast.latitude, bounds.northeast.longitude,
                 bounds.southwest.latitude, bounds.southwest.longitude);
-        List<SpotEntity> spots = DbTolomet.getInstance().findGeoSpots(
+        List<SpotEntity> spots;
+        if( settings.isFlySpots() )
+            spots = DbTolomet.getInstance().findGeoSpots(
                 bounds.northeast.latitude, bounds.northeast.longitude,
                 bounds.southwest.latitude, bounds.southwest.longitude);
+        else
+            spots = new ArrayList<>();
         cluster.clearItems();
         if( currentMarker != null ) {
             currentMarker.remove();
