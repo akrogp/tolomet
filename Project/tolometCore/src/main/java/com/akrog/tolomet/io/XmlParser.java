@@ -49,7 +49,6 @@ public class XmlParser {
 		value = value.replaceAll("<!\\[CDATA\\[", "");
 		value = value.replaceAll("\\]\\]>", "");
 		//value = value.replaceAll("<br>", "\n");
-		value = value.replaceAll("<br>", ". ");
 		return value;
 	}
 
