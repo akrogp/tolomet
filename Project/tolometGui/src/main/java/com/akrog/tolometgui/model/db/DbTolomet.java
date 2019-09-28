@@ -56,11 +56,11 @@ public class DbTolomet extends SQLiteAssetHelper {
         return instance;
     }
 
-    public int getVersion() {
+    public synchronized int getVersion() {
         return getReadableDatabase().getVersion();
     }
 
-    public void setVersion(int version) {
+    public synchronized void setVersion(int version) {
         getWritableDatabase().setVersion(version);
     }
 
