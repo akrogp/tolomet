@@ -18,6 +18,7 @@ import com.akrog.tolomet.Station;
 import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.model.db.DbTolomet;
 import com.akrog.tolometgui.model.db.SpotEntity;
+import com.akrog.tolometgui.ui.adapters.MapItemAdapter;
 import com.akrog.tolometgui.ui.services.LocationService;
 import com.akrog.tolometgui.ui.services.ResourceService;
 import com.akrog.tolometgui.ui.viewmodels.MapViewModel;
@@ -69,10 +70,13 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
 
     @Override
     public void onMapReady(GoogleMap map) {
+        if( !isAdded() )
+            return;
         this.map = map;
         setMapType();
         requestPermission(Manifest.permission.ACCESS_FINE_LOCATION, R.string.gps_rationale,
             () -> map.setMyLocationEnabled(true), null);
+        map.setInfoWindowAdapter(new MapItemAdapter(this));
         cluster = new ClusterManager<>(getActivity(), map);
         map.setOnMarkerClickListener(cluster);
         map.setOnCameraIdleListener(this);
@@ -199,14 +203,17 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
         }
         Station station = model.checkStation() ? model.getCurrentStation() : null;
         for( Station item : stations )
-            if( item.equals(station) )
+            if( item.equals(station) ) {
                 currentMarker = map.addMarker(configureMarker(null, station));
+                currentMarker.setTag(station);
+            }
         else
             cluster.addItem(new StationItem(item));
         for( SpotEntity spot : spots )
-            if( mapViewModel.getSpot() != null && mapViewModel.getSpot().getId().equals(spot.getId()) )
+            if( mapViewModel.getSpot() != null && mapViewModel.getSpot().getId().equals(spot.getId()) ) {
                 currentMarker = map.addMarker(configureMarker(null, spot));
-            else
+                currentMarker.setTag(spot);
+            } else
                 cluster.addItem(new SpotItem(spot));
         if( currentMarker != null )
             currentMarker.showInfoWindow();
@@ -279,10 +286,15 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
         @Override
         protected void onClusterItemRendered(ClusterItem clusterItem, Marker marker) {
             super.onClusterItemRendered(clusterItem, marker);
-            if( !(clusterItem instanceof StationItem) )
+            if( clusterItem instanceof SpotItem ) {
+                marker.setTag(((SpotItem)clusterItem).spot);
                 return;
-            if( model.checkStation() && model.getCurrentStation().getId().equals(((StationItem)clusterItem).getStation().getId()) )
-                marker.showInfoWindow();
+            }
+            if( clusterItem instanceof StationItem ) {
+                marker.setTag(((StationItem) clusterItem).station);
+                if (model.checkStation() && model.getCurrentStation().getId().equals(((StationItem) clusterItem).getStation().getId()))
+                    marker.showInfoWindow();
+            }
         }
     }
 
