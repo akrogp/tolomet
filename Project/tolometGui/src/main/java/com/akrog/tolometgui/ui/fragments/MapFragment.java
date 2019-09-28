@@ -60,7 +60,7 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mapViewModel = ViewModelProviders.of(this).get(MapViewModel.class);
+        mapViewModel = ViewModelProviders.of(getActivity()).get(MapViewModel.class);
 
         MapView mapView = getView().findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
@@ -83,14 +83,18 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
         cluster.setOnClusterItemClickListener(this);
         cluster.setRenderer(new ItemRenderer(getActivity(), map, cluster));
 
-        model.liveCurrentStation().observe(this, station -> {
+        model.liveCurrentStation().observe(getViewLifecycleOwner(), station -> {
             if( model.checkStation() ) {
                 mapViewModel.setSpot(null);
                 zoom(station);
             }
         });
 
-        if( !model.checkStation() ) {
+        mapViewModel.liveSpot().observe(getViewLifecycleOwner(), spot -> {
+            zoom(spot);
+        });
+
+        if( !model.checkStation() && mapViewModel.getSpot() == null ) {
             Location location = LocationService.getLocation(true);
             if( location != null )
                 zoom(location.getLatitude(), location.getLongitude());
@@ -228,19 +232,22 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
         } else {
             mapViewModel.setSpot(((SpotItem)item).getSpot());
             model.selectStation(null);
-            zoom(mapViewModel.getSpot());
         }
         return true;
     }
 
     private void zoom(Station station) {
+        if( station == null )
+            return;
         zoom(station.getLatitude(), station.getLongitude());
         resetZoom = false;
     }
 
     private void zoom(SpotEntity spot) {
-        resetZoom = false;
+        if( spot == null )
+            return;
         zoom(spot.getLatitude(), spot.getLongitude());
+        resetZoom = false;
     }
 
     private void zoom(double lat, double lon) {
