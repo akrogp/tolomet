@@ -77,11 +77,11 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
         charts.initialize(activity, savedInstanceState);
 
         createTimer();
-        model.liveCurrentStation().observe(this, station -> {
+        model.liveCurrentStation().observe(getViewLifecycleOwner(), station -> {
             downloadData(null);
             updateEnabled();
         });
-        model.liveCurrentMeteo().observe(this, station -> redraw());
+        model.liveCurrentMeteo().observe(getViewLifecycleOwner(), station -> redraw());
     }
 
     @Override
