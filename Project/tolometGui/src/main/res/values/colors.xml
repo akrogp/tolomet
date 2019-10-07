@@ -5,4 +5,11 @@
     <color name="colorAccent">#fec180</color>
     <color name="colorIcon">#8A000000</color>
     <color name="widgetTextColor">#FFFFFF</color>
+
+    <color name="colorGood">#FF00AA00</color>
+    <color name="colorMedium">#FFAAAA00</color>
+    <color name="colorPoor">#FFAA0000</color>
+
+    <color name="colorTakeoff">#ff0ba9cc</color>
+    <color name="colorLanding">#ffdb4436</color>
 </resources>

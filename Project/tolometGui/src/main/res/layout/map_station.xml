@@ -10,6 +10,7 @@
         android:id="@+id/icon"
         android:layout_width="@dimen/icon_provider"
         android:layout_height="@dimen/icon_provider"
+        app:srcCompat="@drawable/ic_widget"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -23,20 +24,12 @@
         app:layout_constraintStart_toEndOf="@id/icon"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <TextView
-        android:id="@+id/name_no_icon"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/icon"
-        app:layout_constraintTop_toTopOf="parent"/>
-
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="icon,name,name_no_icon"/>
+        app:constraint_referenced_ids="icon,name"/>
 
     <TextView
         android:id="@+id/coords"
@@ -46,12 +39,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/barrier"/>
 
+    <ImageView
+        android:id="@+id/provider_icon"
+        android:layout_width="@dimen/icon_provider"
+        android:layout_height="@dimen/icon_provider"
+        android:layout_marginTop="@dimen/widget_padding"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/coords"/>
+
     <TextView
-        android:id="@+id/desc"
+        android:id="@+id/provider_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:autoLink="all"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/widget_padding"
+        android:layout_marginStart="@dimen/widget_padding"
+        android:layout_marginLeft="@dimen/widget_padding"
+        app:layout_constraintStart_toEndOf="@id/provider_icon"
         app:layout_constraintTop_toBottomOf="@id/coords"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
