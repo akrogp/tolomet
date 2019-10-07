@@ -144,4 +144,6 @@
     <string name="do_select">Please, select a station first</string>
     <string name="spots">spots</string>
     <string name="FlySpots">Fly spots</string>
+    <string name="select_app">Select an application</string>
+    <string name="install_nav_app">Navigation app not found, please install one first</string>
 </resources>
