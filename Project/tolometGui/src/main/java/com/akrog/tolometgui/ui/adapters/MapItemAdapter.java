@@ -6,8 +6,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.akrog.tolomet.Station;
+import com.akrog.tolomet.providers.WindProviderQuality;
 import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.model.db.SpotEntity;
+import com.akrog.tolometgui.model.db.SpotType;
 import com.akrog.tolometgui.ui.services.ResourceService;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
@@ -33,47 +35,60 @@ public class MapItemAdapter implements GoogleMap.InfoWindowAdapter {
         Object tag = marker.getTag();
         if( tag == null )
             return null;
-        View view = fragment.getLayoutInflater().inflate(R.layout.item_map, null);
         if( tag instanceof Station )
-            fillStation(view, (Station)tag);
-        else if( tag instanceof SpotEntity )
-            fillSpot(view, (SpotEntity)tag);
+            return fillStation((Station)tag);
+        if( tag instanceof SpotEntity )
+            return fillSpot((SpotEntity)tag);
+        return null;
+    }
+
+    private View fillStation(Station station) {
+        View view = fragment.getLayoutInflater().inflate(R.layout.map_station, null);
+
+        ImageView icon = view.findViewById(R.id.icon);
+        if( station.getProviderType().getQuality() == WindProviderQuality.Good )
+            icon.setColorFilter(fragment.getResources().getColor(R.color.colorGood));
+        else if( station.getProviderType().getQuality() == WindProviderQuality.Medium )
+            icon.setColorFilter(fragment.getResources().getColor(R.color.colorMedium));
+        else if( station.getProviderType().getQuality() == WindProviderQuality.Poor )
+            icon.setColorFilter(fragment.getResources().getColor(R.color.colorPoor));
+
+        TextView textView = view.findViewById(R.id.name);
+        textView.setText(station.getName());
+
+        textView = view.findViewById(R.id.provider_name);
+        textView.setText(station.getProviderType().name());
+
+        icon = view.findViewById(R.id.provider_icon);
+        Integer iconId = ResourceService.getProviderIcon(station.getProviderType());
+        if( iconId != null )
+            icon.setImageResource(iconId);
         else
-            return null;
+            icon.setVisibility(View.GONE);
+
+        fillCoords(view, station.getLatitude(), station.getLongitude());
+
         return view;
     }
 
-    private void fillStation(View view, Station station) {
+    private View fillSpot(SpotEntity spot) {
+        View view = fragment.getLayoutInflater().inflate(R.layout.map_spot, null);
+
         ImageView icon = view.findViewById(R.id.icon);
-        Integer iconId = ResourceService.getProviderIcon(station.getProviderType());
-        icon.setVisibility(iconId != null ? View.VISIBLE : View.INVISIBLE);
-        if( iconId != null )
-            icon.setImageResource(iconId);
-
-        TextView textView = view.findViewById(iconId == null ? R.id.name_no_icon : R.id.name);
-        textView.setText(station.getName());
-        textView = view.findViewById(iconId == null ? R.id.name : R.id.name_no_icon);
-        textView.setVisibility(View.GONE);
-
-        textView = view.findViewById(R.id.desc);
-        textView.setText(station.getProviderType().name());
-
-        fillCoords(view, station.getLatitude(), station.getLongitude());
-    }
-
-    private void fillSpot(View view, SpotEntity spot) {
-        ImageView icon = view.findViewById(R.id.icon);
-        icon.setImageResource(R.drawable.ic_flyspots);
+        if( spot.getType() == SpotType.TAKEOFF )
+            icon.setColorFilter(fragment.getResources().getColor(R.color.colorTakeoff));
+        else if( spot.getType() == SpotType.LANDING )
+            icon.setColorFilter(fragment.getResources().getColor(R.color.colorLanding));
 
         TextView textView = view.findViewById(R.id.name);
         textView.setText(spot.getName());
-        textView = view.findViewById(R.id.name_no_icon);
-        textView.setVisibility(View.GONE);
 
         textView = view.findViewById(R.id.desc);
         textView.setText(spot.getDesc() == null ? null : Html.fromHtml(spot.getDesc()));
 
         fillCoords(view, spot.getLatitude(), spot.getLongitude());
+
+        return view;
     }
 
     private void fillCoords(View view, double latitude, double longitude) {
