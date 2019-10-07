@@ -13,11 +13,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.akrog.tolomet.Station;
 import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.model.db.DbTolomet;
 import com.akrog.tolometgui.model.db.SpotEntity;
+import com.akrog.tolometgui.ui.activities.MainActivity;
 import com.akrog.tolometgui.ui.adapters.MapItemAdapter;
 import com.akrog.tolometgui.ui.services.LocationService;
 import com.akrog.tolometgui.ui.services.ResourceService;
@@ -43,7 +45,9 @@ import androidx.annotation.Nullable;
 import androidx.core.util.Consumer;
 import androidx.lifecycle.ViewModelProviders;
 
-public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener, ClusterManager.OnClusterItemClickListener<ClusterItem> {
+public class MapFragment extends ToolbarFragment implements
+        OnMapReadyCallback, GoogleMap.OnCameraIdleListener, GoogleMap.OnInfoWindowClickListener,
+        ClusterManager.OnClusterItemClickListener<ClusterItem> {
     private GoogleMap map;
     private ClusterManager<ClusterItem> cluster;
     private boolean resetZoom = true;
@@ -82,6 +86,7 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
         map.setOnCameraIdleListener(this);
         cluster.setOnClusterItemClickListener(this);
         cluster.setRenderer(new ItemRenderer(getActivity(), map, cluster));
+        map.setOnInfoWindowClickListener(this);
 
         model.liveCurrentStation().observe(getViewLifecycleOwner(), station -> {
             if( model.checkStation() ) {
@@ -273,6 +278,35 @@ public class MapFragment extends ToolbarFragment implements OnMapReadyCallback, 
                 .position(new LatLng(spot.getLatitude(), spot.getLongitude()))
                 .title(spot.getName())
                 .snippet(spot.getDesc());
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        if( marker.getTag() == null )
+            return;
+        if( marker.getTag() instanceof Station )
+            ((MainActivity)getActivity()).navigate(R.id.nav_charts);
+        else if( marker.getTag() instanceof SpotEntity )
+            navigateSpot((SpotEntity)marker.getTag());
+    }
+
+    protected void navigateSpot(SpotEntity spot) {
+        if( spot == null )
+            return;
+        Intent intent;
+        if( spot.getName() != null && !spot.getName().isEmpty() )
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format(Locale.ENGLISH,
+                "geo:0,0?q=%f,%f(%s)", spot.getLatitude(), spot.getLongitude(), spot.getName()
+            )));
+        else
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format(Locale.ENGLISH,
+                "geo:%f,%f", spot.getLatitude(), spot.getLongitude()
+            )));
+        if( intent.resolveActivity(activity.getPackageManager()) != null ) {
+            Intent chooser = Intent.createChooser(intent, getString(R.string.select_app));
+            startActivity(chooser);
+        } else
+            Toast.makeText(activity, R.string.install_nav_app, Toast.LENGTH_LONG).show();
     }
 
     private class ItemRenderer extends DefaultClusterRenderer<ClusterItem> {

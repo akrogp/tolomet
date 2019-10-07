@@ -148,4 +148,6 @@
     <string name="do_select">Por favor, primero selecciona una estación</string>
     <string name="spots">lugares</string>
     <string name="FlySpots">Zonas de vuelo</string>
+    <string name="select_app">Selecciona una aplicación</string>
+    <string name="install_nav_app">No se ha encontrado una app de navegación, por favor instala una primero</string>
 </resources>
