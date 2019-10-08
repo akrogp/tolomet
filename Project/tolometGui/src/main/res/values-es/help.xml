@@ -28,9 +28,7 @@
         el desplegable como navegando por el mapa y haciendo click. Cada estación se muestra como
         una chincheta <font color="#008800">verde</font>, <font color="#888800">amarilla</font> o
         <font color="#880000">roja</font> dependiendo de la frecuencia de las lecturas
-        proporcionadas. En caso de que alejes mucho el zoom, las estaciones se muestran agrupadas
-        por regiones (en <font color="#4A2364">morado</font>) o por países
-        (en <font color="#000088">azul</font>).
+        proporcionadas.
         ]]>
     </string>
     <string name="help_origin">Muestra las lecturas de la estación seleccionada en la propia página

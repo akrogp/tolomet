@@ -26,10 +26,7 @@
         Ezagututako estazioen mapa erakusten du. Aukeratu ahal duzu estazioa bai menu zabalgarrian
         bai mapan nabigatuz eta klik eginez. Estazio bakoitza kolorezko txintxeta baten bidez
         adierazten da <font color="#008800">berdea</font>, <font color="#888800">horia</font> edo
-        <font color="#880000">gorria</font> hornitutako irakurketen maiztasunen arabera. Zooma
-        erabilita asko urruntzen bazara estazioak eskualdeka agertuko dira
-        (<font color="#4A2364">morean</font>) edo herrialdeka
-        (<font color="#000088">urdinean</font>).
+        <font color="#880000">gorria</font> hornitutako irakurketen maiztasunen arabera.
         ]]>
     </string>
     <string name="help_origin">Erakusten ditu aukeratutako estazioko irakurketak Tolomet-en barruko

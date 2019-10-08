@@ -75,9 +75,9 @@
 
             <LinearLayout android:orientation="vertical">
                 <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content"
-                    app:srcCompat="@drawable/ic_flight_mode"/>
+                    app:srcCompat="@drawable/ic_flight_mode" android:alpha="1"/>
                 <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content"
-                    app:srcCompat="@drawable/ic_land_mode"/>
+                    app:srcCompat="@drawable/ic_land_mode" android:alpha="1"/>
             </LinearLayout>
             <com.akrog.tolometgui.ui.views.HtmlView
                 android:layout_width="0dp" android:layout_gravity="fill_horizontal"
