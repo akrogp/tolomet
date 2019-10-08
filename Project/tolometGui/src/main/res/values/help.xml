@@ -24,9 +24,7 @@
         station both using the spinner or navigating in the map. Each station is shown using a
         marker with a <font color="#008800">green</font>, <font color="#888800">yellow</font> or
         <font color="#880000">red</font> color depending on the update rate of the station
-        provider. In the case you zoom out too much, the stations are collapsed by regions
-        (in <font color="#4A2364">purple</font>) or by countries
-        (in <font color="#000088">blue</font>).
+        provider.
         ]]>
     </string>
     <string name="help_origin">Shows the readings of the station selected in the provider\'s
