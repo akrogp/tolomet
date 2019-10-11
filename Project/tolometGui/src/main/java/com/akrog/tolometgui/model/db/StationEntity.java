@@ -4,16 +4,20 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "Spot")
-class SpotEntity {
+@Entity(tableName = "Station")
+class StationEntity {
     @PrimaryKey
     @NonNull
     public String id;
-    public double latitude;
-    public double longitude;
+    @NonNull
+    public String code;
+    @NonNull
     public String name;
-    public String desc;
-    public String type;
-    public String updated;
+    @NonNull
     public String provider;
+    @NonNull
+    public Double latitude;
+    @NonNull
+    public Double longitude;
+    public String updated;
 }

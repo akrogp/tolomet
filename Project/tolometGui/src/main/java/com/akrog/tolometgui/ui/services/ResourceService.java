@@ -10,9 +10,9 @@ import com.akrog.tolomet.providers.WindProviderQuality;
 import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.Tolomet;
-import com.akrog.tolometgui.model.db.SpotEntity;
-import com.akrog.tolometgui.model.db.SpotProviderType;
-import com.akrog.tolometgui.model.db.SpotType;
+import com.akrog.tolomet.Spot;
+import com.akrog.tolomet.providers.SpotProviderType;
+import com.akrog.tolomet.SpotType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +45,7 @@ public class ResourceService {
         return getMarkerBitmap(station.getProviderType().getQuality().name());
     }
 
-    public static Bitmap getMarkerBitmap(SpotEntity spot) {
+    public static Bitmap getMarkerBitmap(Spot spot) {
         return getMarkerBitmap(spot.getType().name());
     }
 

@@ -295,10 +295,7 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
         }
 
         @Override
-        protected Station doInBackground(Void... params) {
-            ChartsFragment fragment = getContext();
-            if( fragment == null )
-                return null;
+        protected Station doInBackground(ChartsFragment fragment, Void... params) {
             if( date == null ) {
                 DbMeteo.getInstance().trim();
                 return fragment.model.refresh();
@@ -306,10 +303,7 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
             return fragment.model.travel(date);
         }
         @Override
-        protected void onPostExecute(Station station) {
-            ChartsFragment fragment = getContext();
-            if( fragment == null )
-                return;
+        protected void onPostExecute(ChartsFragment fragment, Station station) {
             if( date != null && station != null )
                 Toast.makeText(fragment.getActivity(),
                     df.format(new Date(date)),
@@ -318,11 +312,9 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
             fragment.endProgress();
             fragment.onDownloaded(station);
         }
+
         @Override
-        protected void onCancelled() {
-            ChartsFragment fragment = getContext();
-            if( fragment == null )
-                return;
+        protected void onCancelled(ChartsFragment fragment, Station station) {
             fragment.model.cancel();
             //logFile("onCancelled1");
             onPostExecute(null);

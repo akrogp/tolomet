@@ -6,8 +6,8 @@ import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolometgui.model.AppSettings;
-import com.akrog.tolometgui.model.db.DbTolomet;
 import com.akrog.tolometgui.model.db.DbMeteo;
+import com.akrog.tolometgui.model.db.DbTolomet;
 import com.akrog.tolometgui.model.db.TravelDao;
 
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public Station findStation(String id) {
-        return db.findStation(id);
+        return db.stationDao().findStation(id);
     }
 
     public Station findStation(WindProviderType type, String code) {
@@ -72,7 +72,8 @@ public class MainViewModel extends ViewModel {
         AppSettings settings = AppSettings.getInstance();
         for( String stationId : settings.getFavorites() ) {
             try {
-                Station station = db.findStation(stationId);
+                Station station = db.stationDao().findStation(stationId);
+                station.setFavorite(true);
                 favs.add(station);
             } catch (Exception e) {
                 settings.removeFavorite(stationId);
@@ -89,7 +90,7 @@ public class MainViewModel extends ViewModel {
 
     public void selectNearest(double lat, double lon) {
         command = Command.NEAR;
-        List<Station> stations = db.findCloseStations(lat, lon, 5.0);
+        List<Station> stations = db.stationDao().findCloseStations(lat, lon, 5.0);
         float[] dist = new float[1];
         for( Station station : stations ) {
             Location.distanceBetween(lat, lon, station.getLatitude(), station.getLongitude(), dist);

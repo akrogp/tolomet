@@ -17,12 +17,13 @@ import android.widget.Toast;
 
 import com.akrog.tolomet.Station;
 import com.akrog.tolometgui.R;
+import com.akrog.tolomet.Spot;
 import com.akrog.tolometgui.model.db.DbTolomet;
-import com.akrog.tolometgui.model.db.SpotEntity;
 import com.akrog.tolometgui.ui.activities.MainActivity;
 import com.akrog.tolometgui.ui.adapters.MapItemAdapter;
 import com.akrog.tolometgui.ui.services.LocationService;
 import com.akrog.tolometgui.ui.services.ResourceService;
+import com.akrog.tolometgui.ui.services.WeakTask;
 import com.akrog.tolometgui.ui.viewmodels.MapViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -195,38 +196,7 @@ public class MapFragment extends ToolbarFragment implements
     @Override
     public void onCameraIdle() {
         LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
-        List<Station> stations = DbTolomet.getInstance().findGeoStations(
-                bounds.northeast.latitude, bounds.northeast.longitude,
-                bounds.southwest.latitude, bounds.southwest.longitude);
-        List<SpotEntity> spots;
-        if( settings.isFlySpots() )
-            spots = DbTolomet.getInstance().findGeoSpots(
-                bounds.northeast.latitude, bounds.northeast.longitude,
-                bounds.southwest.latitude, bounds.southwest.longitude);
-        else
-            spots = new ArrayList<>();
-        cluster.clearItems();
-        if( currentMarker != null ) {
-            currentMarker.remove();
-            currentMarker = null;
-        }
-        Station station = model.checkStation() ? model.getCurrentStation() : null;
-        for( Station item : stations )
-            if( item.equals(station) ) {
-                currentMarker = map.addMarker(configureMarker(null, station));
-                currentMarker.setTag(station);
-            }
-        else
-            cluster.addItem(new StationItem(item));
-        for( SpotEntity spot : spots )
-            if( mapViewModel.getSpot() != null && mapViewModel.getSpot().getId().equals(spot.getId()) ) {
-                currentMarker = map.addMarker(configureMarker(null, spot));
-                currentMarker.setTag(spot);
-            } else
-                cluster.addItem(new SpotItem(spot));
-        if( currentMarker != null )
-            currentMarker.showInfoWindow();
-        cluster.cluster();
+        new LoadTask(this).execute(bounds);
     }
 
     @Override
@@ -248,7 +218,7 @@ public class MapFragment extends ToolbarFragment implements
         resetZoom = false;
     }
 
-    private void zoom(SpotEntity spot) {
+    private void zoom(Spot spot) {
         if( spot == null )
             return;
         zoom(spot.getLatitude(), spot.getLongitude());
@@ -270,7 +240,7 @@ public class MapFragment extends ToolbarFragment implements
             .snippet(station.getProviderType().name());
     }
 
-    private MarkerOptions configureMarker(MarkerOptions options, SpotEntity spot) {
+    private MarkerOptions configureMarker(MarkerOptions options, Spot spot) {
         if( options == null )
             options = new MarkerOptions();
         return options
@@ -286,11 +256,11 @@ public class MapFragment extends ToolbarFragment implements
             return;
         if( marker.getTag() instanceof Station )
             ((MainActivity)getActivity()).navigate(R.id.nav_charts);
-        else if( marker.getTag() instanceof SpotEntity )
-            navigateSpot((SpotEntity)marker.getTag());
+        else if( marker.getTag() instanceof Spot)
+            navigateSpot((Spot)marker.getTag());
     }
 
-    protected void navigateSpot(SpotEntity spot) {
+    protected void navigateSpot(Spot spot) {
         if( spot == null )
             return;
         Intent intent;
@@ -367,9 +337,9 @@ public class MapFragment extends ToolbarFragment implements
     }
 
     static class SpotItem implements ClusterItem {
-        private final SpotEntity spot;
+        private final Spot spot;
 
-        public SpotItem(SpotEntity spot) {
+        public SpotItem(Spot spot) {
             this.spot = spot;
         }
 
@@ -388,8 +358,61 @@ public class MapFragment extends ToolbarFragment implements
             return spot.getDesc();
         }
 
-        public SpotEntity getSpot() {
+        public Spot getSpot() {
             return spot;
+        }
+    }
+
+    private static class ItemList {
+        List<Station> stations;
+        List<Spot> spots;
+    }
+
+    private static class LoadTask extends WeakTask<MapFragment,LatLngBounds,Void,ItemList> {
+        LoadTask(MapFragment fragment) {
+            super(fragment);
+        }
+
+        @Override
+        protected ItemList doInBackground(MapFragment fragment, LatLngBounds... boundss) {
+            ItemList items = new ItemList();
+            LatLngBounds bounds = boundss[0];
+            items.stations = DbTolomet.getInstance().stationDao().findGeoStations(
+                    bounds.northeast.latitude, bounds.northeast.longitude,
+                    bounds.southwest.latitude, bounds.southwest.longitude);
+            if( fragment.settings.isFlySpots() )
+                items.spots = DbTolomet.getInstance().spotDao().findGeoSpots(
+                        bounds.northeast.latitude, bounds.northeast.longitude,
+                        bounds.southwest.latitude, bounds.southwest.longitude);
+            else
+                items.spots = new ArrayList<>();
+            return items;
+        }
+
+        @Override
+        protected void onPostExecute(MapFragment frag, ItemList items) {
+            frag.cluster.clearItems();
+            if( frag.currentMarker != null ) {
+                frag.currentMarker.remove();
+                frag.currentMarker = null;
+            }
+            Station station = frag.model.checkStation() ? frag.model.getCurrentStation() : null;
+            for( Station item : items.stations )
+                if( item.equals(station) ) {
+                    frag.currentMarker = frag.map.addMarker(frag.configureMarker(null, station));
+                    frag.currentMarker.setTag(station);
+                }
+                else
+                    frag.cluster.addItem(new StationItem(item));
+            for( Spot spot : items.spots )
+                if( frag.mapViewModel.getSpot() != null && frag.mapViewModel.getSpot().getId().equals(spot.getId()) ) {
+                    frag.currentMarker = frag.map.addMarker(frag.configureMarker(null, spot));
+                    frag.currentMarker.setTag(spot);
+                } else
+                    frag.cluster.addItem(new SpotItem(spot));
+            if( frag.currentMarker != null )
+                frag.currentMarker.showInfoWindow();
+            frag.cluster.cluster();
         }
     }
 }

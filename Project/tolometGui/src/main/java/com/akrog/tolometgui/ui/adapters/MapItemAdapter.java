@@ -8,8 +8,8 @@ import android.widget.TextView;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.providers.WindProviderQuality;
 import com.akrog.tolometgui.R;
-import com.akrog.tolometgui.model.db.SpotEntity;
-import com.akrog.tolometgui.model.db.SpotType;
+import com.akrog.tolomet.Spot;
+import com.akrog.tolomet.SpotType;
 import com.akrog.tolometgui.ui.services.ResourceService;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
@@ -37,8 +37,8 @@ public class MapItemAdapter implements GoogleMap.InfoWindowAdapter {
             return null;
         if( tag instanceof Station )
             return fillStation((Station)tag);
-        if( tag instanceof SpotEntity )
-            return fillSpot((SpotEntity)tag);
+        if( tag instanceof Spot)
+            return fillSpot((Spot)tag);
         return null;
     }
 
@@ -71,7 +71,7 @@ public class MapItemAdapter implements GoogleMap.InfoWindowAdapter {
         return view;
     }
 
-    private View fillSpot(SpotEntity spot) {
+    private View fillSpot(Spot spot) {
         View view = fragment.getLayoutInflater().inflate(R.layout.map_spot, null);
 
         ImageView icon = view.findViewById(R.id.icon);

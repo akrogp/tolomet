@@ -16,13 +16,13 @@ public abstract class TravelDao {
     private static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract void insertTravel(TravelEntity travel);
+    protected abstract void insertTravel(TravelEntity travel);
 
     @Query("SELECT COUNT(*) FROM Travel WHERE station = :station AND date = :date")
-    public abstract int findTravel(String station, String date);
+    protected abstract int findTravel(String station, String date);
 
     @Query("DELETE FROM Travel WHERE date < :date")
-    public abstract void trim(String date);
+    protected abstract void trim(String date);
 
     public boolean hasTravelled(Station station, long dayStamp) {
         return findTravel(station.getId(), df.format(new Date(dayStamp))) > 0;

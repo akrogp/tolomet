@@ -43,7 +43,7 @@ public class WidgetSettingsFragment extends SettingsFragment {
         for( String fav : favs ) {
             if( fav.isEmpty() )
                 continue;
-            Station station = DbTolomet.getInstance().findStation(fav);
+            Station station = DbTolomet.getInstance().stationDao().findStation(fav);
             if( station != null ) {
                 entries.add(station.getName());
                 values.add(station.getId());

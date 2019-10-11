@@ -1,4 +1,4 @@
-package com.akrog.tolometgui.model.db;
+package com.akrog.tolomet;
 
 public enum SpotType {
     TAKEOFF,

@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 
 @Entity(tableName = "Meteo", primaryKeys = {"station", "stamp"})
-public class MeteoEntity {
+class MeteoEntity {
     @NonNull
     public String station;
     @NonNull
