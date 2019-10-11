@@ -1,11 +1,10 @@
-package com.akrog.tolometgui.model.providers;
+package com.akrog.tolomet.providers;
 
 import com.akrog.tolomet.io.Downloader;
 import com.akrog.tolomet.io.XmlParser;
 import com.akrog.tolomet.io.ZipDownloader;
-import com.akrog.tolometgui.model.db.SpotEntity;
-import com.akrog.tolometgui.model.db.SpotProviderType;
-import com.akrog.tolometgui.model.db.SpotType;
+import com.akrog.tolomet.Spot;
+import com.akrog.tolomet.SpotType;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
@@ -14,20 +13,20 @@ import java.util.List;
 
 public class ElliottProvider implements SpotProvider {
     @Override
-    public List<SpotEntity> downloadSpots() {
-        List<SpotEntity> spots = new ArrayList<>();
+    public List<Spot> downloadSpots() {
+        List<Spot> spots = new ArrayList<>();
         dw = new ZipDownloader();
         dw.setUrl("https://www.google.com/maps/d/kml?mid=1TuFqknQn4vtKYr7VYwpn1BUJjQw");
         String data = dw.download();
         try(BufferedReader br = new BufferedReader(new StringReader(data))) {
             String line;
-            SpotEntity spot = null;
+            Spot spot = null;
             int coordsCount = -1;
             boolean skip = false;
             while( (line = br.readLine()) != null ) {
                 line = line.trim();
                 if( line.equals("<Placemark>") ) {
-                    spot = new SpotEntity();
+                    spot = new Spot();
                     skip = false;
                 } else if( spot == null )
                     continue;

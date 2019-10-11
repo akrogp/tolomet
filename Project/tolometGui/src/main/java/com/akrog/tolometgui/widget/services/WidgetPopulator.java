@@ -11,10 +11,10 @@ import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.Station;
 import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.model.AppSettings;
-import com.akrog.tolometgui.model.db.DbTolomet;
 import com.akrog.tolometgui.model.FlyConstraint;
 import com.akrog.tolometgui.model.FlySpot;
 import com.akrog.tolometgui.model.WidgetSettings;
+import com.akrog.tolometgui.model.db.DbTolomet;
 import com.akrog.tolometgui.ui.activities.MainActivity;
 import com.akrog.tolometgui.widget.providers.LargeWidgetProvider;
 import com.akrog.tolometgui.widget.providers.MediumWidgetProvider;
@@ -80,7 +80,7 @@ public class WidgetPopulator {
         if( !spot.isValid() )
             return null;
         FlyConstraint constraint = spot.getConstraints().get(0);
-        Station station = DbTolomet.getInstance().findStation(constraint.getStation());
+        Station station = DbTolomet.getInstance().stationDao().findStation(constraint.getStation());
         if( station == null )
             return null;
         model.refresh(station);

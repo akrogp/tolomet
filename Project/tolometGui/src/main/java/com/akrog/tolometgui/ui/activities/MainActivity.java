@@ -54,7 +54,6 @@ public class MainActivity extends ToolbarActivity
 
         model = ViewModelProviders.of(this).get(MainViewModel.class);
         model.selectStation(settings.loadStation());
-        //model.liveCurrentStation().observe(this, station -> {});
 
         Toolbar toolbar = configureToolbar();
         configureDrawer(toolbar);
@@ -157,7 +156,7 @@ public class MainActivity extends ToolbarActivity
 
         View headerView = navView.getHeaderView(0);
         TextView textVersion = headerView.findViewById(R.id.textVersion);
-        textVersion.setText(String.format("(v%s - db%d)", BuildConfig.VERSION_NAME, DbTolomet.getInstance().getVersion()));
+        textVersion.setText(String.format("(v%s - db%d)", BuildConfig.VERSION_NAME, DbTolomet.VERSION));
     }
 
     @Override

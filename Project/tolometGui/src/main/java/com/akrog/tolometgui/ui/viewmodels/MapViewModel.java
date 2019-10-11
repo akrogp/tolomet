@@ -1,23 +1,23 @@
 package com.akrog.tolometgui.ui.viewmodels;
 
-import com.akrog.tolometgui.model.db.SpotEntity;
+import com.akrog.tolomet.Spot;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class MapViewModel extends ViewModel {
-    private MutableLiveData<SpotEntity> spot = new MutableLiveData<>();
+    private MutableLiveData<Spot> spot = new MutableLiveData<>();
 
-    public SpotEntity getSpot() {
+    public Spot getSpot() {
         return spot.getValue();
     }
 
-    public void setSpot(SpotEntity spot) {
+    public void setSpot(Spot spot) {
         this.spot.postValue(spot);
     }
 
-    public LiveData<SpotEntity> liveSpot() {
+    public LiveData<Spot> liveSpot() {
         return spot;
     }
 }

@@ -71,29 +71,20 @@ public class WidgetService extends Service {
         }
 
         @Override
-        protected Void doInBackground(Void... voids) {
-            WidgetService service = getContext();
-            if( service == null )
-                return null;
+        protected Void doInBackground(WidgetService service, Void... voids) {
             widgetPopulator.downloadData();
             return null;
         }
 
         @Override
-        protected void onPostExecute(Void v) {
-            WidgetService service = getContext();
-            if( service == null )
-                return;
+        protected void onPostExecute(WidgetService service, Void v) {
             widgetPopulator.updateWidgets();
             service.stopSelf();
             service.task = null;
         }
 
         @Override
-        protected void onCancelled() {
-            WidgetService service = getContext();
-            if( service == null )
-                return;
+        protected void onCancelled(WidgetService service, Void aVoid) {
             service.stopSelf();
             service.task = null;
         }

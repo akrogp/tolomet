@@ -38,7 +38,7 @@ public class AboutFragment extends ToolbarFragment {
         //Log.i("ChartsActivity",GoogleApiAvailability.getInstance().getOpenSourceSoftwareLicenseInfo(context));
         String info = readRawTextFile(R.raw.info)
             .replaceAll("\\$VER\\$", versionName)
-            .replaceAll("\\$DB\\$", String.valueOf(DbTolomet.getInstance().getVersion()));
+            .replaceAll("\\$DB\\$", String.valueOf(DbTolomet.VERSION));
         tv.setText(Html.fromHtml(info));
         tv.setLinkTextColor(Color.WHITE);
         Linkify.addLinks(tv, Linkify.ALL);

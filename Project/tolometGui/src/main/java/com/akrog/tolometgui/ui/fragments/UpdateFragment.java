@@ -117,7 +117,7 @@ public class UpdateFragment extends ToolbarFragment implements AdapterView.OnIte
     }
 
     private List<ProviderAdapter.ProviderWrapper> buildWrappers(List<DbTolomet.ProviderInfo> list) {
-        /*DbTolomet.ProviderInfo elliot = new DbTolomet.ProviderInfo();
+        /*DbTolometOld.ProviderInfo elliot = new DbTolometOld.ProviderInfo();
         elliot.setSpotProviderType(SpotProviderType.ElliottParagliding);
         elliot.setProvider(elliot.getSpotProviderType().name());
         list.add(elliot);*/
@@ -141,22 +141,17 @@ public class UpdateFragment extends ToolbarFragment implements AdapterView.OnIte
         }
 
         @Override
-        protected void onPreExecute() {
-            UpdateFragment fragment = getContext();
-            if( fragment != null )
-                fragment.beginProgress();
+        protected void onPreExecute(UpdateFragment fragment) {
+            fragment.beginProgress();
         }
 
         @Override
-        protected List<DbTolomet.ProviderInfo> doInBackground(Void... voids) {
-            return DbTolomet.getInstance().getProviderCounts();
+        protected List<DbTolomet.ProviderInfo> doInBackground(UpdateFragment fragment, Void... voids) {
+            return DbTolomet.getInstance().statsDao().getProviderCounts();
         }
 
         @Override
-        protected void onPostExecute(List<DbTolomet.ProviderInfo> result) {
-            UpdateFragment fragment = getContext();
-            if( fragment == null )
-                return;
+        protected void onPostExecute(UpdateFragment fragment, List<DbTolomet.ProviderInfo> result) {
             fragment.countTask = null;
             fragment.updateList(result);
             fragment.updateFab();
@@ -170,17 +165,12 @@ public class UpdateFragment extends ToolbarFragment implements AdapterView.OnIte
         }
 
         @Override
-        protected void onPreExecute() {
-            UpdateFragment fragment = getContext();
-            if( fragment != null )
-                fragment.beginProgress();
+        protected void onPreExecute(UpdateFragment fragment) {
+            fragment.beginProgress();
         }
 
         @Override
-        protected Void doInBackground(Void... voids) {
-            UpdateFragment fragment = getContext();
-            if( fragment == null )
-                return null;
+        protected Void doInBackground(UpdateFragment fragment, Void... voids) {
             for( ProviderAdapter.ProviderWrapper provider : fragment.providers ) {
                 if( !provider.isChecked() )
                     continue;
@@ -190,10 +180,7 @@ public class UpdateFragment extends ToolbarFragment implements AdapterView.OnIte
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            UpdateFragment fragment = getContext();
-            if( fragment == null )
-                return;
+        protected void onPostExecute(UpdateFragment fragment, Void aVoid) {
             fragment.updateTask = null;
             fragment.count();
             fragment.endProgress();

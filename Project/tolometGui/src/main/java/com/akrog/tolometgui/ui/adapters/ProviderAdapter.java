@@ -11,10 +11,10 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.akrog.tolomet.Spot;
 import com.akrog.tolomet.Station;
 import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.model.db.DbTolomet;
-import com.akrog.tolometgui.model.db.SpotEntity;
 import com.akrog.tolometgui.ui.services.ResourceService;
 
 import java.text.SimpleDateFormat;
@@ -146,11 +146,11 @@ public class ProviderAdapter extends ArrayAdapter<ProviderAdapter.ProviderWrappe
             if( info.getWindProviderType() != null ) {
                 List<Station> stations = info.getWindProviderType().getProvider().downloadStations();
                 if( stations != null )
-                    DbTolomet.getInstance().updateStations(info.getWindProviderType(), stations);
+                    DbTolomet.getInstance().stationDao().updateStations(info.getWindProviderType(), stations);
             } else if( info.getSpotProviderType() != null ) {
-                List<SpotEntity> spots = info.getSpotProviderType().getProvider().downloadSpots();
+                List<Spot> spots = info.getSpotProviderType().getProvider().downloadSpots();
                 if( spots != null )
-                    DbTolomet.getInstance().updateSpots(info.getSpotProviderType(), spots);
+                    DbTolomet.getInstance().spotDao().updateSpots(info.getSpotProviderType(), spots);
             }
         }
     }

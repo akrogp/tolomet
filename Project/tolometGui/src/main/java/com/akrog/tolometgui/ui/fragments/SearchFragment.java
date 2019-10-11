@@ -78,15 +78,12 @@ public class SearchFragment extends DialogFragment {
         }
 
         @Override
-        protected List<Station> doInBackground(String... params) {
-            return DbTolomet.getInstance().searchStations(params[0]);
+        protected List<Station> doInBackground(SearchFragment fragment, String... params) {
+            return DbTolomet.getInstance().stationDao().searchStations(params[0]);
         }
 
         @Override
-        protected void onPostExecute(List<Station> stations) {
-            SearchFragment fragment = getContext();
-            if( fragment == null )
-                return;
+        protected void onPostExecute(SearchFragment fragment, List<Station> stations) {
             SearchAdapter adapter = new SearchAdapter(fragment.getActivity(), R.layout.spinner_row, stations);
             fragment.listView.setAdapter(adapter);
         }

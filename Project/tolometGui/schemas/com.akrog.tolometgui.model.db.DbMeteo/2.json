@@ -1,0 +1,104 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 2,
+    "identityHash": "4418f52d0c901479bcff9712ab3d81fe",
+    "entities": [
+      {
+        "tableName": "Meteo",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`station` TEXT NOT NULL, `stamp` INTEGER NOT NULL, `dir` INTEGER, `med` REAL, `max` REAL, `hum` REAL, `temp` REAL, `pres` REAL, PRIMARY KEY(`station`, `stamp`))",
+        "fields": [
+          {
+            "fieldPath": "station",
+            "columnName": "station",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "stamp",
+            "columnName": "stamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dir",
+            "columnName": "dir",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "med",
+            "columnName": "med",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "max",
+            "columnName": "max",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hum",
+            "columnName": "hum",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "temp",
+            "columnName": "temp",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "pres",
+            "columnName": "pres",
+            "affinity": "REAL",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "station",
+            "stamp"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Travel",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`station` TEXT NOT NULL, `date` TEXT NOT NULL, PRIMARY KEY(`station`, `date`))",
+        "fields": [
+          {
+            "fieldPath": "station",
+            "columnName": "station",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "station",
+            "date"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4418f52d0c901479bcff9712ab3d81fe')"
+    ]
+  }
+}

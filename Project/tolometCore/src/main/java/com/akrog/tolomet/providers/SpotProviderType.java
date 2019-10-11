@@ -1,7 +1,4 @@
-package com.akrog.tolometgui.model.db;
-
-import com.akrog.tolometgui.model.providers.ElliottProvider;
-import com.akrog.tolometgui.model.providers.SpotProvider;
+package com.akrog.tolomet.providers;
 
 public enum SpotProviderType {
     ElliottParagliding(new ElliottProvider());

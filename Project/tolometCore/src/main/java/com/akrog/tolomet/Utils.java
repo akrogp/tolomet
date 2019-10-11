@@ -2,6 +2,11 @@ package com.akrog.tolomet;
 
 import com.ibm.util.CoordinateConversion;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Locale;
 
 public class Utils {
@@ -28,5 +33,19 @@ public class Utils {
             prev = ch;
         }
         return sb.toString();
+    }
+
+    public static void copy(InputStream is, OutputStream os) throws IOException {
+        BufferedOutputStream bos = null;
+        try {
+            BufferedInputStream bis = new BufferedInputStream(is);
+            bos = new BufferedOutputStream(os);
+            int b;
+            while ( (b=bis.read()) >= 0 )
+                bos.write(b);
+        } finally {
+            if( bos != null )
+                bos.flush();
+        }
     }
 }
