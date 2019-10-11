@@ -1,10 +1,13 @@
 package com.akrog.tolometgui.model.db;
 
+import android.database.sqlite.SQLiteDatabase;
+
 import com.akrog.tolomet.Utils;
 import com.akrog.tolomet.providers.SpotProviderType;
 import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolometgui.Tolomet;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,12 +15,9 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.migration.Migration;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @Database(version = DbTolomet.VERSION, entities = {StationEntity.class, SpotEntity.class})
 public abstract class DbTolomet extends RoomDatabase {
@@ -34,22 +34,36 @@ public abstract class DbTolomet extends RoomDatabase {
     public abstract StatsDao statsDao();
 
     synchronized public static DbTolomet getInstance() {
-        if( instance == null )
+        if( instance == null ) {
+            if( getVersion() < VERSION )
+                overrideDb();
             instance = Room
                 .databaseBuilder(Tolomet.getAppContext(), DbTolomet.class, NAME)
-                .createFromAsset(ASSET)
-                .addMigrations(buildMigrations())
-                //.fallbackToDestructiveMigration()
+                //.createFromAsset(ASSET)
                 .allowMainThreadQueries()
                 .build();
+        }
         return instance;
     }
 
-    private static Migration[] buildMigrations() {
-        Migration[] migrations = new Migration[VERSION-1];
-        for( int i = 1; i < VERSION; i++ )
-            migrations[i-1] = new OverrideMigration(i, VERSION);
-        return migrations;
+    private static int getVersion() {
+        File file = Tolomet.getAppContext().getDatabasePath(NAME);
+        try(SQLiteDatabase db = SQLiteDatabase.openDatabase(file.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY)) {
+            return db.getVersion();
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    private static void overrideDb() {
+        try(
+            InputStream is = Tolomet.getAppContext().getAssets().open(DbTolomet.ASSET);
+            OutputStream os = new FileOutputStream(Tolomet.getAppContext().getDatabasePath(NAME));
+        ) {
+            Utils.copy(is, os);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public static class ProviderInfo {
@@ -97,25 +111,6 @@ public abstract class DbTolomet extends RoomDatabase {
 
         public void setProvider(String provider) {
             this.provider = provider;
-        }
-    }
-
-    private static class OverrideMigration extends Migration {
-        OverrideMigration(int startVersion, int endVersion) {
-            super(startVersion, endVersion);
-        }
-
-        @Override
-        public void migrate(@NonNull SupportSQLiteDatabase database) {
-            try(
-                InputStream is = Tolomet.getAppContext().getAssets().open(DbTolomet.ASSET);
-                OutputStream os = new FileOutputStream(database.getPath());
-            ) {
-                Utils.copy(is, os);
-                database.setVersion(endVersion);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
         }
     }
 }
