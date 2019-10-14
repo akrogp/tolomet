@@ -40,7 +40,7 @@ android {
 
 dependencies {
     def lifecycle_version = "2.1.0"
-    def room_version = "2.2.0-rc01"
+    def room_version = "2.1.0"
     def play_version = "17.0.0"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -60,7 +60,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-maps:$play_version"
     implementation 'com.google.maps.android:android-maps-utils:0.5'
 
-    implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
+    //implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
     implementation 'com.github.castorflex.smoothprogressbar:library:1.1.0'
 
     testImplementation 'junit:junit:4.12'

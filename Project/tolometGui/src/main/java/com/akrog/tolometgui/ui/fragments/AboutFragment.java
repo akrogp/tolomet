@@ -1,7 +1,6 @@
 package com.akrog.tolometgui.ui.fragments;
 
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.util.Linkify;
@@ -18,6 +17,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Calendar;
 
 import androidx.annotation.Nullable;
 
@@ -37,10 +37,11 @@ public class AboutFragment extends ToolbarFragment {
         String versionName = BuildConfig.VERSION_NAME;
         //Log.i("ChartsActivity",GoogleApiAvailability.getInstance().getOpenSourceSoftwareLicenseInfo(context));
         String info = readRawTextFile(R.raw.info)
+            .replaceAll("\\$YEAR\\$", Calendar.getInstance().get(Calendar.YEAR)+"")
             .replaceAll("\\$VER\\$", versionName)
             .replaceAll("\\$DB\\$", String.valueOf(DbTolomet.VERSION));
         tv.setText(Html.fromHtml(info));
-        tv.setLinkTextColor(Color.WHITE);
+        //tv.setLinkTextColor(Color.WHITE);
         Linkify.addLinks(tv, Linkify.ALL);
     }
 
