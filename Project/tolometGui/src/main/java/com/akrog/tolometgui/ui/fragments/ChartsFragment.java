@@ -3,6 +3,7 @@ package com.akrog.tolometgui.ui.fragments;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -145,7 +146,9 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
         if( flying ) {
             itemMode.setIcon(R.drawable.ic_land_mode);
             itemMode.setTitle(R.string.LandMode);
-            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+            activity.setRequestedOrientation(
+                activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ?
+                        ActivityInfo.SCREEN_ORIENTATION_USER_LANDSCAPE : ActivityInfo.SCREEN_ORIENTATION_USER_PORTRAIT);
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             settings.setUpdateMode(AppSettings.AUTO_UPDATES);
             Toast.makeText(activity,R.string.Takeoff,Toast.LENGTH_SHORT).show();
