@@ -37,6 +37,10 @@ public abstract class ProgressActivity extends BaseActivity {
         return true;
     }
 
+    public boolean isInProgress() {
+        return inProgress;
+    }
+
     @Override
     public void onBackPressed() {
         if( inProgress )

@@ -85,7 +85,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected void lockScreenOrientation() {
+    public void lockScreenOrientation() {
         int currentOrientation = getResources().getConfiguration().orientation;
         if (currentOrientation == Configuration.ORIENTATION_PORTRAIT) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -94,7 +94,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected void unlockScreenOrientation() {
+    public void unlockScreenOrientation() {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
     }
 
