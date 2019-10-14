@@ -55,6 +55,8 @@ public abstract class StationDao {
     }
 
     public List<Station> searchStations(String text) {
+        if( text == null || text.isEmpty() )
+            return new ArrayList<>();
         List<StationEntity> entities = searchEntities("%"+text+"%");
         return entities2stations(entities);
     }

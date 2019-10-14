@@ -46,6 +46,7 @@ public class MainActivity extends ToolbarActivity
     private NavigationView navView;
     private MainViewModel model;
     private ToolbarFragment fragment;
+    private int fragmentId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +103,8 @@ public class MainActivity extends ToolbarActivity
     }
 
     private boolean loadFrament(int id) {
+        if( id == fragmentId )
+            return false;
         boolean ok = true;
         if (id == R.id.nav_charts)
             loadFragment(new ChartsFragment());
@@ -125,6 +128,7 @@ public class MainActivity extends ToolbarActivity
         }
         else
             ok = false;
+        fragmentId = id;
         return ok;
     }
 
