@@ -7,8 +7,8 @@ android {
         applicationId "com.akrog.tolomet"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 659
-        versionName ":Izei-a9"
+        versionCode 660
+        versionName ":Izei-a10"
         vectorDrawables {
             useSupportLibrary true
         }
