@@ -21,6 +21,9 @@ import com.akrog.tolometgui.widget.providers.MediumWidgetProvider;
 import com.akrog.tolometgui.widget.providers.SmallWidgetProvider;
 import com.akrog.tolometgui.widget.providers.SpotWidgetProvider;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by gorka on 21/09/16.
  */
@@ -28,7 +31,7 @@ import com.akrog.tolometgui.widget.providers.SpotWidgetProvider;
 public class WidgetPopulator {
     public enum FlyCondition { GOOD, BAD, UNKOWN };
 
-    public static class StationData {
+    public static class WidgetData {
         String id;
         String country;
         String name;
@@ -40,10 +43,8 @@ public class WidgetPopulator {
         FlyCondition fly = FlyCondition.UNKOWN;
         String unit;
         float factor;
-    }
-
-    public static class WidgetData {
-        StationData[] stations;
+        int widgetSize;
+        int widgetId;
     }
 
     public WidgetPopulator(Context context) {
@@ -59,22 +60,25 @@ public class WidgetPopulator {
     }
 
     public void downloadData() {
-        smallData = downloadData(smallWidgets);
-        mediumData = downloadData(mediumWidgets);
-        largeData = downloadData(largeWidgets);
+        widgetData = new ArrayList<>();
+        widgetData.addAll(downloadData(smallWidgets, SpotWidgetProvider.WIDGET_SIZE_SMALL));
+        widgetData.addAll(downloadData(mediumWidgets, SpotWidgetProvider.WIDGET_SIZE_MEDIUM));
+        widgetData.addAll(downloadData(largeWidgets, SpotWidgetProvider.WIDGET_SIZE_LARGE));
     }
 
-    private WidgetData downloadData(int[] widgetIds) {
+    private List<WidgetData> downloadData(int[] widgetIds, int widgetSize) {
         if( widgetIds == null || widgetIds.length == 0 )
-            return null;
-        WidgetData widgetData = new WidgetData();
-        widgetData.stations = new StationData[widgetIds.length];
-        for( int i = 0; i < widgetIds.length; i++ )
-            widgetData.stations[i] = fillStation(widgetIds[i]);
-        return widgetData;
+            return new ArrayList<>();
+        List<WidgetData> stations = new ArrayList<>(widgetIds.length);
+        for( int i = 0; i < widgetIds.length; i++ ) {
+            WidgetData station = fillStation(widgetIds[i], widgetSize);
+            if( station != null )
+                stations.add(station);
+        }
+        return stations;
     }
 
-    private StationData fillStation(int widgetId) {
+    private WidgetData fillStation(int widgetId, int widgetSize) {
         WidgetSettings settings = new WidgetSettings(context,widgetId);
         FlySpot spot = settings.getSpot();
         if( !spot.isValid() )
@@ -90,7 +94,7 @@ public class WidgetPopulator {
 
         //logUpdate(spot.getName());
 
-        StationData data = new StationData();
+        WidgetData data = new WidgetData();
         data.id = station.getId();
         data.country = station.getCountry();
         data.name = spot.getName();
@@ -98,6 +102,8 @@ public class WidgetPopulator {
         data.date = model.getStamp(station, stamp);
         data.factor = AppSettings.getSpeedFactor(spot.getSpeedUnits());
         data.unit = context.getResources().getStringArray(R.array.pref_speedUnitEntries)[spot.getSpeedUnits()];
+        data.widgetSize = widgetSize;
+        data.widgetId = widgetId;
 
         fillMeteo(data, station, stamp);
 
@@ -123,7 +129,7 @@ public class WidgetPopulator {
         } catch (Exception e) {}
     }*/
 
-    private void fillMeteo( StationData data, Station station, long stamp ) {
+    private void fillMeteo(WidgetData data, Station station, long stamp ) {
         Number num = station.getMeteo().getWindDirection().getAt(stamp);
         if( num != null ) {
             data.directionShort = model.parseDirection(num.intValue());
@@ -181,31 +187,22 @@ public class WidgetPopulator {
     }
 
     public void updateWidgets() {
-        updateWidgets(smallData, smallWidgets, SpotWidgetProvider.WIDGET_SIZE_SMALL);
-        updateWidgets(mediumData, mediumWidgets, SpotWidgetProvider.WIDGET_SIZE_MEDIUM);
-        updateWidgets(largeData, largeWidgets, SpotWidgetProvider.WIDGET_SIZE_LARGE);
-    }
-
-    private void updateWidgets(WidgetData widgetData, int[] allWidgetIds, int widgetSize) {
-        if( widgetData == null )
+        if( widgetData == null || widgetData.isEmpty() )
             return;
         int[] layouts = {R.layout.widget_layout_small, R.layout.widget_layout_middle, R.layout.widget_layout_large};
         int i = 0;
-        for (int widgetId : allWidgetIds) {
-            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), layouts[widgetSize]);
-            StationData data = widgetData.stations[i++];
-            if( data == null )
-                continue;
-            if( !updateViews(remoteViews,data,widgetSize) )
+        for (WidgetData widget : widgetData) {
+            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), layouts[widget.widgetSize]);
+            if( !updateViews(remoteViews,widget) )
                 continue;
             //if( widgetSize != WidgetReceiver.WIDGET_SIZE_SMALL )
                 remoteViews.setOnClickPendingIntent(R.id.widget_icon, getUpdateIntent());
-            remoteViews.setOnClickPendingIntent(R.id.widget, getTolometIntent(data));
-            appWidgetManager.updateAppWidget(widgetId, remoteViews);
+            remoteViews.setOnClickPendingIntent(R.id.widget, getTolometIntent(widget));
+            appWidgetManager.updateAppWidget(widget.widgetId, remoteViews);
         }
     }
 
-    private PendingIntent getTolometIntent(StationData data) {
+    private PendingIntent getTolometIntent(WidgetData data) {
         Intent clickIntent = new Intent(context, MainActivity.class);
         //clickIntent.putExtra(WidgetReceiver.EXTRA_WIDGET_SIZE, widgetSize);
         clickIntent.putExtra(MainActivity.EXTRA_STATION, data.id);
@@ -222,8 +219,8 @@ public class WidgetPopulator {
         return PendingIntent.getBroadcast(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    private boolean updateViews( RemoteViews remoteViews, StationData data, int widgetSize ) {
-        switch( widgetSize ) {
+    private boolean updateViews(RemoteViews remoteViews, WidgetData data) {
+        switch( data.widgetSize ) {
             case SpotWidgetProvider.WIDGET_SIZE_SMALL:
                 remoteViews.setTextViewText(R.id.widget_station, data.name);
                 //remoteViews.setTextViewText(R.id.widget_date, data.date);
@@ -256,5 +253,5 @@ public class WidgetPopulator {
     private final AppWidgetManager appWidgetManager;
     private final Manager model = new Manager();
     private final int[] smallWidgets, mediumWidgets, largeWidgets;
-    private WidgetData smallData, mediumData, largeData;
+    private List<WidgetData> widgetData;
 }
