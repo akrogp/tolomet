@@ -36,7 +36,8 @@ public abstract class DbTolomet extends RoomDatabase {
     synchronized public static DbTolomet getInstance() {
         if( instance == null ) {
             if( getVersion() < VERSION )
-                overrideDb();
+                if( !overrideDb() )
+                    return null;
             instance = Room
                 .databaseBuilder(Tolomet.getAppContext(), DbTolomet.class, NAME)
                 //.createFromAsset(ASSET)
@@ -55,14 +56,18 @@ public abstract class DbTolomet extends RoomDatabase {
         }
     }
 
-    private static void overrideDb() {
+    private static boolean overrideDb() {
+        File db = Tolomet.getAppContext().getDatabasePath(NAME);
+        db.getParentFile().mkdirs();
         try(
             InputStream is = Tolomet.getAppContext().getAssets().open(DbTolomet.ASSET);
-            OutputStream os = new FileOutputStream(Tolomet.getAppContext().getDatabasePath(NAME));
+            OutputStream os = new FileOutputStream(db);
         ) {
             Utils.copy(is, os);
+            return true;
         } catch (IOException ex) {
             ex.printStackTrace();
+            return false;
         }
     }
 
