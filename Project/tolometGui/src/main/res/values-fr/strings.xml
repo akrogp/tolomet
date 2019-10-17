@@ -91,6 +91,7 @@
     <string name="ReportInfo">--- Ne pas effacer ces lignes ---</string>
     <string name="ReportGreetings">Salut Gorka!</string>
     <string name="ReportApp">Comment envoyer votre commentaire?</string>
+    <string name="AddStationSubject">Tolomet: station request</string>
     <string name="WhatsApp">WhatsApp</string>
     <string name="NoWhatsApp">WhatsApp pas installé</string>
     <string name="FlyMode">Mode vol</string>
@@ -146,4 +147,6 @@
     <string name="FlySpots">Fly spots</string>
     <string name="select_app">Select an application</string>
     <string name="install_nav_app">Navigation app not found, please install one first</string>
+    <string name="AddFlySpotSubject">Tolomet: add new fly spot</string>
+    <string name="ElliottGreetings">Hi Elliott!</string>
 </resources>

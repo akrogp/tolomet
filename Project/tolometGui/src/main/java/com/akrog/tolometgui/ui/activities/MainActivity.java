@@ -3,8 +3,6 @@ package com.akrog.tolometgui.ui.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -195,19 +193,7 @@ public class MainActivity extends ToolbarActivity
     }
 
     private void onReportItem() {
-        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-            "mailto","akrog.apps@gmail.com", null));
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT,
-            getString(R.string.ReportSubject));
-        emailIntent.putExtra(Intent.EXTRA_TEXT, String.format(
-            "%s\n\n%s\n%s v%s (%d)\nAndroid %s (%d)\nPhone %s (%s)",
-            getString(R.string.ReportGreetings),
-            getString(R.string.ReportInfo),
-            getString(R.string.app_name), BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE,
-            Build.VERSION.RELEASE, Build.VERSION.SDK_INT,
-            Build.MANUFACTURER, Build.MODEL
-        ));
-        startActivity(Intent.createChooser(emailIntent, getString(R.string.ReportApp)));
+        sendMail("akrog.apps@gmail.com", getString(R.string.ReportSubject), getString(R.string.ReportGreetings));
     }
 
     protected void saveScreenshot(String name, Consumer<File> onScreenShotReady) {

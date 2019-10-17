@@ -19,6 +19,7 @@ import com.akrog.tolomet.Station;
 import com.akrog.tolometgui.R;
 import com.akrog.tolomet.Spot;
 import com.akrog.tolometgui.model.db.DbTolomet;
+import com.akrog.tolometgui.ui.activities.BaseActivity;
 import com.akrog.tolometgui.ui.activities.MainActivity;
 import com.akrog.tolometgui.ui.adapters.MapItemAdapter;
 import com.akrog.tolometgui.ui.services.LocationService;
@@ -80,7 +81,8 @@ public class MapFragment extends ToolbarFragment implements
         this.map = map;
         setMapType();
         requestPermission(Manifest.permission.ACCESS_FINE_LOCATION, R.string.gps_rationale,
-            () -> map.setMyLocationEnabled(true), null);
+            () -> enableLocation(), null);
+        configureReportButtons();
         map.setInfoWindowAdapter(new MapItemAdapter(this));
         cluster = new ClusterManager<>(getActivity(), map);
         map.setOnMarkerClickListener(cluster);
@@ -108,6 +110,28 @@ public class MapFragment extends ToolbarFragment implements
 
         /*KmlLayer kml = new KmlLayer(map, R.raw.elliott, getActivity());
         kml.addLayerToMap();*/
+    }
+
+    private void configureReportButtons() {
+        BaseActivity activity = (BaseActivity)getActivity();
+        getView().findViewById(R.id.button_add_spot).setOnClickListener(view ->
+            activity.sendMail("davidherranzelliott@gmail.com", getString(R.string.AddFlySpotSubject), getString(R.string.ElliottGreetings))
+        );
+
+        getView().findViewById(R.id.button_add_station).setOnClickListener(view ->
+            activity.sendMail("akrog.apps@gmail.com", getString(R.string.AddStationSubject), getString(R.string.ReportGreetings))
+        );
+    }
+
+    private void enableLocation() {
+        map.setMyLocationEnabled(true);
+        View newButton = getView().findViewById(R.id.button_location);
+        View oldButton = ((View)getView().findViewById(R.id.map).findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
+        if( oldButton != null ) {
+            oldButton.setVisibility(View.GONE);
+            newButton.setVisibility(View.VISIBLE);
+            newButton.setOnClickListener(view -> oldButton.performClick());
+        }
     }
 
     @Override
@@ -138,6 +162,7 @@ public class MapFragment extends ToolbarFragment implements
         } else if( id == R.id.flyspots_item ) {
             item.setChecked(!item.isChecked());
             settings.setFlySpots(item.isChecked());
+            getView().findViewById(R.id.button_add_spot).setVisibility(item.isChecked()?View.VISIBLE:View.GONE);
             onCameraIdle();
         } else if( id == R.id.browser_item )
             openBrowser();

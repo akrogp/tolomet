@@ -2,15 +2,19 @@ package com.akrog.tolometgui.ui.activities;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.akrog.tolometgui.BuildConfig;
 import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.model.AppSettings;
+import com.akrog.tolometgui.model.db.DbTolomet;
 import com.akrog.tolometgui.ui.services.LocationService;
 import com.gunhansancar.android.sdk.helper.LocaleHelper;
 
@@ -102,6 +106,22 @@ public abstract class BaseActivity extends AppCompatActivity {
         requestPermission(
             Manifest.permission.ACCESS_FINE_LOCATION, R.string.gps_rationale,
             () -> onOk.accept(LocationService.getLocation(warning)), onError);
+    }
+
+    public void sendMail(String to, String subject, String body) {
+        body = String.format(
+            "%s\n\n%s\n%s v%s (%d), db%d\nAndroid %s (%d)\nPhone %s (%s)",
+            body == null ? "" : body,
+            getString(R.string.ReportInfo),
+            getString(R.string.app_name), BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE, DbTolomet.VERSION,
+            Build.VERSION.RELEASE, Build.VERSION.SDK_INT,
+            Build.MANUFACTURER, Build.MODEL
+        );
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                "mailto",to, null));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        emailIntent.putExtra(Intent.EXTRA_TEXT, body);
+        startActivity(Intent.createChooser(emailIntent, getString(R.string.ReportApp)));
     }
 
     public abstract void onSettingsChanged(String key);
