@@ -14,16 +14,28 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageButton
+        android:id="@+id/button_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_my_location"
+        app:backgroundTint="#BFFFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"/>
+
+    <ImageButton
         android:id="@+id/button_add_station"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_add_station"
         app:backgroundTint="#BFFFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_location"
         android:layout_marginEnd="@dimen/default_margin"
-        android:layout_marginRight="@dimen/default_margin"
-        android:layout_marginBottom="@dimen/default_margin"/>
+        android:layout_marginRight="@dimen/default_margin"/>
 
     <ImageButton
         android:id="@+id/button_add_spot"
@@ -32,19 +44,7 @@
         app:srcCompat="@drawable/ic_add_spot"
         app:backgroundTint="#BFFFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/button_add_station"
-        android:layout_marginEnd="@dimen/default_margin"
-        android:layout_marginRight="@dimen/default_margin"/>
-
-    <ImageButton
-        android:id="@+id/button_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:srcCompat="@drawable/ic_my_location"
-        app:backgroundTint="#BFFFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/button_add_spot"
+        app:layout_constraintTop_toBottomOf="@id/button_add_station"
         android:layout_marginEnd="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin"/>
 
