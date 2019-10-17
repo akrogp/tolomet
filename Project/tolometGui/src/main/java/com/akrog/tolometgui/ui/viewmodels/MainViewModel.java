@@ -4,7 +4,6 @@ import android.location.Location;
 
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.Station;
-import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolometgui.model.AppSettings;
 import com.akrog.tolometgui.model.db.DbMeteo;
 import com.akrog.tolometgui.model.db.DbTolomet;
@@ -39,10 +38,6 @@ public class MainViewModel extends ViewModel {
 
     public Station findStation(String id) {
         return db.stationDao().findStation(id);
-    }
-
-    public Station findStation(WindProviderType type, String code) {
-        return findStation(Station.buildId(type,code));
     }
 
     public void selectNone() {
