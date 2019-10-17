@@ -6,7 +6,7 @@ import com.akrog.tolomet.Station;
 import com.akrog.tolometgui.model.db.DbMeteo;
 import com.akrog.tolometgui.model.db.DbTolomet;
 import com.akrog.tolometgui.widget.model.WidgetInfo;
-import com.akrog.tolometgui.widget.services.WidgetManager;
+import com.akrog.tolometgui.widget.presenters.WidgetManager;
 
 import java.util.List;
 
