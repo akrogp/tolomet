@@ -11,6 +11,7 @@ import android.os.IBinder;
 import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.Tolomet;
 import com.akrog.tolometgui.ui.services.WeakTask;
+import com.akrog.tolometgui.widget.model.WidgetModel;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -64,7 +65,7 @@ public class WidgetService extends Service {
     }
 
     private static class UpdateTask extends WeakTask<WidgetService, Void, Void, Void> {
-        private final WidgetPopulator widgetPopulator = new WidgetPopulator(Tolomet.getAppContext());
+        private final WidgetModel model = new WidgetModel(Tolomet.getAppContext());
 
         UpdateTask(WidgetService context) {
             super(context);
@@ -72,13 +73,13 @@ public class WidgetService extends Service {
 
         @Override
         protected Void doInBackground(WidgetService service, Void... voids) {
-            widgetPopulator.downloadData();
+            model.download();
             return null;
         }
 
         @Override
         protected void onPostExecute(WidgetService service, Void v) {
-            widgetPopulator.updateWidgets();
+            model.update();
             service.stopSelf();
             service.task = null;
         }

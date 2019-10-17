@@ -14,8 +14,9 @@ import com.akrog.tolometgui.model.AppSettings;
 import com.akrog.tolometgui.model.FlyConstraint;
 import com.akrog.tolometgui.model.FlySpot;
 import com.akrog.tolometgui.model.WidgetSettings;
-import com.akrog.tolometgui.model.db.DbTolomet;
 import com.akrog.tolometgui.ui.activities.MainActivity;
+import com.akrog.tolometgui.widget.model.FlyCondition;
+import com.akrog.tolometgui.widget.model.WidgetInfo;
 import com.akrog.tolometgui.widget.providers.LargeWidgetProvider;
 import com.akrog.tolometgui.widget.providers.MediumWidgetProvider;
 import com.akrog.tolometgui.widget.providers.SmallWidgetProvider;
@@ -28,10 +29,14 @@ import java.util.List;
  * Created by gorka on 21/09/16.
  */
 
-public class WidgetPopulator {
-    public enum FlyCondition { GOOD, BAD, UNKOWN };
+public class WidgetManager {
+    private static int[] LAYOUTS = {
+        R.layout.widget_layout_small,
+        R.layout.widget_layout_middle,
+        R.layout.widget_layout_large
+    };
 
-    public static class WidgetData {
+    private static class WidgetData {
         String id;
         String country;
         String name;
@@ -47,63 +52,71 @@ public class WidgetPopulator {
         int widgetId;
     }
 
-    public WidgetPopulator(Context context) {
+    public WidgetManager(Context context) {
         this.context = context;
         appWidgetManager = AppWidgetManager.getInstance(context);
-        ComponentName comp;
-        comp = new ComponentName(context, SmallWidgetProvider.class);
-        smallWidgets = appWidgetManager.getAppWidgetIds(comp);
-        comp = new ComponentName(context, MediumWidgetProvider.class);
-        mediumWidgets = appWidgetManager.getAppWidgetIds(comp);
-        comp = new ComponentName(context, LargeWidgetProvider.class);
-        largeWidgets = appWidgetManager.getAppWidgetIds(comp);
     }
 
-    public void downloadData() {
-        widgetData = new ArrayList<>();
-        widgetData.addAll(downloadData(smallWidgets, SpotWidgetProvider.WIDGET_SIZE_SMALL));
-        widgetData.addAll(downloadData(mediumWidgets, SpotWidgetProvider.WIDGET_SIZE_MEDIUM));
-        widgetData.addAll(downloadData(largeWidgets, SpotWidgetProvider.WIDGET_SIZE_LARGE));
+    public List<WidgetInfo> findWidgets() {
+        List<WidgetInfo> result = new ArrayList<>();
+        result.addAll(findWidgets(SmallWidgetProvider.class, SpotWidgetProvider.WIDGET_SIZE_SMALL));
+        result.addAll(findWidgets(MediumWidgetProvider.class, SpotWidgetProvider.WIDGET_SIZE_MEDIUM));
+        result.addAll(findWidgets(LargeWidgetProvider.class, SpotWidgetProvider.WIDGET_SIZE_LARGE));
+        return result;
     }
 
-    private List<WidgetData> downloadData(int[] widgetIds, int widgetSize) {
-        if( widgetIds == null || widgetIds.length == 0 )
-            return new ArrayList<>();
-        List<WidgetData> stations = new ArrayList<>(widgetIds.length);
-        for( int i = 0; i < widgetIds.length; i++ ) {
-            WidgetData station = fillStation(widgetIds[i], widgetSize);
-            if( station != null )
-                stations.add(station);
+    private <T> List<WidgetInfo> findWidgets(Class<T> providerClass, int widgetSize) {
+        List<WidgetInfo> result = new ArrayList<>();
+        ComponentName comp = new ComponentName(context, providerClass);
+        int[] ids = appWidgetManager.getAppWidgetIds(comp);
+        if( ids == null || ids.length == 0 )
+            return result;
+        for( int id : ids ) {
+            WidgetSettings settings = new WidgetSettings(context,id);
+            FlySpot spot = settings.getSpot();
+            if( !spot.isValid() )
+                continue;
+            WidgetInfo info = new WidgetInfo();
+            info.setWidgetId(id);
+            info.setWidgetSize(widgetSize);
+            info.setFlySpot(spot);
+            result.add(info);
         }
-        return stations;
+        return result;
     }
 
-    private WidgetData fillStation(int widgetId, int widgetSize) {
-        WidgetSettings settings = new WidgetSettings(context,widgetId);
-        FlySpot spot = settings.getSpot();
-        if( !spot.isValid() )
+    public void updateWidget(WidgetInfo widgetInfo, Station station) {
+        WidgetData data = fillData(widgetInfo, station);
+        if( data == null )
+            return;
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), LAYOUTS[widgetInfo.getWidgetSize()]);
+        if( !updateViews(remoteViews,data) )
+            return;
+        remoteViews.setOnClickPendingIntent(R.id.widget_icon, getUpdateIntent());
+        remoteViews.setOnClickPendingIntent(R.id.widget, getTolometIntent(data));
+        appWidgetManager.updateAppWidget(widgetInfo.getWidgetId(), remoteViews);
+    }
+
+    private WidgetData fillData(WidgetInfo widgetInfo, Station station) {
+        FlySpot spot = widgetInfo.getFlySpot();
+        if( station == null || !spot.isValid() )
             return null;
         FlyConstraint constraint = spot.getConstraints().get(0);
-        Station station = DbTolomet.getInstance().stationDao().findStation(constraint.getStation());
-        if( station == null )
+        if( !constraint.getStation().equals(station.getId()) )
             return null;
-        model.refresh(station);
         Long stamp = station.getStamp();
         if( stamp == null )
             return null;
-
-        //logUpdate(spot.getName());
 
         WidgetData data = new WidgetData();
         data.id = station.getId();
         data.country = station.getCountry();
         data.name = spot.getName();
-        //long stamp = station.getStamp();
         data.date = model.getStamp(station, stamp);
         data.factor = AppSettings.getSpeedFactor(spot.getSpeedUnits());
         data.unit = context.getResources().getStringArray(R.array.pref_speedUnitEntries)[spot.getSpeedUnits()];
-        data.widgetSize = widgetSize;
-        data.widgetId = widgetId;
+        data.widgetSize = widgetInfo.getWidgetSize();
+        data.widgetId = widgetInfo.getWidgetId();
 
         fillMeteo(data, station, stamp);
 
@@ -117,17 +130,6 @@ public class WidgetPopulator {
 
         return data;
     }
-
-    /*private void logUpdate(String spot) {
-        try {
-            File file = new File(Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_DOCUMENTS), "TolometWidgetLog.txt");
-            PrintWriter pw = new PrintWriter(new FileOutputStream(file, true));
-            DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-            pw.println(String.format("%s %s",df.format(new Date()),spot));
-            pw.close();
-        } catch (Exception e) {}
-    }*/
 
     private void fillMeteo(WidgetData data, Station station, long stamp ) {
         Number num = station.getMeteo().getWindDirection().getAt(stamp);
@@ -185,23 +187,7 @@ public class WidgetPopulator {
             return FlyCondition.BAD;
         return missing ? FlyCondition.UNKOWN : FlyCondition.GOOD;
     }
-
-    public void updateWidgets() {
-        if( widgetData == null || widgetData.isEmpty() )
-            return;
-        int[] layouts = {R.layout.widget_layout_small, R.layout.widget_layout_middle, R.layout.widget_layout_large};
-        int i = 0;
-        for (WidgetData widget : widgetData) {
-            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), layouts[widget.widgetSize]);
-            if( !updateViews(remoteViews,widget) )
-                continue;
-            //if( widgetSize != WidgetReceiver.WIDGET_SIZE_SMALL )
-                remoteViews.setOnClickPendingIntent(R.id.widget_icon, getUpdateIntent());
-            remoteViews.setOnClickPendingIntent(R.id.widget, getTolometIntent(widget));
-            appWidgetManager.updateAppWidget(widget.widgetId, remoteViews);
-        }
-    }
-
+    
     private PendingIntent getTolometIntent(WidgetData data) {
         Intent clickIntent = new Intent(context, MainActivity.class);
         //clickIntent.putExtra(WidgetReceiver.EXTRA_WIDGET_SIZE, widgetSize);
@@ -252,6 +238,4 @@ public class WidgetPopulator {
     private final Context context;
     private final AppWidgetManager appWidgetManager;
     private final Manager model = new Manager();
-    private final int[] smallWidgets, mediumWidgets, largeWidgets;
-    private List<WidgetData> widgetData;
 }
