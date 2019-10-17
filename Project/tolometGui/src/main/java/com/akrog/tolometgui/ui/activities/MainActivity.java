@@ -23,6 +23,7 @@ import com.akrog.tolometgui.ui.fragments.ProviderFragment;
 import com.akrog.tolometgui.ui.fragments.SettingsContainerFragment;
 import com.akrog.tolometgui.ui.fragments.ToolbarFragment;
 import com.akrog.tolometgui.ui.fragments.UpdateFragment;
+import com.akrog.tolometgui.ui.presenters.MyWidgets;
 import com.akrog.tolometgui.ui.services.StorageService;
 import com.akrog.tolometgui.ui.viewmodels.MainViewModel;
 import com.akrog.tolometgui.ui.views.AndroidUtils;
@@ -47,6 +48,7 @@ public class MainActivity extends ToolbarActivity
     private MainViewModel model;
     private ToolbarFragment fragment;
     private int fragmentId = -1;
+    private MyWidgets widgets;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,9 @@ public class MainActivity extends ToolbarActivity
 
         if( !settings.isIntroAccepted() )
             startActivity(new Intent(this, IntroActivity.class));
+
+        widgets = new MyWidgets(this);
+        widgets.liveUpdate(this);
     }
 
     @Override
