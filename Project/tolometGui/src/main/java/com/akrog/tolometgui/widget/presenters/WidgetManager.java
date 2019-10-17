@@ -1,4 +1,4 @@
-package com.akrog.tolometgui.widget.services;
+package com.akrog.tolometgui.widget.presenters;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
