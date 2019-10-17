@@ -187,7 +187,7 @@ public class WidgetManager {
             return FlyCondition.BAD;
         return missing ? FlyCondition.UNKOWN : FlyCondition.GOOD;
     }
-    
+
     private PendingIntent getTolometIntent(WidgetData data) {
         Intent clickIntent = new Intent(context, MainActivity.class);
         //clickIntent.putExtra(WidgetReceiver.EXTRA_WIDGET_SIZE, widgetSize);
