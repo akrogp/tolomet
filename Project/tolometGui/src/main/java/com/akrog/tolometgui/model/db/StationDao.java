@@ -79,7 +79,7 @@ public abstract class StationDao {
         station.setLongitude(entity.longitude);
         station.setFavorite(favs.contains(station.getId()));
         try {
-            station.setUpdated(entity.updated == null ? null : DbTolomet.DATE_FORMAT.parse(entity.updated));
+            station.setUpdated(entity.updated == null || entity.updated.isEmpty() ? null : DbTolomet.DATE_FORMAT.parse(entity.updated));
         } catch (ParseException e) {
             e.printStackTrace();
         }
