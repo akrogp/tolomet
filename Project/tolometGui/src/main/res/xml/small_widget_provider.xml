@@ -3,7 +3,9 @@
     android:initialLayout="@layout/widget_layout_middle"
     android:previewImage="@drawable/small_widget_preview"
     android:configure="com.akrog.tolometgui.widget.activities.SmallWidgetSettingsActivity"
-    android:minHeight="62dp"
+    android:resizeMode="horizontal"
+    android:minResizeWidth="40dp"
+    android:minHeight="40dp"
     android:minWidth="40dp"
     android:updatePeriodMillis="3600000" >
 </appwidget-provider>
