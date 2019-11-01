@@ -21,7 +21,7 @@ import androidx.room.RoomDatabase;
 
 @Database(version = DbTolomet.VERSION, entities = {StationEntity.class, SpotEntity.class})
 public abstract class DbTolomet extends RoomDatabase {
-    public static final int VERSION = 14;
+    public static final int VERSION = 15;
     public static final String NAME = "Tolomet.db";
     public static final String ASSET = "databases/Tolomet.db";
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -35,7 +35,8 @@ public abstract class DbTolomet extends RoomDatabase {
 
     synchronized public static DbTolomet getInstance() {
         if( instance == null ) {
-            if( getVersion() < VERSION )
+            //updVersion();
+            if( getVersion() != VERSION )
                 if( !overrideDb() )
                     return null;
             instance = Room
@@ -45,6 +46,16 @@ public abstract class DbTolomet extends RoomDatabase {
                 .build();
         }
         return instance;
+    }
+
+    private static void updVersion() {
+        File file = Tolomet.getAppContext().getDatabasePath(NAME);
+        try(SQLiteDatabase db = SQLiteDatabase.openDatabase(file.getAbsolutePath(), null, SQLiteDatabase.OPEN_READWRITE)) {
+            db.setVersion(VERSION);
+            db.getVersion();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static int getVersion() {

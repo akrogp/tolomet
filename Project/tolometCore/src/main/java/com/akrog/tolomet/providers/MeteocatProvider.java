@@ -26,7 +26,7 @@ public class MeteocatProvider implements WindProvider {
 		cal.setTimeInMillis(date);
 		downloader = new Downloader();
 		downloader.setBrowser(FakeBrowser.WGET);
-		downloader.setUrl("http://www.meteo.cat/observacions/xema/dades");
+		downloader.setUrl("https://www.meteo.cat/observacions/xema/dades");
 		downloader.addParam("codi", station.getCode());
 		downloader.addParam("dia", String.format("%d-%02d-%02dT00:00Z", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH)));
 		updateStationV2(station, cal, downloader.download("taronja"));
@@ -179,7 +179,7 @@ public class MeteocatProvider implements WindProvider {
 	public List<Station> downloadStations() {
 		List<Station> stations = new ArrayList<>();
 		Downloader dw = new Downloader();
-		dw.setUrl("http://www.meteo.cat/observacions/llistat-xema");
+		dw.setUrl("https://www.meteo.cat/observacions/llistat-xema");
 		String data = dw.download();
 		int tr1 = -1, tr2;
 		while( (tr1 = data.indexOf("<tr>", tr1+1)) >= 0 && (tr2 = data.indexOf("</tr>", tr1+1)) >= 0 ) {
