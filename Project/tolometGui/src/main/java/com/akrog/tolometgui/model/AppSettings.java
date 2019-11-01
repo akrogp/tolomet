@@ -105,7 +105,8 @@ public class AppSettings {
         if( id == null )
             return null;
         Station station = DbTolomet.getInstance().stationDao().findStation(id);
-        station.setFavorite(getFavorites().contains(station.getId()));
+        if( station != null )
+            station.setFavorite(getFavorites().contains(station.getId()));
         return station;
     }
 

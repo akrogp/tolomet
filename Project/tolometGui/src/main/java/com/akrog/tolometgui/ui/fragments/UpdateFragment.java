@@ -117,10 +117,6 @@ public class UpdateFragment extends ToolbarFragment implements AdapterView.OnIte
     }
 
     private List<ProviderAdapter.ProviderWrapper> buildWrappers(List<DbTolomet.ProviderInfo> list) {
-        /*DbTolometOld.ProviderInfo elliot = new DbTolometOld.ProviderInfo();
-        elliot.setSpotProviderType(SpotProviderType.ElliottParagliding);
-        elliot.setProvider(elliot.getSpotProviderType().name());
-        list.add(elliot);*/
         List<ProviderAdapter.ProviderWrapper> providers = new ArrayList<>(WindProviderType.values().length);
         for( DbTolomet.ProviderInfo info : list ) {
             ProviderAdapter.ProviderWrapper wrapper = new ProviderAdapter.ProviderWrapper(info);
