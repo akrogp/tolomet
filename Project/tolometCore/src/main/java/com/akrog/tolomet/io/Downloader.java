@@ -11,12 +11,22 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.zip.GZIPInputStream;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 public class Downloader {
 	public enum FakeBrowser {DEFAULT, MOZILLA, WGET, TOLOMET };
@@ -85,7 +95,7 @@ public class Downloader {
     	try {
     		if( this.method != null && this.method.equalsIgnoreCase("POST") ) {
     			URL url = new URL(this.url);
-    			con = (HttpURLConnection)url.openConnection();
+    			con = openConnection(url);
     			con.setDoOutput(true);
     			con.setDoInput(true);
     			OutputStream os = getOutputStream(con);
@@ -95,7 +105,7 @@ public class Downloader {
     			os.close();
     		} else {
     			URL url = new URL(params.isEmpty()?this.url:this.url+"?"+getQuery());
-    			con = (HttpURLConnection)url.openConnection();
+    			con = openConnection(url);
     		}
     		applyBrowserProperties(con);
     		applyHeaders(con);
@@ -111,6 +121,36 @@ public class Downloader {
                 con.disconnect();
         }
         return result;
+	}
+
+	private HttpURLConnection openConnection(URL url) throws Exception {
+    	if( url.getProtocol().equalsIgnoreCase("https") ) {
+			HttpsURLConnection con = (HttpsURLConnection)url.openConnection();
+			SSLContext context = SSLContext.getInstance("TLS");
+			context.init(null, new TrustManager[]{new X509TrustManager() {
+				@Override
+				public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+				}
+
+				@Override
+				public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+				}
+
+				@Override
+				public X509Certificate[] getAcceptedIssuers() {
+					return new X509Certificate[0];
+				}
+			}}, new SecureRandom());
+			con.setSSLSocketFactory(context.getSocketFactory());
+			con.setHostnameVerifier(new HostnameVerifier() {
+				@Override
+				public boolean verify(String s, SSLSession sslSession) {
+					return true;
+				}
+			});
+			return con;
+		} else
+			return (HttpURLConnection)url.openConnection();
 	}
 
 	protected OutputStream getOutputStream(HttpURLConnection con) throws IOException {

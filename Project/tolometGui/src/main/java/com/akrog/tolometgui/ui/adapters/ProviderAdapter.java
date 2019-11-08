@@ -145,11 +145,11 @@ public class ProviderAdapter extends ArrayAdapter<ProviderAdapter.ProviderWrappe
         public void download() {
             if( info.getWindProviderType() != null ) {
                 List<Station> stations = info.getWindProviderType().getProvider().downloadStations();
-                if( stations != null )
+                if( stations != null && !stations.isEmpty() )
                     DbTolomet.getInstance().stationDao().updateStations(info.getWindProviderType(), stations);
             } else if( info.getSpotProviderType() != null ) {
                 List<Spot> spots = info.getSpotProviderType().getProvider().downloadSpots();
-                if( spots != null )
+                if( spots != null && !spots.isEmpty() )
                     DbTolomet.getInstance().spotDao().updateSpots(info.getSpotProviderType(), spots);
             }
         }
