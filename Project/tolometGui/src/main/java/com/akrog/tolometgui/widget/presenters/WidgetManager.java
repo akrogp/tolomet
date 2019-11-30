@@ -151,7 +151,7 @@ public class WidgetManager {
         if( num != null ) {
             if( sb.length() != 0 )
                 sb.append(' ');
-            sb.append(String.format("%.0f mb", num));
+            sb.append(String.format("%.1f mb", num));
         }
         data.air = sb.toString();
         num = station.getMeteo().getWindSpeedMed().getAt(stamp);
@@ -237,5 +237,5 @@ public class WidgetManager {
 
     private final Context context;
     private final AppWidgetManager appWidgetManager;
-    private final Manager model = new Manager();
+    private final Manager model = new Manager(AppSettings.getInstance().getSelectedLanguage());
 }

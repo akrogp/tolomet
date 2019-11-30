@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class AppSettings {
@@ -108,6 +109,14 @@ public class AppSettings {
         if( station != null )
             station.setFavorite(getFavorites().contains(station.getId()));
         return station;
+    }
+
+    public String getSelectedLanguage() {
+        return settings.getString(SELECTED_LANGUAGE, Locale.getDefault().getLanguage());
+    }
+
+    public void setSelectedLanguage(String lang) {
+        settings.edit().putString(SELECTED_LANGUAGE, lang).commit();
     }
 
     public long getCheckStamp() {
@@ -358,4 +367,5 @@ public class AppSettings {
     public final static String PREF_SPEED_RANGE = "pref_speedRange";
     public final static String PREF_MARKER_MIN = "pref_minMarker";
     public final static String PREF_MARKER_MAX = "pref_maxMarker";
+    public static final String SELECTED_LANGUAGE = "pref_modeLang";
 }

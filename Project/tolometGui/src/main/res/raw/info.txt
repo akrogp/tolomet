@@ -2,8 +2,9 @@
 Copyright 2012-$YEAR$, Gorka Prieto
 
 <p>Thanks to:<br/>
-- Fran Echarte (Euskara translator)<br/>
+- Fran Echarte (Basque translator)<br/>
 - Jean Lombart (French translator)<br/>
-- David Herranz (Paragliding map)
+- David Herranz (Paragliding map)<br/>
+- Santi Serra (Catalan translator)
 
 <p>https://github.com/akrogp/tolomet
