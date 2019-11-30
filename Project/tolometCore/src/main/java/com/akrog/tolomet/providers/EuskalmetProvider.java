@@ -5,7 +5,6 @@ import com.akrog.tolomet.Station;
 import com.akrog.tolomet.Utils;
 import com.akrog.tolomet.io.Downloader;
 import com.akrog.tolomet.io.Downloader.FakeBrowser;
-import com.ibm.util.CoordinateConversion;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -62,12 +61,14 @@ public class EuskalmetProvider implements WindProvider {
 		return result;
 	}
 
+	int kk;
+
 	private boolean downloadCoords(Station station, String url) {
 		Downloader dw = new Downloader();
 		dw.setUrl(url);
 		int fields = 2;
 		try {
-			String xml = dw.download();
+			String xml = dw.download().replaceAll("&", "");
 			XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();
 			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
 			parser.setInput(new StringReader(xml));
@@ -85,7 +86,9 @@ public class EuskalmetProvider implements WindProvider {
 					fields--;
 				}
 			}
+			kk++;
 		} catch (Exception e) {
+			System.err.println(kk);
 			e.printStackTrace();
 			return false;
 		}
