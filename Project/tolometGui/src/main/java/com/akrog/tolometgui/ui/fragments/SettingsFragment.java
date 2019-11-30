@@ -7,7 +7,6 @@ import android.os.Handler;
 
 import com.akrog.tolometgui.model.AppSettings;
 import com.akrog.tolometgui.ui.activities.BaseActivity;
-import com.gunhansancar.android.sdk.helper.LocaleHelper;
 
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
@@ -70,7 +69,7 @@ public abstract class SettingsFragment extends PreferenceFragmentCompat implemen
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
-        if( key.equals(LocaleHelper.SELECTED_LANGUAGE) ) {
+        if( key.equals(AppSettings.SELECTED_LANGUAGE) ) {
             recreate();
             return;
         }

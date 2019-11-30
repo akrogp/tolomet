@@ -1,10 +1,10 @@
 package com.gunhansancar.android.sdk.helper;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.preference.PreferenceManager;
+
+import com.akrog.tolometgui.model.AppSettings;
 
 import java.util.Locale;
 
@@ -17,9 +17,6 @@ import java.util.Locale;
  * Created by gunhansancar on 07/10/15.
  */
 public class LocaleHelper {
-
-    //private static final String SELECTED_LANGUAGE = "Locale.Helper.Selected.Language";
-    public static final String SELECTED_LANGUAGE = "pref_modeLang";
 
     public static void onCreate(Context context) {
         String lang = getPersistedData(context, Locale.getDefault().getLanguage());
@@ -43,16 +40,11 @@ public class LocaleHelper {
     }
 
     private static String getPersistedData(Context context, String defaultLanguage) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getString(SELECTED_LANGUAGE, defaultLanguage);
+        return AppSettings.getInstance().getSelectedLanguage();
     }
 
     private static void persist(Context context, String language) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = preferences.edit();
-
-        editor.putString(SELECTED_LANGUAGE, language);
-        editor.apply();
+        AppSettings.getInstance().setSelectedLanguage(language);
     }
 
     private static void updateResources(Context context, String language) {

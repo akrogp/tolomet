@@ -110,6 +110,7 @@ public class MeteocatProvider implements WindProvider {
 		int iMed = findCol(rows[0], "VVM");
 		int iMax = findCol(rows[0], "VVX");
 		int iDir = findCol(rows[0], "DVM");
+		int iPres = findCol(rows[0], "PM");
 
 		cal.set(Calendar.HOUR_OF_DAY, 0);
 		cal.set(Calendar.MINUTE, 0);
@@ -122,6 +123,7 @@ public class MeteocatProvider implements WindProvider {
 			getStamp(cols[iStamp], cal);
 			addMeasurementV2(station.getMeteo().getAirTemperature(), cal, cols, iTemp, format);
 			addMeasurementV2(station.getMeteo().getAirHumidity(), cal, cols, iHum, format);
+			addMeasurementV2(station.getMeteo().getAirPressure(), cal, cols, iPres, format);
 			addMeasurementV2(station.getMeteo().getWindSpeedMed(), cal, cols, iMed, format);
 			addMeasurementV2(station.getMeteo().getWindSpeedMax(), cal, cols, iMax, format);
 			addMeasurementV2(station.getMeteo().getWindDirection(), cal, cols, iDir, format);

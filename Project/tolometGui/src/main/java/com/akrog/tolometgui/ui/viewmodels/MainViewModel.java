@@ -33,7 +33,7 @@ public class MainViewModel extends ViewModel {
     private Command command = Command.FAV;
 
     public MainViewModel() {
-        manager = new Manager();
+        manager = new Manager(AppSettings.getInstance().getSelectedLanguage());
     }
 
     public Station findStation(String id) {
