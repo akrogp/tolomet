@@ -68,6 +68,6 @@ public class XmlParser {
 	}
 	
 	private final static Pattern patternName = Pattern.compile("^<(\\w+)");
-	private final static Pattern patternValue = Pattern.compile(">(.*)<");
+	private final static Pattern patternValue = Pattern.compile(">([^<]*)");
 	private final static Pattern patternAttr = Pattern.compile("(\\w+)=\"(.+?)\"");
 }
