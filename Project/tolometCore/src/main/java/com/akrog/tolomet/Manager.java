@@ -64,7 +64,7 @@ public class Manager {
 		return station.getProvider().getUserUrl(station.getCode());
 	}
 	
-	public boolean refresh( Station station ) {
+	public synchronized boolean refresh( Station station ) {
 		if( !checkStation(station) )
 			return false;
 		if( !station.isEmpty() && ((System.currentTimeMillis()-station.getStamp())/60000L < getRefresh(station)) )
@@ -79,7 +79,7 @@ public class Manager {
 		return true;
 	}
 
-	public boolean travel( Station station, long date ) {
+	public synchronized boolean travel( Station station, long date ) {
 		if( !checkStation(station) )
 			return false;
 		try {

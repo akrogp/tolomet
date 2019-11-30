@@ -48,7 +48,7 @@ public class Measurement {
 		return map.entrySet();
 	}
 	
-	public Long[] getTimes() {
+	public synchronized Long[] getTimes() {
 		if( times == null )
 			times = map.keySet().toArray(new Long[0]); 
 		return times;
