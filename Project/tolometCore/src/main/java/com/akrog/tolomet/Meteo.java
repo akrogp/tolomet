@@ -37,17 +37,17 @@ public class Meteo {
 		return airHumidity;
 	}
 	
-	synchronized public void clear() {
+	public void clear() {
 		for( Measurement measurement : measurements )
 			measurement.clear();
 	}
 	
-	synchronized public void clear( long fromStamp ) {
+	public void clear( long fromStamp ) {
 		for( Measurement measurement : measurements )
 			measurement.clear(fromStamp);
 	}
 	
-	synchronized public void merge(Meteo meteo) {
+	public void merge(Meteo meteo) {
 		windDirection.merge(meteo.getWindDirection());
 		windSpeedMed.merge(meteo.getWindSpeedMed());
 		windSpeedMax.merge(meteo.getWindSpeedMax());
@@ -56,14 +56,14 @@ public class Meteo {
 		airHumidity.merge(meteo.getAirHumidity());
 	}
 	
-	synchronized public boolean isEmpty() {
+	public boolean isEmpty() {
 		for( Measurement measurement : measurements )
 			if( !measurement.isEmpty() )
 				return false;
 		return true;
 	}
 	
-	synchronized public Long getStamp() {
+	public Long getStamp() {
 		Long stamp = null;
 		Long tmp;
 		for( Measurement measurement : measurements ) {
@@ -80,7 +80,7 @@ public class Meteo {
 		return stamp;
 	}
 
-	synchronized public Long getBegin() {
+	public Long getBegin() {
 		Long stamp = null;
 		Long tmp;
 		for( Measurement measurement : measurements ) {
@@ -97,7 +97,7 @@ public class Meteo {
 		return stamp;
 	}
 
-	synchronized public Long getStamp(Long stamp) {
+	public Long getStamp(Long stamp) {
 		Long result = getStamp();
 		if( result == null || stamp == null )
 			return result;
@@ -117,7 +117,7 @@ public class Meteo {
 		return result;
 	}
 	
-	synchronized public Integer getStep() {
+	public Integer getStep() {
 		for( Measurement measurement : measurements ) {
 			Integer step = measurement.getStep();
 			if( step != null )
