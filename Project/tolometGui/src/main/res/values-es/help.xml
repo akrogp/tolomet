@@ -40,7 +40,7 @@
         de lecturas que no estén disponibles desde la pantalla de gráficas.
     </string>
     <string name="help_browser">Esta acción es similar a la anterior sólo que emplea un navegador
-        web externo en lugar del intenro de Tolomet. Esto puede resultar de utilidad en caso de que
+        web externo en lugar del interno de Tolomet. Esto puede resultar de utilidad en caso de que
         quieras añadir la dirección de la estación a tus marcadores del navegador o usar otras
         características del navegador. Tienes que tener en cuenta que algunos proveedores
         meteorológicos (Ej. Euskalmet) muestran un resultado diferente dependiendo de si te estás

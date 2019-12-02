@@ -80,7 +80,7 @@
         que indiquis la zona de vol i les teves condicions de vol preferides.
         La zona de vol s\'indica mitjançant qualsevol de les estacions que tinguis a preferits i un
         nom que pot ser diferent al de l\'estació. La direcció del vent preferida s\'indica mitjançant
-        un parell de valors en graus (entre 0 y 360): <u>des de</u> i <u>fins a</u>.
+        un parell de valors en graus (entre 0 i 360): <u>des de</u> i <u>fins a</u>.
         Per exemple el parell [des de = 0, fins a = 90] indicaria que totes les direccions de vent entre
         el nord i l\'est són bones, mentre que el parell [des de = 270, fins a = 90] indicaria que
         qualsevol component nord (tant d\'oest com d\'est) és bo. La icona del widget es mostra de

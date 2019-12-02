@@ -95,7 +95,7 @@
 </string-array>
 <string-array name="pref_modeUpdateEntries">
     <item>Manual</item>
-    <item>Intelligent</item>
+    <item>Intel·ligent</item>
     <item>Contínua</item>
 </string-array>
 <string-array name="pref_modeUpdateValues">
