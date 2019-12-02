@@ -25,7 +25,7 @@
             android:title="@string/Origin" />
     </group>
 
-    <item android:title="Configurar">
+    <item android:title="@string/Configure">
         <menu>
             <group android:checkableBehavior="single">
                 <item
@@ -39,7 +39,7 @@
             </group>
         </menu>
     </item>
-    <item android:title="Ayuda">
+    <item android:title="@string/Help">
         <menu>
             <group android:checkableBehavior="single">
                 <item

@@ -149,4 +149,5 @@
     <string name="install_nav_app">Navigation app not found, please install one first</string>
     <string name="AddFlySpotSubject">Tolomet: add new fly spot</string>
     <string name="ElliottGreetings">Hi Elliott!</string>
+    <string name="Configure">Configurar</string>
 </resources>

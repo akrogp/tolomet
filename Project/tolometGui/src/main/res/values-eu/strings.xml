@@ -152,4 +152,5 @@
     <string name="AddStationSubject">Tolomet: nueva estación</string>
     <string name="AddFlySpotSubject">Tolomet: nueva zona de vuelo</string>
     <string name="ElliottGreetings">Aupa Elliott!</string>
+    <string name="Configure">Configurar</string>
 </resources>
