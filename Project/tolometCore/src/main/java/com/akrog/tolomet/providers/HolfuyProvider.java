@@ -2,13 +2,13 @@ package com.akrog.tolomet.providers;
 
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
+import com.akrog.tolomet.io.XmlElement;
 import com.akrog.tolomet.io.XmlParser;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.text.DateFormat;
@@ -36,35 +36,30 @@ public class HolfuyProvider extends BaseProvider {
     @Override
     public String getUserUrl(String code) {
         return "http://holfuy.com/en/data/"+code.substring(1);
+        //return "http://m.holfuy.com/"+code.substring(1);
     }
 
     @Override
     public List<Station> downloadStations() {
         try {
             downloader = new Downloader();
-            downloader.setUrl("http://holfuy.hu/en/takeit/xml/dezso/stations.xml");
+            downloader.setUrl("https://holfuy.com/puget/mkrs.php");
             String data = downloader.download();
-            BufferedReader br = new BufferedReader(new StringReader(data));
-            String line;
-            Station station = null;
-            List<Station> result = new ArrayList<>();
-            while( (line = br.readLine()) != null ) {
-                line = line.trim();
-                if( line.equals("<STATION>") ) {
-                    station = new Station();
-                    station.setProviderType(WindProviderType.Holfuy);
-                } else if( line.equals("</STATION>") ) {
-                    if( station.isFilled() )
+            XmlElement xml = XmlParser.load(new StringReader(data));
+            List<Station> result = new ArrayList<>(xml.getSubElements().size());
+            for (XmlElement marker : xml.getSubElements()) {
+                Station station = new Station();
+                station.setProviderType(WindProviderType.Holfuy);
+                station.setCode("s"+marker.getAttribute("station"));
+                station.setName(marker.getAttribute("place"));
+                try {
+                    station.setLatitude(Double.parseDouble(marker.getAttribute("lat")));
+                    station.setLongitude(Double.parseDouble(marker.getAttribute("lng")));
+                    if (station.isFilled())
                         result.add(station);
-                    station = null;
-                } else if( line.startsWith("<ID>") )
-                    station.setCode(XmlParser.getValue(line));
-                else if( line.startsWith("<NAME>") )
-                    station.setName(XmlParser.getValue(line));
-                else if( line.startsWith("<LAT>"))
-                    station.setLatitude(Double.parseDouble(XmlParser.getValue(line)));
-                else if( line.startsWith("<LONG>"))
-                    station.setLongitude(Double.parseDouble(XmlParser.getValue(line)));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             return result;
         } catch (Exception e) {
