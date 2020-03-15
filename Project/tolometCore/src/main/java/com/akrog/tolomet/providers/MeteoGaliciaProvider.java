@@ -68,16 +68,11 @@ public class MeteoGaliciaProvider implements WindProvider {
 		cal.add(Calendar.HOUR_OF_DAY, 1);
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.MILLISECOND, 0);
-		int stop = 4;
+		String dataFin = SDF_REST.format(cal.getTime());
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		String dataIni = SDF_REST.format(prev != null && prev.after(cal) ? prev.getTime() : cal.getTime());
 		try {
-			while (stop-- >= 0) {
-				String dataFin = SDF_REST.format(cal.getTime());
-				cal.add(Calendar.HOUR_OF_DAY, -1);
-				String dataIni = SDF_REST.format(cal.getTime());
-				download(station, dataIni, dataFin);
-				if( prev != null && cal.before(prev) )
-					break;
-			}
+			download(station, dataIni, dataFin);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
