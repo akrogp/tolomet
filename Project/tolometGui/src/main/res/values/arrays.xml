@@ -45,6 +45,8 @@
     <item>80 km/h</item>
     <item>120 km/h</item>
     <item>160 km/h</item>
+    <item>200 km/h</item>
+    <item>240 km/h</item>
 </string-array>
 <string-array name="pref_rangeValues" tools:ignore="MissingTranslation">
     <item>-1000</item>
@@ -53,6 +55,8 @@
     <item>80</item>
     <item>120</item>
     <item>160</item>
+    <item>200</item>
+    <item>240</item>
 </string-array>
 <string-array name="pref_minTempEntries">
     <item>Auto</item>
