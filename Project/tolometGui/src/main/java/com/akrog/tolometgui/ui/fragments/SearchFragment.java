@@ -1,11 +1,13 @@
 package com.akrog.tolometgui.ui.fragments;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -29,6 +31,16 @@ public class SearchFragment extends DialogFragment {
     private MainViewModel model;
     private ListView listView;
 
+    private void showKeyboard() {
+        InputMethodManager inputMethodManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager inputMethodManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -39,6 +51,7 @@ public class SearchFragment extends DialogFragment {
 
         listView = view.findViewById(R.id.search_list);
         listView.setOnItemClickListener((parent, view1, pos, l) -> {
+            hideKeyboard();
             Station station = (Station)parent.getItemAtPosition(pos);
             model.selectStation(station);
             dismiss();
@@ -63,12 +76,14 @@ public class SearchFragment extends DialogFragment {
             public void afterTextChanged(Editable editable) {
             }
         });
+        editText.requestFocus();
+        showKeyboard();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder
             .setTitle(R.string.menu_search)
             .setView(view)
-            .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {});
+            .setNegativeButton(R.string.cancel, (dialogInterface, i) -> hideKeyboard());
         return builder.create();
     }
 
