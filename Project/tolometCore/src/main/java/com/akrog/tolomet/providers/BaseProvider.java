@@ -2,7 +2,9 @@ package com.akrog.tolomet.providers;
 
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.io.Downloader;
+import com.akrog.tolomet.utils.DateUtils;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +39,9 @@ public abstract class BaseProvider implements WindProvider {
 	@Override
 	public boolean travel(Station station, long date) {
 		downloader = new Downloader();
-		if( !configureDownload(downloader, station, date) )
+		Calendar cal = Calendar.getInstance();
+		DateUtils.resetDay(cal);
+		if( !configureDownload(downloader, station, cal.getTimeInMillis()) )
 			return false;
 		String data = downloader.download();
 		if( data == null )
