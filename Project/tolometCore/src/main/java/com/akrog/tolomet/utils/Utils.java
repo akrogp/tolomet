@@ -1,5 +1,6 @@
-package com.akrog.tolomet;
+package com.akrog.tolomet.utils;
 
+import com.akrog.tolomet.Station;
 import com.ibm.util.CoordinateConversion;
 
 import java.io.BufferedInputStream;
