@@ -46,9 +46,9 @@ public class EuskalmetProvider implements WindProvider {
 			while( field.find() ) {
 				String key = field.group(1);
 				String value = field.group(2);
-				if (key.equals("documentName"))
+				if (key.equals("Nombre"))
 					station.setName(value);
-				else if( key.equals("dataXML") ) {
+				else if( key.equals("XMLdatos") ) {
 					Matcher code = PATTERN_CODE.matcher(value);
 					if( !code.find() || !downloadCoords(station, value))
 						return null;
