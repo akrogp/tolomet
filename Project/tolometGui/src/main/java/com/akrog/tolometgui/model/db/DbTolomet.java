@@ -2,7 +2,7 @@ package com.akrog.tolometgui.model.db;
 
 import android.database.sqlite.SQLiteDatabase;
 
-import com.akrog.tolomet.Utils;
+import com.akrog.tolomet.utils.Utils;
 import com.akrog.tolomet.providers.SpotProviderType;
 import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolometgui.Tolomet;
@@ -21,7 +21,7 @@ import androidx.room.RoomDatabase;
 
 @Database(version = DbTolomet.VERSION, entities = {StationEntity.class, SpotEntity.class})
 public abstract class DbTolomet extends RoomDatabase {
-    public static final int VERSION = 18;
+    public static final int VERSION = 19;
     public static final String NAME = "Tolomet.db";
     public static final String ASSET = "databases/Tolomet.db";
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

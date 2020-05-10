@@ -21,7 +21,8 @@ public enum WindProviderType {
     WirelessWeatherStation("WWS", new WirelessWeatherStationProvider(), WindProviderQuality.Medium, false),
 	WeatherDisplay("WD", new WeatherDisplayProvider(), WindProviderQuality.Poor, false),
 	WeatherCloud("WC", new WeatherCloudProvider(), WindProviderQuality.Medium, false),
-	FieldClimate("FC", new FieldClimateProvider(), WindProviderQuality.Good, false);
+	FieldClimate("FC", new FieldClimateProvider(), WindProviderQuality.Good, false),
+	Malloles("MA", new MallolesProvider(), WindProviderQuality.Good, false);
 	
 	private final String code;
 	private final WindProvider provider;

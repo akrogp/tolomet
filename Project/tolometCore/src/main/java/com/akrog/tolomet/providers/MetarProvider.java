@@ -2,7 +2,7 @@ package com.akrog.tolomet.providers;
 
 import com.akrog.tolomet.Header;
 import com.akrog.tolomet.Station;
-import com.akrog.tolomet.Utils;
+import com.akrog.tolomet.utils.Utils;
 import com.akrog.tolomet.io.Downloader;
 
 import java.io.BufferedReader;
