@@ -35,8 +35,9 @@ public class EuskalmetProvider implements WindProvider {
 	@Override
 	public List<Station> downloadStations() {
 		Downloader dw = new Downloader();
-		dw.setUrl("http://opendata.euskadi.eus/contenidos/ds_meteorologicos/estaciones_meteorologicas/opendata/estaciones.json");
-		String data = dw.download().replaceAll("\n","");
+		dw.setUrl("https://opendata.euskadi.eus/contenidos/ds_meteorologicos/estaciones_meteorologicas/opendata/estaciones.json");
+		String data = dw.download();
+		data = data.replaceAll("\n","");
 		Matcher object = PATTERN_OBJECT.matcher(data);
 		List<Station> result = new ArrayList<>();
 		while( object.find() ) {
@@ -47,9 +48,9 @@ public class EuskalmetProvider implements WindProvider {
 			while( field.find() ) {
 				String key = field.group(1);
 				String value = field.group(2);
-				if (key.equals("Nombre"))
+				if (key.equals("documentName"))
 					station.setName(value);
-				else if( key.equals("XMLdatos") ) {
+				else if( key.equals("dataXML") ) {
 					Matcher code = PATTERN_CODE.matcher(value);
 					if( !code.find() || !downloadCoords(station, value))
 						return null;
