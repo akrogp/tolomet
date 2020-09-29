@@ -63,7 +63,7 @@ public class MeteoNavarraProvider implements WindProvider {
 			return;
 		int i;
 		for( i = 0; i < cells.length; i++ )
-			if( cells[i].contains("Fecha") )
+			if( cells[i].toLowerCase().contains("fecha") )
 				break;
 		for( i = i+16; i < cells.length; i+=8 ) {
 			if( END_PATTERN.matcher(cells[i]).find() )
