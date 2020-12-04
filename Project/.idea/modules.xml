@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Project.iml" filepath="$PROJECT_DIR$/Project.iml" group="Project" />
-      <module fileurl="file://$PROJECT_DIR$/tolometCore/tolometCore.iml" filepath="$PROJECT_DIR$/tolometCore/tolometCore.iml" group="Project/tolometCore" />
-      <module fileurl="file://$PROJECT_DIR$/tolometGui/tolometGui.iml" filepath="$PROJECT_DIR$/tolometGui/tolometGui.iml" group="Project/tolometGui" />
-      <module fileurl="file://$PROJECT_DIR$/tolometUtils/tolometUtils.iml" filepath="$PROJECT_DIR$/tolometUtils/tolometUtils.iml" group="Project/tolometUtils" />
+      <module fileurl="file://$PROJECT_DIR$/Project.iml" filepath="$PROJECT_DIR$/Project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/tolometCore/Project.tolometCore.iml" filepath="$PROJECT_DIR$/.idea/modules/tolometCore/Project.tolometCore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/tolometGui/Project.tolometGui.iml" filepath="$PROJECT_DIR$/.idea/modules/tolometGui/Project.tolometGui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/tolometUtils/Project.tolometUtils.iml" filepath="$PROJECT_DIR$/.idea/modules/tolometUtils/Project.tolometUtils.iml" />
     </modules>
   </component>
 </project>

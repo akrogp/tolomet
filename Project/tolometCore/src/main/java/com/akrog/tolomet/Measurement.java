@@ -28,7 +28,7 @@ public class Measurement {
 		cachedMaximum = null;
 	}
 	
-	public void put(long time, Number value ) {
+	public synchronized void put(long time, Number value ) {
 		if( value == null )
 			return;
 		if( validMinimum != null && value.floatValue() < validMinimum )
@@ -44,7 +44,7 @@ public class Measurement {
 		clearCache();
 	}
 
-	public Set<Map.Entry<Long,Number>> getEntrySet() {
+	public synchronized Set<Map.Entry<Long,Number>> getEntrySet() {
 		return map.entrySet();
 	}
 	
@@ -106,11 +106,11 @@ public class Measurement {
 		return getValues()[size()-1];
 	}
 
-	public Number getAt(long time) {
+	public synchronized Number getAt(long time) {
 		return map.get(time);
 	}
 	
-	public Number[] getValues() {
+	public synchronized Number[] getValues() {
 		if( values == null )
 			values = map.values().toArray(new Number[0]); 
 		return values;
@@ -142,23 +142,23 @@ public class Measurement {
 		return cachedMaximum;
 	}
 	
-	public int size() {
+	public synchronized int size() {
 		return map.size();
 	}
 	
-	public void clear() {
+	public synchronized void clear() {
 		map.clear();
 		clearCache();
 	}
 	
-	public void clear( long fromStamp ) {
+	public synchronized void clear( long fromStamp ) {
 		for( Long stamp : getTimes() )
 			if( stamp < fromStamp )
 				map.remove(stamp);
 		clearCache();
 	}
 	
-	public boolean isEmpty() {
+	public synchronized boolean isEmpty() {
 		return map.isEmpty();
 	}
 	
