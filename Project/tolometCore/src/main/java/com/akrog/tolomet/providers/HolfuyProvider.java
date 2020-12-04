@@ -44,7 +44,7 @@ public class HolfuyProvider extends BaseProvider {
         try {
             downloader = new Downloader();
             downloader.setUrl("https://holfuy.com/puget/mkrs.php");
-            String data = downloader.download();
+            String data = downloader.download().replaceAll("\"\"", "\"0\"");
             XmlElement xml = XmlParser.load(new StringReader(data));
             List<Station> result = new ArrayList<>(xml.getSubElements().size());
             for (XmlElement marker : xml.getSubElements()) {
