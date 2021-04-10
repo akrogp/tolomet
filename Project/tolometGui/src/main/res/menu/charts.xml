@@ -10,6 +10,12 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/map_item"
+        android:title="@string/Map"
+        android:icon="@drawable/ic_map_item"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/fly_item"
         android:title="@string/FlyMode"
         android:icon="@drawable/ic_flight_mode"
