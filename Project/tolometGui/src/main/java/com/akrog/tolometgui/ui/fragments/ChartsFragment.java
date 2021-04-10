@@ -34,7 +34,7 @@ import androidx.annotation.Nullable;
 
 public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelListener {
     private static final DateFormat df = new SimpleDateFormat("EEE (dd/MMM)");
-    private static int[] LIVE_ITEMS = {R.id.refresh_item, R.id.fly_item};
+    private static int[] LIVE_ITEMS = {R.id.refresh_item, R.id.map_item, R.id.fly_item};
     private final Handler handler = new Handler();
     private Runnable timer;
     private AsyncTask<Void, Void, Station> thread;
@@ -108,6 +108,8 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
 
         if( id == R.id.refresh_item )
             onRefresh();
+        else if( id == R.id.map_item )
+            ((MainActivity)getActivity()).navigate(R.id.nav_maps);
         else if( id == R.id.fly_item )
             setScreenMode(!settings.isFlying());
 

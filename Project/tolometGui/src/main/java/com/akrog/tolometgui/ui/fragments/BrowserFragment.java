@@ -13,11 +13,12 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.akrog.tolometgui.R;
+import com.akrog.tolometgui.ui.activities.MainActivity;
 
 import androidx.annotation.Nullable;
 
 public abstract class BrowserFragment extends ToolbarFragment {
-    private static final int[] LIVE_ITEMS = {R.id.refresh_item, R.id.browser_item};
+    private static final int[] LIVE_ITEMS = {R.id.refresh_item, R.id.charts_item, R.id.browser_item};
     protected WebView web;
 
     @Override
@@ -53,6 +54,8 @@ public abstract class BrowserFragment extends ToolbarFragment {
 
         if( id == R.id.refresh_item )
             reload();
+        else if( id == R.id.charts_item )
+            ((MainActivity)getActivity()).navigate(R.id.nav_charts);
         else if( id == R.id.browser_item )
             openBrowser();
 

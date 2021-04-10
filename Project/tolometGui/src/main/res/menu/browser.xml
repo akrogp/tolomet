@@ -10,6 +10,12 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/charts_item"
+        android:title="@string/Charts"
+        android:icon="@drawable/ic_charts_item"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/browser_item"
         android:title="@string/Browser"
         android:icon="@drawable/ic_external"
