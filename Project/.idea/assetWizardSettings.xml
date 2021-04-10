@@ -165,8 +165,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_my_location" />
-                            <entry key="sourceFile" value="$PROJECT_DIR$/../Media/add_spot.svg" />
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="outputName" value="ic_hiker" />
+                            <entry key="sourceFile" value="$PROJECT_DIR$/../Media/hiker.svg" />
                           </map>
                         </option>
                       </PersistentState>
