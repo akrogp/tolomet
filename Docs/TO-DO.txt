@@ -1,5 +1,4 @@
 Corto:
-- Cambiar tema de regiones
 - Actualizar widget con pantalla encendida
 - Alertas meteorológicas (Fili/FVDA)
 - Alarma sonora cuando peligro
@@ -21,6 +20,7 @@ Largo:
 
 Hecho:
 x Nuevo mapa de Elliott con tacks
+x Cambiar tema de regiones
 x Rango velocidad inferior a 40 km/h -> lo descarto porque tendría que ser 24 y 32 y sería confuso
 x Otras unidades (nudos)
 x Target a última versión de Android (permisos, etc)
