@@ -1,6 +1,7 @@
 package com.akrog.tolometgui.ui.fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -42,6 +43,8 @@ import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import androidx.annotation.Nullable;
 import androidx.core.util.Consumer;
@@ -55,6 +58,7 @@ public class MapFragment extends ToolbarFragment implements
     private boolean resetZoom = true;
     private Marker currentMarker;
     private MapViewModel mapViewModel;
+    private final Pattern URL_PATTERN = Pattern.compile("http.?://\\S*");
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -123,6 +127,7 @@ public class MapFragment extends ToolbarFragment implements
         );
     }
 
+    @SuppressLint("MissingPermission")
     private void enableLocation() {
         map.setMyLocationEnabled(true);
         View newButton = getView().findViewById(R.id.button_location);
@@ -289,6 +294,12 @@ public class MapFragment extends ToolbarFragment implements
         if( spot == null )
             return;
         Intent intent;
+        Matcher matcher;
+        if( spot.getDesc() != null && (matcher=URL_PATTERN.matcher(spot.getDesc())).find() ) {
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse(matcher.group()));
+            startActivity(intent);
+            return;
+        }
         if( spot.getName() != null && !spot.getName().isEmpty() )
             intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format(Locale.ENGLISH,
                 "geo:0,0?q=%f,%f(%s)", spot.getLatitude(), spot.getLongitude(), spot.getName()

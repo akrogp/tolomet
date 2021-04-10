@@ -96,5 +96,6 @@ public class ResourceService {
 
         mapBitmap.put(SpotType.LANDING.name(), res2bmp(R.drawable.ic_landing, big, big));
         mapBitmap.put(SpotType.TAKEOFF.name(), res2bmp(R.drawable.ic_takeoff, big, big));
+        mapBitmap.put(SpotType.TREKKING.name(), res2bmp(R.drawable.ic_hiker, big, big));
     }
 }

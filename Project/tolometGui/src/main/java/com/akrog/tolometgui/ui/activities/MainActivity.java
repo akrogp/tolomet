@@ -91,7 +91,7 @@ public class MainActivity extends ToolbarActivity
     @Override
     protected void updateMenu(Station station) {
         super.updateMenu(station);
-        if( fragment.needsScreenshotStation() ) {
+        if( fragment != null && fragment.needsScreenshotStation() ) {
             MenuItem shareItem = menu.findItem(R.id.share_item);
             AndroidUtils.setMenuItemEnabled(shareItem, model.checkStation());
         }

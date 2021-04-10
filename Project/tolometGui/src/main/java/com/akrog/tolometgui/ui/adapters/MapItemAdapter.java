@@ -75,10 +75,14 @@ public class MapItemAdapter implements GoogleMap.InfoWindowAdapter {
         View view = fragment.getLayoutInflater().inflate(R.layout.map_spot, null);
 
         ImageView icon = view.findViewById(R.id.icon);
-        if( spot.getType() == SpotType.TAKEOFF )
+        if( spot.getType() == SpotType.TAKEOFF ) {
+            icon.setImageResource(R.drawable.ic_flyspot);
             icon.setColorFilter(fragment.getResources().getColor(R.color.colorTakeoff));
-        else if( spot.getType() == SpotType.LANDING )
+        } else if( spot.getType() == SpotType.LANDING ) {
+            icon.setImageResource(R.drawable.ic_flyspot);
             icon.setColorFilter(fragment.getResources().getColor(R.color.colorLanding));
+        } else if( spot.getType() == SpotType.TREKKING )
+            icon.setImageResource(R.drawable.ic_hiker);
 
         TextView textView = view.findViewById(R.id.name);
         textView.setText(spot.getName());

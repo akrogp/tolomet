@@ -16,7 +16,7 @@ public class ElliottProvider implements SpotProvider {
     public List<Spot> downloadSpots() {
         List<Spot> spots = new ArrayList<>();
         dw = new ZipDownloader();
-        dw.setUrl("https://www.google.com/maps/d/kml?mid=1TuFqknQn4vtKYr7VYwpn1BUJjQw");
+        dw.setUrl("https://www.google.com/maps/d/kml?mid=1AC_eEAVLOu__evAVQ85dvr6CCcX0ajla");
         String data = dw.download();
         try(BufferedReader br = new BufferedReader(new StringReader(data))) {
             String line;
@@ -39,6 +39,8 @@ public class ElliottProvider implements SpotProvider {
                         spot.setType(SpotType.LANDING);
                     else if (line.contains("icon-503-0BA9CC"))
                         spot.setType(SpotType.TAKEOFF);
+                    else if (line.contains("icon-1369"))
+                        spot.setType(SpotType.TREKKING);
                 }
                 else if( line.equals("<coordinates>") )
                     coordsCount = 0;
