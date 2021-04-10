@@ -20,7 +20,8 @@ Largo:
 - Gráficas con predicción (meteoblue)
 
 Hecho:
-X Rango velocidad inferior a 40 km/h -> lo descarto porque tendría que ser 24 y 32 y sería confuso
+x Nuevo mapa de Elliott con tacks
+x Rango velocidad inferior a 40 km/h -> lo descarto porque tendría que ser 24 y 32 y sería confuso
 x Otras unidades (nudos)
 x Target a última versión de Android (permisos, etc)
 x Estación La Covatilla de AEMET

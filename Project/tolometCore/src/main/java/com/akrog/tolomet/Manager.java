@@ -85,6 +85,7 @@ public class Manager {
 		try {
 			return station.getProvider().travel(station, date);
 		} catch( Exception e ) {
+			e.printStackTrace();
 		}
 		return false;
 	}

@@ -63,8 +63,6 @@ public class EuskalmetProvider implements WindProvider {
 		return result;
 	}
 
-	int kk;
-
 	private boolean downloadCoords(Station station, String url) {
 		Downloader dw = new Downloader();
 		dw.setUrl(url);
@@ -88,9 +86,7 @@ public class EuskalmetProvider implements WindProvider {
 					fields--;
 				}
 			}
-			kk++;
 		} catch (Exception e) {
-			System.err.println(kk);
 			e.printStackTrace();
 			return false;
 		}
@@ -121,7 +117,6 @@ public class EuskalmetProvider implements WindProvider {
 		downloader.setBrowser(FakeBrowser.WGET);
 		String time1 = String.format("%02d:%02d", past.get(Calendar.HOUR_OF_DAY), past.get(Calendar.MINUTE) );
 		String time2 = String.format("%02d:%02d", now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE) );
-		//downloader.setUrl("http://www.euskalmet.euskadi.net/s07-5853x/es/meteorologia/lectur_fr.apl");
 		downloader.setUrl("https://www.euskalmet.euskadi.eus/s07-5853x/es/meteorologia/lectur_imp.apl");
 		downloader.addParam("e", "5");
 		downloader.addParam("anyo", now.get(Calendar.YEAR));
@@ -141,7 +136,7 @@ public class EuskalmetProvider implements WindProvider {
 
         downloader = new Downloader();
         downloader.setBrowser(FakeBrowser.WGET);
-        downloader.setUrl("http://www.euskalmet.euskadi.eus/s07-5853x/es/meteorologia/lectur_imp.apl");
+        downloader.setUrl("https://www.euskalmet.euskadi.eus/s07-5853x/es/meteorologia/lectur_imp.apl");
         downloader.addParam("e", "5");
         downloader.addParam("anyo", cal.get(Calendar.YEAR));
         downloader.addParam("mes", cal.get(Calendar.MONTH)+1);
