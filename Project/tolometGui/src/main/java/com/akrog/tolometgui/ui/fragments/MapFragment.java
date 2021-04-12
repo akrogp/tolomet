@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.akrog.tolomet.SpotType;
 import com.akrog.tolomet.Station;
 import com.akrog.tolometgui.R;
 import com.akrog.tolomet.Spot;
@@ -118,10 +119,12 @@ public class MapFragment extends ToolbarFragment implements
 
     private void configureReportButtons() {
         BaseActivity activity = (BaseActivity)getActivity();
+        getView().findViewById(R.id.button_add_hiker).setOnClickListener(view ->
+                activity.sendMail("davidherranzelliott@gmail.com", getString(R.string.AddHikeSpotSubject), getString(R.string.ElliottGreetings))
+        );
         getView().findViewById(R.id.button_add_spot).setOnClickListener(view ->
             activity.sendMail("davidherranzelliott@gmail.com", getString(R.string.AddFlySpotSubject), getString(R.string.ElliottGreetings))
         );
-
         getView().findViewById(R.id.button_add_station).setOnClickListener(view ->
             activity.sendMail("akrog.apps@gmail.com", getString(R.string.AddStationSubject), getString(R.string.ReportGreetings))
         );
@@ -144,6 +147,7 @@ public class MapFragment extends ToolbarFragment implements
         super.onCreateOptionsMenu(menu, inflater);
         menu.findItem(R.id.satellite_item).setChecked(settings.isSatellite());
         menu.findItem(R.id.flyspots_item).setChecked(settings.isFlySpots());
+        menu.findItem(R.id.hikespots_item).setChecked(settings.isHikeSpots());
     }
 
     @Override
@@ -168,6 +172,11 @@ public class MapFragment extends ToolbarFragment implements
             item.setChecked(!item.isChecked());
             settings.setFlySpots(item.isChecked());
             getView().findViewById(R.id.button_add_spot).setVisibility(item.isChecked()?View.VISIBLE:View.GONE);
+            onCameraIdle();
+        } else if( id == R.id.hikespots_item ) {
+            item.setChecked(!item.isChecked());
+            settings.setHikeSpots(item.isChecked());
+            getView().findViewById(R.id.button_add_hiker).setVisibility(item.isChecked()?View.VISIBLE:View.GONE);
             onCameraIdle();
         } else if( id == R.id.browser_item )
             openBrowser();
@@ -416,12 +425,15 @@ public class MapFragment extends ToolbarFragment implements
             items.stations = DbTolomet.getInstance().stationDao().findGeoStations(
                     bounds.northeast.latitude, bounds.northeast.longitude,
                     bounds.southwest.latitude, bounds.southwest.longitude);
+            items.spots = new ArrayList<>();
             if( fragment.settings.isFlySpots() )
-                items.spots = DbTolomet.getInstance().spotDao().findGeoSpots(
+                items.spots.addAll(DbTolomet.getInstance().spotDao().findGeoSpots(
+                    bounds.northeast.latitude, bounds.northeast.longitude,
+                    bounds.southwest.latitude, bounds.southwest.longitude, SpotType.LANDING, SpotType.TAKEOFF));
+            if( fragment.settings.isHikeSpots() )
+                items.spots.addAll(DbTolomet.getInstance().spotDao().findGeoSpots(
                         bounds.northeast.latitude, bounds.northeast.longitude,
-                        bounds.southwest.latitude, bounds.southwest.longitude);
-            else
-                items.spots = new ArrayList<>();
+                        bounds.southwest.latitude, bounds.southwest.longitude, SpotType.TREKKING));
             return items;
         }
 

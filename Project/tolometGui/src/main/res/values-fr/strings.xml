@@ -150,4 +150,5 @@
     <string name="AddFlySpotSubject">Tolomet: add new fly spot</string>
     <string name="ElliottGreetings">Hi Elliott!</string>
     <string name="Configure">Configurar</string>
+    <string name="AddHikeSpotSubject">Tolomet: add new hike spot</string>
 </resources>

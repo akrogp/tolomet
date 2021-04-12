@@ -99,6 +99,8 @@ public class MainActivity extends ToolbarActivity
 
     public void navigate(int navId) {
         MenuItem menuItem = navView.getMenu().findItem(navId);
+        if( menuItem == null )
+            menuItem = navView.getMenu().findItem(R.id.nav_charts);
         if( menuItem != null ) {
             menuItem.setChecked(true);
             onNavigationItemSelected(menuItem);
@@ -180,7 +182,6 @@ public class MainActivity extends ToolbarActivity
         }
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();

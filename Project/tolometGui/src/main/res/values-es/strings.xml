@@ -154,4 +154,5 @@
     <string name="AddFlySpotSubject">Tolomet: nueva zona de vuelo</string>
     <string name="ElliottGreetings">¡Hola Elliott!</string>
     <string name="Configure">Configurar</string>
+    <string name="AddHikeSpotSubject">Tolomet: nueva subida a despegue</string>
 </resources>
