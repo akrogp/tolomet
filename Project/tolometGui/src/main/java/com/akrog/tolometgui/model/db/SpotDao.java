@@ -1,14 +1,19 @@
 package com.akrog.tolometgui.model.db;
 
+import android.os.Build;
+
 import com.akrog.tolomet.Spot;
 import com.akrog.tolomet.SpotType;
 import com.akrog.tolomet.providers.SpotProviderType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
+import androidx.annotation.RequiresApi;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -16,8 +21,8 @@ import androidx.room.Query;
 
 @Dao
 public abstract class SpotDao {
-    @Query("SELECT * FROM Spot WHERE latitude BETWEEN :lat1 AND :lat2 AND longitude BETWEEN :lon1 AND :lon2")
-    protected abstract List<SpotEntity> findGeoEntities(double lat1, double lon1, double lat2, double lon2);
+    @Query("SELECT * FROM Spot WHERE latitude BETWEEN :lat1 AND :lat2 AND longitude BETWEEN :lon1 AND :lon2 AND type in (:types)")
+    protected abstract List<SpotEntity> findGeoEntities(double lat1, double lon1, double lat2, double lon2, String[] types);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     protected abstract void updateEntities(Collection<SpotEntity> entities);
@@ -25,7 +30,7 @@ public abstract class SpotDao {
     @Query("DELETE FROM Spot WHERE provider = :provider")
     protected abstract void deleteProvider(String provider);
 
-    public List<Spot> findGeoSpots(double lat1, double lon1, double lat2, double lon2) {
+    public List<Spot> findGeoSpots(double lat1, double lon1, double lat2, double lon2, SpotType... types) {
         double tmp;
         if (lat2 < lat1) {
             tmp = lat1; lat1 = lat2; lat2 = tmp;
@@ -33,7 +38,11 @@ public abstract class SpotDao {
         if (lon2 < lon1) {
             tmp = lon1; lon1 = lon2; lon2 = tmp;
         }
-        List<SpotEntity> entities = findGeoEntities(lat1, lon1, lat2, lon2);
+        String[] strings = new String[types.length];
+        int i = 0;
+        for(SpotType type : types)
+            strings[i++] = type.name();
+        List<SpotEntity> entities = findGeoEntities(lat1, lon1, lat2, lon2, strings);
         return entities2spots(entities);
     }
 

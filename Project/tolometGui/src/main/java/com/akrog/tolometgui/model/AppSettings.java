@@ -282,6 +282,16 @@ public class AppSettings {
         return settings.getBoolean("pref_flyspot", true);
     }
 
+    public void setHikeSpots(boolean sat) {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean("pref_hikespot", sat);
+        editor.commit();
+    }
+
+    public boolean isHikeSpots() {
+        return settings.getBoolean("pref_hikespot", true);
+    }
+
     public FlySpot getSpot() {
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("wconstraints","1");

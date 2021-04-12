@@ -18,6 +18,13 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/hikespots_item"
+        android:title="@string/HikeFly"
+        android:icon="@drawable/ic_hikespots"
+        android:checkable="true"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/browser_item"
         android:title="@string/Browser"
         android:icon="@drawable/ic_external"

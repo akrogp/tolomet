@@ -27,16 +27,27 @@
         android:layout_marginRight="@dimen/default_margin"/>
 
     <ImageButton
-        android:id="@+id/button_add_spot"
+        android:id="@+id/button_add_hiker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_add_spot"
+        app:srcCompat="@drawable/ic_add_hiker"
         app:backgroundTint="#BFFFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginLeft="@dimen/default_margin"
         android:layout_marginBottom="@dimen/default_margin"/>
+
+    <ImageButton
+        android:id="@+id/button_add_spot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_add_spot"
+        app:backgroundTint="#BFFFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/button_add_hiker"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/default_margin"/>
 
     <ImageButton
         android:id="@+id/button_add_station"
