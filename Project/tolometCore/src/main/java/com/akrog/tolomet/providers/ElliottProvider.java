@@ -31,7 +31,7 @@ public class ElliottProvider implements SpotProvider {
                 } else if( spot == null )
                     continue;
                 else if( line.startsWith("<name>") )
-                    spot.setName(XmlParser.getValue(line));
+                    spot.setName(XmlParser.getExpandedValue(line));
                 else if( line.startsWith("<description>") )
                     spot.setDesc(XmlParser.getExpandedValue(line));
                 else if( line.startsWith("<styleUrl>") ) {
