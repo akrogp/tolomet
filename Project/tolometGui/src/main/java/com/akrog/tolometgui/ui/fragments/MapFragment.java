@@ -311,17 +311,13 @@ public class MapFragment extends ToolbarFragment implements
         }
         if( spot.getName() != null && !spot.getName().isEmpty() )
             intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format(Locale.ENGLISH,
-                "geo:0,0?q=%f,%f(%s)", spot.getLatitude(), spot.getLongitude(), spot.getName()
+                "geo:0,0?q=%f,%f(%s)", spot.getLatitude(), spot.getLongitude(), Uri.encode(spot.getName())
             )));
         else
             intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format(Locale.ENGLISH,
                 "geo:%f,%f", spot.getLatitude(), spot.getLongitude()
             )));
-        if( intent.resolveActivity(activity.getPackageManager()) != null ) {
-            Intent chooser = Intent.createChooser(intent, getString(R.string.select_app));
-            startActivity(chooser);
-        } else
-            Toast.makeText(activity, R.string.install_nav_app, Toast.LENGTH_LONG).show();
+        startActivity(intent);
     }
 
     private class ItemRenderer extends DefaultClusterRenderer<ClusterItem> {
