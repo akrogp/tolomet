@@ -43,7 +43,8 @@
         android:id="@+id/desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:autoLink="all"
+        android:autoLink="web"
+        android:layout_marginTop="@dimen/default_margin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/coords"/>
 
