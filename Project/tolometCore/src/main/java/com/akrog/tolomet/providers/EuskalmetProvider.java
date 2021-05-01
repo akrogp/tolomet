@@ -7,6 +7,7 @@ import com.akrog.tolomet.utils.Utils;
 import com.akrog.tolomet.io.Downloader;
 import com.akrog.tolomet.io.Downloader.FakeBrowser;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
@@ -27,80 +28,38 @@ public class EuskalmetProvider implements WindProvider {
 	
 	@Override
 	public String getInfoUrl(String code) {
-		return "https://www.euskalmet.euskadi.eus/s07-5853x/es/meteorologia/estacion.apl?e=5&campo="+code;
+		return "https://www.euskalmet.euskadi.eus/observacion/datos-de-estaciones";
 	}
 
 	@Override
 	public String getUserUrl(String code) {
-		//return "https://www.euskalmet.euskadi.eus/s07-5853x/es/meteorologia/lectur.apl?e=5&campo="+code;
-		return "https://www.euskalmet.euskadi.eus/s07-5853x/es/meteorologia/datos/mapaesta.apl?e=5&campo="+code;
+		return "https://www.euskalmet.euskadi.eus/observacion/datos-de-estaciones";
 	}
 
 	@Override
 	public List<Station> downloadStations() {
 		Downloader dw = new Downloader();
-		dw.setUrl("https://opendata.euskadi.eus/contenidos/ds_meteorologicos/estaciones_meteorologicas/opendata/estaciones.json");
-		String data = dw.download();
-		data = data.replaceAll("\n","");
-		Matcher object = PATTERN_OBJECT.matcher(data);
-		List<Station> result = new ArrayList<>();
-		while( object.find() ) {
-			Matcher field = PATTERN_FIELD.matcher(object.group(1));
-			Station station = new Station();
-			station.setRegion(183);
-			station.setProviderType(WindProviderType.Euskalmet);
-			while( field.find() ) {
-				String key = field.group(1);
-				String value = field.group(2);
-				if (key.equals("documentName"))
-					station.setName(value);
-				else if( key.equals("dataXML") ) {
-					Matcher code = PATTERN_CODE.matcher(value);
-					if( !code.find() || !downloadCoords(station, value))
-						return null;
-					station.setCode(code.group(1).toUpperCase());
-				}
-			}
-			Utils.utm2ll(station);
-			result.add(station);
-		}
-		return result;
-	}
-
-	private boolean downloadCoords(Station station, String url) {
-		Downloader dw = new Downloader();
-		dw.setUrl(url);
-		int fields = 2;
+		dw.setUrl("https://www.euskalmet.euskadi.eus/vamet/stations/stationList/stationList.json");
+		String data = dw.download(null, "ISO-8859-1");
 		try {
-			String xml = dw.download().replaceAll("&", "");
-			XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();
-			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-			parser.setInput(new StringReader(xml));
-			parser.nextTag();
-			parser.require(XmlPullParser.START_TAG, null, "stationData");
-			while(fields > 0 && parser.next() != XmlPullParser.END_DOCUMENT) {
-				if (parser.getEventType() != XmlPullParser.START_TAG)
-            		continue;
-				String name = parser.getName();
-				if( name.equals("latitudeUTM") ) {
-					station.setLatitude(readDouble(parser));
-					fields--;
-				} else if( name.equals("longitudeUTM")) {
-					station.setLongitude(readDouble(parser));
-					fields--;
-				}
+			JSONArray array = new JSONArray(data);
+			List<Station> result = new ArrayList<>(array.length());
+			for( int i = 0; i < array.length(); i++ ) {
+				JSONObject json = array.getJSONObject(i);
+				Station station = new Station();
+				station.setRegion(183);
+				station.setProviderType(WindProviderType.Euskalmet);
+				station.setCode(json.getString("id"));
+				station.setName(json.getString("name"));
+				station.setLatitude(json.getDouble("y"));
+				station.setLongitude(json.getDouble("x"));
+				result.add(station);
 			}
-		} catch (Exception e) {
+			return result;
+		} catch (JSONException e) {
 			e.printStackTrace();
-			return false;
 		}
-		return fields == 0;
-	}
-
-	private Double readDouble(XmlPullParser parser) throws IOException, XmlPullParserException {
-		if (parser.next() == XmlPullParser.TEXT)
-			return Double.parseDouble(parser.getText());
-		return null;
+		return new ArrayList<>();
 	}
 
 	@Override
@@ -199,7 +158,4 @@ public class EuskalmetProvider implements WindProvider {
 	}
 
 	private Downloader downloader;
-	private static final Pattern PATTERN_FIELD = Pattern.compile("\"([^\"]*)\" ?: ?\"([^\"}]*)\"");
-	private static final Pattern PATTERN_OBJECT = Pattern.compile("\\{([^\\}]*)\\}");
-	private static final Pattern PATTERN_CODE = Pattern.compile("station_([^\\/]*)\\/");
 }
