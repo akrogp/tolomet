@@ -59,7 +59,7 @@ public class MapFragment extends ToolbarFragment implements
     private boolean resetZoom = true;
     private Marker currentMarker;
     private MapViewModel mapViewModel;
-    private final Pattern URL_PATTERN = Pattern.compile("http.?://\\S*");
+    private final Pattern URL_PATTERN = Pattern.compile("http.?://[^\\s<]*");
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
