@@ -13,15 +13,32 @@ import com.akrog.tolometgui.model.db.DbTolomet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 public class AppSettings {
     private static AppSettings instance;
     private final SharedPreferences settings;
     private final Context context;
+    private enum Screen {
+        CHARTS(R.id.nav_charts), MAP(R.id.nav_maps), INFO(R.id.nav_info), ORIGIN(R.id.nav_origin),
+        SETTINGS(R.id.nav_settings), DISCOVER(R.id.nav_discover), HELP(R.id.nav_help),
+        REPORT(R.id.nav_report), ABOUT(R.id.nav_about);
+
+        Screen(int id) {
+            this.id = id;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        private int id;
+    }
 
     private AppSettings() {
         context = Tolomet.getAppContext();
@@ -311,13 +328,22 @@ public class AppSettings {
     }
 
     public void saveScreen(int id) {
+        if( id >= Screen.values().length )
+            for( Screen screen : Screen.values() )
+                if( id == screen.getId() ) {
+                    id = screen.ordinal();
+                    break;
+                }
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt("pref_fragment",id);
         editor.commit();
     }
 
     public int getScreen() {
-        return settings.getInt("pref_fragment", R.id.nav_charts);
+        int id = settings.getInt("pref_fragment", R.id.nav_charts);
+        if( id < Screen.values().length )
+            return Screen.values()[id].getId();
+        return id;
     }
 
     private void fixValues() {
