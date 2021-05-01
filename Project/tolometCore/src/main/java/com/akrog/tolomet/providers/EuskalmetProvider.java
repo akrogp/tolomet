@@ -1,11 +1,14 @@
 package com.akrog.tolomet.providers;
 
 import com.akrog.tolomet.Header;
+import com.akrog.tolomet.Measurement;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.utils.Utils;
 import com.akrog.tolomet.io.Downloader;
 import com.akrog.tolomet.io.Downloader.FakeBrowser;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -14,6 +17,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
@@ -101,32 +105,7 @@ public class EuskalmetProvider implements WindProvider {
 
 	@Override
 	public void refresh(Station station) {
-		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-		Calendar past = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-		if( !station.isEmpty() )
-			past.setTimeInMillis(station.getStamp());
-		if( station.isEmpty() ||
-			(past.get(Calendar.YEAR) != now.get(Calendar.YEAR)) ||
-			(past.get(Calendar.MONTH) != now.get(Calendar.MONTH)) ||
-			(past.get(Calendar.DAY_OF_MONTH) != now.get(Calendar.DAY_OF_MONTH)) ) {
-			past.set(Calendar.HOUR_OF_DAY,0);
-			past.set(Calendar.MINUTE,0);
-		}		
-		
-		downloader = new Downloader();
-		downloader.setBrowser(FakeBrowser.WGET);
-		String time1 = String.format("%02d:%02d", past.get(Calendar.HOUR_OF_DAY), past.get(Calendar.MINUTE) );
-		String time2 = String.format("%02d:%02d", now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE) );
-		downloader.setUrl("https://www.euskalmet.euskadi.eus/s07-5853x/es/meteorologia/lectur_imp.apl");
-		downloader.addParam("e", "5");
-		downloader.addParam("anyo", now.get(Calendar.YEAR));
-		downloader.addParam("mes", now.get(Calendar.MONTH)+1);
-		downloader.addParam("dia", now.get(Calendar.DAY_OF_MONTH));
-		downloader.addParam("hora", "%s %s", time1, time2);
-		downloader.addParam("CodigoEstacion", station.getCode());
-		downloader.addParam("pagina", "1");
-		downloader.addParam("R01HNoPortal", "true");
-		updateStation(station, downloader.download(),null);
+		travel(station, System.currentTimeMillis());
 	}
 
 	@Override
@@ -136,15 +115,13 @@ public class EuskalmetProvider implements WindProvider {
 
         downloader = new Downloader();
         downloader.setBrowser(FakeBrowser.WGET);
-        downloader.setUrl("https://www.euskalmet.euskadi.eus/s07-5853x/es/meteorologia/lectur_imp.apl");
-        downloader.addParam("e", "5");
-        downloader.addParam("anyo", cal.get(Calendar.YEAR));
-        downloader.addParam("mes", cal.get(Calendar.MONTH)+1);
-        downloader.addParam("dia", cal.get(Calendar.DAY_OF_MONTH));
-        downloader.addParam("hora", "00:00 23:59");
-        downloader.addParam("CodigoEstacion", station.getCode());
-        downloader.addParam("pagina", "1");
-        downloader.addParam("R01HNoPortal", "true");
+        downloader.setUrl(String.format(
+			"https://www.euskalmet.euskadi.eus/vamet/stations/readings/%s/%04d/%02d/%02d/readingsData.json",
+				station.getCode(),
+				cal.get(Calendar.YEAR),
+				cal.get(Calendar.MONTH)+1,
+				cal.get(Calendar.DAY_OF_MONTH)
+		));
         updateStation(station, downloader.download(), date);
 		return true;
 	}
@@ -162,61 +139,57 @@ public class EuskalmetProvider implements WindProvider {
 	
 	private void updateStation(Station station, String data, Long hist) {
 		if( data == null )
-			return;		
-		
-	    String[] lines = data.split("<tr ?>");
-	    Header index = getIndex(lines[3]);
-	    long date;
-	    Number val;		        
-	    for( int i = 4; i < lines.length; i++ ) {
-	        String[] cells = lines[i].split("<td");
-	        if( getContent(cells[1]).equals("Med") )
-	        	break;
-	        if( getContent(cells[2]).equals("-") )
-	        	continue;
-	        date = toEpoch(getContent(cells[index.getDate()]), hist);
-	        if( index.getDir() > 0 ) {
-		        val = Integer.parseInt(getContent(cells[index.getDir()]));
-		        station.getMeteo().getWindDirection().put(date, val);
-	        }
-	        if( index.getMed() > 0 ) {
-		        val = Float.parseFloat(getContent(cells[index.getMed()]));
-		        station.getMeteo().getWindSpeedMed().put(date, val);
-	        }
-	        if( index.getMax() > 0 ) {
-		        val = Float.parseFloat(getContent(cells[index.getMax()]));
-		        station.getMeteo().getWindSpeedMax().put(date, val);
-	        }
-	        if( index.getHum() > 0 ) {
-		        val = (float)Integer.parseInt(getContent(cells[index.getHum()]));
-	        	station.getMeteo().getAirHumidity().put(date, val);
-	        }
-	        if( index.getTemp() > 0 ) {
-		        val = Float.parseFloat(getContent(cells[index.getTemp()]));
-		        station.getMeteo().getAirTemperature().put(date, val);
-	        }
-	        if( index.getPres() > 0 ) {
-		        val = Float.parseFloat(getContent(cells[index.getPres()]));
-		        station.getMeteo().getAirPressure().put(date, val);
-	        }
-	    }
+			return;
+
+		try {
+			JSONObject json = new JSONObject(data);
+			Iterator it = json.keys();
+			while( it.hasNext() ) {
+				JSONObject sensor = json.getJSONObject(String.valueOf(it.next()));
+				String type = sensor.getString("type");
+				String name = sensor.getString("name");
+				if( type.equals("measuresForWind") ) {
+					if( name.equals("mean_speed") )
+						updateMeasurement(station.getMeteo().getWindSpeedMed(), sensor, hist, 3.6);
+					else if( name.equals("mean_direction") )
+						updateMeasurement(station.getMeteo().getWindDirection(), sensor, hist);
+					else if( name.equals("max_speed") )
+						updateMeasurement(station.getMeteo().getWindSpeedMax(), sensor, hist, 3.6);
+				} else if( type.equals("measuresForAir") ) {
+					if( name.equals("temperature") )
+						updateMeasurement(station.getMeteo().getAirTemperature(), sensor, hist);
+					else if( name.equals("humidity") )
+						updateMeasurement(station.getMeteo().getAirHumidity(), sensor, hist);
+					else if( name.equals("pressure") )
+						updateMeasurement(station.getMeteo().getAirPressure(), sensor, hist);
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
-	
-	private Header getIndex(String row) {
-		Header index = new Header();
-		String[] cells = row.split("<td");
-		index.findDate("Hora",cells);		// 1
-		index.findDir("Dir", cells);		// 3
-		index.findMed("Vel.Med", cells);	// 2
-		index.findMax("Vel.Max", cells);	// 4
-		index.findTemp("Tem.Aire", cells);
-		index.findHum("Humedad", cells);
-		index.findPres("Pres", cells);
-		return index;
+
+	private void updateMeasurement(Measurement meas, JSONObject json, Long hist) throws JSONException {
+		updateMeasurement(meas, json, hist, 1.0);
+	}
+
+	private void updateMeasurement(Measurement meas, JSONObject json, Long hist, double factor) throws JSONException {
+		JSONObject data = json.getJSONObject("data");
+		data = data.getJSONObject(String.valueOf(data.keys().next()));
+		String time;
+		long date;
+		Number val;
+		Iterator it = data.keys();
+		while( it.hasNext() ) {
+			time = String.valueOf(it.next());
+			date = toEpoch(time, hist);
+			val = data.getDouble(time)*factor;
+			meas.put(date, val);
+		}
 	}
 
 	private long toEpoch( String str, Long date ) {
-		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("CET"));
 		if( date != null )
 			cal.setTimeInMillis(date);
 		String[] fields = str.split(":");
@@ -224,17 +197,7 @@ public class EuskalmetProvider implements WindProvider {
 	    cal.set(Calendar.MINUTE, Integer.parseInt(fields[1]) );
 	    return cal.getTimeInMillis();
 	}
-	
-	private String getContent( String cell ) {
-		cell = cell.replaceAll("\n","").replaceAll("\r","").replaceAll("\t","").replaceAll(" ","");
-		int i = cell.indexOf('>')+1;
-		if( cell.charAt(i) == '<' )
-			i = cell.indexOf('>', i)+1;
-		int i2 = cell.indexOf('<', i);
-		return cell.substring(i, i2).replace(',', this.separator);
-	}
-	
-	private final char separator = '.';	
+
 	private Downloader downloader;
 	private static final Pattern PATTERN_FIELD = Pattern.compile("\"([^\"]*)\" ?: ?\"([^\"}]*)\"");
 	private static final Pattern PATTERN_OBJECT = Pattern.compile("\\{([^\\}]*)\\}");
