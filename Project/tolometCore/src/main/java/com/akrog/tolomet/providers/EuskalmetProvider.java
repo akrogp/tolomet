@@ -69,7 +69,7 @@ public class EuskalmetProvider implements WindProvider {
 
 	@Override
 	public boolean travel(Station station, long date) {
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        Calendar cal = Calendar.getInstance(TIMEZONE);
         cal.setTimeInMillis(date);
 
         downloader = new Downloader();
@@ -148,7 +148,7 @@ public class EuskalmetProvider implements WindProvider {
 	}
 
 	private long toEpoch( String str, Long date ) {
-		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("CET"));
+		Calendar cal = Calendar.getInstance(TIMEZONE);
 		if( date != null )
 			cal.setTimeInMillis(date);
 		String[] fields = str.split(":");
@@ -158,4 +158,5 @@ public class EuskalmetProvider implements WindProvider {
 	}
 
 	private Downloader downloader;
+	private static final TimeZone TIMEZONE = TimeZone.getTimeZone("CET");
 }
