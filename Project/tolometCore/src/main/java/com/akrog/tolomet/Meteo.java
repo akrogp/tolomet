@@ -11,6 +11,7 @@ public class Meteo {
 		measurements.add(airHumidity);
 		measurements.add(airTemperature);
 		measurements.add(airPressure);
+		measurements.add(irradiance);
 	}
 	
 	public Measurement getWindDirection() {
@@ -36,7 +37,11 @@ public class Meteo {
 	public Measurement getAirHumidity() {
 		return airHumidity;
 	}
-	
+
+	public Measurement getIrradiance() {
+		return irradiance;
+	}
+
 	public void clear() {
 		for( Measurement measurement : measurements )
 			measurement.clear();
@@ -48,12 +53,8 @@ public class Meteo {
 	}
 	
 	public void merge(Meteo meteo) {
-		windDirection.merge(meteo.getWindDirection());
-		windSpeedMed.merge(meteo.getWindSpeedMed());
-		windSpeedMax.merge(meteo.getWindSpeedMax());
-		airTemperature.merge(meteo.getAirTemperature());
-		airPressure.merge(meteo.getAirPressure());
-		airHumidity.merge(meteo.getAirHumidity());
+		for( int i = 0; i < measurements.size(); i++ )
+			measurements.get(i).merge(meteo.measurements.get(i));
 	}
 	
 	public boolean isEmpty() {
@@ -132,5 +133,6 @@ public class Meteo {
 	private final Measurement airTemperature = new Measurement(-100F,100F);
 	private final Measurement airPressure = new Measurement(0F,10000F);
 	private final Measurement airHumidity = new Measurement(0F,110F);
+	private final Measurement irradiance = new Measurement(0F,1361F);
 	private final List<Measurement> measurements = new ArrayList<Measurement>();
 }

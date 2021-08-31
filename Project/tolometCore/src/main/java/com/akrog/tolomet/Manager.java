@@ -96,11 +96,11 @@ public class Manager {
 		station.getProvider().cancel();
 	}
 
-	public String getSummary( Station station, boolean large, float factor, String unit ) {
-		return getSummary(station, null, large, factor, unit);
+	public String getSummary( Station station, boolean large, boolean full, float factor, String unit ) {
+		return getSummary(station, null, large, full, factor, unit);
 	}
 	
-	public String getSummary( Station station, Long stamp, boolean large, float factor, String unit ) {
+	public String getSummary( Station station, Long stamp, boolean large, boolean full, float factor, String unit ) {
 		if( !checkStation(station) )
 			return null;
 
@@ -122,6 +122,14 @@ public class Manager {
 			str.append(String.format(" | %.1f ºC", temp));
 		if( hum != null )
 			str.append(String.format(" | %.0f %%", hum));
+		if( full ) {
+			Number pres = station.getMeteo().getAirPressure().getAt(stamp);
+			Number irrad = station.getMeteo().getIrradiance().getAt(stamp);
+			if( pres != null )
+				str.append(String.format(" | %.1f mb", pres));
+			if( irrad != null )
+				str.append(String.format(" | %d W/m2", Math.round(irrad.floatValue())));
+		}
 		if( strDir != null )
 			str.append(String.format(" | %dº (%s)", dir.intValue(), strDir));
 		if( med != null )

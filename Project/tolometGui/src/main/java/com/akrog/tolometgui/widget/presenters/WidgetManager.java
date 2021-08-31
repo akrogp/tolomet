@@ -151,7 +151,13 @@ public class WidgetManager {
         if( num != null ) {
             if( sb.length() != 0 )
                 sb.append(' ');
-            sb.append(String.format("%.1f mb", num));
+            sb.append(String.format("%.1fmb", num));
+        }
+        num = station.getMeteo().getIrradiance().getAt(stamp);
+        if( num != null ) {
+            if( sb.length() != 0 )
+                sb.append(' ');
+            sb.append(String.format("%dW/m2", Math.round(num.floatValue())));
         }
         data.air = sb.toString();
         num = station.getMeteo().getWindSpeedMed().getAt(stamp);

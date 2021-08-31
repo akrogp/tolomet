@@ -37,6 +37,7 @@ public abstract class MeteoDao {
         merge(map, meteo.getAirTemperature(), (ent, val) -> ent.temp = val.floatValue());
         merge(map, meteo.getAirHumidity(), (ent, val) -> ent.hum = val.floatValue());
         merge(map, meteo.getAirPressure(), (ent, val) -> ent.pres = val.floatValue());
+        merge(map, meteo.getIrradiance(), (ent, val) -> ent.irrad = val.floatValue());
         for( MeteoEntity ent : map.values() )
             ent.station = station.getId();
         insertMeasurements(map.values());
@@ -58,6 +59,7 @@ public abstract class MeteoDao {
                 meteo.getAirTemperature().put(e.stamp, e.temp);
                 meteo.getAirHumidity().put(e.stamp, e.hum);
                 meteo.getAirPressure().put(e.stamp, e.pres);
+                meteo.getIrradiance().put(e.stamp, e.irrad);
             }
             return station;
         });

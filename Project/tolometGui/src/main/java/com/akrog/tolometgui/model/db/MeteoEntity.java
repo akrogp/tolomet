@@ -15,4 +15,5 @@ class MeteoEntity {
     public Float hum;
     public Float temp;
     public Float pres;
+    public Float irrad;
 }

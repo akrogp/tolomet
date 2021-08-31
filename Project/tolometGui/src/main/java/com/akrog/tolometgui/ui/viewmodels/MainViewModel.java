@@ -148,12 +148,12 @@ public class MainViewModel extends ViewModel {
         manager.cancel(getCurrentStation());
     }
 
-    public String getSummary(boolean large, float factor, String unit) {
-        return manager.getSummary(getCurrentStation(), large, factor, unit);
+    public String getSummary(boolean large, boolean full, float factor, String unit) {
+        return manager.getSummary(getCurrentStation(), large, full, factor, unit);
     }
 
-    public String getSummary(Long stamp, boolean large, float factor, String unit) {
-        return manager.getSummary(getCurrentStation(), stamp, large, factor, unit);
+    public String getSummary(Long stamp, boolean large, boolean full, float factor, String unit) {
+        return manager.getSummary(getCurrentStation(), stamp, large, full, factor, unit);
     }
 
     public String getStamp() {

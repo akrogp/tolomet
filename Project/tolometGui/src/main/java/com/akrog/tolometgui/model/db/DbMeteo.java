@@ -10,7 +10,7 @@ import androidx.room.RoomDatabase;
 
 @Database(version = DbMeteo.VERSION, entities = {MeteoEntity.class, TravelEntity.class})
 public abstract class DbMeteo extends RoomDatabase {
-    public static final int VERSION = 2;
+    public static final int VERSION = 3;
     public static final String NAME = "Meteo.db";
     private static DbMeteo instance;
 
