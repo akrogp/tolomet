@@ -116,6 +116,7 @@ public class Manager {
 		Number max = station.getMeteo().getWindSpeedMax().getAt(stamp);
 		Number hum = station.getMeteo().getAirHumidity().getAt(stamp);
 		Number temp = station.getMeteo().getAirTemperature().getAt(stamp);
+		Number irrad = station.getMeteo().getIrradiance().getAt(stamp);
 
 		StringBuilder str = new StringBuilder(getStamp(station,stamp));
 		if( temp != null )
@@ -124,12 +125,11 @@ public class Manager {
 			str.append(String.format(" | %.0f %%", hum));
 		if( full ) {
 			Number pres = station.getMeteo().getAirPressure().getAt(stamp);
-			Number irrad = station.getMeteo().getIrradiance().getAt(stamp);
-			if( pres != null )
+			if (pres != null)
 				str.append(String.format(" | %.1f mb", pres));
-			if( irrad != null )
-				str.append(String.format(" | %d W/m2", Math.round(irrad.floatValue())));
 		}
+		if( irrad != null )
+			str.append(String.format(" | %d W/m2", Math.round(irrad.floatValue())));
 		if( strDir != null )
 			str.append(String.format(" | %dº (%s)", dir.intValue(), strDir));
 		if( med != null )
