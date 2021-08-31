@@ -8,7 +8,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class Manager {
-	private final String[] directions;
+	private static String[] directions;
 	private final String lang;
 	
 	public Manager() {
@@ -18,8 +18,12 @@ public class Manager {
 	public Manager( String lang) {
 		this.lang = lang;
 		directions = loadDirections();
-	}		
-	
+	}
+
+	public static String[] getDirections() {
+		return directions;
+	}
+
 	private String[] loadDirections() {
 		BufferedReader rd = new BufferedReader(new InputStreamReader(getLocalizedResource("directions.csv")));
 		try {
