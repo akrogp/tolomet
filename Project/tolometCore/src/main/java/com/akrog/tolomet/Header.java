@@ -92,6 +92,18 @@ public class Header {
 		pres = findIndex(string, cells);
 	}
 
-	private int date = -1, dir = -1, med = -1, max = -1, temp = -1, hum = -1, pres = -1;
+	public int getIrrad() {
+		return irrad;
+	}
+
+	public void setIrrad(int irrad) {
+		this.irrad = irrad;
+	}
+
+	public void findIrrad(String string, String[] cells) {
+		irrad = findIndex(string, cells);
+	}
+
+	private int date = -1, dir = -1, med = -1, max = -1, temp = -1, hum = -1, pres = -1, irrad = -1;
 		
 }

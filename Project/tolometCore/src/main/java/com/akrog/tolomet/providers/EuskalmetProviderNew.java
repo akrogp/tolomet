@@ -112,7 +112,8 @@ public class EuskalmetProviderNew implements WindProvider {
 						updateIntMeasurement(station.getMeteo().getAirHumidity(), sensor, hist);
 					else if( name.equals("pressure") )
 						updateMeasurement(station.getMeteo().getAirPressure(), sensor, hist);
-				}
+				} else if( type.equals("measuresForSun") && name.equals("irradiance") )
+						updateMeasurement(station.getMeteo().getIrradiance(), sensor, hist);
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();

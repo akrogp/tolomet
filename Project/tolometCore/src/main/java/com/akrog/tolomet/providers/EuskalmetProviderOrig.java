@@ -199,6 +199,10 @@ public class EuskalmetProviderOrig implements WindProvider {
 		        val = Float.parseFloat(getContent(cells[index.getPres()]));
 		        station.getMeteo().getAirPressure().put(date, val);
 	        }
+			if( index.getIrrad() > 0 ) {
+				val = Float.parseFloat(getContent(cells[index.getIrrad()]));
+				station.getMeteo().getIrradiance().put(date, val);
+			}
 	    }
 	}
 	
@@ -212,6 +216,7 @@ public class EuskalmetProviderOrig implements WindProvider {
 		index.findTemp("Tem.Aire", cells);
 		index.findHum("Humedad", cells);
 		index.findPres("Pres", cells);
+		index.findIrrad("Irradia", cells);
 		return index;
 	}
 

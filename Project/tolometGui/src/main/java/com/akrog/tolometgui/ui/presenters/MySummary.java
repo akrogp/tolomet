@@ -48,6 +48,7 @@ public class MySummary implements Presenter, Axis.ChangeListener {
     	else
     		summary.setText(model.getSummary(
     				stamp, activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE,
+					!settings.isSimpleMode(),
 					settings.getSpeedFactor(), settings.getSpeedLabel()
 			));
 	}
