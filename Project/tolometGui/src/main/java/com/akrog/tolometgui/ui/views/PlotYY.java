@@ -41,6 +41,7 @@ public class PlotYY extends View {
 	private final Axis y1Axis = new Axis(this);
 	private final Axis y2Axis = new Axis(this);
 	private final Axis y3Axis  = new Axis(this);
+	private final Axis y4Axis  = new Axis(this);
 	private final List<Axis> axes = new ArrayList<Axis>();
 	private final List<Axis> yAxes = new ArrayList<Axis>();
 	private final List<Graph> graphs = new ArrayList<Graph>();
@@ -69,6 +70,7 @@ public class PlotYY extends View {
 		yAxes.add(y1Axis);
 		yAxes.add(y2Axis);
 		yAxes.add(y3Axis);
+		yAxes.add(y4Axis);
 		axes.addAll(yAxes);
 		axes.add(xAxis);
 		
@@ -129,6 +131,11 @@ public class PlotYY extends View {
 	
 	public void addY3Graph(Graph graph) {
 		graph.setyAxis(2);
+		graphs.add(graph);
+	}
+
+	public void addY4Graph(Graph graph) {
+		graph.setyAxis(3);
 		graphs.add(graph);
 	}
 	
@@ -309,6 +316,7 @@ public class PlotYY extends View {
 			case 0: y = y1Axis.scale(y,h); break;
 			case 1: y = y2Axis.scale(y,h); break;
 			case 2: y = y3Axis.scale(y,h); break;
+			case 3: y = y4Axis.scale(y,h); break;
 		}
 		return Math.round(bgCanvas.getHeight()-1-y);
 	}
@@ -425,7 +433,11 @@ public class PlotYY extends View {
 	public Axis getY3Axis() {
 		return y3Axis;
 	}
-	
+
+	public Axis getY4Axis() {
+		return y4Axis;
+	}
+
 	public List<Axis> getAxes() {
 		return axes;
 	}

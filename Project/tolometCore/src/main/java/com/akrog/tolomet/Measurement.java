@@ -173,4 +173,12 @@ public class Measurement {
 		Long[] times = getTimes();
 		return (int)Math.round((times[1]-times[0])/1000.0/60.0);
 	}
+
+	public Float getValidMinimum() {
+		return validMinimum;
+	}
+
+	public Float getValidMaximum() {
+		return validMaximum;
+	}
 }
