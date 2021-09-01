@@ -70,9 +70,13 @@ public class FfvlProvider extends BaseProvider {
                     station.setName("FFVL#" + station.getCode());
                 else
                     station.setName(json.getString("nom"));
-                station.setLatitude(Double.parseDouble(json.getString("latitude")));
-                station.setLongitude(Double.parseDouble(json.getString("longitude")));
-                result.add(station);
+                try {
+                    station.setLatitude(Double.parseDouble(json.getString("latitude")));
+                    station.setLongitude(Double.parseDouble(json.getString("longitude")));
+                    result.add(station);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             return result;
         } catch (Exception e) {

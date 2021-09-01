@@ -85,6 +85,7 @@ public class MapFragment extends ToolbarFragment implements
             return;
         this.map = map;
         setMapType();
+        map.getUiSettings().setZoomControlsEnabled(true);
         requestPermission(Manifest.permission.ACCESS_FINE_LOCATION, R.string.gps_rationale,
             () -> enableLocation(), null);
         configureReportButtons();
