@@ -50,6 +50,7 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 	private final Marker markerLow = new Marker(1000.0f, "1000 mb", POINT_GRAY);
 	//private final Marker markerHigh = new Marker(1030.0f, "1030 mb", POINT_GRAY);
 	private final Marker markerMountain = new Marker(900.0f, "900 mb", POINT_GRAY);
+	private final Marker markerSunny = new Marker( 800.0f, "800 W/m2", POINT_YELLOW);
 	private Marker markerCloud, markerCloudSimple;
 	private Marker markerNorth, markerSouth, markerEast, markerWest;
 	private boolean simpleMode;
@@ -74,7 +75,6 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 		windSpeedMed.setyFactor(settings.getSpeedFactor());
 		windSpeedMax = new Graph(meteo.getWindSpeedMax(), -1.0f, activity.getString(R.string.chart_speedMax), LINE_RED, POINT_RED);
 		windSpeedMax.setyFactor(settings.getSpeedFactor());
-		sunIrradiance.setyFactor(100F/meteo.getIrradiance().getValidMaximum().floatValue());
 		markerCloud = new Marker(100.0f, activity.getString(R.string.chart_covered), LINE_BLUE);
 		markerCloudSimple = new Marker(100.0f, activity.getString(R.string.chart_covered), POINT_GRAY);
 		markerNorth = new Marker(0, activity.getString(R.string.markerNorth), LINE_BLUE);
@@ -159,7 +159,7 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
         //chartAir.setTicksPerStepY1(5);
         chartAir.getY2Axis().setLabel("Hum. (%)");
         chartAir.getY2Axis().setRange(10, 110);
-		chartAir.getY4Axis().setRange(0, 100);
+		chartAir.getY4Axis().setRange(meteo.getIrradiance().getValidMinimum(), meteo.getIrradiance().getValidMaximum());
         chartAir.getY2Axis().setSteps(10);        
         chartAir.getXAxis().setLabel(activity.getString(R.string.Time));
         chartAir.getXAxis().setSteps(4);
@@ -175,6 +175,7 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
         chartAir.addY3Marker(markerLow);
         //chartAir.addY3Marker(markerHigh);
         chartAir.addY3Marker(markerMountain);
+        chartAir.addY4Marker(markerSunny);
 
 		String units = " ("+settings.getSpeedLabel()+")";
 		chartWind.setTitle(activity.getString(R.string.Wind));
@@ -213,7 +214,7 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
         //chartAir.setTicksPerStepY1(5);
         chartAir.getY2Axis().setLabel("Hum. (%)");
         chartAir.getY2Axis().setRange(30, 110);
-		chartAir.getY3Axis().setRange(0, 100);
+		chartAir.getY4Axis().setRange(meteo.getIrradiance().getValidMinimum(), meteo.getIrradiance().getValidMaximum());
         chartAir.getY2Axis().setSteps(8);        
         chartAir.getXAxis().setLabel(activity.getString(R.string.Time));
         chartAir.getXAxis().setSteps(4);
@@ -226,7 +227,8 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
         chartAir.addY1Marker(markerWest);
         chartAir.addY2Graph(airHumiditySimple);        
         chartAir.addY2Marker(markerCloudSimple);
-		chartAir.addY3Graph(sunIrradiance);
+		chartAir.addY4Graph(sunIrradiance);
+		chartAir.addY4Marker(markerSunny);
 
 		String units = " ("+settings.getSpeedLabel()+")";
         chartWind.setTitle(activity.getString(R.string.Speed));

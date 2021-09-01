@@ -50,6 +50,7 @@ public class PlotYY extends View {
 	private List<Marker> y1Markers = new ArrayList<Marker>();
 	private List<Marker> y2Markers = new ArrayList<Marker>();
 	private List<Marker> y3Markers = new ArrayList<Marker>();
+	private List<Marker> y4Markers = new ArrayList<Marker>();
 	
 	public PlotYY(Context context) {
 		super(context);
@@ -193,6 +194,7 @@ public class PlotYY extends View {
 		drawY1Markers(canvas, chartLeft, chartBottom, chartWidth, chartHeight);
 		drawY2Markers(canvas, chartLeft, chartBottom, chartWidth, chartHeight);
 		drawY3Markers(canvas, chartLeft, chartBottom, chartWidth, chartHeight);
+		drawY4Markers(canvas, chartLeft, chartBottom, chartWidth, chartHeight);
 		
 		canvas.save();
 		canvas.rotate(-90,0,0);
@@ -266,6 +268,19 @@ public class PlotYY extends View {
 			if( text == null )
 				text = String.format("%s", marker.getPos());
 			canvas.drawText(text, x+TICK_MARGIN, y-TICK_MARGIN, paintMarker);
+		}
+	}
+
+	private void drawY4Markers(Canvas canvas, float x, float bottom, float w, float h) {
+		paintMarker.setTextAlign(Align.RIGHT);
+		for( Marker marker : y4Markers ) {
+			float y = Math.round(bottom-y4Axis.scale(marker.getPos(),h));
+			paintMarker.setColor(marker.getColor());
+			canvas.drawLine(x, y, x+w-1, y, paintMarker);
+			String text = marker.getLabel();
+			if( text == null )
+				text = String.format("%s", marker.getPos());
+			canvas.drawText(text, x+w-1-TICK_MARGIN, y-TICK_MARGIN, paintMarker);
 		}
 	}
 
@@ -399,11 +414,16 @@ public class PlotYY extends View {
 	public void addY3Marker(Marker marker) {
 		y3Markers.add(marker);
 	}
+
+	public void addY4Marker(Marker marker) {
+		y4Markers.add(marker);
+	}
 	
 	public void clearMarkers() {
 		y1Markers.clear();
 		y2Markers.clear();
 		y3Markers.clear();
+		y4Markers.clear();
 	}
 	
 	public float dip2px( float dip ) {
