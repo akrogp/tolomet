@@ -188,9 +188,10 @@ public class MeteocatProvider implements WindProvider {
 			int td1 = tr1;
 			Station station = new Station(null, -1);
 			int i = 0;
-			while( station != null && (td1 = data.indexOf("<td>", td1+1)) >= 0 && td1 < tr2 ) {
+			while( station != null && (td1 = data.indexOf("<td", td1+1)) >= 0 && td1 < tr2 ) {
+				td1 = data.indexOf("\">", td1+1);
 				int td2 = data.indexOf("</td>", td1+1);
-				String cell = data.substring(td1 + 4, td2);
+				String cell = data.substring(td1 + 2, td2);
 				switch( i ) {
 					case 2:	// Name and code
 						int a1 = cell.indexOf(">");
