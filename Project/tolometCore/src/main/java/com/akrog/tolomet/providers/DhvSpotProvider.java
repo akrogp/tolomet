@@ -34,11 +34,15 @@ public class DhvSpotProvider implements SpotProvider {
             String line;
             Spot spot = null;
             String name = null;
+            String alt = null;
+            String dirs = null;
             while( (line = br.readLine()) != null ) {
                 line = line.trim();
                 if( line.equals("<FlyingSite>") ) {
                     spot = null;
                     name = null;
+                    alt = null;
+                    dirs = null;
                 } else if( line.startsWith("<SiteName>") )
                     name = XmlParser.getExpandedValue(line);
                 else if( line.equals("<Location>") )
@@ -57,9 +61,24 @@ public class DhvSpotProvider implements SpotProvider {
                         else
                             spot = null;
                     } else if( line.startsWith("<Directions>") )
-                        spot.setDesc(parseDirection(XmlParser.getValue(line)));
+                        dirs = parseDirection(XmlParser.getValue(line));
+                    else if( line.startsWith("<Altitude>") )
+                        alt = XmlParser.getValue(line);
+                    else if( line.startsWith("<LocationID>") )
+                        spot.setId(XmlParser.getValue(line));
                     else if( line.equals("</Location>") ) {
-                        spot.setName(String.format("%s (%s)", name, spot.getType() == SpotType.LANDING ? "aterrizaje" : "despegue"));
+                        spot.setProvider(SpotProviderType.DhvDatabase);
+                        spot.setName(String.format("%s (DHV - %s)", name, spot.getType() == SpotType.LANDING ? "aterrizaje" : "despegue"));
+                        StringBuilder desc = new StringBuilder();
+                        if( alt != null ) {
+                            desc.append(alt);
+                            desc.append('m');
+                        } if( dirs != null ) {
+                            if( alt != null )
+                                desc.append('\n');
+                            desc.append(dirs);
+                        }
+                        spot.setDesc(desc.toString());
                         spots.add(spot);
                     }
                 }
