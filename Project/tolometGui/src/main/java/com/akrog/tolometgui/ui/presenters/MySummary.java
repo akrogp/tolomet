@@ -2,6 +2,7 @@ package com.akrog.tolometgui.ui.presenters;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.widget.TextView;
 
 import com.akrog.tolometgui.R;
@@ -43,12 +44,13 @@ public class MySummary implements Presenter, Axis.ChangeListener {
 
 	@Override
 	public void updateView() {
+		summary.setTextSize(TypedValue.COMPLEX_UNIT_SP, settings.isFlying() ? 20 : 16);
 		if( model.getCurrentStation() == null || model.getCurrentStation().isEmpty() )
     		summary.setText(activity.getString(R.string.NoData));
     	else
-    		summary.setText(model.getSummary(
-    				stamp, activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE,
-					!settings.isSimpleMode(),
+			summary.setText(model.getSummary(
+					stamp, activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE,
+					!settings.isFlying(),
 					settings.getSpeedFactor(), settings.getSpeedLabel()
 			));
 	}

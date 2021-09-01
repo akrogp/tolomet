@@ -118,20 +118,26 @@ public class Manager {
 			strDir = parseDirection(dir.intValue());
 		Number med = station.getMeteo().getWindSpeedMed().getAt(stamp);
 		Number max = station.getMeteo().getWindSpeedMax().getAt(stamp);
-		Number hum = station.getMeteo().getAirHumidity().getAt(stamp);
-		Number temp = station.getMeteo().getAirTemperature().getAt(stamp);
-		Number irrad = station.getMeteo().getIrradiance().getAt(stamp);
+		Number hum = null;
+		Number temp = null;
+		Number pres = null;
+		Number irrad = null;
+
+		if( full ) {
+			hum = station.getMeteo().getAirHumidity().getAt(stamp);
+			temp = station.getMeteo().getAirTemperature().getAt(stamp);
+			if( large )
+				pres = station.getMeteo().getAirPressure().getAt(stamp);
+			irrad = station.getMeteo().getIrradiance().getAt(stamp);
+		}
 
 		StringBuilder str = new StringBuilder(getStamp(station,stamp));
 		if( temp != null )
 			str.append(String.format(" | %.1f ºC", temp));
 		if( hum != null )
 			str.append(String.format(" | %.0f %%", hum));
-		if( full ) {
-			Number pres = station.getMeteo().getAirPressure().getAt(stamp);
-			if (pres != null)
-				str.append(String.format(" | %.1f mb", pres));
-		}
+		if (pres != null)
+			str.append(String.format(" | %.1f mb", pres));
 		if( irrad != null )
 			str.append(String.format(" | %d W/m2", Math.round(irrad.floatValue())));
 		if( strDir != null )
