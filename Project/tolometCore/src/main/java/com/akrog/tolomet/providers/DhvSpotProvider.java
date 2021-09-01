@@ -107,9 +107,9 @@ public class DhvSpotProvider implements SpotProvider {
     private boolean areConsecutive(String directions) {
         if( directions.length() < 2 )
             return false;
-        int prev = getIndex(directions.charAt(0));
+        int prev = parseDir(directions.charAt(0));
         for( int i = 1; i < directions.length(); i++ ) {
-            int curr = getIndex(directions.charAt(i));
+            int curr = parseDir(directions.charAt(i));
             if( curr - prev != 1 )
                 return false;
             prev = curr;
@@ -117,10 +117,14 @@ public class DhvSpotProvider implements SpotProvider {
         return true;
     }
 
-    private int getIndex(char dir) {
+    private int parseDir(char dir) {
         if( Character.isDigit(dir) )
             return dir-'1'+2;
-        int i = dir-'A'+11;
+        return dir-'A'+11;
+    }
+
+    private int getIndex(char dir) {
+        int i = parseDir(dir);
         return i < 16 ? i : i - 16;
     }
 

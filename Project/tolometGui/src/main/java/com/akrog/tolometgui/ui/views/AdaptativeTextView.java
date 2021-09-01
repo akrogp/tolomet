@@ -69,7 +69,13 @@ public class AdaptativeTextView extends AppCompatTextView {
         if (w != oldw)
             refitText(getText().toString(), w);
     }
-    
+
+    @Override
+    public void setTextSize(int unit, float size) {
+        super.setTextSize(unit, size);
+        maxSize = getTextSize();
+    }
+
     private Paint testPaint;
     private float maxSize;
 }
