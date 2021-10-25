@@ -29,7 +29,7 @@ public class WeatherUndergroundProvider extends BaseProvider {
     @Override
     public void configureDownload(Downloader downloader, Station station) {
         downloader.setUrl("https://api.weather.com/v2/pws/observations/all/1day");
-        downloader.addParam("apiKey", "6532d6454b8aa370768e63d6ba5a832e");
+        downloader.addParam("apiKey", "e1f10a1e78da46f5b10a1e78da96f525");
         downloader.addParam("stationId", station.getCode());
         downloader.addParam("numericPrecision", "decimal");
         downloader.addParam("format", "json");
