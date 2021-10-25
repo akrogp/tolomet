@@ -32,7 +32,7 @@ public class MeteoGaliciaProvider implements WindProvider {
 	public List<Station> downloadStations() {
 		try {
 			dw = new Downloader();
-			dw.setUrl("https://servizos.meteogalicia.gal/rss/observacion/listaEstacionsMeteo.action");
+			dw.setUrl("https://servizos.meteogalicia.gal/mgrss/observacion/listaEstacionsMeteo.action");
 			String data = dw.download();
 			JSONObject obj = new JSONObject(data);
 			JSONArray stations = obj.getJSONArray("listaEstacionsMeteo");
@@ -80,7 +80,7 @@ public class MeteoGaliciaProvider implements WindProvider {
 
 	private void download(Station station, String dataIni, String dataFin) throws Exception {
 		dw = new Downloader();
-		dw.setUrl("https://servizos.meteogalicia.es/rss/observacion/datos10min.action");
+		dw.setUrl("https://servizos.meteogalicia.gal/mgrss/observacion/datos10min.action");
 		dw.addParam("cod", "ToloMet6");
 		dw.addParam("idEstacion", station.getCode());
 		dw.addParam("dataIni", dataIni);

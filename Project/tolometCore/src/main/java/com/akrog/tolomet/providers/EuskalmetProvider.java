@@ -23,23 +23,23 @@ public class EuskalmetProvider implements WindProvider {
 
 	@Override
 	public void refresh(Station station) {
-		provider = origProvider;
+		//provider = origProvider;
 		provider.refresh(station);
-		if( station.isEmpty() ) {
+		/*if( station.isEmpty() ) {
 			provider = newProvider;
 			provider.refresh(station);
-		}
+		}*/
 	}
 
 	@Override
 	public boolean travel(Station station, long date) {
-		provider = origProvider;
-        provider.travel(station, date);
-        if( station.isEmpty() ) {
+		//provider = origProvider;
+        return provider.travel(station, date);
+        /*if( station.isEmpty() ) {
 			provider = newProvider;
 			provider.travel(station, date);
 		}
-		return true;
+		return true;*/
 	}
 
 	@Override
@@ -54,5 +54,5 @@ public class EuskalmetProvider implements WindProvider {
 
 	private final EuskalmetProviderNew newProvider = new EuskalmetProviderNew();
 	private final EuskalmetProviderOrig origProvider = new EuskalmetProviderOrig();
-	private WindProvider provider;
+	private WindProvider provider = new EuskalmetProviderNew();
 }

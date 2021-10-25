@@ -21,7 +21,7 @@ import androidx.room.RoomDatabase;
 
 @Database(version = DbTolomet.VERSION, entities = {StationEntity.class, SpotEntity.class})
 public abstract class DbTolomet extends RoomDatabase {
-    public static final int VERSION = 28;
+    public static final int VERSION = 29;
     public static final String NAME = "Tolomet.db";
     public static final String ASSET = "databases/Tolomet.db";
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -36,9 +36,6 @@ public abstract class DbTolomet extends RoomDatabase {
     synchronized public static DbTolomet getInstance() {
         if( instance == null ) {
             //updVersion();
-            /*if( getVersion() != VERSION )
-                if( !overrideDb() )
-                    return null;*/
             instance = Room
                 .databaseBuilder(Tolomet.getAppContext(), DbTolomet.class, NAME)
                 .createFromAsset(ASSET)
@@ -56,30 +53,6 @@ public abstract class DbTolomet extends RoomDatabase {
             db.getVersion();
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    private static int getVersion() {
-        File file = Tolomet.getAppContext().getDatabasePath(NAME);
-        try(SQLiteDatabase db = SQLiteDatabase.openDatabase(file.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY)) {
-            return db.getVersion();
-        } catch (Exception e) {
-            return 0;
-        }
-    }
-
-    private static boolean overrideDb() {
-        File db = Tolomet.getAppContext().getDatabasePath(NAME);
-        db.getParentFile().mkdirs();
-        try(
-            InputStream is = Tolomet.getAppContext().getAssets().open(DbTolomet.ASSET);
-            OutputStream os = new FileOutputStream(db);
-        ) {
-            Utils.copy(is, os);
-            return true;
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return false;
         }
     }
 
