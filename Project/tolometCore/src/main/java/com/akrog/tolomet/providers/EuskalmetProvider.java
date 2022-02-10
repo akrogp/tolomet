@@ -52,7 +52,11 @@ public class EuskalmetProvider implements WindProvider {
 		return 10;
 	}
 
+	public void setOriginal(boolean useOriginal) {
+		provider = useOriginal ? origProvider : newProvider;
+	}
+
 	private final EuskalmetProviderNew newProvider = new EuskalmetProviderNew();
 	private final EuskalmetProviderOrig origProvider = new EuskalmetProviderOrig();
-	private WindProvider provider = new EuskalmetProviderNew();
+	private WindProvider provider = newProvider;
 }

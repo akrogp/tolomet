@@ -7,6 +7,8 @@ import android.util.SparseArray;
 
 import com.akrog.tolomet.Measurement;
 import com.akrog.tolomet.Station;
+import com.akrog.tolomet.providers.EuskalmetProvider;
+import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.Tolomet;
 import com.akrog.tolometgui.model.db.DbTolomet;
@@ -53,9 +55,15 @@ public class AppSettings {
     }
 
     public static AppSettings getInstance() {
-        if( instance == null )
+        if( instance == null ) {
             instance = new AppSettings();
+            refreshCore();
+        }
         return instance;
+    }
+
+    public static void refreshCore() {
+        ((EuskalmetProvider)WindProviderType.Euskalmet.getProvider()).setOriginal(instance.isEuskalmetOriginal());
     }
 
     private void setDefaultsAuto() {
@@ -346,6 +354,16 @@ public class AppSettings {
         return id;
     }
 
+    public void setEuskalmetOriginal(boolean useOriginal) {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean(PREF_ORIG_EUSKALMET, useOriginal);
+        editor.commit();
+    }
+
+    public boolean isEuskalmetOriginal() {
+        return settings.getBoolean(PREF_ORIG_EUSKALMET, true);
+    }
+
     private void fixValues() {
         fixValues("pref_modeGraphs", R.array.pref_modeGraphsValues);
         fixValues("pref_modeUpdate", R.array.pref_modeUpdateValues );
@@ -404,4 +422,5 @@ public class AppSettings {
     public final static String PREF_MARKER_MIN = "pref_minMarker";
     public final static String PREF_MARKER_MAX = "pref_maxMarker";
     public static final String SELECTED_LANGUAGE = "pref_modeLang";
+    public static final String PREF_ORIG_EUSKALMET = "pref_origEuskalmet";
 }

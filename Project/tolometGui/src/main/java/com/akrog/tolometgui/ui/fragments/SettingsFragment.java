@@ -75,6 +75,8 @@ public abstract class SettingsFragment extends PreferenceFragmentCompat implemen
         }
         if( key.equals(AppSettings.PREF_UNIT) )
             setPreferenceEntries();
+        if( key.equals(AppSettings.PREF_ORIG_EUSKALMET) )
+            AppSettings.refreshCore();
         Preference pref = findPreference(key);
         setSummary(pref);
         ((BaseActivity)getActivity()).onSettingsChanged(key);

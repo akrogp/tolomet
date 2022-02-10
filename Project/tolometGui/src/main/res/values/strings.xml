@@ -163,4 +163,6 @@
     <string name="Configure">Configure</string>
     <string name="HikeFly" translatable="false"><![CDATA[Hike & fly]]></string>
     <string name="AddHikeSpotSubject">Tolomet: add new hike spot</string>
+    <string name="pref_origEuskalmet">Use original Euskalmet website</string>
+    <string name="pref_advanced">Advanced</string>
 </resources>
