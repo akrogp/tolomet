@@ -72,9 +72,18 @@ public class NorometProvider extends BaseProvider {
         JSONArray hour = json.getJSONArray("hour");
         Calendar cal = Calendar.getInstance(TIME_ZONE);
         DateUtils.resetDay(cal);
+        int h0 = Integer.parseInt(hour.getString(0).split(":")[0]);
+        int h2 = Integer.parseInt(hour.getString(hour.length()-1).split(":")[0]);
+        if( h0 > h2 )
+            cal.add(Calendar.DAY_OF_MONTH, -1);
         for( int i = 0; i < hour.length(); i++ ) {
             String[] fields = hour.getString(i).split(":");
-            cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(fields[0]));
+            int h1 = Integer.parseInt(fields[0]);
+            if( h1 < h0 ) {
+                cal.add(Calendar.DAY_OF_MONTH, 1);
+                h0 = h1;
+            }
+            cal.set(Calendar.HOUR_OF_DAY, h1);
             cal.set(Calendar.MINUTE, Integer.parseInt(fields[1]));
             long stamp = cal.getTimeInMillis();
             Meteo meteo = station.getMeteo();
