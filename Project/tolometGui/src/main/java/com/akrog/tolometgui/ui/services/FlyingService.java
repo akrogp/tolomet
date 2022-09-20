@@ -143,7 +143,8 @@ public class FlyingService extends Service {
     private String getStatus(boolean full) {
         return manager
             .getSummary(station, false, full, settings.getSpeedFactor(), settings.getSpeedLabel())
-            .replaceAll(",", "\\,");
+            //.replaceAll(",", "\\,");
+            .replace(',', '.');
     }
 
     private static final String CHANNEL_FLYING = "com.akrog.tolomet.channel.flying";
