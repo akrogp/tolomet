@@ -334,7 +334,7 @@ public class AppSettings {
     }
 
     public boolean isSendXctrack() {
-        return settings.getBoolean(PREF_SEND_XCTRACK, true);
+        return settings.getBoolean(PREF_SEND_XCTRACK, false);
     }
 
     public int getPortXctrack() {
