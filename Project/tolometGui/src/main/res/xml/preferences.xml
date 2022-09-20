@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory android:title="@string/pref_modes">
 		<ListPreference
 			android:key="pref_modeLang"
@@ -90,13 +90,22 @@
 	        android:entryValues="@array/pref_maxSpeedValues"
 	        android:defaultValue="@string/pref_maxMarkerDefault" />
 	</PreferenceCategory>
+	<PreferenceCategory android:title="@string/pref_xctrack">
+		<CheckBoxPreference
+			android:key="pref_sendXctrack"
+			android:title="@string/pref_sendXctrack"
+			android:dialogTitle="@string/pref_sendXctrack"/>
+		<EditTextPreference
+			android:key="pref_portXctrack"
+			android:title="@string/pref_portXctrack"
+			android:dialogTitle="@string/pref_portXctrack"
+			android:inputType="number"
+			android:defaultValue="10110" />
+	</PreferenceCategory>
 	<PreferenceCategory android:title="@string/pref_advanced">
 		<CheckBoxPreference
 			android:key="pref_origEuskalmet"
 			android:title="@string/pref_origEuskalmet"
-			android:dialogTitle="@string/pref_origEuskalmet"
-			android:entries="@array/pref_modeUpdateEntries"
-			android:entryValues="@array/pref_modeUpdateValues"
-			android:defaultValue="@string/pref_modeUpdateDefault" />
+			android:dialogTitle="@string/pref_origEuskalmet" />
 	</PreferenceCategory>
 </PreferenceScreen>

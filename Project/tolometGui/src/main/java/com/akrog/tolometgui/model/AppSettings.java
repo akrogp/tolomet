@@ -15,11 +15,9 @@ import com.akrog.tolometgui.model.db.DbTolomet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 
 public class AppSettings {
@@ -335,6 +333,14 @@ public class AppSettings {
         return !settings.getString("pref_modeColors","0").equals("0");
     }
 
+    public boolean isSendXctrack() {
+        return settings.getBoolean(PREF_SEND_XCTRACK, true);
+    }
+
+    public int getPortXctrack() {
+        return Integer.parseInt(settings.getString(PREF_PORT_XCTRACK, "10110"));
+    }
+
     public void saveScreen(int id) {
         if( id >= Screen.values().length )
             for( Screen screen : Screen.values() )
@@ -423,4 +429,6 @@ public class AppSettings {
     public final static String PREF_MARKER_MAX = "pref_maxMarker";
     public static final String SELECTED_LANGUAGE = "pref_modeLang";
     public static final String PREF_ORIG_EUSKALMET = "pref_origEuskalmet";
+    public static final String PREF_SEND_XCTRACK = "pref_sendXctrack";
+    public static final String PREF_PORT_XCTRACK = "pref_portXctrack";
 }

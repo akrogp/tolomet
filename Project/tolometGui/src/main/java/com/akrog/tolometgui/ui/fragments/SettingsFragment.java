@@ -5,14 +5,15 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.akrog.tolometgui.model.AppSettings;
-import com.akrog.tolometgui.ui.activities.BaseActivity;
-
+import androidx.preference.CheckBoxPreference;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
+
+import com.akrog.tolometgui.model.AppSettings;
+import com.akrog.tolometgui.ui.activities.BaseActivity;
 
 public abstract class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
     protected abstract int getResource();
@@ -22,6 +23,7 @@ public abstract class SettingsFragment extends PreferenceFragmentCompat implemen
         setPreferencesFromResource(getResource(), rootKey);
         setPreferenceEntries();
         initSummaries(this.getPreferenceScreen());
+        updateEnabled();
     }
 
     private void setPreferenceEntries() {
@@ -77,9 +79,17 @@ public abstract class SettingsFragment extends PreferenceFragmentCompat implemen
             setPreferenceEntries();
         if( key.equals(AppSettings.PREF_ORIG_EUSKALMET) )
             AppSettings.refreshCore();
+        if( key.equals(AppSettings.PREF_SEND_XCTRACK) )
+            updateEnabled();
         Preference pref = findPreference(key);
         setSummary(pref);
         ((BaseActivity)getActivity()).onSettingsChanged(key);
+    }
+
+    private void updateEnabled() {
+        CheckBoxPreference sendPref = (CheckBoxPreference)findPreference(AppSettings.PREF_SEND_XCTRACK);
+        Preference portPref = findPreference(AppSettings.PREF_PORT_XCTRACK);
+        portPref.setEnabled(sendPref.isChecked());
     }
 
     private void recreate() {

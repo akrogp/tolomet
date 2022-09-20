@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="tolometGui/src/main/res/layout/activity_intro.xml" value="0.18854166666666666" />
         <entry key="tolometGui/src/main/res/xml/preferences.xml" value="0.3421875" />
+        <entry key="tolometGui/src/main/res/xml/widget_preferences.xml" value="0.18854166666666666" />
       </map>
     </option>
   </component>

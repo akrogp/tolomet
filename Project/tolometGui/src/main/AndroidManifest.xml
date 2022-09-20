@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.akrog.tolometgui"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.akrog.tolometgui"
     android:installLocation="auto">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-        android:name="com.akrog.tolometgui.Tolomet"
+        android:name=".Tolomet"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -18,27 +18,27 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <service
+            android:name=".ui.services.FlyingService"
+            android:enabled="true"
+            android:exported="false"></service>
 
         <activity
-            android:name="com.akrog.tolometgui.ui.activities.IntroActivity"
+            android:name=".ui.activities.IntroActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.Transparent"
-            android:launchMode="singleInstance">
-        </activity>
-
+            android:launchMode="singleInstance"
+            android:theme="@style/AppTheme.Transparent"></activity>
         <activity
-            android:name="com.akrog.tolometgui.ui.activities.MainActivity"
+            android:name=".ui.activities.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleInstance">
+            android:launchMode="singleInstance"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- Share Files -->
-
+        </activity> <!-- Share Files -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.akrog.tolomet.ui.FileProvider"
@@ -46,87 +46,77 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
-        </provider>
-
-        <!-- API keys -->
-
+                android:resource="@xml/file_paths" />
+        </provider> <!-- API keys -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key"/>
-
-        <!-- Widgets -->
-
+            android:value="@string/google_maps_key" /> <!-- Widgets -->
         <activity
-            android:name="com.akrog.tolometgui.widget.activities.SmallWidgetSettingsActivity"
+            android:name=".widget.activities.SmallWidgetSettingsActivity"
             android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="com.akrog.tolometgui.widget.activities.MediumWidgetSettingsActivity"
+            android:name=".widget.activities.MediumWidgetSettingsActivity"
             android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="com.akrog.tolometgui.widget.activities.LargeWidgetSettingsActivity"
+            android:name=".widget.activities.LargeWidgetSettingsActivity"
             android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
 
         <receiver
-            android:name="com.akrog.tolometgui.widget.providers.MediumWidgetProvider"
+            android:name=".widget.providers.MediumWidgetProvider"
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <intent-filter>
-                <action android:name="com.akrog.tolomet.FORCE_APPWIDGET_UPDATE"/>
+                <action android:name="com.akrog.tolomet.FORCE_APPWIDGET_UPDATE" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.USER_PRESENT"/>
+                <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/medium_widget_provider"/>
+                android:resource="@xml/medium_widget_provider" />
         </receiver>
-
         <receiver
-            android:name="com.akrog.tolometgui.widget.providers.SmallWidgetProvider"
+            android:name=".widget.providers.SmallWidgetProvider"
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/small_widget_provider"/>
+                android:resource="@xml/small_widget_provider" />
         </receiver>
-
         <receiver
-            android:name="com.akrog.tolometgui.widget.providers.LargeWidgetProvider"
+            android:name=".widget.providers.LargeWidgetProvider"
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/large_widget_provider"/>
+                android:resource="@xml/large_widget_provider" />
         </receiver>
 
-        <service android:name="com.akrog.tolometgui.widget.services.WidgetService"/>
+        <service android:name=".widget.services.WidgetService" />
     </application>
 
 </manifest>
