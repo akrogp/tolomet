@@ -155,4 +155,8 @@
     <string name="AddFlySpotSubject">Tolomet: nova zona de vol</string>
     <string name="ElliottGreetings">Hola, Elliott!</string>
     <string name="Configure">Configurar</string>
+    <string name="pref_sendXctrack">Enviar XCTOD en modo vuelo</string>
+    <string name="pref_portXctrack">Puerto UDP</string>
+    <string name="notification_xctrack">Enviando a XCTrack</string>
+    <string name="flying_channel_name">En vuelo</string>
 </resources>

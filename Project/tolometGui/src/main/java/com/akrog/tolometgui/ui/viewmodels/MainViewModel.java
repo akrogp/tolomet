@@ -2,6 +2,11 @@ package com.akrog.tolometgui.ui.viewmodels;
 
 import android.location.Location;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
+import androidx.lifecycle.ViewModel;
+
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.Station;
 import com.akrog.tolometgui.model.AppSettings;
@@ -13,11 +18,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
-import androidx.lifecycle.ViewModel;
 
 /**
  * Created by gorka on 6/10/16.
@@ -182,8 +182,10 @@ public class MainViewModel extends ViewModel {
             return null;
         //Station clone = station.clone();
         Station clone = station;
-        if( !manager.refresh(clone) )
-            return null;
+        synchronized(clone) {
+            if (!manager.refresh(clone))
+                return null;
+        }
         DbMeteo.getInstance().meteoDao().saveStation(clone);
         return clone;
     }
@@ -192,9 +194,12 @@ public class MainViewModel extends ViewModel {
         TravelDao travelDao = DbMeteo.getInstance().travelDao();
         if( travelDao.hasTravelled(getCurrentStation(), date) )
             return null;
-        Station station = getCurrentStation().clone();
-        if( !manager.travel(station, date) )
-            return null;
+        //Station station = getCurrentStation().clone();
+        Station station = getCurrentStation();
+        synchronized(station) {
+            if (!manager.travel(station, date))
+                return null;
+        }
         DbMeteo.getInstance().meteoDao().saveStation(station);
         travelDao.saveTravel(station, date);
         return station;

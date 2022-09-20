@@ -1,10 +1,14 @@
 package com.akrog.tolometgui.ui.fragments;
 
 import android.app.AlertDialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.IBinder;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,14 +18,20 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+
 import com.akrog.tolomet.Station;
 import com.akrog.tolometgui.R;
+import com.akrog.tolometgui.Tolomet;
 import com.akrog.tolometgui.model.AppSettings;
 import com.akrog.tolometgui.model.db.DbMeteo;
 import com.akrog.tolometgui.ui.activities.BaseActivity;
 import com.akrog.tolometgui.ui.activities.MainActivity;
 import com.akrog.tolometgui.ui.presenters.MyCharts;
 import com.akrog.tolometgui.ui.presenters.MySummary;
+import com.akrog.tolometgui.ui.services.FlyingService;
 import com.akrog.tolometgui.ui.services.WeakTask;
 
 import java.text.DateFormat;
@@ -29,18 +39,28 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelListener {
     private static final DateFormat df = new SimpleDateFormat("EEE (dd/MMM)");
     private static int[] LIVE_ITEMS = {R.id.refresh_item, R.id.map_item, R.id.fly_item};
-    private final Handler handler = new Handler();
-    private Runnable timer;
     private AsyncTask<Void, Void, Station> thread;
     private MyCharts charts;
     private MySummary summary;
     private boolean flyNotified;
+    private FlyingService flyingService;
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            FlyingService.LocalBinder binder = (FlyingService.LocalBinder)service;
+            flyingService = binder.getService();
+            flyingService.trackStation(model.getCurrentStation());
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            flyingService = null;
+        }
+    };
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -61,7 +81,7 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        setScreenMode(settings.isFlying());
+        setScreenMode(model.checkStation() && settings.isFlying());
         updateEnabled();
     }
 
@@ -75,22 +95,24 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
         charts = new MyCharts(summary, this);
         charts.initialize(activity, savedInstanceState);
 
-        createTimer();
         model.liveCurrentStation().observe(getViewLifecycleOwner(), station -> {
             downloadData(null);
             updateEnabled();
+            if( flyingService != null )
+                flyingService.trackStation(station);
         });
         model.liveCurrentMeteo().observe(getViewLifecycleOwner(), station -> redraw());
     }
 
     @Override
     public void onStop() {
-        cancelTimer();
         if (thread != null) {
             model.cancel();
             thread.cancel(true);
             thread = null;
         }
+        if( flyingService != null )
+            activity.unbindService(serviceConnection);
         super.onStop();
     }
 
@@ -150,6 +172,7 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             settings.setUpdateMode(AppSettings.AUTO_UPDATES);
             Toast.makeText(activity,R.string.Takeoff,Toast.LENGTH_SHORT).show();
+            startFlyingService();
             flyNotified = true;
         } else {
             itemMode.setIcon(R.drawable.ic_flight_mode);
@@ -157,6 +180,7 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
             activity.unlockScreenOrientation();
             activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             settings.setUpdateMode(AppSettings.SMART_UPDATES);
+            stopFlyingService();
             if( flyNotified == true ) {
                 Toast.makeText(activity, R.string.Landed, Toast.LENGTH_SHORT).show();
                 flyNotified = false;
@@ -164,6 +188,26 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
         }
         //activity.onSettingsChanged(AppSettings.);
         onSettingsChanged();
+    }
+
+    private void startFlyingService() {
+        Intent intent = new Intent(activity, FlyingService.class);
+        if( settings.isSendXctrack() )
+            ContextCompat.startForegroundService(Tolomet.getAppContext(), intent);
+        activity.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    private void stopFlyingService() {
+        if( flyingService == null )
+            return;
+        try {
+            activity.unbindService(serviceConnection);
+        } catch( Exception e ) {
+            e.printStackTrace();
+        }
+        Intent intent = new Intent(activity, FlyingService.class);
+        Tolomet.getAppContext().stopService(intent);
+        flyingService = null;
     }
 
     @Override
@@ -179,13 +223,11 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
             return;
         model.cancel();
         thread.cancel(true);
-        postTimer();
         redraw();
     }
 
     @Override
     public void onSettingsChanged() {
-        postTimer();
         redraw();
     }
 
@@ -194,16 +236,6 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
         super.updateEnabled(enabled);
         charts.setEnabled(enabled);
         summary.setEnabled(enabled);
-    }
-
-    private void createTimer() {
-        cancelTimer();
-        if( settings.getUpdateMode() != AppSettings.AUTO_UPDATES )
-            return;
-        timer = () -> {
-            if( model.checkStation() )
-                downloadData(null);
-        };
     }
 
     private void downloadData(Long date) {
@@ -221,7 +253,6 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
         thread = null;
         if( isStopped() )
             return;
-        postTimer();
         if( station != null && station.isEmpty() )
             askSource();
     }
@@ -249,26 +280,6 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
                 }
             })
             .create().show();
-    }
-
-    private void cancelTimer() {
-        if( timer != null ) {
-            handler.removeCallbacks(timer);
-            timer = null;
-        }
-    }
-
-    private boolean postTimer() {
-        if( timer == null || settings.getUpdateMode() != AppSettings.AUTO_UPDATES )
-            return false;
-        handler.removeCallbacks(timer);
-        int minutes = 1;
-        if( model.checkStation() && !model.getCurrentStation().isEmpty() ) {
-            int dif = (int)((System.currentTimeMillis()-model.getCurrentStation().getStamp())/60/1000L);
-            minutes = dif >= model.getRefresh() ? 1 : model.getRefresh()-dif;
-        }
-        handler.postDelayed(timer, minutes*60*1000);
-        return true;
     }
 
     @Override

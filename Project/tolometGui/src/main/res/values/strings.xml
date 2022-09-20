@@ -165,4 +165,9 @@
     <string name="AddHikeSpotSubject">Tolomet: add new hike spot</string>
     <string name="pref_origEuskalmet">Use original Euskalmet website</string>
     <string name="pref_advanced">Advanced</string>
+    <string name="pref_xctrack" translatable="false">XCTrack</string>
+    <string name="pref_sendXctrack">Send XCTOD during flight mode</string>
+    <string name="pref_portXctrack">UDP port</string>
+    <string name="notification_xctrack">Sending to XCTrack</string>
+    <string name="flying_channel_name">Flying</string>
 </resources>

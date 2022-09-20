@@ -8,13 +8,13 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
 
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+
 import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.Tolomet;
 import com.akrog.tolometgui.ui.services.WeakTask;
 import com.akrog.tolometgui.widget.model.WidgetModel;
-
-import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
 
 /**
  * Created by gorka on 11/05/16.
@@ -25,7 +25,7 @@ public class WidgetService extends Service {
         super.onCreate();
         createNotificationChannel();
         Notification notification = createNotification();
-        startForeground(1, notification);
+        startForeground(ONGOING_NOTIFICATION_ID, notification);
     }
 
     @Override
@@ -93,4 +93,5 @@ public class WidgetService extends Service {
 
     private UpdateTask task;
     private static final String CHANNEL_ID = "com.akrog.tolomet.channel.widget";
+    private static final int ONGOING_NOTIFICATION_ID = 1001;
 }
