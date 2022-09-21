@@ -22,6 +22,7 @@
 			android:entries="@array/pref_modeColorsEntries"
 			android:entryValues="@array/pref_modeColorsValues"
 			android:defaultValue="@string/pref_modeColorsDefault" />
+		<!--
 	    <ListPreference
 	        android:key="pref_modeUpdate"
 	        android:title="@string/pref_modeUpdate"
@@ -29,6 +30,7 @@
 	        android:entries="@array/pref_modeUpdateEntries"
 	        android:entryValues="@array/pref_modeUpdateValues"
 	        android:defaultValue="@string/pref_modeUpdateDefault" />
+	    -->
 	</PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_catAir">
 	    <ListPreference

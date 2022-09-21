@@ -42,6 +42,7 @@ public class FlyingService extends LifecycleService {
     public class NotificationActionsReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+            AppSettings.getInstance().setFlying(false);
             stopForeground(true);
         }
     }

@@ -5,6 +5,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.SparseArray;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.akrog.tolomet.Measurement;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.providers.EuskalmetProvider;
@@ -21,9 +24,6 @@ import java.util.Locale;
 import java.util.Set;
 
 public class AppSettings {
-    private static AppSettings instance;
-    private final SharedPreferences settings;
-    private final Context context;
     private enum Screen {
         CHARTS(R.id.nav_charts), MAP(R.id.nav_maps), INFO(R.id.nav_info), ORIGIN(R.id.nav_origin),
         SETTINGS(R.id.nav_settings), DISCOVER(R.id.nav_discover), HELP(R.id.nav_help),
@@ -279,10 +279,18 @@ public class AppSettings {
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean("pref_flying", flying);
         editor.commit();
+        if( liveFlying != null )
+            liveFlying.postValue(flying);
     }
 
     public boolean isFlying() {
         return settings.getBoolean("pref_flying", false);
+    }
+
+    public LiveData<Boolean> getLiveFlying() {
+        if( liveFlying == null )
+            liveFlying = new MutableLiveData<>(isFlying());
+        return liveFlying;
     }
 
     public void setSatellite(boolean sat) {
@@ -412,9 +420,14 @@ public class AppSettings {
         return str.toString().replaceAll(",$", "");
     }
 
+    private static AppSettings instance;
+    private final SharedPreferences settings;
+    private final Context context;
     private final static int VERSION = 3;
     private final static int INVALID = -1000;
     private final SparseArray<List<Integer>> mapArrays = new SparseArray<List<Integer>>();
+    private MutableLiveData<Boolean> liveFlying;
+
     public final static int MANUAL_UPDATES=0;
     public final static int SMART_UPDATES=1;
     public final static int AUTO_UPDATES=2;
