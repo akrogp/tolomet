@@ -180,12 +180,9 @@ public class MainViewModel extends ViewModel {
         Station station = getCurrentStation();
         if( !manager.checkStation(station) )
             return null;
-        //Station clone = station.clone();
-        Station clone = station;
-        synchronized(clone) {
-            if (!manager.refresh(clone))
-                return null;
-        }
+        Station clone = station.clone();
+        if (!manager.refresh(clone))
+            return null;
         DbMeteo.getInstance().meteoDao().saveStation(clone);
         return clone;
     }
@@ -194,15 +191,12 @@ public class MainViewModel extends ViewModel {
         TravelDao travelDao = DbMeteo.getInstance().travelDao();
         if( travelDao.hasTravelled(getCurrentStation(), date) )
             return null;
-        //Station station = getCurrentStation().clone();
-        Station station = getCurrentStation();
-        synchronized(station) {
-            if (!manager.travel(station, date))
-                return null;
-        }
-        DbMeteo.getInstance().meteoDao().saveStation(station);
-        travelDao.saveTravel(station, date);
-        return station;
+        Station clone = getCurrentStation().clone();
+        if (!manager.travel(clone, date))
+            return null;
+        DbMeteo.getInstance().meteoDao().saveStation(clone);
+        travelDao.saveTravel(clone, date);
+        return clone;
     }
 
     public enum Command {SEL, FAV, NEAR, FIND, SEP}
