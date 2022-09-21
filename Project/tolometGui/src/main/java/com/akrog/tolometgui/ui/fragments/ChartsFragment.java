@@ -111,8 +111,13 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
             thread.cancel(true);
             thread = null;
         }
-        if( flyingService != null )
-            activity.unbindService(serviceConnection);
+        if( flyingService != null ) {
+            try {
+                activity.unbindService(serviceConnection);
+            } catch( Exception e ) {
+                e.printStackTrace();
+            }
+        }
         super.onStop();
     }
 

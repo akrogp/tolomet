@@ -4,14 +4,19 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
+import androidx.lifecycle.LifecycleService;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.Station;
@@ -23,24 +28,31 @@ import com.akrog.tolometgui.ui.activities.MainActivity;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class FlyingService extends Service {
+public class FlyingService extends LifecycleService {
     public class LocalBinder extends Binder {
         public FlyingService getService() {
             return FlyingService.this;
         }
     }
 
-    public FlyingService() throws SocketException {
+    public class NotificationActionsReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            stopForeground(true);
+        }
+    }
+
+    public FlyingService() {
         manager = new Manager(AppSettings.getInstance().getSelectedLanguage());
     }
 
     @Override
     public IBinder onBind(Intent intent) {
+        super.onBind(intent);
         return binder;
     }
 
@@ -48,18 +60,22 @@ public class FlyingService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         createNotificationChannel();
 
-        Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent =
-        PendingIntent.getActivity(this, 0, notificationIntent,
-            PendingIntent.FLAG_IMMUTABLE);
+        int pendingIntentFlags = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0;
+
+        Intent contentIntent = new Intent(this, MainActivity.class);
+        PendingIntent contentPendingIntent =
+        PendingIntent.getActivity(this, 0, contentIntent, pendingIntentFlags);
+
+        Intent landIntent = new Intent(ACTION_LAND);
+        PendingIntent landPendingIntent = PendingIntent.getBroadcast(this, 0, landIntent, pendingIntentFlags);
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_FLYING)
             .setSmallIcon(R.drawable.ic_wind_unknown)
             .setContentTitle(getString(R.string.app_name))
             .setContentText(getString(R.string.notification_xctrack))
             .setTicker(getString(R.string.FlyMode))
-            .setContentIntent(pendingIntent)
-            .setContentIntent(pendingIntent)
+            .setContentIntent(contentPendingIntent)
+            .addAction(R.drawable.ic_land_mode, getString(R.string.LandMode), landPendingIntent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .build();
 
@@ -69,18 +85,35 @@ public class FlyingService extends Service {
     }
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+
+        receiver = new NotificationActionsReceiver();
+        IntentFilter filter = new IntentFilter(ACTION_LAND);
+        this.registerReceiver(receiver, filter);
+
+        currentMeteo.observe(this, station -> {
+            if( AppSettings.getInstance().isSendXctrack() )
+                executor.execute(this::sendXctrack);
+        });
+    }
+
+    @Override
     public void onDestroy() {
+        unregisterReceiver(receiver);
+
         executor.shutdownNow();
         if( socket != null && !socket.isClosed() )
             socket.close();
+
         super.onDestroy();
     }
 
     public void trackStation(Station station) {
         if(  !manager.checkStation(station) )
             return;
-        this.station = station;
-        executor.execute(() -> refresh());
+        liveStation.setValue(station);
+        executor.execute(this::refresh);
     }
 
     private void createNotificationChannel() {
@@ -96,24 +129,16 @@ public class FlyingService extends Service {
     }
 
     private void refresh() {
-        Log.i("Tolomet", "refreshing");
+        Station station = liveStation.getValue();
         if( !manager.checkStation(station) )
             return;
-        boolean updated;
-        synchronized( station ) {
-            updated = manager.refresh(station);
-        }
-        if( AppSettings.getInstance().isSendXctrack() )
-            sendXctrack();
-        if( updated )
-            DbMeteo.getInstance().meteoDao().saveStation(station);
-        Log.i("Tolomet", "result: " + updated);
+        Station clone = station.clone();
+        if(manager.refresh(clone))
+            DbMeteo.getInstance().meteoDao().saveStation(clone);
         int dif = (int)((System.currentTimeMillis()-station.getStamp())/60/1000L);
-        int interval = manager.getRefresh(station);
+        int interval = manager.getRefresh(clone);
         int minutes = dif >= interval ? 1 : interval-dif;
-        Log.i("Tolomet", "minutes: " + minutes);
-        executor.schedule(() -> refresh(), minutes, TimeUnit.MINUTES);
-        //executor.schedule(() -> refresh(), 5, TimeUnit.SECONDS);
+        executor.schedule(this::refresh, minutes, TimeUnit.MINUTES);
     }
 
     private void sendXctrack() {
@@ -123,7 +148,7 @@ public class FlyingService extends Service {
 
             String status1 = getStatus(false);
             String status2 = getStatus(true);
-            String name1 = station.getName();
+            String name1 = liveStation.getValue().getName();
             int maxLen = Math.min(name1.length(), 10);
             String name2 = name1.substring(0, maxLen);
             String xctod = String.format("$XCTOD,%s %s,%s %s,%s %s,%s %s,%s,%s,%s,%s",
@@ -142,17 +167,21 @@ public class FlyingService extends Service {
 
     private String getStatus(boolean full) {
         return manager
-            .getSummary(station, false, full, settings.getSpeedFactor(), settings.getSpeedLabel())
+            .getSummary(liveStation.getValue(), false, full, settings.getSpeedFactor(), settings.getSpeedLabel())
             //.replaceAll(",", "\\,");
             .replace(',', '.');
     }
 
+    public static final String ACTION_LAND = "com.akrog.tolomet.action.land";
     private static final String CHANNEL_FLYING = "com.akrog.tolomet.channel.flying";
     private static final int ONGOING_NOTIFICATION_ID = 2001;
     private final IBinder binder = new LocalBinder();
     private final Manager manager;
-    private Station station;
+    private final MutableLiveData<Station> liveStation = new MutableLiveData<>();
+    private final LiveData<Station> currentMeteo = Transformations.switchMap(liveStation,
+        station -> DbMeteo.getInstance().meteoDao().loadStation(station));
     private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     private DatagramSocket socket;
     private final AppSettings settings = AppSettings.getInstance();
+    private NotificationActionsReceiver receiver;
 }
