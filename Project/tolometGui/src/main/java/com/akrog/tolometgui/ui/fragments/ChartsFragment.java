@@ -81,8 +81,12 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        setScreenMode(model.checkStation() && settings.isFlying());
+        if( !model.checkStation() )
+            settings.setFlying(false);
         updateEnabled();
+        settings.getLiveFlying().observe(getViewLifecycleOwner(), flying -> {
+            setScreenMode(flying);
+        });
     }
 
     @Override
@@ -138,7 +142,7 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
         else if( id == R.id.map_item )
             ((MainActivity)getActivity()).navigate(R.id.nav_maps);
         else if( id == R.id.fly_item )
-            setScreenMode(!settings.isFlying());
+            settings.setFlying(!settings.isFlying());
 
         return super.onOptionsItemSelected(item);
     }
@@ -169,7 +173,6 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
             return;
         MenuItem itemMode = menu.findItem(R.id.fly_item);
         BaseActivity activity = (BaseActivity)getActivity();
-        settings.setFlying(flying);
         if( flying ) {
             itemMode.setIcon(R.drawable.ic_land_mode);
             itemMode.setTitle(R.string.LandMode);
