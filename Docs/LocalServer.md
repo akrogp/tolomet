@@ -12,7 +12,7 @@ To build the `Intent` you must use the action `"com.akrog.tolomet.action.server.
 
 ## Protocol format
 
-The application protocol over UDP is a very simple **text protocol**. Datagrams should follow the following CSV format using tab as separator:
+The application protocol over UDP is a very simple **text protocol**. Datagrams should follow the following CSV format **using tab as separator**:
 
 `TOLO	CMD	ARG1	ARG2	ARG3	...`
 
