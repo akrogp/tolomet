@@ -25,9 +25,6 @@
             <intent-filter>
                 <action android:name="com.akrog.tolomet.action.server.start"/>
             </intent-filter>
-            <intent-filter>
-                <action android:name="com.akrog.tolomet.action.server.stop"/>
-            </intent-filter>
         </service>
         <service
             android:name=".ui.services.FlyingService"

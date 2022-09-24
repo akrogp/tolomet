@@ -4,12 +4,18 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 
 import androidx.core.app.NotificationCompat;
+import androidx.lifecycle.LifecycleService;
+import androidx.lifecycle.LiveData;
 
 import com.akrog.tolomet.Manager;
 import com.akrog.tolomet.Station;
@@ -27,10 +33,20 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class LocalServerService extends Service {
+import java9.util.concurrent.CompletableFuture;
+
+public class LocalServerService extends LifecycleService {
+
+    public class NotificationActionsReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            stopForeground(true);
+        }
+    }
 
     public LocalServerService() {
         manager = new Manager(AppSettings.getInstance().getSelectedLanguage());
@@ -39,20 +55,25 @@ public class LocalServerService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        receiver = new NotificationActionsReceiver();
+        IntentFilter filter = new IntentFilter(ACTION_STOP);
+        this.registerReceiver(receiver, filter);
+
         executor.execute(() -> {
             try {
                 serve();
             } catch (IOException e) {
                 e.printStackTrace();
-                stopSelf();
+                stopForeground(true);
             }
         });
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if( !settings.isLocalServer() || (intent != null && ACTION_STOP.equals(intent.getAction())) ) {
-            stopSelf();
+        if( !settings.isLocalServer() ) {
+            stopForeground(true);
             return super.onStartCommand(intent, flags, startId);
         }
 
@@ -64,18 +85,18 @@ public class LocalServerService extends Service {
         PendingIntent contentPendingIntent =
                 PendingIntent.getActivity(this, 0, contentIntent, pendingIntentFlags);
 
-        Intent landIntent = new Intent(ACTION_STOP);
-        PendingIntent stopPendingIntent = PendingIntent.getBroadcast(this, 0, landIntent, pendingIntentFlags);
+        Intent stopIntent = new Intent(ACTION_STOP);
+        PendingIntent stopPendingIntent = PendingIntent.getBroadcast(this, 0, stopIntent, pendingIntentFlags);
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_SERVER)
-                .setSmallIcon(R.drawable.ic_wind_unknown)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText(getString(R.string.notification_serving))
-                .setTicker(getString(R.string.notification_serving))
-                .setContentIntent(contentPendingIntent)
-                .addAction(R.drawable.ic_stop, getString(R.string.stop), stopPendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .build();
+            .setSmallIcon(R.drawable.ic_wind_unknown)
+            .setContentTitle(getString(R.string.app_name))
+            .setContentText(getString(R.string.notification_serving))
+            .setTicker(getString(R.string.notification_serving))
+            .setContentIntent(contentPendingIntent)
+            .addAction(R.drawable.ic_stop, getString(R.string.stop), stopPendingIntent)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .build();
 
         startForeground(ONGOING_NOTIFICATION_ID, notification);
 
@@ -96,6 +117,7 @@ public class LocalServerService extends Service {
 
     @Override
     public void onDestroy() {
+        unregisterReceiver(receiver);
         stop = true;
         executor.shutdownNow();
         super.onDestroy();
@@ -103,7 +125,7 @@ public class LocalServerService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return super.onBind(intent);
     }
 
     private void serve() throws IOException {
@@ -134,20 +156,21 @@ public class LocalServerService extends Service {
             return INVALID;
         String cmd = fields[1];
         try {
-            if (cmd.equals(CMD_NEAR))
-                return processNear(Double.parseDouble(fields[2]), Double.parseDouble(fields[3]), Double.parseDouble(fields[4]), Double.parseDouble(fields[5]));
+            if (cmd.equals(CMD_GEO))
+                return processGeo(Double.parseDouble(fields[2]), Double.parseDouble(fields[3]), Double.parseDouble(fields[4]), Double.parseDouble(fields[5]));
         } catch (Exception e) {
             e.printStackTrace();
         }
         return INVALID;
     }
 
-    private String processNear(double lat1, double lon1, double lat2, double lon2) {
-        StringBuilder output = new StringBuilder(CMD_NEAR);
+    private String processGeo(double lat1, double lon1, double lat2, double lon2) throws ExecutionException, InterruptedException {
+        StringBuilder output = new StringBuilder(CMD_GEO);
         for(Station station : db.findGeoStations(lat1, lon1, lat2, lon2)) {
             output.append("\n");
-            station = meteo.loadStation(station).getValue();
-            manager.refresh(station);
+            station = toFuture(meteo.loadStation(station)).get();
+            if( manager.refresh(station) )
+                meteo.saveStation(station);
             long stamp = station.getStamp();
             output.append(StringUtils.toCsv(SEP,
                 station.getId(),
@@ -165,14 +188,22 @@ public class LocalServerService extends Service {
         return output.toString();
     }
 
+    private <T> CompletableFuture<T> toFuture(LiveData<T> liveData) {
+        CompletableFuture<T> future = new CompletableFuture<>();
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(() -> liveData.observe(this, future::complete));
+        return future;
+    }
+
     //public static final String ACTION_START = "com.akrog.tolomet.action.server.start";
     public static final String ACTION_STOP = "com.akrog.tolomet.action.server.stop";
     public static final int TIMEOUT = 1000;
     public static final int BUFFER = 30000;
     public static final String SIGNATURE = "TOLO";
     public static final String SEP = "\t";
+    //public static final String SEP = ",";
     public static final String INVALID = "Invalid request";
-    public static final String CMD_NEAR = "NEAR";
+    public static final String CMD_GEO = "GEO";
     private static final String CHANNEL_SERVER = "com.akrog.tolomet.channel.server";
     private static final int ONGOING_NOTIFICATION_ID = 3001;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -181,4 +212,5 @@ public class LocalServerService extends Service {
     private final MeteoDao meteo = DbMeteo.getInstance().meteoDao();
     private final Manager manager;
     private final AppSettings settings = AppSettings.getInstance();
+    private NotificationActionsReceiver receiver;
 }
