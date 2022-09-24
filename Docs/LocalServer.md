@@ -8,7 +8,7 @@ This document describes how to use Tolomet services in your own app by making re
 
 The first step consists on starting the Tolomet local server by using an `Intent`. By default this server is enabled but not started. The user can enter the settings to enable/disable this server and configure the UDP port used (default is `4363`).
 
-To build the `Intent` you must use the action `"com.akrog.tolomet.channel.server"` and call  `startForegroundService()`. **Do not forget to stop the service** when you no longer need it.
+To build the `Intent` you must use the action `"com.akrog.tolomet.action.server.start"` and call  `startForegroundService()`. **Do not forget to stop the service** when you no longer need it.
 
 ## Protocol format
 
