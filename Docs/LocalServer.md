@@ -21,9 +21,9 @@ where:
 - `CMD`: is the specific command you want to request (see next section)
 - `ARG1`, `ARG2`, `...`: are the arguments (if any) required by the command
 
-If there is something wrong Tolomet will response with a `Invalid request message`, otherwise it will return one or more lines where:
+If there is something wrong Tolomet will return a `Invalid request` message, otherwise it will return one or more lines where:
 - The first line is an ACK containing the name of the command executed
-- The rest of the lines are tab-separated fields
+- The rest of the lines are tab-separated fields. Please, do not make assumptions about the number of fields returned for a given command since more fields can be returned in a future.
 
 ## Commands
 
@@ -44,10 +44,10 @@ Output fields:
 - Provider quality
 - Station latitude
 - Station longitude
-- Timestamp ([see doc](https://docs.oracle.com/javase/8/docs/api/java/util/Date.html#getTime--)) of the following readings.
-- Wind direction in degrees.
-- Medium wind speed in km/h.
-- Maximum wind speed in km/h.
+- Timestamp ([see doc](https://docs.oracle.com/javase/8/docs/api/java/util/Date.html#getTime--)) of the following readings
+- Wind direction in degrees
+- Medium wind speed in km/h
+- Maximum wind speed in km/h
 
 Example:
 
