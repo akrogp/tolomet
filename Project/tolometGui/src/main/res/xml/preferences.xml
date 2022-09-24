@@ -96,13 +96,28 @@
 		<CheckBoxPreference
 			android:key="pref_sendXctrack"
 			android:title="@string/pref_sendXctrack"
-			android:dialogTitle="@string/pref_sendXctrack"/>
+			android:dialogTitle="@string/pref_sendXctrack"
+			android:defaultValue="false"/>
 		<EditTextPreference
 			android:key="pref_portXctrack"
 			android:title="@string/pref_portXctrack"
 			android:dialogTitle="@string/pref_portXctrack"
 			android:inputType="number"
-			android:defaultValue="10110" />
+			android:defaultValue="10110"
+			android:enabled="false"/>
+	</PreferenceCategory>
+	<PreferenceCategory android:title="@string/pref_localServer">
+		<CheckBoxPreference
+			android:key="pref_enabledLocalServer"
+			android:title="@string/pref_enabledLocalServer"
+			android:dialogTitle="@string/pref_enabledLocalServer"
+			android:defaultValue="true"/>
+		<EditTextPreference
+			android:key="pref_portLocalServer"
+			android:title="@string/pref_portLocalServer"
+			android:dialogTitle="@string/pref_portLocalServer"
+			android:inputType="number"
+			android:defaultValue="4363" />
 	</PreferenceCategory>
 	<PreferenceCategory android:title="@string/pref_advanced">
 		<CheckBoxPreference

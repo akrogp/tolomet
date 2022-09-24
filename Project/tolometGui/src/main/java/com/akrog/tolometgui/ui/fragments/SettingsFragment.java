@@ -77,9 +77,11 @@ public abstract class SettingsFragment extends PreferenceFragmentCompat implemen
         }
         if( key.equals(AppSettings.PREF_UNIT) )
             setPreferenceEntries();
-        if( key.equals(AppSettings.PREF_ORIG_EUSKALMET) )
+        else if( key.equals(AppSettings.PREF_ORIG_EUSKALMET) )
             AppSettings.refreshCore();
-        if( key.equals(AppSettings.PREF_SEND_XCTRACK) )
+        else if( key.equals(AppSettings.PREF_SEND_XCTRACK) )
+            updateEnabled();
+        else if( key.equals(AppSettings.PREF_ENABLED_SERVER) )
             updateEnabled();
         Preference pref = findPreference(key);
         setSummary(pref);
@@ -87,11 +89,17 @@ public abstract class SettingsFragment extends PreferenceFragmentCompat implemen
     }
 
     private void updateEnabled() {
-        CheckBoxPreference sendPref = (CheckBoxPreference)findPreference(AppSettings.PREF_SEND_XCTRACK);
-        if( sendPref == null )
-            return;
-        Preference portPref = findPreference(AppSettings.PREF_PORT_XCTRACK);
-        portPref.setEnabled(sendPref.isChecked());
+        CheckBoxPreference sendPref = findPreference(AppSettings.PREF_SEND_XCTRACK);
+        if( sendPref != null ) {
+            Preference portPref = findPreference(AppSettings.PREF_PORT_XCTRACK);
+            portPref.setEnabled(sendPref.isChecked());
+        }
+
+        CheckBoxPreference serverPref = findPreference(AppSettings.PREF_ENABLED_SERVER);
+        if( serverPref != null ) {
+            Preference portPref = findPreference(AppSettings.PREF_PORT_SERVER);
+            portPref.setEnabled(serverPref.isChecked());
+        }
     }
 
     private void recreate() {

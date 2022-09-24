@@ -19,20 +19,32 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <service
+            android:name=".ui.services.LocalServerService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.akrog.tolomet.action.server.start"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.akrog.tolomet.action.server.stop"/>
+            </intent-filter>
+        </service>
+        <service
             android:name=".ui.services.FlyingService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
 
         <activity
             android:name=".ui.activities.IntroActivity"
             android:label="@string/app_name"
             android:launchMode="singleInstance"
-            android:theme="@style/AppTheme.Transparent"></activity>
+            android:theme="@style/AppTheme.Transparent" />
         <activity
             android:name=".ui.activities.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleInstance"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
