@@ -88,6 +88,8 @@ public abstract class SettingsFragment extends PreferenceFragmentCompat implemen
 
     private void updateEnabled() {
         CheckBoxPreference sendPref = (CheckBoxPreference)findPreference(AppSettings.PREF_SEND_XCTRACK);
+        if( sendPref == null )
+            return;
         Preference portPref = findPreference(AppSettings.PREF_PORT_XCTRACK);
         portPref.setEnabled(sendPref.isChecked());
     }
