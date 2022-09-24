@@ -6,7 +6,7 @@ This document describes how to use Tolomet services in your own app by making re
 
 ## Starting/stopping the Tolomet local server
 
-The first step consists on starting the Tolomet local server by using an `Intent`. By default this server is enabled but not started. The user can enter the settings to disable or configure this server.
+The first step consists on starting the Tolomet local server by using an `Intent`. By default this server is enabled but not started. The user can enter the settings to enable/disable this server and configure the UDP port used (default is `4363`).
 
 To build the `Intent` you must use the action `"com.akrog.tolomet.channel.server"` and call  `startForegroundService()`. **Do not forget to stop the service** when you no longer need it.
 
@@ -29,15 +29,15 @@ If there is something wrong Tolomet will response with a `Invalid request messag
 
 ### GEO
 
-Returns the stations within `(lat1, lon1)` and `(lat2, lon2)` including their last readings.
+Returns the stations and their last readings within the requested coordinates range.
 
-Arguments:
+Input arguments:
 - Latitude of the first corner
 - Longitude of the first corner
 - Latitude of the second corner
 - Longitude of the second corner
 
-Fields:
+Output fields:
 - Station ID
 - Station name
 - Provider name
