@@ -7,8 +7,8 @@ android {
         applicationId "com.akrog.tolomet"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 771
-        versionName "7.7.1"
+        versionCode 772
+        versionName "7.7.2"
         vectorDrawables {
             useSupportLibrary true
         }
@@ -62,6 +62,8 @@ dependencies {
 
     //implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
     implementation 'com.github.castorflex.smoothprogressbar:library:1.1.0'
+
+    implementation 'net.sourceforge.streamsupport:android-retrofuture:1.7.4'
 
     testImplementation 'junit:junit:4.12'
 

@@ -19,6 +19,7 @@ Largo:
 - Gráficas con predicción (meteoblue)
 
 Hecho:
+x Comunicación con AlfaPilot por UDP, puerto 4363
 x Nuevo mapa de Elliott con tacks
 x Cambiar tema de regiones
 x Rango velocidad inferior a 40 km/h -> lo descarto porque tendría que ser 24 y 32 y sería confuso
