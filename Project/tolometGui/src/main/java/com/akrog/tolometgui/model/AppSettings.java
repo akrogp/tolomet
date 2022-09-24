@@ -349,6 +349,14 @@ public class AppSettings {
         return Integer.parseInt(settings.getString(PREF_PORT_XCTRACK, "10110"));
     }
 
+    public boolean isLocalServer() {
+        return settings.getBoolean(PREF_ENABLED_SERVER, true);
+    }
+
+    public int getPortLocalServer() {
+        return Integer.parseInt(settings.getString(PREF_PORT_SERVER, "4363"));
+    }
+
     public void saveScreen(int id) {
         if( id >= Screen.values().length )
             for( Screen screen : Screen.values() )
@@ -444,4 +452,6 @@ public class AppSettings {
     public static final String PREF_ORIG_EUSKALMET = "pref_origEuskalmet";
     public static final String PREF_SEND_XCTRACK = "pref_sendXctrack";
     public static final String PREF_PORT_XCTRACK = "pref_portXctrack";
+    public static final String PREF_ENABLED_SERVER = "pref_enabledLocalServer";
+    public static final String PREF_PORT_SERVER = "pref_portLocalServer";
 }

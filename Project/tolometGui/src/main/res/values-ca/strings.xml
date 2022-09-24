@@ -159,4 +159,10 @@
     <string name="pref_portXctrack">Puerto UDP</string>
     <string name="notification_xctrack">Enviando a XCTrack</string>
     <string name="flying_channel_name">En vuelo</string>
+    <string name="pref_localServer">Servidor local</string>
+    <string name="pref_enabledLocalServer">Servir a otras apps (ej. Alfapilot)</string>
+    <string name="pref_portLocalServer">Puerto UDP</string>
+    <string name="server_channel_name">Server</string>
+    <string name="notification_serving">Serving other apps</string>
+    <string name="stop">Stop</string>
 </resources>
