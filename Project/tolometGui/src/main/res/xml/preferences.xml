@@ -124,5 +124,10 @@
 			android:key="pref_origEuskalmet"
 			android:title="@string/pref_origEuskalmet"
 			android:dialogTitle="@string/pref_origEuskalmet" />
+		<CheckBoxPreference
+			android:key="pref_altMeteoGalicia"
+			android:title="@string/pref_altMeteoGalicia"
+			android:dialogTitle="@string/pref_altMeteoGalicia"
+			android:defaultValue="true" />
 	</PreferenceCategory>
 </PreferenceScreen>

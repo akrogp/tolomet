@@ -1,8 +1,8 @@
 package com.akrog.tolomet.providers;
 
-import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Created by gorka on 18/02/16.
@@ -14,6 +14,6 @@ public class MeteoGaliciaProviderTest extends BaseProviderTest {
 
     @Test
     public void downloadData() {
-        assertTrue(testDownload("19070"));
+        assertTrue(testDownload("10045"));
     }
 }
