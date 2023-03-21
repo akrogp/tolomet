@@ -82,6 +82,7 @@ public class ResourceService {
         mapProviders.put(WindProviderType.Metar.name(), R.drawable.ic_metar);
         mapProviders.put(WindProviderType.PiouPiou.name(), R.drawable.ic_piou);
         mapProviders.put(WindProviderType.Noromet.name(), R.drawable.noromet);
+        mapProviders.put(WindProviderType.SmartyPlanet.name(), R.drawable.smarty);
 
         mapProviders.put(SpotProviderType.ElliottParagliding.name(), R.drawable.ic_landing);
         mapProviders.put(SpotProviderType.DhvDatabase.name(), R.drawable.dhv);
