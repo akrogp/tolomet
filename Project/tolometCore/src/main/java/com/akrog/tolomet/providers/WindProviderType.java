@@ -23,7 +23,8 @@ public enum WindProviderType {
 	WeatherCloud("WC", new WeatherCloudProvider(), WindProviderQuality.Medium, false),
 	FieldClimate("FC", new FieldClimateProvider(), WindProviderQuality.Good, false),
 	Malloles("MA", new MallolesProvider(), WindProviderQuality.Good, false),
-	Noromet("NORO", new NorometProvider(), WindProviderQuality.Medium, true);
+	Noromet("NORO", new NorometProvider(), WindProviderQuality.Medium, true),
+	SmartyPlanet("SMTY", new SmartyPlanetProvider(), WindProviderQuality.Good, false);
 	
 	private final String code;
 	private final WindProvider provider;
