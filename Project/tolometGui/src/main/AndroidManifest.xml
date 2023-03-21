@@ -35,7 +35,8 @@
             android:name=".ui.activities.IntroActivity"
             android:label="@string/app_name"
             android:launchMode="singleInstance"
-            android:theme="@style/AppTheme.Transparent" />
+            android:theme="@style/AppTheme.Transparent"
+            android:exported="false"/>
         <activity
             android:name=".ui.activities.MainActivity"
             android:label="@string/app_name"
@@ -62,21 +63,24 @@
             android:value="@string/google_maps_key" /> <!-- Widgets -->
         <activity
             android:name=".widget.activities.SmallWidgetSettingsActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
         <activity
             android:name=".widget.activities.MediumWidgetSettingsActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
         <activity
             android:name=".widget.activities.LargeWidgetSettingsActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -85,7 +89,8 @@
         <receiver
             android:name=".widget.providers.MediumWidgetProvider"
             android:icon="@drawable/ic_launcher"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -103,7 +108,8 @@
         <receiver
             android:name=".widget.providers.SmallWidgetProvider"
             android:icon="@drawable/ic_launcher"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -115,7 +121,8 @@
         <receiver
             android:name=".widget.providers.LargeWidgetProvider"
             android:icon="@drawable/ic_launcher"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
