@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.akrog.tolomet.Measurement;
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.providers.EuskalmetProvider;
+import com.akrog.tolomet.providers.MeteoGaliciaProvider;
 import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.Tolomet;
@@ -62,6 +63,7 @@ public class AppSettings {
 
     public static void refreshCore() {
         ((EuskalmetProvider)WindProviderType.Euskalmet.getProvider()).setOriginal(instance.isEuskalmetOriginal());
+        ((MeteoGaliciaProvider)WindProviderType.MeteoGalicia.getProvider()).setAltProvider(instance.isAltMeteoGalicia());
     }
 
     private void setDefaultsAuto() {
@@ -386,6 +388,14 @@ public class AppSettings {
         return settings.getBoolean(PREF_ORIG_EUSKALMET, true);
     }
 
+    public void setAltMeteoGalicia(boolean alt) {
+        settings.edit().putBoolean(PREF_ALT_METEOGALICIA, alt).commit();
+    }
+
+    public boolean isAltMeteoGalicia() {
+        return settings.getBoolean(PREF_ALT_METEOGALICIA, true);
+    }
+
     private void fixValues() {
         fixValues("pref_modeGraphs", R.array.pref_modeGraphsValues);
         fixValues("pref_modeUpdate", R.array.pref_modeUpdateValues );
@@ -454,4 +464,5 @@ public class AppSettings {
     public static final String PREF_PORT_XCTRACK = "pref_portXctrack";
     public static final String PREF_ENABLED_SERVER = "pref_enabledLocalServer";
     public static final String PREF_PORT_SERVER = "pref_portLocalServer";
+    public static final String PREF_ALT_METEOGALICIA = "pref_altMeteoGalicia";
 }

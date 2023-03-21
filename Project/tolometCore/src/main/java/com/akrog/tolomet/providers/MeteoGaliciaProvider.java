@@ -80,7 +80,7 @@ public class MeteoGaliciaProvider implements WindProvider {
 
 	private void download(Station station, String dataIni, String dataFin) throws Exception {
 		dw = new Downloader();
-		dw.setUrl("https://servizos.meteogalicia.gal/mgrss/observacion/datos10min.action");
+		dw.setUrl(String.format("https://servizos.meteogalicia.gal/%s/observacion/datos10min.action", altProvider ? "rss" : "mgrss"));
 		dw.addParam("cod", "ToloMet6");
 		dw.addParam("idEstacion", station.getCode());
 		dw.addParam("dataIni", dataIni);
@@ -127,6 +127,10 @@ public class MeteoGaliciaProvider implements WindProvider {
 		return 10;
 	}
 
+	public void setAltProvider(boolean altProvider) {
+		this.altProvider = altProvider;
+	}
+
 	private static SimpleDateFormat SDF_USER = new SimpleDateFormat("dd/MM/yyyy");
 	private static SimpleDateFormat SDF_REST = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 	private static SimpleDateFormat SDF_JSON = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -135,4 +139,5 @@ public class MeteoGaliciaProvider implements WindProvider {
 		SDF_JSON.setTimeZone(TimeZone.getTimeZone("UTC"));
 	}
 	private Downloader dw;
+	private boolean altProvider = true;
 }
