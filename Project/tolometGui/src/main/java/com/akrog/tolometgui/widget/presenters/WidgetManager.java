@@ -200,7 +200,7 @@ public class WidgetManager {
         clickIntent.putExtra(MainActivity.EXTRA_STATION, data.id);
         // http://stackoverflow.com/questions/3168484/pendingintent-works-correctly-for-the-first-notification-but-incorrectly-for-the#comment3283736_3168653
         clickIntent.setAction(Long.toString(System.currentTimeMillis()));
-        return PendingIntent.getActivity(context,0,clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getActivity(context,0,clickIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 
     private PendingIntent getUpdateIntent() {
@@ -208,7 +208,7 @@ public class WidgetManager {
         clickIntent.setAction(SpotWidgetProvider.FORCE_WIDGET_UPDATE);
         //clickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, allWidgetIds);
         //clickIntent.putExtra(WidgetReceiver.EXTRA_WIDGET_SIZE, widgetSize);
-        return PendingIntent.getBroadcast(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getBroadcast(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 
     private boolean updateViews(RemoteViews remoteViews, WidgetData data) {
