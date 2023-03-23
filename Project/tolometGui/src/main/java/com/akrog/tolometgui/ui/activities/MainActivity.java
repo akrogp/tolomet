@@ -8,27 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.akrog.tolomet.Station;
-import com.akrog.tolometgui.BuildConfig;
-import com.akrog.tolometgui.R;
-import com.akrog.tolometgui.model.db.DbTolomet;
-import com.akrog.tolometgui.ui.fragments.AboutFragment;
-import com.akrog.tolometgui.ui.fragments.ChartsFragment;
-import com.akrog.tolometgui.ui.fragments.HelpFragment;
-import com.akrog.tolometgui.ui.fragments.InfoFragment;
-import com.akrog.tolometgui.ui.fragments.MapFragment;
-import com.akrog.tolometgui.ui.fragments.ProviderFragment;
-import com.akrog.tolometgui.ui.fragments.SettingsContainerFragment;
-import com.akrog.tolometgui.ui.fragments.ToolbarFragment;
-import com.akrog.tolometgui.ui.fragments.UpdateFragment;
-import com.akrog.tolometgui.ui.presenters.MyWidgets;
-import com.akrog.tolometgui.ui.services.StorageService;
-import com.akrog.tolometgui.ui.viewmodels.MainViewModel;
-import com.akrog.tolometgui.ui.views.AndroidUtils;
-import com.google.android.material.navigation.NavigationView;
-
-import java.io.File;
-
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
@@ -38,6 +17,32 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
+
+import com.akrog.tolomet.Station;
+import com.akrog.tolomet.utils.DateUtils;
+import com.akrog.tolometgui.BuildConfig;
+import com.akrog.tolometgui.R;
+import com.akrog.tolometgui.Tolomet;
+import com.akrog.tolometgui.model.AppSettings;
+import com.akrog.tolometgui.model.db.DbTolomet;
+import com.akrog.tolometgui.ui.fragments.AboutFragment;
+import com.akrog.tolometgui.ui.fragments.ChartsFragment;
+import com.akrog.tolometgui.ui.fragments.HelpFragment;
+import com.akrog.tolometgui.ui.fragments.InfoFragment;
+import com.akrog.tolometgui.ui.fragments.MapFragment;
+import com.akrog.tolometgui.ui.fragments.MotdDialogFragment;
+import com.akrog.tolometgui.ui.fragments.ProviderFragment;
+import com.akrog.tolometgui.ui.fragments.SettingsContainerFragment;
+import com.akrog.tolometgui.ui.fragments.ToolbarFragment;
+import com.akrog.tolometgui.ui.fragments.UpdateFragment;
+import com.akrog.tolometgui.ui.fragments.VersionDialogFragment;
+import com.akrog.tolometgui.ui.presenters.MyWidgets;
+import com.akrog.tolometgui.ui.services.StorageService;
+import com.akrog.tolometgui.ui.viewmodels.MainViewModel;
+import com.akrog.tolometgui.ui.views.AndroidUtils;
+import com.google.android.material.navigation.NavigationView;
+
+import java.io.File;
 
 public class MainActivity extends ToolbarActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -66,6 +71,37 @@ public class MainActivity extends ToolbarActivity
 
         widgets = new MyWidgets(this);
         widgets.liveUpdate(this);
+
+        checkMotd();
+        checkVersionUpdate();
+    }
+
+    private void checkMotd() {
+        long stamp = AppSettings.getInstance().getCheckStamp();
+        if( DateUtils.isToday(stamp) )
+            return;
+        String lang = AppSettings.getInstance().getSelectedLanguage();
+        Tolomet.getBackend().getMotd(stamp, lang)
+            .addOnSuccessListener(this, motds -> {
+                if( motds == null || motds.isEmpty() )
+                    return;
+                AppSettings.getInstance().saveCheckStamp(System.currentTimeMillis());
+                new MotdDialogFragment(motds).show(getSupportFragmentManager(), "motd");
+            });
+    }
+
+    private void checkVersionUpdate() {
+        long stamp = AppSettings.getInstance().getUpdateStamp();
+        if( DateUtils.isToday(stamp) )
+            return;
+        String lang = AppSettings.getInstance().getSelectedLanguage();
+        Tolomet.getBackend().getUpdates(BuildConfig.VERSION_CODE, lang)
+            .addOnSuccessListener(this, versionUpdates -> {
+                if( versionUpdates == null || versionUpdates.isEmpty() )
+                    return;
+                AppSettings.getInstance().saveUpdateStamp(System.currentTimeMillis());
+                new VersionDialogFragment(versionUpdates).show(getSupportFragmentManager(), "version");
+            });
     }
 
     @Override

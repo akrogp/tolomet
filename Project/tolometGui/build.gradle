@@ -1,11 +1,12 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 33
 
     defaultConfig {
         applicationId "com.akrog.tolomet"
-        minSdkVersion 19
+        minSdkVersion 23
         targetSdkVersion 33
         versionCode 781
         versionName "7.8.1"
@@ -59,6 +60,10 @@ dependencies {
     implementation 'com.google.android.material:material:1.8.0'
     implementation "com.google.android.gms:play-services-maps:$play_version"
     implementation 'com.google.maps.android:android-maps-utils:0.5'
+
+    implementation platform('com.google.firebase:firebase-bom:28.4.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-database'
 
     //implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
     implementation 'com.github.castorflex.smoothprogressbar:library:1.1.0'
