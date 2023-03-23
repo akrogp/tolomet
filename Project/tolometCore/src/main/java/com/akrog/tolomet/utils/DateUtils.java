@@ -18,4 +18,19 @@ public final class DateUtils {
         cal.set(Calendar.SECOND, 59);
         cal.set(Calendar.MILLISECOND, 999);
     }
+
+    public static boolean isToday(long stamp) {
+        Calendar today = Calendar.getInstance();
+        resetDay(today);
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(stamp);
+        resetDay(cal);
+        return cal.equals(today);
+    }
+
+    public static long today() {
+        Calendar today = Calendar.getInstance();
+        resetDay(today);
+        return today.getTimeInMillis();
+    }
 }

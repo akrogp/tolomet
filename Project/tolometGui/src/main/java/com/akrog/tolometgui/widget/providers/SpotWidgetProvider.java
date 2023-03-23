@@ -7,11 +7,11 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.core.content.ContextCompat;
+
 import com.akrog.tolometgui.model.WidgetSettings;
 import com.akrog.tolometgui.ui.services.NetworkService;
 import com.akrog.tolometgui.widget.services.WidgetService;
-
-import androidx.core.content.ContextCompat;
 
 /**
  * Created by gorka on 11/05/16.
@@ -38,7 +38,7 @@ public abstract class SpotWidgetProvider extends AppWidgetProvider {
     private PendingIntent getUpdateIntent(Context context) {
         Intent intent = new Intent(FORCE_WIDGET_UPDATE);
         intent.putExtra(EXTRA_WIDGET_SIZE, getWidgetSize());
-        return PendingIntent.getBroadcast(context,0,intent,PendingIntent.FLAG_CANCEL_CURRENT);
+        return PendingIntent.getBroadcast(context,0,intent,PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 
     @Override
