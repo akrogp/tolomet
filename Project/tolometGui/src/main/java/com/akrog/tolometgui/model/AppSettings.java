@@ -164,6 +164,16 @@ public class AppSettings {
         editor.commit();
     }
 
+    public long getWidgetStamp() {
+        return settings.getLong("stamp-widget", 0);
+    }
+
+    public void saveWidgetStamp(long stamp ) {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putLong("stamp-widget", stamp);
+        editor.commit();
+    }
+
     public boolean isIntroAccepted() {
         return settings.getBoolean("intro-ok", false);
     }
