@@ -55,6 +55,8 @@ public class FirebaseBackend implements Backend {
                             if(msgs.hasChildren()) {
                                 VersionUpdate upd = new VersionUpdate();
                                 upd.setCode(Integer.parseInt(data.getKey()));
+                                if( data.hasChild("from") )
+                                    upd.setFrom(data.child("from").getValue(Integer.class));
                                 for( DataSnapshot msg : msgs.getChildren() )
                                     upd.getUpdates().add(msg.getValue(String.class));
                                 list.add(upd);
