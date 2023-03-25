@@ -14,12 +14,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.core.util.Consumer;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.akrog.tolomet.Spot;
 import com.akrog.tolomet.SpotType;
 import com.akrog.tolomet.Station;
 import com.akrog.tolometgui.R;
-import com.akrog.tolomet.Spot;
 import com.akrog.tolometgui.model.db.DbTolomet;
 import com.akrog.tolometgui.ui.activities.BaseActivity;
 import com.akrog.tolometgui.ui.activities.MainActivity;
@@ -47,10 +50,6 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import androidx.annotation.Nullable;
-import androidx.core.util.Consumer;
-import androidx.lifecycle.ViewModelProviders;
-
 public class MapFragment extends ToolbarFragment implements
         OnMapReadyCallback, GoogleMap.OnCameraIdleListener, GoogleMap.OnInfoWindowClickListener,
         ClusterManager.OnClusterItemClickListener<ClusterItem> {
@@ -68,10 +67,10 @@ public class MapFragment extends ToolbarFragment implements
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
 
-        mapViewModel = ViewModelProviders.of(getActivity()).get(MapViewModel.class);
+        mapViewModel = new ViewModelProvider(getActivity()).get(MapViewModel.class);
 
         MapView mapView = getView().findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);

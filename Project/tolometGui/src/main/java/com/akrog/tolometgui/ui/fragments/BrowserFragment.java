@@ -12,10 +12,10 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import androidx.annotation.Nullable;
+
 import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.ui.activities.MainActivity;
-
-import androidx.annotation.Nullable;
 
 public abstract class BrowserFragment extends ToolbarFragment {
     private static final int[] LIVE_ITEMS = {R.id.refresh_item, R.id.charts_item, R.id.browser_item};
@@ -39,8 +39,8 @@ public abstract class BrowserFragment extends ToolbarFragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
         model.liveCurrentStation().observe(getViewLifecycleOwner(), station -> {
             getActivity().findViewById(R.id.no_station).setVisibility(model.checkStation() ? View.GONE : View.VISIBLE);
             getActivity().findViewById(R.id.web).setVisibility(model.checkStation() ? View.VISIBLE : View.GONE);

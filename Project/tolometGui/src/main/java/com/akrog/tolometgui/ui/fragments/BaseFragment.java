@@ -4,23 +4,23 @@ import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
+import androidx.core.util.Consumer;
+import androidx.fragment.app.Fragment;
+
 import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.model.AppSettings;
 import com.akrog.tolometgui.ui.activities.BaseActivity;
 import com.akrog.tolometgui.ui.services.NetworkService;
 import com.akrog.tolometgui.ui.views.AndroidUtils;
 
-import androidx.annotation.Nullable;
-import androidx.core.util.Consumer;
-import androidx.fragment.app.Fragment;
-
 public abstract class BaseFragment extends Fragment {
     protected AppSettings settings;
     private boolean stopped;
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
         settings = AppSettings.getInstance();
     }
 

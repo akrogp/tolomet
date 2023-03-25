@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
 import com.akrog.tolometgui.BuildConfig;
 import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.model.db.DbTolomet;
@@ -19,8 +21,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Calendar;
 
-import androidx.annotation.Nullable;
-
 public class AboutFragment extends ToolbarFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,8 +29,8 @@ public class AboutFragment extends ToolbarFragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
         TextView tv = getActivity().findViewById(R.id.legal_text);
         tv.setText(readRawTextFile(R.raw.legal));
         tv = getActivity().findViewById(R.id.info_text);
