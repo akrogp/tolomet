@@ -24,6 +24,7 @@ import com.akrog.tolometgui.BuildConfig;
 import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.Tolomet;
 import com.akrog.tolometgui.model.AppSettings;
+import com.akrog.tolometgui.model.backend.VersionUpdate;
 import com.akrog.tolometgui.model.db.DbTolomet;
 import com.akrog.tolometgui.ui.fragments.AboutFragment;
 import com.akrog.tolometgui.ui.fragments.ChartsFragment;
@@ -43,6 +44,8 @@ import com.akrog.tolometgui.ui.views.AndroidUtils;
 import com.google.android.material.navigation.NavigationView;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends ToolbarActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -83,9 +86,9 @@ public class MainActivity extends ToolbarActivity
         String lang = AppSettings.getInstance().getSelectedLanguage();
         Tolomet.getBackend().getMotd(stamp, lang)
             .addOnSuccessListener(this, motds -> {
+                AppSettings.getInstance().saveCheckStamp(System.currentTimeMillis());
                 if( motds == null || motds.isEmpty() )
                     return;
-                AppSettings.getInstance().saveCheckStamp(System.currentTimeMillis());
                 new MotdDialogFragment(motds).show(getSupportFragmentManager(), "motd");
             });
     }
@@ -97,10 +100,16 @@ public class MainActivity extends ToolbarActivity
         String lang = AppSettings.getInstance().getSelectedLanguage();
         Tolomet.getBackend().getUpdates(BuildConfig.VERSION_CODE, lang)
             .addOnSuccessListener(this, versionUpdates -> {
-                if( versionUpdates == null || versionUpdates.isEmpty() )
-                    return;
                 AppSettings.getInstance().saveUpdateStamp(System.currentTimeMillis());
-                new VersionDialogFragment(versionUpdates).show(getSupportFragmentManager(), "version");
+                if( versionUpdates == null )
+                    return;
+                List<VersionUpdate> fromUpdates = new ArrayList<>();
+                for( VersionUpdate update : versionUpdates )
+                    if( BuildConfig.VERSION_CODE >= update.getFrom() )
+                        fromUpdates.add(update);
+                if( fromUpdates.isEmpty() )
+                    return;
+                new VersionDialogFragment(fromUpdates).show(getSupportFragmentManager(), "version");
             });
     }
 
