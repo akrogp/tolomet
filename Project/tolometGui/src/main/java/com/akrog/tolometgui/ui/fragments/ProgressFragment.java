@@ -2,16 +2,16 @@ package com.akrog.tolometgui.ui.fragments;
 
 import android.os.Bundle;
 
-import com.akrog.tolometgui.ui.activities.ProgressActivity;
-
 import androidx.annotation.Nullable;
+
+import com.akrog.tolometgui.ui.activities.ProgressActivity;
 
 public abstract class ProgressFragment extends BaseFragment {
     private ProgressActivity activity;
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
         activity = (ProgressActivity)getActivity();
     }
 

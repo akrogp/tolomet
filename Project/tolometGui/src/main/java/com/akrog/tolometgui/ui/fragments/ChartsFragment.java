@@ -90,8 +90,8 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
 
         summary = new MySummary();
         summary.initialize(activity, savedInstanceState);

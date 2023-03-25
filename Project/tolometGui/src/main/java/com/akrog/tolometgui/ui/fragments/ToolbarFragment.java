@@ -4,12 +4,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.akrog.tolometgui.ui.activities.ToolbarActivity;
 import com.akrog.tolometgui.ui.viewmodels.MainViewModel;
 import com.akrog.tolometgui.ui.views.AndroidUtils;
-
-import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
 
 public abstract class ToolbarFragment extends ProgressFragment {
     protected MainViewModel model;
@@ -34,11 +34,11 @@ public abstract class ToolbarFragment extends ProgressFragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
         activity = (ToolbarActivity)getActivity();
-        model = ViewModelProviders.of(activity).get(MainViewModel.class);
-        model.liveCurrentStation().observe(this, station -> updateEnabled());
+        model = new ViewModelProvider(getActivity()).get(MainViewModel.class);
+        model.liveCurrentStation().observe(getViewLifecycleOwner(), station -> updateEnabled());
     }
 
     @Override

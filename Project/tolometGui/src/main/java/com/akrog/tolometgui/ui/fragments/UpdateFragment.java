@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import androidx.annotation.Nullable;
+
 import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.model.db.DbTolomet;
@@ -18,8 +20,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import androidx.annotation.Nullable;
 
 public class UpdateFragment extends ToolbarFragment implements AdapterView.OnItemClickListener {
     private List<ProviderAdapter.ProviderWrapper> providers;
@@ -33,8 +33,8 @@ public class UpdateFragment extends ToolbarFragment implements AdapterView.OnIte
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
         addCancelListenner(() -> {
             if( countTask != null ) {
                 countTask.cancel(true);
