@@ -164,6 +164,16 @@ public class AppSettings {
         editor.commit();
     }
 
+    public boolean isWidgetSkip() {
+        return settings.getBoolean("widget-skip", false);
+    }
+
+    public void saveWidgetSkip(boolean skip) {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean("widget-skip", skip);
+        editor.commit();
+    }
+
     public boolean isIntroAccepted() {
         return settings.getBoolean("intro-ok", false);
     }
