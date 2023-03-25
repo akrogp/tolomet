@@ -7,11 +7,21 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 
-import androidx.core.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.work.ExistingWorkPolicy;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
 
+import com.akrog.tolometgui.Tolomet;
+import com.akrog.tolometgui.model.AppSettings;
 import com.akrog.tolometgui.model.WidgetSettings;
 import com.akrog.tolometgui.ui.services.NetworkService;
-import com.akrog.tolometgui.widget.services.WidgetService;
+import com.akrog.tolometgui.widget.model.WidgetModel;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by gorka on 11/05/16.
@@ -28,11 +38,18 @@ public abstract class SpotWidgetProvider extends AppWidgetProvider {
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
+
+        OneTimeWorkRequest noloopWorker = new OneTimeWorkRequest.Builder(UpdateWorker.class)
+            .setInitialDelay(5000L, TimeUnit.DAYS)
+            .build();
+        WorkManager.getInstance(context)
+            .enqueueUniqueWork("noloop_work" + getWidgetSize(), ExistingWorkPolicy.KEEP, noloopWorker);
+
         AlarmManager alarm = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         alarm.setInexactRepeating(
-                AlarmManager.ELAPSED_REALTIME,
-                AlarmManager.INTERVAL_HOUR, AlarmManager.INTERVAL_HOUR,
-                getUpdateIntent(context));
+            AlarmManager.ELAPSED_REALTIME,
+            AlarmManager.INTERVAL_HOUR, AlarmManager.INTERVAL_HOUR,
+            getUpdateIntent(context));
     }
 
     private PendingIntent getUpdateIntent(Context context) {
@@ -44,6 +61,10 @@ public abstract class SpotWidgetProvider extends AppWidgetProvider {
     @Override
     public void onDisabled(Context context) {
         super.onDisabled(context);
+
+        WorkManager.getInstance(context)
+            .cancelUniqueWork("noloop_work" + getWidgetSize());
+
         AlarmManager alarm = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         alarm.cancel(getUpdateIntent(context));
     }
@@ -57,8 +78,11 @@ public abstract class SpotWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        if(NetworkService.isNetworkAvailable())
-            startService(context);
+        // https://stackoverflow.com/questions/70654474/starting-workmanager-task-from-appwidgetprovider-results-in-endless-onupdate-cal
+        if( NetworkService.isNetworkAvailable() ) {
+            WorkRequest updateRequest = new OneTimeWorkRequest.Builder(UpdateWorker.class).build();
+            WorkManager.getInstance(Tolomet.getAppContext()).enqueue(updateRequest);
+        }
     }
 
     @Override
@@ -69,10 +93,21 @@ public abstract class SpotWidgetProvider extends AppWidgetProvider {
             onUpdate(context, null, null);
     }
 
-    private void startService(Context context) {
-        Intent intent = new Intent(context.getApplicationContext(), WidgetService.class);
-        intent.putExtra(EXTRA_WIDGET_SIZE, getWidgetSize());
-        //context.startService(intent);
-        ContextCompat.startForegroundService(context, intent);
+    public static class UpdateWorker extends Worker {
+        public UpdateWorker(
+                @NonNull Context context,
+                @NonNull WorkerParameters params) {
+            super(context, params);
+        }
+
+        @NonNull
+        @Override
+        public Result doWork() {
+            WidgetModel model = new WidgetModel(Tolomet.getAppContext());
+            model.download();
+            model.update();
+            AppSettings.getInstance().saveWidgetSkip(true);
+            return Result.success();
+        }
     }
 }
