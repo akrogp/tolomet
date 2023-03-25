@@ -164,13 +164,13 @@ public class AppSettings {
         editor.commit();
     }
 
-    public long getWidgetStamp() {
-        return settings.getLong("stamp-widget", 0);
+    public boolean isWidgetSkip() {
+        return settings.getBoolean("widget-skip", false);
     }
 
-    public void saveWidgetStamp(long stamp ) {
+    public void saveWidgetSkip(boolean skip) {
         SharedPreferences.Editor editor = settings.edit();
-        editor.putLong("stamp-widget", stamp);
+        editor.putBoolean("widget-skip", skip);
         editor.commit();
     }
 
