@@ -1,6 +1,6 @@
 package com.akrog.tolometgui.model.backend;
 
-public class Motd {
+public class Motd extends BackendNotification {
     private long stamp;
     private String msg;
 
