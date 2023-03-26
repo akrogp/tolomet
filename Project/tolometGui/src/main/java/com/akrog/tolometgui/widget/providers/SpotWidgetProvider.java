@@ -19,7 +19,6 @@ import androidx.work.WorkerParameters;
 import com.akrog.tolometgui.Tolomet;
 import com.akrog.tolometgui.model.AppSettings;
 import com.akrog.tolometgui.model.WidgetSettings;
-import com.akrog.tolometgui.ui.services.NetworkService;
 import com.akrog.tolometgui.widget.model.WidgetModel;
 
 import java.util.concurrent.TimeUnit;
@@ -34,15 +33,15 @@ public abstract class SpotWidgetProvider extends AppWidgetProvider {
     public static final int WIDGET_SIZE_MEDIUM = 1;
     public static final int WIDGET_SIZE_LARGE = 2;
 
+    private final Constraints constraints = new Constraints.Builder()
+        .setRequiredNetworkType(NetworkType.CONNECTED)
+        .build();
+
     protected abstract int getWidgetSize();
 
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
-
-        Constraints constraints = new Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .build();
 
         PeriodicWorkRequest periodicRequest = new PeriodicWorkRequest
             .Builder(UpdateWorker.class, 1, TimeUnit.HOURS)
@@ -70,10 +69,18 @@ public abstract class SpotWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        if( NetworkService.isNetworkAvailable() ) {
-            WorkRequest updateRequest = new OneTimeWorkRequest.Builder(UpdateWorker.class).build();
-            WorkManager.getInstance(Tolomet.getAppContext()).enqueue(updateRequest);
-        }
+        AppSettings settings = AppSettings.getInstance();
+        long timediff = System.currentTimeMillis() - settings.getWidgetStamp();
+        if( timediff > 1*60*1000 )
+            settings.saveWidgetLoop(0);
+        else if( settings.getWidgetLoop() > 6 )
+            return;
+        WorkRequest updateRequest = new OneTimeWorkRequest
+            .Builder(UpdateWorker.class)
+            .setConstraints(constraints)
+            .build();
+        WorkManager.getInstance(context)
+            .enqueue(updateRequest);
     }
 
     @Override
@@ -97,7 +104,9 @@ public abstract class SpotWidgetProvider extends AppWidgetProvider {
             WidgetModel model = new WidgetModel(Tolomet.getAppContext());
             model.download();
             model.update();
-            AppSettings.getInstance().saveWidgetSkip(true);
+            AppSettings settings = AppSettings.getInstance();
+            settings.saveWidgetStamp(System.currentTimeMillis());
+            settings.saveWidgetLoop(settings.getWidgetLoop()+1);
             return Result.success();
         }
     }
