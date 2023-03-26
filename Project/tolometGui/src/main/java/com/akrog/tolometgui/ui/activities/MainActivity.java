@@ -16,7 +16,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.akrog.tolomet.Station;
 import com.akrog.tolomet.utils.DateUtils;
@@ -61,7 +61,7 @@ public class MainActivity extends ToolbarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        model = ViewModelProviders.of(this).get(MainViewModel.class);
+        model = new ViewModelProvider(this).get(MainViewModel.class);
         model.selectStation(settings.loadStation());
 
         Toolbar toolbar = configureToolbar();

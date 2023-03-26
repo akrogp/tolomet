@@ -10,6 +10,10 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.akrog.tolomet.Station;
 import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.ui.adapters.SpinnerAdapter;
@@ -18,10 +22,6 @@ import com.akrog.tolometgui.ui.viewmodels.MainViewModel;
 import com.akrog.tolometgui.ui.views.AndroidUtils;
 
 import java.lang.reflect.Method;
-
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProviders;
 
 public abstract class ToolbarActivity extends ProgressActivity implements AdapterView.OnItemSelectedListener {
     private MainViewModel model;
@@ -33,7 +33,7 @@ public abstract class ToolbarActivity extends ProgressActivity implements Adapte
     private boolean stationMenuVisible = true;
 
     protected Toolbar configureToolbar() {
-        model = ViewModelProviders.of(this).get(MainViewModel.class);
+        model = new ViewModelProvider(this).get(MainViewModel.class);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
