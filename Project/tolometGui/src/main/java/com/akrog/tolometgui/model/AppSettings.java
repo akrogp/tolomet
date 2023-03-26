@@ -164,14 +164,22 @@ public class AppSettings {
         editor.commit();
     }
 
-    public boolean isWidgetSkip() {
-        return settings.getBoolean("widget-skip", false);
+    public long getWidgetStamp() {
+        return settings.getLong("widget-stamp", 0);
     }
 
-    public void saveWidgetSkip(boolean skip) {
+    public void saveWidgetStamp(long stamp) {
         SharedPreferences.Editor editor = settings.edit();
-        editor.putBoolean("widget-skip", skip);
+        editor.putLong("widget-stamp", stamp);
         editor.commit();
+    }
+
+    public int getWidgetLoop() {
+        return settings.getInt("widget-loop", 0);
+    }
+
+    public void saveWidgetLoop(int loop) {
+        settings.edit().putInt("widget-loop", loop).commit();
     }
 
     public boolean isIntroAccepted() {
