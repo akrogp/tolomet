@@ -3,9 +3,8 @@ package com.akrog.tolometgui.model.backend;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VersionUpdate {
+public class VersionUpdate extends BackendNotification {
     private int code;
-    private int from;
     private final List<String> updates = new ArrayList<>();
 
     public int getCode() {
@@ -29,14 +28,6 @@ public class VersionUpdate {
             str.append(rev);
         }
         return str.toString();
-    }
-
-    public int getFrom() {
-        return from;
-    }
-
-    public void setFrom(int from) {
-        this.from = from;
     }
 
     public List<String> getUpdates() {

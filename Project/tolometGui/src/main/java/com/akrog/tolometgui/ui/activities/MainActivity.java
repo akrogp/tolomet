@@ -24,7 +24,7 @@ import com.akrog.tolometgui.BuildConfig;
 import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.Tolomet;
 import com.akrog.tolometgui.model.AppSettings;
-import com.akrog.tolometgui.model.backend.VersionUpdate;
+import com.akrog.tolometgui.model.backend.BackendNotification;
 import com.akrog.tolometgui.model.db.DbTolomet;
 import com.akrog.tolometgui.ui.fragments.AboutFragment;
 import com.akrog.tolometgui.ui.fragments.ChartsFragment;
@@ -87,7 +87,8 @@ public class MainActivity extends ToolbarActivity
         Tolomet.getBackend().getMotd(stamp, lang)
             .addOnSuccessListener(this, motds -> {
                 AppSettings.getInstance().saveCheckStamp(System.currentTimeMillis());
-                if( motds == null || motds.isEmpty() )
+                motds = filterNotifications(motds);
+                if( motds == null )
                     return;
                 new MotdDialogFragment(motds).show(getSupportFragmentManager(), "motd");
             });
@@ -101,16 +102,21 @@ public class MainActivity extends ToolbarActivity
         Tolomet.getBackend().getUpdates(BuildConfig.VERSION_CODE, lang)
             .addOnSuccessListener(this, versionUpdates -> {
                 AppSettings.getInstance().saveUpdateStamp(System.currentTimeMillis());
+                versionUpdates = filterNotifications(versionUpdates);
                 if( versionUpdates == null )
                     return;
-                List<VersionUpdate> fromUpdates = new ArrayList<>();
-                for( VersionUpdate update : versionUpdates )
-                    if( BuildConfig.VERSION_CODE >= update.getFrom() )
-                        fromUpdates.add(update);
-                if( fromUpdates.isEmpty() )
-                    return;
-                new VersionDialogFragment(fromUpdates).show(getSupportFragmentManager(), "version");
+                new VersionDialogFragment(versionUpdates).show(getSupportFragmentManager(), "version");
             });
+    }
+
+    private <T extends BackendNotification> List<T> filterNotifications(List<T> notifications) {
+        if( notifications == null || notifications.isEmpty() )
+            return null;
+        List<T> result = new ArrayList<>();
+        for(T notification : notifications)
+            if( BuildConfig.VERSION_CODE >= notification.getFrom() )
+                result.add(notification);
+        return result.isEmpty() ? null : result;
     }
 
     @Override

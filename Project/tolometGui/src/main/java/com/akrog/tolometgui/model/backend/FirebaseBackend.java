@@ -28,6 +28,8 @@ public class FirebaseBackend implements Backend {
                         Motd motd = new Motd();
                         motd.setMsg(data.child(child).getValue(String.class));
                         motd.setStamp(Long.parseLong(data.getKey()));
+                        if( data.hasChild("from") )
+                            motd.setFrom(data.child("from").getValue(Integer.class));
                         list.add(motd);
                     }
                 }
