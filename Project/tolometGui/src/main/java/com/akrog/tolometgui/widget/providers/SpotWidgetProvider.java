@@ -6,10 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.Operation;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
@@ -71,16 +74,27 @@ public abstract class SpotWidgetProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         AppSettings settings = AppSettings.getInstance();
         long timediff = System.currentTimeMillis() - settings.getWidgetStamp();
-        if( timediff > 1*60*1000 )
-            settings.saveWidgetLoop(0);
-        else if( settings.getWidgetLoop() > 6 )
+        if( timediff < 1*60*1000 && appWidgetIds != null ) {
+            WidgetModel model = new WidgetModel(Tolomet.getAppContext());
+            model.update();
             return;
+        }
         WorkRequest updateRequest = new OneTimeWorkRequest
             .Builder(UpdateWorker.class)
             .setConstraints(constraints)
             .build();
-        WorkManager.getInstance(context)
-            .enqueue(updateRequest);
+        LiveData<Operation.State> liveState = WorkManager.getInstance(context)
+            .enqueue(updateRequest)
+            .getState();
+        liveState.observeForever(new Observer<Operation.State>() {
+            @Override
+            public void onChanged(Operation.State state) {
+                liveState.removeObserver(this);
+                settings.saveWidgetStamp(System.currentTimeMillis());
+                WidgetModel model = new WidgetModel(Tolomet.getAppContext());
+                model.update();
+            }
+        });
     }
 
     @Override
@@ -101,12 +115,8 @@ public abstract class SpotWidgetProvider extends AppWidgetProvider {
         @NonNull
         @Override
         public Result doWork() {
-            WidgetModel model = new WidgetModel(Tolomet.getAppContext());
+            WidgetModel model = new WidgetModel(getApplicationContext());
             model.download();
-            model.update();
-            AppSettings settings = AppSettings.getInstance();
-            settings.saveWidgetStamp(System.currentTimeMillis());
-            settings.saveWidgetLoop(settings.getWidgetLoop()+1);
             return Result.success();
         }
     }
