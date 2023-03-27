@@ -113,9 +113,13 @@ public class MainActivity extends ToolbarActivity
         if( notifications == null || notifications.isEmpty() )
             return null;
         List<T> result = new ArrayList<>();
-        for(T notification : notifications)
-            if( BuildConfig.VERSION_CODE >= notification.getFrom() )
-                result.add(notification);
+        for(T notification : notifications) {
+            if (BuildConfig.VERSION_CODE < notification.getVmin())
+                continue;
+            if (notification.getVmax() != 0 && BuildConfig.VERSION_CODE > notification.getVmax())
+                continue;
+            result.add(notification);
+        }
         return result.isEmpty() ? null : result;
     }
 
