@@ -28,8 +28,7 @@ public class FirebaseBackend implements Backend {
                         Motd motd = new Motd();
                         motd.setMsg(data.child(child).getValue(String.class));
                         motd.setStamp(Long.parseLong(data.getKey()));
-                        if( data.hasChild("from") )
-                            motd.setFrom(data.child("from").getValue(Integer.class));
+                        fillConditions(data, motd);
                         list.add(motd);
                     }
                 }
@@ -57,8 +56,7 @@ public class FirebaseBackend implements Backend {
                             if(msgs.hasChildren()) {
                                 VersionUpdate upd = new VersionUpdate();
                                 upd.setCode(Integer.parseInt(data.getKey()));
-                                if( data.hasChild("from") )
-                                    upd.setFrom(data.child("from").getValue(Integer.class));
+                                fillConditions(data, upd);
                                 for( DataSnapshot msg : msgs.getChildren() )
                                     upd.getUpdates().add(msg.getValue(String.class));
                                 list.add(upd);
@@ -69,5 +67,12 @@ public class FirebaseBackend implements Backend {
                     return list;
                 }
             );
+    }
+
+    private void fillConditions(DataSnapshot data, BackendNotification notification) {
+        if( data.hasChild("vmin") )
+            notification.setVmin(data.child("vmin").getValue(Integer.class));
+        if( data.hasChild("vmax") )
+            notification.setVmax(data.child("vmax").getValue(Integer.class));
     }
 }
