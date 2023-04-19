@@ -36,8 +36,8 @@ public abstract class ToolbarFragment extends ProgressFragment {
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        activity = (ToolbarActivity)getActivity();
-        model = new ViewModelProvider(getActivity()).get(MainViewModel.class);
+        activity = (ToolbarActivity)requireActivity();
+        model = new ViewModelProvider(activity).get(MainViewModel.class);
         model.liveCurrentStation().observe(getViewLifecycleOwner(), station -> updateEnabled());
     }
 

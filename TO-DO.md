@@ -3,11 +3,10 @@ In progress:
 - [ ] ACTION_BOOT_COMPLETED (útil para dispositivos de solo vuelo)
 
 TO-DO:
-- [ ] Actualizar widget con pantalla encendida
+- [ ] Mirar estaciones americanas
 - [ ] Alertas meteorológicas (Fili/FVDA)
 - [ ] Alarma sonora cuando peligro
 - [ ] Mejorar gestión ubicación
-- [ ] Resolución del Widget en móvil de Fernando
 - [ ] Mirar weathercloud
 - [ ] Rutas de estaciones (Mario)
 - [ ] Eje y con etiquetas N, NE, ... en lugar de grados (Aníbal)
@@ -21,6 +20,8 @@ Backlog:
 - [ ] Gráficas con predicción (meteoblue)
 
 Done:
+* [x] Notificaciones en la app
+* [x] Actualizar widget con pantalla encendida
 * [x] Comunicación con AlfaPilot por UDP, puerto 4363
 * [x] Nuevo mapa de Elliott con tracks
 * [x] Cambiar tema de regiones
