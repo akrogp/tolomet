@@ -8,8 +8,8 @@ android {
         applicationId "com.akrog.tolomet"
         minSdkVersion 23
         targetSdkVersion 33
-        versionCode 794
-        versionName "7.9.4"
+        versionCode 795
+        versionName "7.9.5"
         vectorDrawables {
             useSupportLibrary true
         }

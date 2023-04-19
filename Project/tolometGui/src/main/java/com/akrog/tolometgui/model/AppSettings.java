@@ -15,6 +15,7 @@ import com.akrog.tolomet.providers.MeteoGaliciaProvider;
 import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.Tolomet;
+import com.akrog.tolometgui.model.backend.ConfigUpdate;
 import com.akrog.tolometgui.model.db.DbTolomet;
 
 import java.util.ArrayList;
@@ -151,6 +152,16 @@ public class AppSettings {
     public void saveCheckStamp( long stamp ) {
         SharedPreferences.Editor editor = settings.edit();
         editor.putLong("stamp-check", stamp);
+        editor.commit();
+    }
+
+    public long getConfigStamp() {
+        return settings.getLong("stamp-config", 0);
+    }
+
+    public void saveConfigStamp( long stamp ) {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putLong("stamp-config", stamp);
         editor.commit();
     }
 
@@ -454,6 +465,23 @@ public class AppSettings {
             str.append(',');
         }
         return str.toString().replaceAll(",$", "");
+    }
+
+    public void applyChanges(List<ConfigUpdate> cfgs) {
+        SharedPreferences.Editor editor = settings.edit();
+        for(ConfigUpdate cfg : cfgs) {
+            if( cfg.getType().equals("string") )
+                editor.putString(cfg.getKey(), cfg.getValue());
+            else if( cfg.getType().equals("boolean") )
+                editor.putBoolean(cfg.getKey(), Boolean.parseBoolean(cfg.getValue()));
+            else if( cfg.getType().equals("int") )
+                editor.putInt(cfg.getKey(), Integer.parseInt(cfg.getValue()));
+            else if( cfg.getType().equals("long") )
+                editor.putLong(cfg.getKey(), Long.parseLong(cfg.getValue()));
+            else if( cfg.getType().equals("float") )
+                editor.putFloat(cfg.getKey(), Float.parseFloat(cfg.getValue()));
+        }
+        editor.commit();
     }
 
     private static AppSettings instance;

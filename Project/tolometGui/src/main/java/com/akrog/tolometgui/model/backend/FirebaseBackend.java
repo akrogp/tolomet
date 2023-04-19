@@ -69,10 +69,39 @@ public class FirebaseBackend implements Backend {
             );
     }
 
+    @Override
+    public Task<List<ConfigUpdate>> getConfigs(long stamp, String lang) {
+        return FirebaseDatabase.getInstance().getReference("tolomet")
+                .child("cfg")
+                .orderByKey()
+                .startAfter(String.valueOf(stamp))
+                .get()
+                .continueWith(
+                    task -> {
+                        DataSnapshot result = task.getResult();
+                        List<ConfigUpdate> list = new ArrayList<>();
+                        for( DataSnapshot item : result.getChildren() ) {
+                            for( DataSnapshot data : item.getChildren() ) {
+                                ConfigUpdate configUpdate = new ConfigUpdate();
+                                configUpdate.setStamp(Long.parseLong(item.getKey()));
+                                String child = data.hasChild(lang) ? lang : "en";
+                                configUpdate.setDescription(data.child(child).getValue(String.class));
+                                configUpdate.setKey(data.child("key").getValue(String.class));
+                                configUpdate.setType(data.child("type").getValue(String.class));
+                                configUpdate.setValue(data.child("value").getValue(String.class));
+                                fillConditions(data, configUpdate);
+                            }
+                        }
+                        Collections.reverse(list);
+                        return list;
+                    }
+                );
+    }
+
     private void fillConditions(DataSnapshot data, BackendNotification notification) {
-        if( data.hasChild("vmin") )
-            notification.setVmin(data.child("vmin").getValue(Integer.class));
-        if( data.hasChild("vmax") )
-            notification.setVmax(data.child("vmax").getValue(Integer.class));
+        if( data.hasChild("minv") )
+            notification.setVmin(data.child("minv").getValue(Integer.class));
+        if( data.hasChild("maxv") )
+            notification.setVmax(data.child("maxv").getValue(Integer.class));
     }
 }
