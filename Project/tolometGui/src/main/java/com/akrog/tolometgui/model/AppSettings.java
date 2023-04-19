@@ -411,7 +411,7 @@ public class AppSettings {
     }
 
     public boolean isAltMeteoGalicia() {
-        return settings.getBoolean(PREF_ALT_METEOGALICIA, true);
+        return settings.getBoolean(PREF_ALT_METEOGALICIA, false);
     }
 
     private void fixValues() {

@@ -128,6 +128,6 @@
 			android:key="pref_altMeteoGalicia"
 			android:title="@string/pref_altMeteoGalicia"
 			android:dialogTitle="@string/pref_altMeteoGalicia"
-			android:defaultValue="true" />
+			android:defaultValue="false" />
 	</PreferenceCategory>
 </PreferenceScreen>
