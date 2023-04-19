@@ -139,5 +139,5 @@ public class MeteoGaliciaProvider implements WindProvider {
 		SDF_JSON.setTimeZone(TimeZone.getTimeZone("UTC"));
 	}
 	private Downloader dw;
-	private boolean altProvider = true;
+	private boolean altProvider;
 }
