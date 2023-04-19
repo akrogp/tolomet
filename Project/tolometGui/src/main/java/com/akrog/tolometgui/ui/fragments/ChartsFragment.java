@@ -41,13 +41,13 @@ import java.util.Locale;
 
 public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelListener {
     private static final DateFormat df = new SimpleDateFormat("EEE (dd/MMM)");
-    private static int[] LIVE_ITEMS = {R.id.refresh_item, R.id.map_item, R.id.fly_item};
+    private static final int[] LIVE_ITEMS = {R.id.refresh_item, R.id.map_item, R.id.fly_item};
     private AsyncTask<Void, Void, Station> thread;
     private MyCharts charts;
     private MySummary summary;
     private boolean flyNotified;
     private FlyingService flyingService;
-    private ServiceConnection serviceConnection = new ServiceConnection() {
+    private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
             FlyingService.LocalBinder binder = (FlyingService.LocalBinder)service;
@@ -84,9 +84,7 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
         if( !model.checkStation() )
             settings.setFlying(false);
         updateEnabled();
-        settings.getLiveFlying().observe(getViewLifecycleOwner(), flying -> {
-            setScreenMode(flying);
-        });
+        settings.getLiveFlying().observe(getViewLifecycleOwner(), this::setScreenMode);
     }
 
     @Override
@@ -94,10 +92,10 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
         super.onViewStateRestored(savedInstanceState);
 
         summary = new MySummary();
-        summary.initialize(activity, savedInstanceState);
+        summary.initialize(activity, getView());
 
         charts = new MyCharts(summary, this);
-        charts.initialize(activity, savedInstanceState);
+        charts.initialize(activity, getView());
 
         model.liveCurrentStation().observe(getViewLifecycleOwner(), station -> {
             downloadData(null);
@@ -140,7 +138,7 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
         if( id == R.id.refresh_item )
             onRefresh();
         else if( id == R.id.map_item )
-            ((MainActivity)getActivity()).navigate(R.id.nav_maps);
+            ((MainActivity) requireActivity()).navigate(R.id.nav_maps);
         else if( id == R.id.fly_item )
             settings.setFlying(!settings.isFlying());
 
@@ -268,6 +266,7 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
     private void redraw() {
         charts.updateView();
         summary.updateView();
+        getView().invalidate();
     }
 
     private void askSource() {

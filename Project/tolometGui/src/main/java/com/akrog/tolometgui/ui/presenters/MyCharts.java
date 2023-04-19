@@ -3,6 +3,9 @@ package com.akrog.tolometgui.ui.presenters;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+
+import androidx.lifecycle.ViewModelProvider;
 
 import com.akrog.tolomet.Meteo;
 import com.akrog.tolometgui.R;
@@ -15,8 +18,6 @@ import com.akrog.tolometgui.ui.views.Marker;
 import com.akrog.tolometgui.ui.views.MyPlot;
 
 import java.util.Calendar;
-
-import androidx.lifecycle.ViewModelProviders;
 
 ;
 
@@ -67,9 +68,9 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 	}
 
 	@Override
-	public void initialize(ToolbarActivity activity, Bundle bundle) {
+	public void initialize(ToolbarActivity activity, View view) {
 		this.activity = activity;
-		model = ViewModelProviders.of(activity).get(MainViewModel.class);
+		model = new ViewModelProvider(activity).get(MainViewModel.class);
 		settings = AppSettings.getInstance();
 		windSpeedMed = new Graph(meteo.getWindSpeedMed(), -1.0f, activity.getString(R.string.chart_speedMed), LINE_GREEN, POINT_GREEN);
 		windSpeedMed.setyFactor(settings.getSpeedFactor());
@@ -81,7 +82,7 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 		markerSouth = new Marker(180, activity.getString(R.string.markerSouth), LINE_BLUE);
 		markerEast = new Marker(90, activity.getString(R.string.markerEast), LINE_BLUE);
 		markerWest = new Marker(270, activity.getString(R.string.markerWest), LINE_BLUE);
-		initializeCharts();
+		initializeCharts(view);
 	}
 	
 	@Override
@@ -111,9 +112,9 @@ public class MyCharts implements Presenter, MyPlot.BoundaryListener {
 	}
 	
 	@SuppressLint("SimpleDateFormat")
-	private void initializeCharts() {				
-    	chartAir = (MyPlot) activity.findViewById(R.id.chartAir);
-    	chartWind = (MyPlot) activity.findViewById(R.id.chartWind);
+	private void initializeCharts(View view) {
+    	chartAir = (MyPlot) view.findViewById(R.id.chartAir);
+    	chartWind = (MyPlot) view.findViewById(R.id.chartWind);
     	simpleMode = settings.isSimpleMode();
 		if( axisListener != null )
 			chartAir.getXAxis().addMaxListener(axisListener);
