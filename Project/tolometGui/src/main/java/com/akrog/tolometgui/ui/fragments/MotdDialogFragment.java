@@ -1,6 +1,7 @@
 package com.akrog.tolometgui.ui.fragments;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.ViewGroup;
 
@@ -18,10 +19,14 @@ import com.akrog.tolometgui.ui.adapters.MotdAdapter;
 import java.util.List;
 
 public class MotdDialogFragment extends DialogFragment {
+    private final int titleId;
     private final List<Motd> motds;
+    private final DialogInterface.OnClickListener onClickListener;
 
-    public MotdDialogFragment(List<Motd> motds) {
+    public MotdDialogFragment(int titleId, List<Motd> motds, DialogInterface.OnClickListener onClickListener) {
+        this.titleId = titleId;
         this.motds = motds;
+        this.onClickListener = onClickListener;
     }
 
     @NonNull
@@ -36,9 +41,9 @@ public class MotdDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder
             .setView(view)
-            .setTitle(R.string.motd)
+            .setTitle(titleId)
             .setIcon(android.R.drawable.ic_dialog_info)
-            .setPositiveButton(R.string.ok, null);
+            .setPositiveButton(R.string.ok, onClickListener);
         return builder.create();
     }
 }

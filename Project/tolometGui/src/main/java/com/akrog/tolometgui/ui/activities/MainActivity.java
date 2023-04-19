@@ -25,6 +25,8 @@ import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.Tolomet;
 import com.akrog.tolometgui.model.AppSettings;
 import com.akrog.tolometgui.model.backend.BackendNotification;
+import com.akrog.tolometgui.model.backend.ConfigUpdate;
+import com.akrog.tolometgui.model.backend.Motd;
 import com.akrog.tolometgui.model.db.DbTolomet;
 import com.akrog.tolometgui.ui.fragments.AboutFragment;
 import com.akrog.tolometgui.ui.fragments.ChartsFragment;
@@ -77,6 +79,7 @@ public class MainActivity extends ToolbarActivity
 
         checkMotd();
         checkVersionUpdate();
+        //checkConfigUpdate(); // TO-TEST
     }
 
     private void checkMotd() {
@@ -90,7 +93,7 @@ public class MainActivity extends ToolbarActivity
                 motds = filterNotifications(motds);
                 if( motds == null )
                     return;
-                new MotdDialogFragment(motds).show(getSupportFragmentManager(), "motd");
+                new MotdDialogFragment(R.string.motd, motds, null).show(getSupportFragmentManager(), "motd");
             });
     }
 
@@ -106,6 +109,29 @@ public class MainActivity extends ToolbarActivity
                 if( versionUpdates == null )
                     return;
                 new VersionDialogFragment(versionUpdates).show(getSupportFragmentManager(), "version");
+            });
+    }
+
+    private void checkConfigUpdate() {
+        long stamp = AppSettings.getInstance().getConfigStamp();
+        if( DateUtils.isToday(stamp) )
+            return;
+        String lang = AppSettings.getInstance().getSelectedLanguage();
+        Tolomet.getBackend().getConfigs(stamp, lang)
+            .addOnSuccessListener(this, cfgs -> {
+                AppSettings.getInstance().saveConfigStamp(System.currentTimeMillis());
+                cfgs = filterNotifications(cfgs);
+                if( cfgs == null )
+                    return;
+                AppSettings.getInstance().applyChanges(cfgs);
+                List<Motd> motds = new ArrayList<>(cfgs.size());
+                for(ConfigUpdate cfg : cfgs) {
+                    Motd motd = new Motd();
+                    motd.setStamp(cfg.getStamp());
+                    motd.setMsg(cfg.getDescription());
+                    motds.add(motd);
+                }
+                new MotdDialogFragment(R.string.cfg_update, motds, (dialog, which) -> recreate()).show(getSupportFragmentManager(), "cfg");
             });
     }
 
