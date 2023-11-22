@@ -83,8 +83,8 @@ public abstract class JcylRoadProvider extends BaseProvider {
     public boolean configureDownload(Downloader downloader, Station station, long date) {
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
         cal.setTimeInMillis(date);
-        cal.set(Calendar.MONTH, 6);
-        cal.set(Calendar.DAY_OF_MONTH, 3);
+        //cal.set(Calendar.MONTH, 6);
+        //cal.set(Calendar.DAY_OF_MONTH, 3);
         downloader.setHeader("Authorization", "Basic " + new String(Base64.encodeBase64("sc_jcyl_publico:sc_jcyl_publico".getBytes())));
         downloader.setUrl("https://bi.territoriointeligente.jcyl.es/pentaho/plugin/cda/api/doQuery");
         downloader.addParam("path", "/public/sc_jcyl/verticals/sql/carreteras.cda");
