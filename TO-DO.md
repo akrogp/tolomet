@@ -9,6 +9,7 @@ TO-DO:
 - [ ] Mejorar gestión ubicación
 - [ ] Mirar weathercloud
 - [ ] Rutas de estaciones (Mario)
+- [ ] Dirección del viento sobre mapa de estaciones (Mario)
 - [ ] Eje y con etiquetas N, NE, ... en lugar de grados (Aníbal)
 - [ ] Todas las de Weather Underground
 - [ ] Actualización automática del listado de estaciones

@@ -2,14 +2,15 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 33
+    namespace "com.akrog.tolometgui"
+    compileSdkVersion 34
 
     defaultConfig {
         applicationId "com.akrog.tolomet"
-        minSdkVersion 23
-        targetSdkVersion 33
-        versionCode 795
-        versionName "7.9.5"
+        minSdkVersion 24
+        targetSdkVersion 34
+        versionCode 800
+        versionName "8.0"
         vectorDrawables {
             useSupportLibrary true
         }
@@ -35,14 +36,12 @@ android {
         targetCompatibility = '1.8'
     }
 
-    lintOptions {
-    }
 }
 
 dependencies {
     def lifecycle_version = "2.2.0"
     def room_version = "2.5.0"
-    def play_version = "18.1.0"
+    def play_version = "18.2.0"
     def work_version = "2.8.1"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -54,18 +53,18 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.preference:preference:1.2.0'
+    implementation 'androidx.preference:preference:1.2.1'
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     implementation "androidx.work:work-runtime:$work_version"
 
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.10.0'
     implementation "com.google.android.gms:play-services-maps:$play_version"
     implementation 'com.google.maps.android:android-maps-utils:0.5'
 
-    implementation platform('com.google.firebase:firebase-bom:28.4.0')
-    implementation 'com.google.firebase:firebase-analytics'
-    implementation 'com.google.firebase:firebase-database'
+    implementation platform('com.google.firebase:firebase-bom:32.6.0')
+    implementation 'com.google.firebase:firebase-analytics:21.5.0'
+    implementation 'com.google.firebase:firebase-database:20.3.0'
 
     //implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
     implementation 'com.github.castorflex.smoothprogressbar:library:1.1.0'
@@ -74,7 +73,7 @@ dependencies {
 
     implementation 'androidx.multidex:multidex:2.0.1'
 
-    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.2'
 
     androidTestImplementation 'androidx.test:runner:1.5.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

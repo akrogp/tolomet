@@ -24,7 +24,9 @@ public enum WindProviderType {
 	FieldClimate("FC", new FieldClimateProvider(), WindProviderQuality.Good, false),
 	Malloles("MA", new MallolesProvider(), WindProviderQuality.Good, false),
 	Noromet("NORO", new NorometProvider(), WindProviderQuality.Medium, true),
-	SmartyPlanet("SMTY", new SmartyPlanetProvider(), WindProviderQuality.Good, false);
+	SmartyPlanet("SMTY", new SmartyPlanetProvider(), WindProviderQuality.Good, false),
+	JcylFrostProvider("JCyLF", new JcylFrostProvider(), WindProviderQuality.Good, true),
+	JcylSaltProvider("JCyLS", new JcylSaltProvider(), WindProviderQuality.Good, true);
 	
 	private final String code;
 	private final WindProvider provider;

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="1.7">
-      <module name="Project.tolometGui" target="11" />
-      <module name="Project.tolometUtils" target="11" />
-      <module name="Project.tolometUtils.main" target="11" />
-      <module name="Project.tolometUtils.test" target="11" />
+    <bytecodeTargetLevel target="1.8">
+      <module name="Project.tolometGui" target="17" />
+      <module name="Project.tolometUtils" target="17" />
+      <module name="Project.tolometUtils.main" target="17" />
+      <module name="Project.tolometUtils.test" target="17" />
       <module name="tolometCore" target="1.7" />
     </bytecodeTargetLevel>
   </component>
