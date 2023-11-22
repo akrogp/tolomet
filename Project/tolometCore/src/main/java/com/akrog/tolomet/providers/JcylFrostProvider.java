@@ -10,7 +10,7 @@ public class JcylFrostProvider extends JcylRoadProvider {
     public List<Station> downloadStations() {
         List<Station> result = new ArrayList<>();
         for( Station station : super.downloadStations() )
-            if( station.getProviderType() == WindProviderType.JcylFrostProvider )
+            if( station.getProviderType() == WindProviderType.JcylFrost)
                 result.add(station);
         return result;
     }

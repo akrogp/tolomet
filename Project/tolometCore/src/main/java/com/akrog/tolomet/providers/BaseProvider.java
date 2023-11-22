@@ -14,10 +14,14 @@ public abstract class BaseProvider implements WindProvider {
 	public BaseProvider( int defRefresh ) {
 		this.defRefresh = defRefresh;
 	}
+
+	protected Downloader newDownloader() {
+		return new Downloader();
+	}
 	
 	@Override
 	public void refresh(Station station) {
-		downloader = new Downloader();
+		downloader = newDownloader();
 		configureDownload(downloader, station);
 		String data = downloader.download();
 		if( data == null )
@@ -38,8 +42,9 @@ public abstract class BaseProvider implements WindProvider {
 
 	@Override
 	public boolean travel(Station station, long date) {
-		downloader = new Downloader();
+		downloader = newDownloader();
 		Calendar cal = Calendar.getInstance();
+		cal.setTimeInMillis(date);
 		DateUtils.resetDay(cal);
 		if( !configureDownload(downloader, station, cal.getTimeInMillis()) )
 			return false;
