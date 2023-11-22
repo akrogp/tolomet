@@ -74,6 +74,7 @@ public class ResourceService {
         mapProviders.put(WindProviderType.MeteoGalicia.name(), R.drawable.galicia);
         mapProviders.put(WindProviderType.Holfuy.name(), R.drawable.holfuy);
         mapProviders.put(WindProviderType.LaRioja.name(), R.drawable.larioja);
+        mapProviders.put(WindProviderType.RiojaSiar.name(), R.drawable.larioja);
         mapProviders.put(WindProviderType.Meteocat.name(), R.drawable.meteocat);
         mapProviders.put(WindProviderType.MeteoClimatic.name(), R.drawable.meteoclimatic);
         mapProviders.put(WindProviderType.MeteoFrance.name(), R.drawable.meteofrance);
@@ -83,8 +84,8 @@ public class ResourceService {
         mapProviders.put(WindProviderType.PiouPiou.name(), R.drawable.ic_piou);
         mapProviders.put(WindProviderType.Noromet.name(), R.drawable.noromet);
         mapProviders.put(WindProviderType.SmartyPlanet.name(), R.drawable.smarty);
-        mapProviders.put(WindProviderType.JcylSaltProvider.name(), R.drawable.jcyl);
-        mapProviders.put(WindProviderType.JcylFrostProvider.name(), R.drawable.jcyl);
+        mapProviders.put(WindProviderType.JcylSalt.name(), R.drawable.jcyl);
+        mapProviders.put(WindProviderType.JcylFrost.name(), R.drawable.jcyl);
 
         mapProviders.put(SpotProviderType.ElliottParagliding.name(), R.drawable.ic_landing);
         mapProviders.put(SpotProviderType.DhvDatabase.name(), R.drawable.dhv);

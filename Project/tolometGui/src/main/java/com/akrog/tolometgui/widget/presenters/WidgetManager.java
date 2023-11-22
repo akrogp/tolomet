@@ -134,8 +134,9 @@ public class WidgetManager {
     private void fillMeteo(WidgetData data, Station station, long stamp ) {
         Number num = station.getMeteo().getWindDirection().getAt(stamp);
         if( num != null ) {
-            data.directionShort = model.parseDirection(num.intValue());
-            data.directionExt = String.format("%dº (%s)", num.intValue(), data.directionShort);
+            int dir = Math.round(num.floatValue());
+            data.directionShort = model.parseDirection(dir);
+            data.directionExt = String.format("%dº (%s)", dir, data.directionShort);
         }
         StringBuilder sb = new StringBuilder();
         num = station.getMeteo().getAirTemperature().getAt(stamp);

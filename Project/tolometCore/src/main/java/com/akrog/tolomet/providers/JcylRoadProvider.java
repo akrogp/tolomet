@@ -48,9 +48,9 @@ public abstract class JcylRoadProvider extends BaseProvider {
                     station.setName(cols[3]);
                     station.setCountry("ES");
                     if( "SaltSilo".equals(cols[1]) )
-                        station.setProviderType(WindProviderType.JcylSaltProvider);
+                        station.setProviderType(WindProviderType.JcylSalt);
                     else if( "RoadFrostSensor".equals(cols[1]) )
-                        station.setProviderType(WindProviderType.JcylFrostProvider);
+                        station.setProviderType(WindProviderType.JcylFrost);
                     else
                         throw new IOException("Unkown JCyL road station type: " + cols[1]);
                     String[] coords = cols[2].split(",", -1);
@@ -88,7 +88,7 @@ public abstract class JcylRoadProvider extends BaseProvider {
         downloader.setHeader("Authorization", "Basic " + new String(Base64.encodeBase64("sc_jcyl_publico:sc_jcyl_publico".getBytes())));
         downloader.setUrl("https://bi.territoriointeligente.jcyl.es/pentaho/plugin/cda/api/doQuery");
         downloader.addParam("path", "/public/sc_jcyl/verticals/sql/carreteras.cda");
-        downloader.addParam("dataAccessId", station.getProviderType() == WindProviderType.JcylSaltProvider ? "SaltsiloRaw" : "RoadfrostsensorRaw");
+        downloader.addParam("dataAccessId", station.getProviderType() == WindProviderType.JcylSalt ? "SaltsiloRaw" : "RoadfrostsensorRaw");
         downloader.addParam( "paramentityid", station.getCode());
         downloader.addParam( "paramstart", "%04d-%02d-%02d %02d:%02d:%02d",
             cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH),

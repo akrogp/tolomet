@@ -115,7 +115,7 @@ public class Manager {
 		String strDir = null;
 		Number dir = station.getMeteo().getWindDirection().getAt(stamp);
 		if( dir != null )
-			strDir = parseDirection(dir.intValue());
+			strDir = parseDirection(Math.round(dir.floatValue()));
 		Number med = station.getMeteo().getWindSpeedMed().getAt(stamp);
 		Number max = station.getMeteo().getWindSpeedMax().getAt(stamp);
 		Number hum = null;
