@@ -52,7 +52,7 @@ public class Meteo {
 			measurement.clear(fromStamp);
 	}
 	
-	public void merge(Meteo meteo) {
+	public synchronized void merge(Meteo meteo) {
 		for( int i = 0; i < measurements.size(); i++ )
 			measurements.get(i).merge(meteo.measurements.get(i));
 	}
