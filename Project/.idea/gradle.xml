@@ -13,7 +13,6 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/tolometCore" />
             <option value="$PROJECT_DIR$/tolometGui" />
-            <option value="$PROJECT_DIR$/tolometUtils" />
           </set>
         </option>
       </GradleProjectSettings>
