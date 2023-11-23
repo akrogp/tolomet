@@ -23,7 +23,7 @@ public class MetarProvider extends BaseProvider {
 
 	@Override
 	public String getInfoUrl(String code) {
-		return "https://www.aviationweather.gov/adds/metars?std_trans=translated&chk_metars=on&station_ids="+code;
+		return String.format("https://aviationweather.gov/data/metar/?id=%s&hours=0&decoded=yes&include_taf=yes", code);
 	}
 
 	@Override
