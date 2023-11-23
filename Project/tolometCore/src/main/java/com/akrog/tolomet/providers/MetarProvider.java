@@ -1,12 +1,16 @@
 package com.akrog.tolomet.providers;
 
-import com.akrog.tolomet.Header;
+import com.akrog.tolomet.Measurement;
+import com.akrog.tolomet.Meteo;
 import com.akrog.tolomet.Station;
-import com.akrog.tolomet.utils.Utils;
 import com.akrog.tolomet.io.Downloader;
+import com.akrog.tolomet.utils.DateUtils;
 
-import java.io.BufferedReader;
-import java.io.StringReader;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -14,7 +18,7 @@ import java.util.TimeZone;
 
 public class MetarProvider extends BaseProvider {
 	public MetarProvider() {
-		super(5);
+		super(30);
 	}
 
 	@Override
@@ -30,25 +34,23 @@ public class MetarProvider extends BaseProvider {
 	@Override
 	public List<Station> downloadStations() {
 		downloader = new Downloader();
-		downloader.setUrl("https://www.aviationweather.gov/docs/metar/stations.txt");
+		downloader.setGzipped(true);
+		downloader.setUrl("https://aviationweather.gov/data/cache/stations.cache.json.gz");
 		String data = downloader.download();
 		downloader = null;
 
 		List<Station> stations = new ArrayList<>();
-		String line, code;
-		try(BufferedReader br = new BufferedReader(new StringReader(data))) {
-			while( (line=br.readLine()) != null ) {
-				if( line.length() < 83 || line.startsWith("!") || line.startsWith("CD") )
-					continue;
-				code = line.substring(20, 24).trim();
-				if( code.isEmpty() )
-					continue;
+		try {
+			JSONArray array = new JSONArray(data);
+			for( int i = 0; i < array.length(); i++ ) {
+				JSONObject json = array.getJSONObject(i);
 				Station station = new Station();
 				station.setProviderType(WindProviderType.Metar);
-				station.setCode(code);
-				station.setName(Utils.reCapitalize(line.substring(3, 20).trim()));
-				station.setLatitude(parseLatitude(line));
-				station.setLongitude(parseLongitude(line));
+				station.setCode(json.getString("icaoId"));
+				station.setName(json.getString("site"));
+				station.setCountry(json.getString("country"));
+				station.setLatitude(json.getDouble("lat"));
+				station.setLongitude(json.getDouble("lon"));
 				stations.add(station);
 			}
 			return stations;
@@ -58,120 +60,67 @@ public class MetarProvider extends BaseProvider {
 		return null;
 	}
 
-	private static double parseLongitude(String line) {
-		double degrees = Integer.parseInt(line.substring(47, 50).trim());
-		double minutes = Integer.parseInt(line.substring(51, 53).trim());
-		double sig = line.charAt(53) == 'W' ? -1 : 1;
-		return sig*(degrees+minutes/60);
-	}
-
-	private static double parseLatitude(String line) {
-		double degrees = Integer.parseInt(line.substring(39, 41).trim());
-		double minutes = Integer.parseInt(line.substring(42, 44).trim());
-		double sig = line.charAt(44) == 'N' ? 1 : -1;
-		return sig*(degrees+minutes/60);
-	}
-
 	@Override
 	public boolean configureDownload(Downloader downloader, Station station, long date ) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTimeInMillis(date);
-		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-		cal.set(Calendar.MILLISECOND, 0);
-		long from = cal.getTimeInMillis();
-		cal.set(Calendar.HOUR_OF_DAY, 23);
-		cal.set(Calendar.MINUTE, 59);
-		cal.set(Calendar.SECOND, 59);
-		cal.set(Calendar.MILLISECOND, 999);
-		long to = cal.getTimeInMillis();
-		configureDownload(downloader, station, from, to);
+		DateUtils.endDay(cal);
+		configureDownload(downloader, station, cal, 24);
 		return true;
 	}
 
 	@Override
 	public void configureDownload(Downloader downloader, Station station) {
 		Long stamp = station.getStamp();
-		if( stamp == null ) {
+		int from = 0;
+		if( stamp != null ) {
 			Calendar cal = Calendar.getInstance();
-			cal.set(Calendar.HOUR_OF_DAY, 0);
-			cal.set(Calendar.MINUTE, 0);
-			cal.set(Calendar.SECOND, 0);
-			cal.set(Calendar.MILLISECOND, 0);
-			stamp = cal.getTimeInMillis();
+			cal.setTimeInMillis(stamp);
+			from = cal.get(Calendar.HOUR_OF_DAY);
 		}
-		configureDownload(downloader, station, stamp, System.currentTimeMillis());
+		Calendar cal = Calendar.getInstance();
+		int to = cal.get(Calendar.HOUR_OF_DAY);
+		configureDownload(downloader, station, null, to-from+1);
 	}
 
-	public void configureDownload(Downloader downloader, Station station, long from, long to) {
-		downloader.setUrl("https://www.aviationweather.gov/adds/dataserver_current/httpparam");
-		downloader.addParam("dataSource","metars");
-		downloader.addParam("requestType","retrieve");
-		downloader.addParam("format","csv");
-		downloader.addParam("startTime",from/1000);
-		downloader.addParam("endTime",to/1000);
-		downloader.addParam("stationString",station.getCode());
+	private void configureDownload(Downloader downloader, Station station, Calendar cal, int hours) {
+		downloader.setUrl("https://aviationweather.gov/cgi-bin/data/metar.php");
+		downloader.addParam("ids", station.getCode());
+		downloader.addParam("format", "json");
+		downloader.addParam("taf", false);
+		downloader.addParam("hours", hours);
+		if( cal != null ) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmssX");
+			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+			downloader.addParam("date", sdf.format(cal.getTime()));
+		}
 	}
 
 	@Override
 	public void updateStation(Station station, String data) {
-		String[] lines = data.split("\\n");
-		if( lines.length < 7 )
+		try {
+			JSONArray array = new JSONArray(data);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+			for (int i = 0; i < array.length(); i++) {
+				Meteo meteo = station.getMeteo();
+				JSONObject json = array.getJSONObject(i);
+				long stamp = json.getLong("obsTime") * 1000;
+				parse(json, "wdir", 1, stamp, meteo.getWindDirection());
+				parse(json, "wspd", 1.852, stamp, meteo.getWindSpeedMed());
+				parse(json, "wgst", 1.852, stamp, meteo.getWindSpeedMax());
+				parse(json, "temp", 1, stamp, meteo.getAirTemperature());
+				parse(json, "altim", 1, stamp, meteo.getAirPressure());
+			}
+		} catch( Exception e ) {
+			e.printStackTrace();
+		}
+	}
+
+	private void parse(JSONObject json, String key, double factor, long stamp, Measurement meas) throws JSONException {
+		if( json.isNull(key) || json.get(key) instanceof String)
 			return;
-		Header index = getHeaders(lines[5]);
-		
-		String[] fields;
-		String field;
-		long date; 
-		for(int i = 6; i < lines.length; i++ ) {
-			fields = lines[i].split(",");
-			if( (field=getField(index.getDate(), fields)) == null )
-				continue;
-			date = parseDate(field);
-			if( (field=getField(index.getDir(), fields)) != null )
-				station.getMeteo().getWindDirection().put(date, Double.parseDouble(field));
-			if( (field=getField(index.getMed(), fields)) != null )
-				station.getMeteo().getWindSpeedMed().put(date, Double.parseDouble(field)*1.852);
-			if( (field=getField(index.getMax(), fields)) != null )
-				station.getMeteo().getWindSpeedMax().put(date, Double.parseDouble(field)*1.852);
-			if( (field=getField(index.getTemp(), fields)) != null )
-				station.getMeteo().getAirTemperature().put(date, Double.parseDouble(field));
-			if( (field=getField(index.getPres(), fields)) != null )
-				station.getMeteo().getAirPressure().put(date, Double.parseDouble(field));
-		}		
+		double value = json.getDouble(key);
+		meas.put(stamp, value * factor);
 	}
-	
-	private long parseDate(String field) {
-		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-		String[] fields = field.split("T");
-		String[] date = fields[0].split("-");
-		String[] time = fields[1].split(":");
-		cal.set(Calendar.YEAR, Integer.parseInt(date[0]));
-		cal.set(Calendar.MONTH, Integer.parseInt(date[1])-1);
-		cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(date[2]));
-		cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time[0]));
-		cal.set(Calendar.MINUTE, Integer.parseInt(time[1]));
-		return cal.getTimeInMillis();
-	}
-
-	private String getField( int i, String[] fields ) {
-		if( i >= fields.length )
-			return null;
-		if( fields[i].isEmpty() )
-			return null;
-		return fields[i];
-	}
-
-	private Header getHeaders(String string) {
-		String[] cells = string.split(",");
-		Header index = new Header();
-		index.findDate("observation_time", cells);
-		index.findDir("wind_dir_degrees", cells);
-		index.findMed("wind_speed_kt", cells);
-		index.findMax("wind_gust_kt", cells);
-		index.findTemp("temp_c", cells);
-		index.findPres("sea_level_pressure_mb", cells);
-		return index;
-	}	
 }
