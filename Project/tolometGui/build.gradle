@@ -3,6 +3,7 @@ apply plugin: 'com.google.gms.google-services'
 
 android {
     namespace "com.akrog.tolometgui"
+
     compileSdkVersion 34
 
     defaultConfig {
