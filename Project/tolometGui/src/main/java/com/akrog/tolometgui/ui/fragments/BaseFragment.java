@@ -61,4 +61,8 @@ public abstract class BaseFragment extends Fragment {
         Bitmap bitmap = AndroidUtils.getScreenShot(getActivity().getWindow().getDecorView());
         consumer.accept(bitmap);
     }
+
+    public void requestNotifications(Runnable onGranted, Runnable onDenied) {
+        ((BaseActivity)getActivity()).requestNotifications(onGranted, onDenied);
+    }
 }

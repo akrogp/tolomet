@@ -58,7 +58,10 @@ public class LocalServerService extends LifecycleService {
 
         receiver = new NotificationActionsReceiver();
         IntentFilter filter = new IntentFilter(ACTION_STOP);
-        this.registerReceiver(receiver, filter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            this.registerReceiver(receiver, filter, Context.RECEIVER_EXPORTED);
+        } else
+            this.registerReceiver(receiver, filter);
 
         executor.execute(() -> {
             try {
@@ -79,7 +82,7 @@ public class LocalServerService extends LifecycleService {
 
         createNotificationChannel();
 
-        int pendingIntentFlags = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0;
+        int pendingIntentFlags = PendingIntent.FLAG_IMMUTABLE;
 
         Intent contentIntent = new Intent(this, MainActivity.class);
         PendingIntent contentPendingIntent =

@@ -10,9 +10,6 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/tolometGui/Project.tolometGui.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/tolometGui/Project.tolometGui.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/tolometGui/Project.tolometGui.main.iml" filepath="$PROJECT_DIR$/.idea/modules/tolometGui/Project.tolometGui.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/tolometGui/Project.tolometGui.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/tolometGui/Project.tolometGui.unitTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/tolometUtils/Project.tolometUtils.iml" filepath="$PROJECT_DIR$/.idea/modules/tolometUtils/Project.tolometUtils.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/tolometUtils/Project.tolometUtils.main.iml" filepath="$PROJECT_DIR$/.idea/modules/tolometUtils/Project.tolometUtils.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/tolometUtils/Project.tolometUtils.test.iml" filepath="$PROJECT_DIR$/.idea/modules/tolometUtils/Project.tolometUtils.test.iml" />
     </modules>
   </component>
 </project>

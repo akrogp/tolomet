@@ -11,17 +11,17 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.util.Consumer;
+
 import com.akrog.tolometgui.BuildConfig;
 import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.model.AppSettings;
 import com.akrog.tolometgui.model.db.DbTolomet;
 import com.akrog.tolometgui.ui.services.LocationService;
 import com.gunhansancar.android.sdk.helper.LocaleHelper;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.util.Consumer;
 
 public abstract class BaseActivity extends AppCompatActivity {
     @Override
@@ -47,9 +47,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void requestPermission(String permission, int rationale, Runnable onGranted, Runnable onDenied) {
-        if (Build.VERSION.SDK_INT < 23)
-            onGranted.run();
-        else if (ActivityCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED ) {
+        if (ActivityCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED ) {
             this.onGranted = onGranted;
             this.onDenied = onDenied;
             if( shouldShowRequestPermissionRationale(permission) ) {
@@ -68,10 +66,11 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if( grantResults.length == 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED ) {
-            switch( requestCode ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length == 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+            switch (requestCode) {
                 case RC_PERMISSION:
-                    if( onDenied != null ) {
+                    if (onDenied != null) {
                         onDenied.run();
                         onDenied = null;
                     }
@@ -79,14 +78,18 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
             return;
         }
-        switch( requestCode ) {
+        switch (requestCode) {
             case RC_PERMISSION:
-                if( onGranted != null ) {
+                if (onGranted != null) {
                     onGranted.run();
                     onGranted = null;
                 }
                 break;
         }
+    }
+
+    public void requestNotifications(Runnable onGranted, Runnable onDenied) {
+        requestPermission(Manifest.permission.POST_NOTIFICATIONS, R.string.notifications_rationale, onGranted, onDenied);
     }
 
     public void lockScreenOrientation() {
