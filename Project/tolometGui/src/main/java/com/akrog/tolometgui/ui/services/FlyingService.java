@@ -61,11 +61,11 @@ public class FlyingService extends LifecycleService {
     public int onStartCommand(Intent intent, int flags, int startId) {
         createNotificationChannel();
 
-        int pendingIntentFlags = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0;
+        int pendingIntentFlags = PendingIntent.FLAG_IMMUTABLE;
 
         Intent contentIntent = new Intent(this, MainActivity.class);
         PendingIntent contentPendingIntent =
-        PendingIntent.getActivity(this, 0, contentIntent, pendingIntentFlags);
+        PendingIntent.getActivity(this, 0, contentIntent, PendingIntent.FLAG_IMMUTABLE);
 
         Intent landIntent = new Intent(ACTION_LAND);
         PendingIntent landPendingIntent = PendingIntent.getBroadcast(this, 0, landIntent, pendingIntentFlags);
@@ -80,7 +80,7 @@ public class FlyingService extends LifecycleService {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .build();
 
-        startForeground(ONGOING_NOTIFICATION_ID, notification);
+            startForeground(ONGOING_NOTIFICATION_ID, notification);
 
         return super.onStartCommand(intent, flags, startId);
     }
@@ -91,7 +91,10 @@ public class FlyingService extends LifecycleService {
 
         receiver = new NotificationActionsReceiver();
         IntentFilter filter = new IntentFilter(ACTION_LAND);
-        this.registerReceiver(receiver, filter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            this.registerReceiver(receiver, filter, Context.RECEIVER_EXPORTED);
+        } else
+            this.registerReceiver(receiver, filter);
 
         currentMeteo.observe(this, station -> {
             if( AppSettings.getInstance().isSendXctrack() )

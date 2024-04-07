@@ -84,7 +84,7 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
         if( !model.checkStation() )
             settings.setFlying(false);
         updateEnabled();
-        settings.getLiveFlying().observe(getViewLifecycleOwner(), this::setScreenMode);
+        settings.getLiveFlying().observe(getViewLifecycleOwner(), this::requestScreenMode);
     }
 
     @Override
@@ -164,6 +164,13 @@ public class ChartsFragment extends ToolbarFragment implements MyCharts.TravelLi
             }
         } else
             downloadData(null);
+    }
+
+    private void requestScreenMode(boolean flying) {
+        if( flying )
+            requestNotifications(() -> setScreenMode(flying), () -> setScreenMode(flying));
+        else
+            setScreenMode(flying);
     }
 
     private void setScreenMode(boolean flying) {

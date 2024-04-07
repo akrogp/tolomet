@@ -169,4 +169,5 @@
     <string name="stop">Stop</string>
     <string name="pref_altMeteoGalicia">Servicio alternativo de MeteoGalicia</string>
     <string name="cfg_update">Cambio de configuración</string>
+    <string name="notifications_rationale">Las notificaciones son recomendables cuando se use Tolomet para comunicarse con otras aplicaciones</string>
 </resources>
