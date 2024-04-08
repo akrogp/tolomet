@@ -9,17 +9,24 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         AemetProviderTest.class,
+        //CurrentVantageProviderTest.class,
+        DhvSpotProviderTest.class,
+        EuskalmetProviderOrigTest.class,
+        EuskalmetProviderNewTest.class,
         EuskalmetProviderTest.class,
-        CurrentVantageProviderTest.class,
+        //HolfuyProviderTest.class,
         LaRiojaProviderTest.class,
         MetarProviderTest.class,
         MeteocatProviderTest.class,
+        MeteoClimaticProviderTest.class,
         MeteoGaliciaProviderTest.class,
         MeteoNavarraProviderTest.class,
+        PiouProviderTest.class,
         //PradesProviderTest.class,
         //RedVigiaProviderTest.class,
-        HolfuyProviderTest.class,
-        PiouProviderTest.class
+        SmartyPlanetProviderTest.class,
+        WeatherDisplayProviderTest.class
+
 })
 public class AllProvidersTest {
 }
