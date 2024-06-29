@@ -414,7 +414,7 @@ public class AppSettings {
     }
 
     public boolean isEuskalmetOriginal() {
-        return settings.getBoolean(PREF_ORIG_EUSKALMET, true);
+        return settings.getBoolean(PREF_ORIG_EUSKALMET, false);
     }
 
     public void setAltMeteoGalicia(boolean alt) {
