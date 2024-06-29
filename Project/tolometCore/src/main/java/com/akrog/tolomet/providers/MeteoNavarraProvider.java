@@ -56,7 +56,7 @@ public class MeteoNavarraProvider implements WindProvider {
 	protected void updateStation(Station station, String data) {
 		if( data == null )
 			return;
-		String[] cells = data.split(",");
+		String[] cells = data.split(";");
 		long date;
 		Number num;
 		if( cells.length < 26 )
@@ -68,7 +68,7 @@ public class MeteoNavarraProvider implements WindProvider {
 		for( i = i+16; i < cells.length; i+=8 ) {
 			if( END_PATTERN.matcher(cells[i]).find() )
 				break;
-			if( cells[i].equals("\"\"") || cells[i+1].equals("\"- -\"") )
+			if( cells[i].equals("\"\"") || cells[i+1].contains("- -") )
 				continue;
 			date = toEpoch(getContent(cells[i]));
 			num = Integer.parseInt(getContent(cells[i+1]));
