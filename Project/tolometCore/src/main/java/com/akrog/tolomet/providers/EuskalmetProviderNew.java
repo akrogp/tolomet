@@ -66,7 +66,7 @@ public class EuskalmetProviderNew implements WindProvider {
         downloader = new Downloader();
         downloader.setBrowser(FakeBrowser.WGET);
         downloader.setUrl(String.format(
-			"https://www.euskalmet.euskadi.eus/vamet/stations/readings/%s/%04d/%02d/%02d/readingsData.json",
+			"https://www.euskalmet.euskadi.eus/vamet/stations/readings/%s/%04d/%02d/%02d/webmet00-readingsData.json",
 				station.getCode(),
 				cal.get(Calendar.YEAR),
 				cal.get(Calendar.MONTH)+1,
