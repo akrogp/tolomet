@@ -88,18 +88,25 @@ public class Downloader {
     			con = openConnection(url);
     			con.setDoOutput(true);
     			con.setDoInput(true);
-    			OutputStream os = getOutputStream(con);
-    			BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-    			wr.write(getQuery());
-    			wr.close();
-    			os.close();
     		} else {
     			URL url = new URL(params.isEmpty()?this.url:this.url+"?"+getQuery());
     			con = openConnection(url);
     		}
-    		applyBrowserProperties(con);
+
+			applyBrowserProperties(con);
     		applyHeaders(con);
-            InputStream is = getInputStream(con);
+
+			if ( this.method != null && this.method.equalsIgnoreCase("POST") )
+			{
+				OutputStream os = getOutputStream(con);
+				BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+				wr.write(getQuery());
+				wr.close();
+				os.close();
+			}
+
+			InputStream is = getInputStream(con);
+
             if( isGzipped() )
                 is = new GZIPInputStream(is);
     		result = parseInput(is, stop, charset);
