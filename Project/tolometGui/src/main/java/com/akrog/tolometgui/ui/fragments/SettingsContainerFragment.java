@@ -6,11 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.akrog.tolometgui.R;
+import com.akrog.tolometgui.ui.activities.MainActivity;
+import androidx.activity.OnBackPressedCallback;
 
 public class SettingsContainerFragment extends ToolbarFragment {
 
@@ -18,6 +21,14 @@ public class SettingsContainerFragment extends ToolbarFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                ((MainActivity) requireActivity()).navigate(R.id.nav_maps);
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+
         return inflater.inflate(R.layout.fragment_settings_container, container, false);
     }
 

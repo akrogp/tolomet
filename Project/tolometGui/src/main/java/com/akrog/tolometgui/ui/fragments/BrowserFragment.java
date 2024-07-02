@@ -12,10 +12,13 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 
 import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.ui.activities.MainActivity;
+
+import androidx.activity.OnBackPressedCallback;
 
 public abstract class BrowserFragment extends ToolbarFragment {
     private static final int[] LIVE_ITEMS = {R.id.refresh_item, R.id.charts_item, R.id.browser_item};
@@ -25,6 +28,15 @@ public abstract class BrowserFragment extends ToolbarFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_browser, container, false);
         setWebView(view.findViewById(R.id.web));
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                ((MainActivity) requireActivity()).navigate(R.id.nav_maps);
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+
         return view;
     }
 
