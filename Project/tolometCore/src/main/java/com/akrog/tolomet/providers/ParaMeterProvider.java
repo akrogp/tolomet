@@ -10,6 +10,16 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
 
+
+class ParaMeterData
+{
+	public String date;
+	public String speed;
+	public String speed_max;
+	public String direction;
+
+};
+
 public class ParaMeterProvider implements WindProvider {
 	private String token = "";
 	@Override
@@ -20,22 +30,26 @@ public class ParaMeterProvider implements WindProvider {
 
 	@Override
 	public boolean travel(Station station, long date) {
-		//TODO: Make sure dates are the same for all request.
-		//TODO: Merge all in only one request
+		ParaMeterData[] pmd = DownloadData(station);
 
-		String[] dates = downloadDates(station);
-		if(dates.length == 0)
+		if(pmd.length == 0)
 			return false;
-		String[] speed = downloadSpeeds(station);
-		if( speed.length == 0)
-			return false;
-		String[] speed_max = downloadSpeedMaxs(station);
-		if( speed_max.length == 0)
-			return false;
-		String[] direction = downloadDirections(station);
-		if( direction.length == 0)
-			return false;
-		updateStation(station, dates, speed, speed_max, direction);
+
+		String[] dates = new String[pmd.length];
+		String[] speeds = new String[pmd.length];
+		String[] speeds_max = new String[pmd.length];
+		String[] directions = new String[pmd.length];
+
+
+		for (int i=0; i<pmd.length; i++)
+		{
+			dates[i] = pmd[i].date;
+			speeds[i] = pmd[i].speed;
+			speeds_max[i] = pmd[i].speed_max;
+			directions[i] = pmd[i].direction;
+		}
+
+		updateStation(station, dates, speeds, speeds_max, directions);
 		return true;
 	}
 
@@ -121,6 +135,7 @@ public class ParaMeterProvider implements WindProvider {
 		String tmp_station_code = "";
 		for (int i = 0; i < a.length; i++) {
 			if (a[i].equals("name")) {
+				// Now we create the station and add it with the previously stored name
 				Station station = new Station();
 				station.setCode(tmp_station_code);
 				station.setName(a[i + 1]);
@@ -136,6 +151,7 @@ public class ParaMeterProvider implements WindProvider {
 
 			if (a[i].equals("DEVICE"))
 			{
+				// While parsing the file, we find this before and then the name
 				tmp_station_code=a[i+2];
 			}
 		}
@@ -163,7 +179,7 @@ public class ParaMeterProvider implements WindProvider {
 		return downloader.download().split("\"")[7];
 	}
 
-	private String[] downloadDates(Station station) {
+	private ParaMeterData[] DownloadData(Station station) {
 		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 		now.getTimeInMillis();
 
@@ -171,7 +187,7 @@ public class ParaMeterProvider implements WindProvider {
 
 		downloader = new Downloader(20,2);
 		downloader.setUrl("http://adriancaton.com:80/api/plugins/telemetry/DEVICE/" + station.getCode() + "/values/timeseries");
-		downloader.addParam("keys", "velocidad");
+		downloader.addParam("keys", "velocidad,velocidad_max,direccion");
 		downloader.addParam("startTs", now.getTimeInMillis() - 6*60*60*1000);
 		downloader.addParam("endTs", now.getTimeInMillis());
 		downloader.setHeader("X-Authorization", "Bearer " + this.token);
@@ -194,166 +210,46 @@ public class ParaMeterProvider implements WindProvider {
 				n++;
 			}
 		}
+
+		n=n/3; //There are 3 params now, that means 3 more timestamps per ParaMeterData
+
 		//create and fill the array
-		String[] speeds = new String[n];
+		ParaMeterData[] data = new ParaMeterData[n];
 		n=0;
+		int current_param = 0;
 		for (int i = 0; i < a.length; i++) {
-			if (a[i].equals("ts"))
+			if (a[i].equals("velocidad"))
 			{
-				speeds[n++]=a[i+1];
+				current_param = 0;
+				n=0;
 			}
-		}
-
-		return speeds;
-	}
-
-	private String[] downloadSpeeds(Station station) {
-		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-		now.getTimeInMillis();
-
-		//date = toEpoch(cols[0], cols[1]);
-
-		downloader = new Downloader(20,2);
-		downloader.setUrl("http://adriancaton.com:80/api/plugins/telemetry/DEVICE/" + station.getCode() + "/values/timeseries");
-		downloader.addParam("keys", "velocidad");
-		downloader.addParam("startTs", now.getTimeInMillis() - 6*60*60*1000);
-		downloader.addParam("endTs", now.getTimeInMillis());
-		downloader.setHeader("X-Authorization", "Bearer " + this.token);
-		downloader.setHeader("accept", "application/json");
-
-		String s = downloader.download();
-		s=s.replace(" ","");
-		s=s.replace("\"","");
-		s=s.replace("{","");
-		s=s.replace("[","");
-		s=s.replace("}","");
-		s=s.replace("]","");
-		s=s.replace("\n","");
-		String[] a=s.split("[\"\\\\,\\\\ \\\\:\\\\{\\\\}]");
-		//find the number of speeds
-		int n=0;
-		for (int i = 0; i < a.length; i++) {
-			if (a[i].equals("value"))
-			{
+			if (a[i].equals("velocidad_max")) {
+				current_param = 1;
+				n=0;
+			}
+			if (a[i].equals("direccion")) {
+				current_param = 2;
+				n=0;
+			}
+			if (a[i].equals("ts")) {
+				if (current_param == 0)
+				{
+					data[n] = new ParaMeterData();
+					data[n].date = a[i + 1];
+					data[n].speed = a[i + 3];
+				}
+				if (current_param == 1) {
+					data[n].speed_max = a[i + 3];
+				}
+				if (current_param == 2) {
+					data[n].direction = a[i + 3];
+				}
 				n++;
 			}
-		}
-		//create and fill the array
-		String[] speeds = new String[n];
-		n=0;
-		for (int i = 0; i < a.length; i++) {
-			if (a[i].equals("value"))
-			{
-				speeds[n++]=a[i+1];
-			}
+
 		}
 
-		return speeds;
-	}
-
-	private String[] downloadSpeedMaxs(Station station) {
-		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-		now.getTimeInMillis();
-
-		//date = toEpoch(cols[0], cols[1]);
-
-		downloader = new Downloader(20,2);
-		downloader.setUrl("http://adriancaton.com:80/api/plugins/telemetry/DEVICE/" + station.getCode() + "/values/timeseries");
-		downloader.addParam("keys", "velocidad_max");
-		downloader.addParam("startTs", now.getTimeInMillis() - 6*60*60*1000);
-		downloader.addParam("endTs", now.getTimeInMillis());
-		downloader.setHeader("X-Authorization", "Bearer " + this.token);
-		downloader.setHeader("accept", "application/json");
-
-		String s = downloader.download();
-		s=s.replace(" ","");
-		s=s.replace("\"","");
-		s=s.replace("{","");
-		s=s.replace("[","");
-		s=s.replace("}","");
-		s=s.replace("]","");
-		s=s.replace("\n","");
-		String[] a=s.split("[\"\\\\,\\\\ \\\\:\\\\{\\\\}]");
-		//find the number of speeds
-		int n=0;
-		for (int i = 0; i < a.length; i++) {
-			if (a[i].equals("value"))
-			{
-				n++;
-			}
-		}
-		//create and fill the array
-		String[] speeds = new String[n];
-		n=0;
-		for (int i = 0; i < a.length; i++) {
-			if (a[i].equals("value"))
-			{
-				speeds[n++]=a[i+1];
-			}
-		}
-
-		return speeds;
-	}
-
-	private String[] downloadDirections(Station station) {
-		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-		now.getTimeInMillis();
-
-		//date = toEpoch(cols[0], cols[1]);
-
-		downloader = new Downloader(20,2);
-		downloader.setUrl("http://adriancaton.com:80/api/plugins/telemetry/DEVICE/" + station.getCode() + "/values/timeseries");
-		downloader.addParam("keys", "direccion");
-		downloader.addParam("startTs", now.getTimeInMillis() - 6*60*60*1000);
-		downloader.addParam("endTs", now.getTimeInMillis());
-		downloader.setHeader("X-Authorization", "Bearer " + this.token);
-		downloader.setHeader("accept", "application/json");
-
-		String s = downloader.download();
-		s=s.replace(" ","");
-		s=s.replace("\"","");
-		s=s.replace("{","");
-		s=s.replace("[","");
-		s=s.replace("}","");
-		s=s.replace("]","");
-		s=s.replace("\n","");
-		String[] a=s.split("[\"\\\\,\\\\ \\\\:\\\\{\\\\}]");
-		//find the number of speeds
-		int n=0;
-		for (int i = 0; i < a.length; i++) {
-			if (a[i].equals("value"))
-			{
-				n++;
-			}
-		}
-		//create and fill the array
-		String[] speeds = new String[n];
-		n=0;
-		for (int i = 0; i < a.length; i++) {
-			if (a[i].equals("value"))
-			{
-				speeds[n++]=a[i+1];
-			}
-		}
-
-		return speeds;
-	}
-
-	private String download(String code, Calendar now, int codigoP ) {
-		downloader = new ExcelDownloader(20,2);
-		downloader.setUrl("http://ias1.larioja.org/estaciones/estaciones/mapa/informes/ExportarDatosServlet");
-		downloader.addParam("direccion", "/opt/tomcat/webapps/estaciones/estaciones");
-		downloader.addParam("codOrg","1");
-		downloader.addParam("codigo",code);
-		downloader.addParam("codigoP",codigoP);
-		downloader.addParam("Seleccion","D");
-		downloader.addParam("Ano",now.get(Calendar.YEAR));
-		downloader.addParam("Mes",now.get(Calendar.MONTH)+1);
-		downloader.addParam("DiaD",now.get(Calendar.DAY_OF_MONTH));
-		downloader.addParam("DiaH",now.get(Calendar.DAY_OF_MONTH));
-		downloader.addParam("Informe","Y");
-		downloader.addParam("extension","xls");
-		return downloader.download();
+		return data;
 	}
 
 	protected void updateStation(Station station, String[] dates, String[] speeds, String[] speeds_max, String[] directions) {
@@ -366,26 +262,6 @@ public class ParaMeterProvider implements WindProvider {
 			station.getMeteo().getWindDirection().put(Long.parseLong(dates[i]), Float.parseFloat(directions[i]));
 		}
 	}
-	
-	private Float parseFloat( String str ) {
-		return Float.parseFloat(str.replace(',',this.separator));
-	}
-	
-	private long toEpoch( String day, String time ) {
-		String[] dayCols = day.split("-");
-		String[] timeCols = time.split(":");
-		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
-		cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dayCols[0]));
-		cal.set(Calendar.MONTH, Integer.parseInt(dayCols[1])-1);
-		cal.set(Calendar.YEAR, Integer.parseInt(dayCols[2]));
-		cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeCols[0]));
-		cal.set(Calendar.MINUTE, Integer.parseInt(timeCols[1]));
-		cal.set(Calendar.SECOND, Integer.parseInt(timeCols[2]));
-		cal.set(Calendar.MILLISECOND, 0);
-	    return cal.getTimeInMillis();
-	}
 
-	private static final Pattern COORDS_PATTERN = Pattern.compile(">([0-9\\.]*)/([0-9\\.]*)<");
-	private final char separator = '.';
 	private Downloader downloader;
 }
