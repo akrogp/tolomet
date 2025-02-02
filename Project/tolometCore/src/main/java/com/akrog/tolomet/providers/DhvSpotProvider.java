@@ -28,7 +28,7 @@ public class DhvSpotProvider implements SpotProvider {
     private List<Spot> downloadSpots(String region) {
         List<Spot> spots = new ArrayList<>();
         dw = new ZipDownloader();
-        dw.setUrl(String.format("https://www.dhv.de/fileadmin/user_upload/dbfiles/gelaendedaten/dhvxml/dhvgelaende_dhvxml_%s.zip?format=dhvxml", region));
+        dw.setUrl(String.format("https://service.dhv.de/dbfiles/managed/gelaendedaten/dhvxml/dhvgelaende_dhvxml_%s.zip?format=dhvxml", region));
         String data = dw.download();
         try(BufferedReader br = new BufferedReader(new StringReader(data))) {
             String line;
