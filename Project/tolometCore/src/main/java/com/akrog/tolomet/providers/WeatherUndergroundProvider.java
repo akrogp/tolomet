@@ -17,13 +17,13 @@ public class WeatherUndergroundProvider extends BaseProvider {
     }
 
     @Override
-    public String getInfoUrl(String code) {
-        return getUserUrl(code);
+    public String getInfoUrl(Station sta) {
+        return getUserUrl(sta);
     }
 
     @Override
-    public String getUserUrl(String code) {
-        return String.format("https://www.wunderground.com/personal-weather-station/dashboard?ID=%s", code);
+    public String getUserUrl(Station sta) {
+        return String.format("https://www.wunderground.com/personal-weather-station/dashboard?ID=%s", sta.getCode());
     }
 
     @Override

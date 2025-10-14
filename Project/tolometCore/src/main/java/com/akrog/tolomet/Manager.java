@@ -59,13 +59,13 @@ public class Manager {
 	public String getInforUrl( Station station ) {
 		if( !checkStation(station) )
 			return null;
-		return station.getProvider().getInfoUrl(station.getCode());
+		return station.getProvider().getInfoUrl(station);
 	}
 
 	public String getUserUrl( Station station ) {
 		if( !checkStation(station) )
 			return null;
-		return station.getProvider().getUserUrl(station.getCode());
+		return station.getProvider().getUserUrl(station);
 	}
 	
 	public synchronized boolean refresh( Station station ) {

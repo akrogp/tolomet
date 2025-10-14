@@ -17,6 +17,8 @@ class ParaMeterData
 	public String speed;
 	public String speed_max;
 	public String direction;
+	public String temp;
+	public String hum;
 
 };
 
@@ -39,6 +41,8 @@ public class ParaMeterProvider implements WindProvider {
 		String[] speeds = new String[pmd.length];
 		String[] speeds_max = new String[pmd.length];
 		String[] directions = new String[pmd.length];
+		String[] temps = new String[pmd.length];
+		String[] hums = new String[pmd.length];
 
 
 		for (int i=0; i<pmd.length; i++)
@@ -47,9 +51,11 @@ public class ParaMeterProvider implements WindProvider {
 			speeds[i] = pmd[i].speed;
 			speeds_max[i] = pmd[i].speed_max;
 			directions[i] = pmd[i].direction;
+			temps[i] = pmd[i].temp;
+			hums[i] = pmd[i].hum;
 		}
 
-		updateStation(station, dates, speeds, speeds_max, directions);
+		updateStation(station, dates, speeds, speeds_max, directions, temps, hums);
 		return true;
 	}
 
@@ -61,26 +67,26 @@ public class ParaMeterProvider implements WindProvider {
 
 	@Override
 	public int getRefresh(String code) {
-		return 15;
+		return 10;
 	}
 	
 	@Override
-	public String getInfoUrl(String code) {
-		return "http://adriancaton.com/dashboard/013f9790-b614-11ee-9af8-d1c33caa606f?publicId=8fd7e4d0-e1f2-11ee-9af8-d1c33caa606f";
+	public String getInfoUrl(Station sta) {
+		return "http://adriancaton.com:888/devices/" + sta.getName() + ".php";
 	}
 
 	@Override
-	public String getUserUrl(String code) {
-		return "http://adriancaton.com/dashboard/013f9790-b614-11ee-9af8-d1c33caa606f?publicId=8fd7e4d0-e1f2-11ee-9af8-d1c33caa606f";
+	public String getUserUrl(Station sta) {
+		return "https://www.parameteo.eu";
 	}
 
 	private void getToken() {
 		downloader = new Downloader(20,2);
-		downloader.setUrl("http://adriancaton.com:80/api/auth/login");
+		downloader.setUrl("https://adriancaton.com/api/auth/login/public");
 		downloader.setMethod("POST");
 		downloader.setHeader("accept", "application/json");
 		downloader.setHeader("Content-Type", "application/json");
-		downloader.setQuery("{\"username\":\"tolomet@tolomet.org\",\"password\":\"tolomet\"}");
+		downloader.setQuery("{\"publicId\":\"35a87040-c696-11ef-9f0f-2dcc18b2ac76\"}");
 
 		String s = downloader.download();
 		s=s.replace(" ","");
@@ -107,7 +113,7 @@ public class ParaMeterProvider implements WindProvider {
 		getToken();
 
 		downloader = new Downloader(20,2);
-		downloader.setUrl("http://adriancaton.com:80/api/customer/42ecf180-37a9-11ef-ab1d-df34c59217b0/devices");
+		downloader.setUrl("http://adriancaton.com:80/api/customer/35a87040-c696-11ef-9f0f-2dcc18b2ac76/devices");
 		downloader.addParam("pageSize", "100");
 		downloader.addParam("page", "0");
 		downloader.setHeader("X-Authorization", "Bearer " + this.token);
@@ -187,8 +193,8 @@ public class ParaMeterProvider implements WindProvider {
 
 		downloader = new Downloader(20,2);
 		downloader.setUrl("http://adriancaton.com:80/api/plugins/telemetry/DEVICE/" + station.getCode() + "/values/timeseries");
-		downloader.addParam("keys", "velocidad,velocidad_max,direccion");
-		downloader.addParam("startTs", now.getTimeInMillis() - 6*60*60*1000);
+		downloader.addParam("keys", "velocidad,velocidad_max,direccion,temp,hum");
+		downloader.addParam("startTs", now.getTimeInMillis() - 12*60*60*1000);
 		downloader.addParam("endTs", now.getTimeInMillis());
 		downloader.setHeader("X-Authorization", "Bearer " + this.token);
 		downloader.setHeader("accept", "application/json");
@@ -211,7 +217,11 @@ public class ParaMeterProvider implements WindProvider {
 			}
 		}
 
-		n=n/3; //There are 3 params now, that means 3 more timestamps per ParaMeterData
+		if (s.contains("hum") && s.contains("temp")) {
+			n /= 5;
+		} else {
+			n = n / 3; //There are 3 params now, that means 3 more timestamps per ParaMeterData
+		}
 
 		//create and fill the array
 		ParaMeterData[] data = new ParaMeterData[n];
@@ -231,6 +241,14 @@ public class ParaMeterProvider implements WindProvider {
 				current_param = 2;
 				n=0;
 			}
+			if (a[i].equals("temp")) {
+				current_param = 3;
+				n=0;
+			}
+			if (a[i].equals("hum")) {
+				current_param = 4;
+				n=0;
+			}
 			if (a[i].equals("ts")) {
 				if (current_param == 0)
 				{
@@ -244,6 +262,12 @@ public class ParaMeterProvider implements WindProvider {
 				if (current_param == 2) {
 					data[n].direction = a[i + 3];
 				}
+				if (current_param == 3) {
+					data[n].temp = a[i + 3];
+				}
+				if (current_param == 4) {
+					data[n].hum = a[i + 3];
+				}
 				n++;
 			}
 
@@ -252,7 +276,7 @@ public class ParaMeterProvider implements WindProvider {
 		return data;
 	}
 
-	protected void updateStation(Station station, String[] dates, String[] speeds, String[] speeds_max, String[] directions) {
+	protected void updateStation(Station station, String[] dates, String[] speeds, String[] speeds_max, String[] directions, String[] temps, String hums[]) {
 		for( int i = 0; i < speeds.length; i++ ) {
 			station.getMeteo().getWindSpeedMed().put(Long.parseLong(dates[i]), Float.parseFloat(speeds[i])*3.6);
 			station.getMeteo().getWindSpeedMax().put(Long.parseLong(dates[i]), Float.parseFloat(speeds_max[i])*3.6);
@@ -261,6 +285,16 @@ public class ParaMeterProvider implements WindProvider {
 		for( int i = 0; i < directions.length; i++ ) {
 			station.getMeteo().getWindDirection().put(Long.parseLong(dates[i]), Float.parseFloat(directions[i]));
 		}
+		try {
+			for( int i = 0; i < temps.length; i++ ) {
+				station.getMeteo().getAirTemperature().put(Long.parseLong(dates[i]), Float.parseFloat(temps[i]));
+			}
+		} catch( Exception e ) {}
+		try {
+			for( int i = 0; i < hums.length; i++ ) {
+				station.getMeteo().getAirHumidity().put(Long.parseLong(dates[i]), Float.parseFloat(hums[i]));
+			}
+		} catch( Exception e ) {}
 	}
 
 	private Downloader downloader;

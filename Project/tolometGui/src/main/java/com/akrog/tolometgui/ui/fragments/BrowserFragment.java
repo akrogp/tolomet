@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,8 @@ import com.akrog.tolometgui.ui.activities.MainActivity;
 
 import androidx.activity.OnBackPressedCallback;
 
+import java.nio.charset.StandardCharsets;
+
 public abstract class BrowserFragment extends ToolbarFragment {
     private static final int[] LIVE_ITEMS = {R.id.refresh_item, R.id.charts_item, R.id.browser_item};
     protected WebView web;
@@ -28,6 +31,16 @@ public abstract class BrowserFragment extends ToolbarFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_browser, container, false);
         setWebView(view.findViewById(R.id.web));
+
+        WebSettings webSettings = web.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setBuiltInZoomControls(true);
+        webSettings.setDisplayZoomControls(false);
+        webSettings.setSupportZoom(true);
+        webSettings.setDefaultTextEncodingName("utf-8");
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
@@ -79,6 +92,9 @@ public abstract class BrowserFragment extends ToolbarFragment {
         web.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+                //String s = "{\"username\":\"tolomet@tolomet.org\",\"password\":\"tolomet\"}";
+                //view.postUrl("https://adriancaton.com/api/auth/login", s.getBytes() );
                 view.loadUrl(url);
                 return false;
             }
@@ -91,7 +107,16 @@ public abstract class BrowserFragment extends ToolbarFragment {
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                endProgress();
+                /*if (url.contains("adriancaton.com")) {
+                    view.loadUrl("javascript:document.getElementById('username-input').value = 'tolomet@tolomet.org'");
+                    view.loadUrl("javascript:document.getElementById('password-input').value = 'tolomet\r'");
+                    //webView.loadUrl("javascript:document.forms['login'].submit()");
+                }*/
+                //view.loadUrl("javascript:document.getElementById('username-input').value = 'tolomet@tolomet.org'");
+                //view.loadUrl("javascript:document.getElementById('password-input').value = 'tolomet\r'");
+                //view.loadUrl("javascript:document.getElementsByTagName(\"button\")[2].click()");
+                //view.loadUrl("google.es");
+                try {endProgress();} catch (Exception e) {}
                 super.onPageFinished(view, url);
             }
 
@@ -138,6 +163,8 @@ public abstract class BrowserFragment extends ToolbarFragment {
     public void reload() {
         if( web == null || !model.checkStation() )
             return;
+        //String s = "username=tolomet@tolomet.org&password=tolomet";
+        //web.postUrl("https://adriancaton.com/api/auth/login", s.getBytes() );
         web.loadUrl(getUrl());
     }
 

@@ -49,13 +49,13 @@ public class WeatherDisplayProvider extends BaseProvider {
     }
 
     @Override
-    public String getInfoUrl(String code) {
-        return getUserUrl(code);
+    public String getInfoUrl(Station sta) {
+        return getUserUrl(sta);
     }
 
     @Override
-    public String getUserUrl(String code) {
-        return getMapIndex().get(code);
+    public String getUserUrl(Station sta) {
+        return getMapIndex().get(sta.getCode());
     }
 
     @Override

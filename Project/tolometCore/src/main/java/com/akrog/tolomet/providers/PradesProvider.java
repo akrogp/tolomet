@@ -111,7 +111,7 @@ public class PradesProvider extends BaseProvider {
 	}
 
 	@Override
-	public String getInfoUrl(String code) {
+	public String getInfoUrl(Station sta) {
 		if( mapInfo == null ) {
 			mapInfo = new HashMap<String, String>();
 			try {
@@ -126,12 +126,12 @@ public class PradesProvider extends BaseProvider {
 			} catch( Exception e ) {				
 			}
 		}
-		return mapInfo.get(code);
+		return mapInfo.get(sta.getCode());
 	}
 
 	@Override
-	public String getUserUrl(String code) {
-		return getInfoUrl(code);
+	public String getUserUrl(Station sta) {
+		return getInfoUrl(sta);
 	}
 
 	private Map<String, String> mapInfo;
