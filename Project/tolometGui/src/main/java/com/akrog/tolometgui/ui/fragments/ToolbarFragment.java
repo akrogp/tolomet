@@ -24,9 +24,6 @@ public abstract class ToolbarFragment extends ProgressFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-
-
     }
 
     @Override
