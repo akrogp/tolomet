@@ -94,13 +94,13 @@ public class MeteoNavarraProvider implements WindProvider {
 	}
 	
 	@Override
-	public String getInfoUrl(String code) {
-		return "http://meteo.navarra.es/estaciones/estacion_detalle.cfm?idestacion="+code.substring(2);
+	public String getInfoUrl(Station sta) {
+		return "http://meteo.navarra.es/estaciones/estacion_detalle.cfm?idestacion=" + sta.getCode().substring(2);
 	}
 
 	@Override
-	public String getUserUrl(String code) {
-		return "http://meteo.navarra.es/estaciones/estacion.cfm?IDEstacion="+code.substring(2);
+	public String getUserUrl(Station sta) {
+		return "http://meteo.navarra.es/estaciones/estacion.cfm?IDEstacion=" + sta.getCode().substring(2);
 	}
 
 	@Override

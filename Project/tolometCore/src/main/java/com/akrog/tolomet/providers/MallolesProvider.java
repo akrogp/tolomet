@@ -1,4 +1,5 @@
 package com.akrog.tolomet.providers;
+import com.akrog.tolomet.Station;
 
 public class MallolesProvider extends TolometProvider {
     public MallolesProvider() {
@@ -11,12 +12,12 @@ public class MallolesProvider extends TolometProvider {
     }
 
     @Override
-    public String getInfoUrl(String code) {
-        return getUserUrl(code);
+    public String getInfoUrl(Station sta) {
+        return getUserUrl(sta);
     }
 
     @Override
-    public String getUserUrl(String code) {
+    public String getUserUrl(Station sta) {
         return "https://malloles.cat/estacio/";
     }
 }

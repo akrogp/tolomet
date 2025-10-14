@@ -69,13 +69,13 @@ public class RedVigiaProvider implements WindProvider {
 	}		
 	
 	@Override
-	public String getInfoUrl(String code) {
-        return String.format("http://www.redvigia.es/Boyas/Detalle/%s#detalle_general",code);
+	public String getInfoUrl(Station sta) {
+        return String.format("http://www.redvigia.es/Boyas/Detalle/%s#detalle_general", sta.getCode());
 	}
 
 	@Override
-	public String getUserUrl(String code) {
-        return String.format("http://www.redvigia.es/Boyas/Detalle/%s#detalle_meteorologia",code);
+	public String getUserUrl(Station sta) {
+        return String.format("http://www.redvigia.es/Boyas/Detalle/%s#detalle_meteorologia", sta.getCode());
 	}
 
     @Override

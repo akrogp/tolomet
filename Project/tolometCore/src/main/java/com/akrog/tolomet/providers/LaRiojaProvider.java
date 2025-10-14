@@ -51,12 +51,12 @@ public class LaRiojaProvider implements WindProvider {
 	}
 	
 	@Override
-	public String getInfoUrl(String code) {
-		return "http://ias1.larioja.org/estaciones/estaciones/mapa/consulta/consulta.jsp?codOrg=1&codigo="+code;
+	public String getInfoUrl(Station sta) {
+		return "http://ias1.larioja.org/estaciones/estaciones/mapa/consulta/consulta.jsp?codOrg=1&codigo=" + sta.getCode();
 	}
 
 	@Override
-	public String getUserUrl(String code) {
+	public String getUserUrl(Station sta) {
 		return "http://www.larioja.org/emergencias-112/es/meteorologia/datos-estaciones-gobierno";
 	}
 
@@ -98,7 +98,7 @@ public class LaRiojaProvider implements WindProvider {
 
 	private boolean downloadCoords(Station station) {
 		Downloader dw = new Downloader();
-		dw.setUrl(getInfoUrl(station.getCode()));
+		dw.setUrl(getInfoUrl(station));
 		String data = dw.download();
 		Matcher matcher = COORDS_PATTERN.matcher(data);
 		if( !matcher.find() )

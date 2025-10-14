@@ -18,12 +18,12 @@ import java.util.TimeZone;
 public class EuskalmetProviderNew implements WindProvider {
 	
 	@Override
-	public String getInfoUrl(String code) {
+	public String getInfoUrl(Station sta) {
 		return "https://www.euskalmet.euskadi.eus/observacion/datos-de-estaciones";
 	}
 
 	@Override
-	public String getUserUrl(String code) {
+	public String getUserUrl(Station sta) {
 		return "https://www.euskalmet.euskadi.eus/observacion/datos-de-estaciones";
 	}
 
