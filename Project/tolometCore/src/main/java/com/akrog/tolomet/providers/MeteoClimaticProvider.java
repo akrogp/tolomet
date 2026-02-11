@@ -132,13 +132,13 @@ public class MeteoClimaticProvider extends BaseProvider {
     }
 
     @Override
-    public String getInfoUrl(String code) {
-        return String.format("https://www.meteoclimatic.net/perfil/%s#toggle",code);
+    public String getInfoUrl(Station sta) {
+        return String.format("https://www.meteoclimatic.net/perfil/%s#toggle", sta.getCode());
     }
 
     @Override
-    public String getUserUrl(String code) {
-        return String.format("https://www.meteoclimatic.net/perfil/%s#content",code);
+    public String getUserUrl(Station sta) {
+        return String.format("https://www.meteoclimatic.net/perfil/%s#content", sta.getCode());
     }
 
     private static final int REFRESH = 15;

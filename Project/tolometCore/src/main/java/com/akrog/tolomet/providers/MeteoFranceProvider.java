@@ -22,14 +22,14 @@ public class MeteoFranceProvider extends BaseProvider {
     }
 
     @Override
-    public String getInfoUrl(String code) {
-        return getUserUrl(code);
+    public String getInfoUrl(Station sta) {
+        return getUserUrl(sta);
     }
 
     @Override
-    public String getUserUrl(String code) {
+    public String getUserUrl(Station sta) {
         //return String.format("http://www.meteofrance.com/previsions-meteo-france/station-observations?a=%s&b=",code);
-        return String.format("http://www.meteo.fr/test/gratuit/vigilance_debordement/PREV/obs/obs_seul.html?a=%s&b=",code);
+        return String.format("http://www.meteo.fr/test/gratuit/vigilance_debordement/PREV/obs/obs_seul.html?a=%s&b=", sta.getCode());
     }
 
     @Override

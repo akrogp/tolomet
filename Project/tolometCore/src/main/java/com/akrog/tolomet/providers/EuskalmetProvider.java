@@ -7,13 +7,13 @@ import java.util.List;
 public class EuskalmetProvider implements WindProvider {
 	
 	@Override
-	public String getInfoUrl(String code) {
-		return origProvider.getInfoUrl(code);
+	public String getInfoUrl(Station sta) {
+		return origProvider.getInfoUrl(sta);
 	}
 
 	@Override
-	public String getUserUrl(String code) {
-		return newProvider.getUserUrl(code);
+	public String getUserUrl(Station sta) {
+		return newProvider.getUserUrl(sta);
 	}
 
 	@Override

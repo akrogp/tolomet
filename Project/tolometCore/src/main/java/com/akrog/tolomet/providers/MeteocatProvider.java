@@ -168,13 +168,13 @@ public class MeteocatProvider implements WindProvider {
 	}		
 		
 	@Override
-	public String getInfoUrl(String code) {
-		return String.format("http://www.meteo.cat/observacions/xema/dades?codi=%s", code);
+	public String getInfoUrl(Station sta) {
+		return String.format("http://www.meteo.cat/observacions/xema/dades?codi=%s", sta.getCode());
 	}
 
 	@Override
-	public String getUserUrl(String code) {
-		return getInfoUrl(code);
+	public String getUserUrl(Station sta) {
+		return getInfoUrl(sta);
 	}
 
 	@Override

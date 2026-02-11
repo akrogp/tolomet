@@ -22,13 +22,13 @@ public class AemetProvider implements WindProvider {
 	}
 
 	@Override
-	public String getInfoUrl(String code) {
-		return "http://www.aemet.es/es/eltiempo/observacion/ultimosdatos?l="+code+"&datos=det&w=0";
+	public String getInfoUrl(Station sta) {
+		return "http://www.aemet.es/es/eltiempo/observacion/ultimosdatos?l=" + sta.getCode() + "&datos=det&w=0";
 	}
 
 	@Override
-	public String getUserUrl(String code) {
-		return getInfoUrl(code);
+	public String getUserUrl(Station sta) {
+		return getInfoUrl(sta);
 	}
 
 	private String download(String url) {

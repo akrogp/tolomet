@@ -121,12 +121,12 @@ public class RiojaSiarProvider extends BaseProvider {
     }
 
     @Override
-    public String getInfoUrl(String code) {
-        return getUserUrl(code);
+    public String getInfoUrl(Station sta) {
+        return getUserUrl(sta);
     }
 
     @Override
-    public String getUserUrl(String code) {
-        return "https://www.larioja.org/agricultura/es/informacion-agroclimatica/red-estaciones-agroclimaticas-siar/detalle-estacion?homepage=" + code;
+    public String getUserUrl(Station sta) {
+        return "https://www.larioja.org/agricultura/es/informacion-agroclimatica/red-estaciones-agroclimaticas-siar/detalle-estacion?homepage=" + sta.getCode();
     }
 }

@@ -27,13 +27,13 @@ public class PiouProvider extends BaseProvider {
     }
 
     @Override
-    public String getInfoUrl(String code) {
-        return "http://pioupiou.fr/fr/"+code;
+    public String getInfoUrl(Station sta) {
+        return "http://pioupiou.fr/fr/" + sta.getCode();
     }
 
     @Override
-    public String getUserUrl(String code) {
-        return getInfoUrl(code);
+    public String getUserUrl(Station sta) {
+        return getInfoUrl(sta);
     }
 
     @Override

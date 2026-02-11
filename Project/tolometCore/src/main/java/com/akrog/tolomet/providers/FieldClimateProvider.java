@@ -71,12 +71,12 @@ public class FieldClimateProvider extends BaseProvider {
     }
 
     @Override
-    public String getInfoUrl(String code) {
-        return getUserUrl(code);
+    public String getInfoUrl(Station sta) {
+        return getUserUrl(sta);
     }
 
     @Override
-    public String getUserUrl(String code) {
+    public String getUserUrl(Station sta) {
         return "https://ng.fieldclimate.com/dashboard";
     }
 

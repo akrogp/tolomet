@@ -8,11 +8,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 
 import com.akrog.tolomet.providers.WindProviderType;
 import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.model.db.DbTolomet;
+import com.akrog.tolometgui.ui.activities.MainActivity;
 import com.akrog.tolometgui.ui.adapters.ProviderAdapter;
 import com.akrog.tolometgui.ui.services.WeakTask;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -20,6 +22,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import androidx.activity.OnBackPressedCallback;
 
 public class UpdateFragment extends ToolbarFragment implements AdapterView.OnItemClickListener {
     private List<ProviderAdapter.ProviderWrapper> providers;
@@ -29,6 +33,14 @@ public class UpdateFragment extends ToolbarFragment implements AdapterView.OnIte
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                ((MainActivity) requireActivity()).navigate(R.id.nav_maps);
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+
         return inflater.inflate(R.layout.fragment_update, container, false);
     }
 
