@@ -29,13 +29,13 @@ public class HolfuyProvider extends BaseProvider {
     }
 
     @Override
-    public String getInfoUrl(String code) {
-        return "http://holfuy.com/en/camera/"+code.substring(1);
+    public String getInfoUrl(Station sta) {
+        return "http://holfuy.com/en/camera/"+sta.getCode().substring(1);
     }
 
     @Override
-    public String getUserUrl(String code) {
-        return "http://holfuy.com/en/data/"+code.substring(1);
+    public String getUserUrl(Station sta) {
+        return "http://holfuy.com/en/data/"+sta.getCode().substring(1);
         //return "http://m.holfuy.com/"+code.substring(1);
     }
 

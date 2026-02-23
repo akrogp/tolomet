@@ -9,7 +9,7 @@ public interface WindProvider {
 	boolean travel(Station station, long date );
 	void cancel();
 	int getRefresh( String code );
-	String getInfoUrl( String code );
-	String getUserUrl( String code );
+	String getInfoUrl( Station sta );
+	String getUserUrl( Station sta );
 	List<Station> downloadStations();
 }

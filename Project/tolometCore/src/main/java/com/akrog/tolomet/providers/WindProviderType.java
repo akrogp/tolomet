@@ -2,6 +2,7 @@ package com.akrog.tolomet.providers;
 
 
 public enum WindProviderType {
+	ParaMeter("PM", new ParaMeterProvider(), WindProviderQuality.Good, true),
 	Euskalmet("EU", new EuskalmetProvider(), WindProviderQuality.Good, true),
 	MeteoNavarra("GN", new MeteoNavarraProvider(), WindProviderQuality.Good, true),
 	Aemet("AE", new AemetProvider(), WindProviderQuality.Poor, true),

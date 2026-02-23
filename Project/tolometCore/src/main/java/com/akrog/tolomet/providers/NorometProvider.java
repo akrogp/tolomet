@@ -106,12 +106,12 @@ public class NorometProvider extends BaseProvider {
     }
 
     @Override
-    public String getInfoUrl(String code) {
-        return "https://noromet.org/index2.html?id_estacion="+code;
+    public String getInfoUrl(Station sta) {
+        return "https://noromet.org/index2.html?id_estacion=" + sta.getCode();
     }
 
     @Override
-    public String getUserUrl(String code) {
-        return getInfoUrl(code);
+    public String getUserUrl(Station sta) {
+        return getInfoUrl(sta);
     }
 }
