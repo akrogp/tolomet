@@ -26,13 +26,13 @@ public class FfvlProvider extends BaseProvider {
     }
 
     @Override
-    public String getInfoUrl(String code) {
-        return "http://www.balisemeteo.com/balise.php?idBalise="+code;
+    public String getInfoUrl(Station sta) {
+        return "http://www.balisemeteo.com/balise.php?idBalise=" + sta.getCode();
     }
 
     @Override
-    public String getUserUrl(String code) {
-        return "http://www.balisemeteo.com/balise_histo.php?interval=1&marks=true&idBalise="+code;
+    public String getUserUrl(Station sta) {
+        return "http://www.balisemeteo.com/balise_histo.php?interval=1&marks=true&idBalise=" + sta.getCode();
     }
 
     @Override

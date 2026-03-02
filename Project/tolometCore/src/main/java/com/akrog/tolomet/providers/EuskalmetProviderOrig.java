@@ -22,14 +22,14 @@ import java.util.regex.Pattern;
 public class EuskalmetProviderOrig implements WindProvider {
 	
 	@Override
-	public String getInfoUrl(String code) {
-		return "https://euskalmet.beta.euskadi.eus/s07-5853x/es/meteorologia/estacion.apl?e=5&campo="+code;
+	public String getInfoUrl(Station sta) {
+		return "https://euskalmet.beta.euskadi.eus/s07-5853x/es/meteorologia/estacion.apl?e=5&campo=" + sta.getCode();
 	}
 
 	@Override
-	public String getUserUrl(String code) {
+	public String getUserUrl(Station sta) {
 		//return "https://euskalmet.beta.euskadi.eus/s07-5853x/es/meteorologia/datos/mapaesta.apl?e=5&campo="+code;
-		return "https://euskalmet.beta.euskadi.eus/s07-5853x/es/meteorologia/lectur.apl?e=5&campo="+code;
+		return "https://euskalmet.beta.euskadi.eus/s07-5853x/es/meteorologia/lectur.apl?e=5&campo=" + sta.getCode();
 	}
 
 	@Override

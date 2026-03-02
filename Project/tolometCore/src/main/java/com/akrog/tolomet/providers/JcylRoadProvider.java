@@ -138,12 +138,12 @@ public abstract class JcylRoadProvider extends BaseProvider {
     }
 
     @Override
-    public String getInfoUrl(String code) {
+    public String getInfoUrl(Station sta) {
         return "https://datosabiertos.jcyl.es/web/jcyl/set/es/ciencia-tecnologia/cosultas-estaciones-meteorologicas-carreteras/1285325194636";
     }
 
     @Override
-    public String getUserUrl(String code) {
-        return getInfoUrl(code);
+    public String getUserUrl(Station sta) {
+        return getInfoUrl(sta);
     }
 }

@@ -18,14 +18,14 @@ import java.util.TimeZone;
 public class MeteoGaliciaProvider implements WindProvider {
 
 	@Override
-	public String getInfoUrl(String code) {
-		return "https://www.meteogalicia.gal/observacion/estacions/estacions.action?idEst="+code;
+	public String getInfoUrl(Station sta) {
+		return "https://www.meteogalicia.gal/observacion/estacions/estacions.action?idEst=" + sta.getCode();
 	}
 
 	@Override
-	public String getUserUrl(String code) {
+	public String getUserUrl(Station sta) {
 		return String.format("https://www.meteogalicia.gal/observacion/meteovisor/indexChartDezHoxe.action?idEstacion=%s&nome=%s&dataSeleccionada=%s",
-			code, code, SDF_USER.format(new Date()));
+				sta.getCode(), sta.getCode(), SDF_USER.format(new Date()));
 	}
 
 	@Override

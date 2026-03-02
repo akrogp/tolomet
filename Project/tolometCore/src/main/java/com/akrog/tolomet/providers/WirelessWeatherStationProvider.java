@@ -22,12 +22,12 @@ public class WirelessWeatherStationProvider extends BaseProvider {
     }
 
     @Override
-    public String getInfoUrl(String code) {
+    public String getInfoUrl(Station sta) {
         return "http://cvlarcones.net/index.php/homepage/estacion";
     }
 
     @Override
-    public String getUserUrl(String code) {
+    public String getUserUrl(Station sta) {
         return "http://cvlarcones.net/station/miprueba2.php";
     }
 

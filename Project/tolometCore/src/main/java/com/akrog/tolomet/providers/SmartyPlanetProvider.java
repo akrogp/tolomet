@@ -85,12 +85,12 @@ public class SmartyPlanetProvider extends BaseProvider {
     }
 
     @Override
-    public String getInfoUrl(String code) {
-        return String.format("https://castejondesos.smartyplanet.com/es/estacions/estacio/%s/smartis/", code);
+    public String getInfoUrl(Station sta) {
+        return String.format("https://castejondesos.smartyplanet.com/es/estacions/estacio/%s/smartis/", sta.getCode());
     }
 
     @Override
-    public String getUserUrl(String code) {
-        return String.format("https://castejondesos.smartyplanet.com/es/estacions/estacio/%s/fitxa/1811", code);
+    public String getUserUrl(Station sta) {
+        return String.format("https://castejondesos.smartyplanet.com/es/estacions/estacio/%s/fitxa/1811", sta.getCode());
     }
 }

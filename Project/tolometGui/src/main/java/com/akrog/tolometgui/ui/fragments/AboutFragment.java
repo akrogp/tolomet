@@ -9,11 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 
 import com.akrog.tolometgui.BuildConfig;
 import com.akrog.tolometgui.R;
 import com.akrog.tolometgui.model.db.DbTolomet;
+import com.akrog.tolometgui.ui.activities.MainActivity;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,10 +23,20 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Calendar;
 
+import androidx.activity.OnBackPressedCallback;
+
 public class AboutFragment extends ToolbarFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                ((MainActivity) requireActivity()).navigate(R.id.nav_maps);
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+
         return inflater.inflate(R.layout.fragment_about, container, false);
     }
 

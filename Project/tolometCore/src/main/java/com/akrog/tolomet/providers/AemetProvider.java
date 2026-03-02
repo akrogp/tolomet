@@ -13,22 +13,24 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.logging.Logger;
+import java.util.logging.Logger;
 
 public class AemetProvider implements WindProvider {
-
+	private static final Logger LOGGER = Logger.getLogger(MeteoNavarraProvider.class.getName());
 	public AemetProvider() {
 		sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
 	}
 
 	@Override
-	public String getInfoUrl(String code) {
-		return "http://www.aemet.es/es/eltiempo/observacion/ultimosdatos?l="+code+"&datos=det&w=0";
+	public String getInfoUrl(Station sta) {
+		return "http://www.aemet.es/es/eltiempo/observacion/ultimosdatos?l=" + sta.getCode() + "&datos=det&w=0";
 	}
 
 	@Override
-	public String getUserUrl(String code) {
-		return getInfoUrl(code);
+	public String getUserUrl(Station sta) {
+		return getInfoUrl(sta);
 	}
 
 	private String download(String url) {
@@ -46,6 +48,7 @@ public class AemetProvider implements WindProvider {
 			dw = new Downloader();
 			dw.setUrl(resp.getString("datos"));
 			data = dw.download(null, "latin1");
+
 			return data;
 		} catch( Exception e ) {
 			e.printStackTrace();
@@ -81,6 +84,7 @@ public class AemetProvider implements WindProvider {
 	@Override
 	public void refresh(Station station) {
 		try {
+			LOGGER.info("https://opendata.aemet.es/opendata/api/observacion/convencional/datos/estacion/" + station.getCode());
 			String data = download("https://opendata.aemet.es/opendata/api/observacion/convencional/datos/estacion/" + station.getCode());
 			JSONArray array = new JSONArray(data);
 			for( int i = 0; i < array.length(); i++ ) {

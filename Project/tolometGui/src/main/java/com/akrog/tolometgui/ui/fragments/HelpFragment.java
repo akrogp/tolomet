@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.activity.OnBackPressedCallback;
+import com.akrog.tolometgui.ui.activities.MainActivity;
 
 import com.akrog.tolometgui.R;
 
@@ -15,6 +17,15 @@ public class HelpFragment extends ToolbarFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                ((MainActivity) requireActivity()).navigate(R.id.nav_maps);
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+
         return inflater.inflate(R.layout.fragment_help, container, false);
     }
 

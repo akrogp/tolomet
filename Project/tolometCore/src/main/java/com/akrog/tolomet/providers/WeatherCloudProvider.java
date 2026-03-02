@@ -35,13 +35,13 @@ public class WeatherCloudProvider extends BaseProvider {
     }
 
     @Override
-    public String getInfoUrl(String code) {
-        return String.format("https://app.weathercloud.net/d%s#profile", code);
+    public String getInfoUrl(Station sta) {
+        return String.format("https://app.weathercloud.net/d%s#profile", sta.getCode());
     }
 
     @Override
-    public String getUserUrl(String code) {
-        return String.format("https://app.weathercloud.net/d%s#evolution", code);
+    public String getUserUrl(Station sta) {
+        return String.format("https://app.weathercloud.net/d%s#evolution", sta.getCode());
     }
 
     private static final int REFRESH = 1;

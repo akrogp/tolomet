@@ -95,12 +95,12 @@ public class CurrentVantageProvider implements WindProvider {
 	}
 
 	@Override
-	public String getInfoUrl(String code) {
+	public String getInfoUrl(Station sta) {
 		return URL;
 	}
 
 	@Override
-	public String getUserUrl(String code) {
+	public String getUserUrl(Station sta) {
 		return URL;
 	}
 
