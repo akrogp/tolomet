@@ -1,0 +1,361 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0A8327F0A54E8DB9EB42AF11 /* NorometViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFBA2714CCA9CECF2E67862 /* NorometViewModel.swift */; };
+		0D342868919134C67BC7ECD3 /* TolometSimpleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509CA22A402F9327263B7062 /* TolometSimpleApp.swift */; };
+		452A255D117A0D68D8C08CF6 /* MatxitxakoWindView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46D29B0C692D3A677796425 /* MatxitxakoWindView.swift */; };
+		5298F4DAB65B1ECB3FE8A711 /* MatxitxakoWindViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EEAACB4AE722D61454A2E /* MatxitxakoWindViewModel.swift */; };
+		6D4B8AD59B88BFA94C603A30 /* TolometShared.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB20E4671F0E3CF889EFAB5 /* TolometShared.xcframework */; };
+		707472B9A47C24FF3E8F55F9 /* AemetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E127D73DF8715E575EBA4AA /* AemetView.swift */; };
+		8BE2F47CFCF11553DD307834 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17A9B3D450CDD75CED32B9E /* ContentView.swift */; };
+		A391CBD7ABBD04B3FCC32094 /* NorometView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 673304188122A606ECEF2032 /* NorometView.swift */; };
+		E5A5F5F8C6D7D8D5CD757AC3 /* StationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B5B478B2416F08B74B1E43 /* StationsViewModel.swift */; };
+		E71923101897E39305B10A8E /* AemetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3135D6097BEE81FDB1F61170 /* AemetViewModel.swift */; };
+		FE0CB4E9BDD727618A317B0D /* TolometShared.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBB20E4671F0E3CF889EFAB5 /* TolometShared.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E8A417B77E8FE0B40C17F495 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				FE0CB4E9BDD727618A317B0D /* TolometShared.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		3135D6097BEE81FDB1F61170 /* AemetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AemetViewModel.swift; sourceTree = "<group>"; };
+		35A30A6BAC71A8561D574B67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		3D5C10CB23E7921B7CFBCAD6 /* TolometSimple.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = TolometSimple.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3DFBA2714CCA9CECF2E67862 /* NorometViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NorometViewModel.swift; sourceTree = "<group>"; };
+		509CA22A402F9327263B7062 /* TolometSimpleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TolometSimpleApp.swift; sourceTree = "<group>"; };
+		673304188122A606ECEF2032 /* NorometView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NorometView.swift; sourceTree = "<group>"; };
+		6E127D73DF8715E575EBA4AA /* AemetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AemetView.swift; sourceTree = "<group>"; };
+		74B5B478B2416F08B74B1E43 /* StationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationsViewModel.swift; sourceTree = "<group>"; };
+		960EEAACB4AE722D61454A2E /* MatxitxakoWindViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatxitxakoWindViewModel.swift; sourceTree = "<group>"; };
+		C46D29B0C692D3A677796425 /* MatxitxakoWindView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatxitxakoWindView.swift; sourceTree = "<group>"; };
+		CBB20E4671F0E3CF889EFAB5 /* TolometShared.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = TolometShared.xcframework; path = ../tolometShared/build/XCFrameworks/release/TolometShared.xcframework; sourceTree = "<group>"; };
+		F17A9B3D450CDD75CED32B9E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A291722BFC5EDF6F17BF4123 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6D4B8AD59B88BFA94C603A30 /* TolometShared.xcframework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		40F9E676C11436A5FFD23B1C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CBB20E4671F0E3CF889EFAB5 /* TolometShared.xcframework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5FAA778065404FAC4B7BD442 /* TolometSimple */ = {
+			isa = PBXGroup;
+			children = (
+				6E127D73DF8715E575EBA4AA /* AemetView.swift */,
+				3135D6097BEE81FDB1F61170 /* AemetViewModel.swift */,
+				F17A9B3D450CDD75CED32B9E /* ContentView.swift */,
+				35A30A6BAC71A8561D574B67 /* Info.plist */,
+				C46D29B0C692D3A677796425 /* MatxitxakoWindView.swift */,
+				960EEAACB4AE722D61454A2E /* MatxitxakoWindViewModel.swift */,
+				673304188122A606ECEF2032 /* NorometView.swift */,
+				3DFBA2714CCA9CECF2E67862 /* NorometViewModel.swift */,
+				74B5B478B2416F08B74B1E43 /* StationsViewModel.swift */,
+				509CA22A402F9327263B7062 /* TolometSimpleApp.swift */,
+			);
+			path = TolometSimple;
+			sourceTree = "<group>";
+		};
+		A912CFB621C6DC283411923A = {
+			isa = PBXGroup;
+			children = (
+				5FAA778065404FAC4B7BD442 /* TolometSimple */,
+				40F9E676C11436A5FFD23B1C /* Frameworks */,
+				FEC96F2E79196E2040DD6A82 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FEC96F2E79196E2040DD6A82 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3D5C10CB23E7921B7CFBCAD6 /* TolometSimple.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DC5D3B1EDB1EDEE40C95495C /* TolometSimple */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2340A7CB85C79898321D2724 /* Build configuration list for PBXNativeTarget "TolometSimple" */;
+			buildPhases = (
+				AA1AE59E165416F23115EC26 /* Sources */,
+				A291722BFC5EDF6F17BF4123 /* Frameworks */,
+				E8A417B77E8FE0B40C17F495 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TolometSimple;
+			packageProductDependencies = (
+			);
+			productName = TolometSimple;
+			productReference = 3D5C10CB23E7921B7CFBCAD6 /* TolometSimple.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4E49B01053B09668695BA271 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 35F16B6D5AAA0555D9FC2182 /* Build configuration list for PBXProject "TolometSimple" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = A912CFB621C6DC283411923A;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = FEC96F2E79196E2040DD6A82 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DC5D3B1EDB1EDEE40C95495C /* TolometSimple */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AA1AE59E165416F23115EC26 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				707472B9A47C24FF3E8F55F9 /* AemetView.swift in Sources */,
+				E71923101897E39305B10A8E /* AemetViewModel.swift in Sources */,
+				8BE2F47CFCF11553DD307834 /* ContentView.swift in Sources */,
+				452A255D117A0D68D8C08CF6 /* MatxitxakoWindView.swift in Sources */,
+				5298F4DAB65B1ECB3FE8A711 /* MatxitxakoWindViewModel.swift in Sources */,
+				A391CBD7ABBD04B3FCC32094 /* NorometView.swift in Sources */,
+				0A8327F0A54E8DB9EB42AF11 /* NorometViewModel.swift in Sources */,
+				E5A5F5F8C6D7D8D5CD757AC3 /* StationsViewModel.swift in Sources */,
+				0D342868919134C67BC7ECD3 /* TolometSimpleApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		125BF6A119643300084BE57F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		8D8CB2D679F83DD9BAD6B555 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		970651A1160941662533D19B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"../tolometShared/build/XCFrameworks/release\"",
+				);
+				INFOPLIST_FILE = TolometSimple/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.akrog.tolometsimple;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		EFB5E333D2E57C6ADE893C94 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"../tolometShared/build/XCFrameworks/release\"",
+				);
+				INFOPLIST_FILE = TolometSimple/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.akrog.tolometsimple;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2340A7CB85C79898321D2724 /* Build configuration list for PBXNativeTarget "TolometSimple" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				970651A1160941662533D19B /* Debug */,
+				EFB5E333D2E57C6ADE893C94 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		35F16B6D5AAA0555D9FC2182 /* Build configuration list for PBXProject "TolometSimple" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8D8CB2D679F83DD9BAD6B555 /* Debug */,
+				125BF6A119643300084BE57F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4E49B01053B09668695BA271 /* Project object */;
+}

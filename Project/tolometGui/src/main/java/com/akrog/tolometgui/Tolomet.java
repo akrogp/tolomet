@@ -3,7 +3,10 @@ package com.akrog.tolometgui;
 import android.app.Application;
 import android.content.Context;
 
+import com.google.firebase.FirebaseApp;
+
 import com.akrog.tolometgui.model.backend.Backend;
+import com.akrog.tolometgui.model.backend.LocalBackend;
 import com.akrog.tolometgui.model.backend.FirebaseBackend;
 
 public class Tolomet extends Application {
@@ -21,8 +24,12 @@ public class Tolomet extends Application {
     }
 
     public static synchronized Backend getBackend() {
-        if( backend == null )
-            backend = new FirebaseBackend();
+        if( backend == null ) {
+            if( context != null && !FirebaseApp.getApps(context).isEmpty() )
+                backend = new FirebaseBackend();
+            else
+                backend = new LocalBackend();
+        }
         return backend;
     }
 }

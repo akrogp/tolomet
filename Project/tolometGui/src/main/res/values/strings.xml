@@ -179,4 +179,5 @@
     <string name="pref_altMeteoGalicia">MeteoGalicia alternative service</string>
     <string name="cfg_update">Configuration change</string>
     <string name="notifications_rationale">Allowing notifications is recommended when communicating Tolomet with external apps</string>
+    <string name="google_maps_key"></string>
 </resources>
