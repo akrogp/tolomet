@@ -28,7 +28,7 @@ public class PiouStations {
     }
 
     public static List<Station> getStations() throws Exception {
-        GeoApiContext context = new GeoApiContext().setApiKey("REDACTED_GOOGLE_MAPS_API_KEY");
+        GeoApiContext context = new GeoApiContext().setApiKey(resolveGoogleMapsApiKey());
         List<Station> result = new ArrayList<>();
         JSONObject json = new JSONObject(loadJson());
         JSONArray array = json.getJSONArray("data");
@@ -67,6 +67,17 @@ public class PiouStations {
             result.add(station);
         }
         return result;
+    }
+
+    private static String resolveGoogleMapsApiKey() {
+        String key = System.getProperty("tolomet.google.maps.api.key");
+        if( key == null || key.trim().isEmpty() )
+            key = System.getenv("TOLOMET_GOOGLE_MAPS_API_KEY");
+        if( key == null || key.trim().isEmpty() )
+            key = System.getenv("GOOGLE_MAPS_API_KEY");
+        if( key == null || key.trim().isEmpty() )
+            throw new IllegalStateException("Missing Google Maps API key. Set -Dtolomet.google.maps.api.key or TOLOMET_GOOGLE_MAPS_API_KEY.");
+        return key.trim();
     }
 
     // http://api.pioupiou.fr/v1/live-with-meta/all
