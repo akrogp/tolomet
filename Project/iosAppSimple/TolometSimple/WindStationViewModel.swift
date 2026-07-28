@@ -1,6 +1,29 @@
 import Foundation
 import TolometShared
 
+struct WindStationTarget {
+    let title: String
+    let preferredCode: String?
+    let preferredNameSubstring: String?
+    let fallbackLatitude: Double?
+    let fallbackLongitude: Double?
+
+    static let matxitxako = WindStationTarget(
+        title: "Matxitxako",
+        preferredCode: "C019",
+        preferredNameSubstring: "matxitxako",
+        fallbackLatitude: 43.4375,
+        fallbackLongitude: -2.7636
+    )
+}
+
+struct WindStationOption: Identifiable, Hashable {
+    let code: String
+    let name: String
+
+    var id: String { code }
+}
+
 struct WindSpeedPoint: Identifiable {
     let id: Int
     let date: Date
@@ -19,12 +42,17 @@ struct HumidityPoint: Identifiable {
     let humidityPct: Double
 }
 
-final class MatxitxakoWindViewModel: ObservableObject {
+final class WindStationViewModel: ObservableObject {
     private let kmhToKn = 0.539956803
     private let plotWindowMs: Int64 = 3 * 60 * 60 * 1000
+    private let stationTarget: WindStationTarget
+
+    private var stationsByCode: [String: Station] = [:]
 
     @Published var status: String = "Idle"
     @Published var loading: Bool = false
+    @Published var stationOptions: [WindStationOption] = []
+    @Published var selectedStationCode: String = ""
     @Published var stationName: String?
     @Published var stationCode: String?
     @Published var latestTimeText: String = "-"
@@ -38,6 +66,10 @@ final class MatxitxakoWindViewModel: ObservableObject {
     @Published var directionPoints: [DirectionPoint] = []
     @Published var humidityPoints: [HumidityPoint] = []
 
+    init(stationTarget: WindStationTarget = .matxitxako) {
+        self.stationTarget = stationTarget
+    }
+
     func loadWindSeries() {
         loading = true
         status = "Loading Euskalmet stations..."
@@ -48,86 +80,149 @@ final class MatxitxakoWindViewModel: ObservableObject {
                 if let error = error {
                     self.loading = false
                     self.status = "Failed to download stations: \(error.localizedDescription)"
-                    self.windSpeedMedPoints = []
-                    self.windSpeedMaxPoints = []
+                    self.clearPlotData()
                     return
                 }
 
-                guard let list = stations else {
+                guard let list = stations, !list.isEmpty else {
                     self.loading = false
                     self.status = "No Euskalmet stations returned"
-                    self.windSpeedMedPoints = []
-                    self.windSpeedMaxPoints = []
+                    self.clearPlotData()
                     return
                 }
 
-                guard let station = self.findMatxitxako(in: list) else {
+                self.updateStationCatalog(with: list)
+                self.selectedStationCode = self.resolveSelectionCode(in: list)
+
+                guard !self.selectedStationCode.isEmpty else {
                     self.loading = false
-                    self.status = "Matxitxako station not found"
-                    self.windSpeedMedPoints = []
-                    self.windSpeedMaxPoints = []
+                    self.status = "No selectable Euskalmet stations"
+                    self.clearSelectedStation()
                     return
                 }
 
-                self.stationName = station.name
-                self.stationCode = station.code
-                self.status = "Refreshing wind series..."
-
-                provider.refresh(station: station) { refreshError in
-                    DispatchQueue.main.async {
-                        self.loading = false
-
-                        if let refreshError = refreshError {
-                            self.status = "Refresh failed: \(refreshError.localizedDescription)"
-                            self.windSpeedMedPoints = []
-                            self.windSpeedMaxPoints = []
-                            self.directionPoints = []
-                            self.humidityPoints = []
-                            self.clearLatestSummary()
-                            return
-                        }
-
-                        let meteo = station.meteo
-                        let windPoints = self.buildWindSpeedPoints(
-                            medMeasurement: meteo.windSpeedMed,
-                            maxMeasurement: meteo.windSpeedMax
-                        )
-                        self.windSpeedMedPoints = windPoints.med
-                        self.windSpeedMaxPoints = windPoints.max
-                        let directionHumidityPoints = self.buildDirectionHumidityPoints(
-                            directionMeasurement: meteo.windDirection,
-                            humidityMeasurement: meteo.airHumidity
-                        )
-                        self.directionPoints = directionHumidityPoints.direction
-                        self.humidityPoints = directionHumidityPoints.humidity
-                        self.updateLatestSummary(meteo: meteo)
-                        if self.windSpeedMedPoints.isEmpty && self.windSpeedMaxPoints.isEmpty {
-                            self.status = "No wind data available"
-                        } else {
-                            self.status = "Loaded \(self.windSpeedMedPoints.count + self.windSpeedMaxPoints.count) points"
-                        }
-                    }
-                }
+                self.refreshSelectedStation(using: provider)
             }
         }
     }
 
-    private func findMatxitxako(in stations: [Station]) -> Station? {
-        if let byCode = stations.first(where: { normalizeCode($0.code) == "C019" }) {
+    func selectStation(code: String) {
+        let normalizedCode = normalizeCode(code)
+        guard !normalizedCode.isEmpty, selectedStationCode != normalizedCode else {
+            return
+        }
+
+        selectedStationCode = normalizedCode
+        refreshSelectedStation()
+    }
+
+    private func updateStationCatalog(with stations: [Station]) {
+        var mappedStations: [String: Station] = [:]
+        var mappedOptions: [WindStationOption] = []
+
+        for station in stations {
+            let normalizedCode = normalizeCode(station.code)
+            guard !normalizedCode.isEmpty else {
+                continue
+            }
+
+            mappedStations[normalizedCode] = station
+            mappedOptions.append(WindStationOption(code: normalizedCode, name: station.name))
+        }
+
+        stationsByCode = mappedStations
+        stationOptions = mappedOptions.sorted { lhs, rhs in
+            let byName = normalized(lhs.name).localizedCompare(normalized(rhs.name))
+            if byName == .orderedSame {
+                return lhs.code < rhs.code
+            }
+            return byName == .orderedAscending
+        }
+    }
+
+    private func resolveSelectionCode(in stations: [Station]) -> String {
+        if !selectedStationCode.isEmpty, stationsByCode[selectedStationCode] != nil {
+            return selectedStationCode
+        }
+
+        if let preferredStation = findPreferredStation(in: stations) {
+            let preferredCode = normalizeCode(preferredStation.code)
+            if !preferredCode.isEmpty {
+                return preferredCode
+            }
+        }
+
+        return stationOptions.first?.code ?? ""
+    }
+
+    private func findPreferredStation(in stations: [Station]) -> Station? {
+        if let preferredCode = stationTarget.preferredCode,
+           let byCode = stations.first(where: { normalizeCode($0.code) == normalizeCode(preferredCode) }) {
             return byCode
         }
 
-        if let byName = stations.first(where: { normalized($0.name).contains("matxitxako") }) {
+        if let preferredNameSubstring = stationTarget.preferredNameSubstring,
+           let byName = stations.first(where: { normalized($0.name).contains(normalized(preferredNameSubstring)) }) {
             return byName
         }
 
-        // Fallback to the nearest station to Cabo Matxitxako if feed metadata changes.
-        let matxitxakoLat = 43.4375
-        let matxitxakoLon = -2.7636
-        return stations.min(by: { lhs, rhs in
-            distance2(lhs.latitude, lhs.longitude, matxitxakoLat, matxitxakoLon)
-                < distance2(rhs.latitude, rhs.longitude, matxitxakoLat, matxitxakoLon)
-        })
+        if let fallbackLatitude = stationTarget.fallbackLatitude,
+           let fallbackLongitude = stationTarget.fallbackLongitude {
+            return stations.min(by: { lhs, rhs in
+                distance2(lhs.latitude, lhs.longitude, fallbackLatitude, fallbackLongitude)
+                    < distance2(rhs.latitude, rhs.longitude, fallbackLatitude, fallbackLongitude)
+            })
+        }
+
+        return nil
+    }
+
+    private func refreshSelectedStation(using provider: EuskalmetProvider = EuskalmetProvider()) {
+        guard let station = stationsByCode[selectedStationCode] else {
+            loading = false
+            status = "Selected station not available"
+            clearSelectedStation()
+            return
+        }
+
+        loading = true
+        stationName = station.name
+        stationCode = station.code
+        status = "Refreshing wind series..."
+
+        provider.refresh(station: station) { refreshError in
+            DispatchQueue.main.async {
+                self.loading = false
+
+                if let refreshError = refreshError {
+                    self.status = "Refresh failed: \(refreshError.localizedDescription)"
+                    self.clearPlotData()
+                    return
+                }
+
+                let meteo = station.meteo
+                let windPoints = self.buildWindSpeedPoints(
+                    medMeasurement: meteo.windSpeedMed,
+                    maxMeasurement: meteo.windSpeedMax
+                )
+                self.windSpeedMedPoints = windPoints.med
+                self.windSpeedMaxPoints = windPoints.max
+
+                let directionHumidityPoints = self.buildDirectionHumidityPoints(
+                    directionMeasurement: meteo.windDirection,
+                    humidityMeasurement: meteo.airHumidity
+                )
+                self.directionPoints = directionHumidityPoints.direction
+                self.humidityPoints = directionHumidityPoints.humidity
+                self.updateLatestSummary(meteo: meteo)
+
+                if self.windSpeedMedPoints.isEmpty && self.windSpeedMaxPoints.isEmpty {
+                    self.status = "No wind data available"
+                } else {
+                    self.status = "Loaded \(self.windSpeedMedPoints.count + self.windSpeedMaxPoints.count) points"
+                }
+            }
+        }
     }
 
     private func normalizeCode(_ value: String) -> String {
@@ -170,7 +265,6 @@ final class MatxitxakoWindViewModel: ObservableObject {
                 continue
             }
 
-            // Wind speed series are interleaved: odd indices are med, even indices are max.
             if index % 2 == 1 {
                 medItems.append(
                     WindSpeedPoint(
@@ -251,6 +345,20 @@ final class MatxitxakoWindViewModel: ObservableObject {
 
         let cutoff = latest - plotWindowMs
         return series.filter { $0.timeMs >= cutoff }
+    }
+
+    private func clearSelectedStation() {
+        stationName = nil
+        stationCode = nil
+        clearPlotData()
+    }
+
+    private func clearPlotData() {
+        windSpeedMedPoints = []
+        windSpeedMaxPoints = []
+        directionPoints = []
+        humidityPoints = []
+        clearLatestSummary()
     }
 
     private func clearLatestSummary() {

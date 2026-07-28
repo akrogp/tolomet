@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		0A8327F0A54E8DB9EB42AF11 /* NorometViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFBA2714CCA9CECF2E67862 /* NorometViewModel.swift */; };
 		0D342868919134C67BC7ECD3 /* TolometSimpleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509CA22A402F9327263B7062 /* TolometSimpleApp.swift */; };
-		452A255D117A0D68D8C08CF6 /* MatxitxakoWindView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46D29B0C692D3A677796425 /* MatxitxakoWindView.swift */; };
-		5298F4DAB65B1ECB3FE8A711 /* MatxitxakoWindViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EEAACB4AE722D61454A2E /* MatxitxakoWindViewModel.swift */; };
+		452A255D117A0D68D8C08CF6 /* WindStationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46D29B0C692D3A677796425 /* WindStationView.swift */; };
+		5298F4DAB65B1ECB3FE8A711 /* WindStationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EEAACB4AE722D61454A2E /* WindStationViewModel.swift */; };
 		6D4B8AD59B88BFA94C603A30 /* TolometShared.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB20E4671F0E3CF889EFAB5 /* TolometShared.xcframework */; };
 		707472B9A47C24FF3E8F55F9 /* AemetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E127D73DF8715E575EBA4AA /* AemetView.swift */; };
 		8BE2F47CFCF11553DD307834 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17A9B3D450CDD75CED32B9E /* ContentView.swift */; };
@@ -43,8 +43,8 @@
 		673304188122A606ECEF2032 /* NorometView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NorometView.swift; sourceTree = "<group>"; };
 		6E127D73DF8715E575EBA4AA /* AemetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AemetView.swift; sourceTree = "<group>"; };
 		74B5B478B2416F08B74B1E43 /* StationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationsViewModel.swift; sourceTree = "<group>"; };
-		960EEAACB4AE722D61454A2E /* MatxitxakoWindViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatxitxakoWindViewModel.swift; sourceTree = "<group>"; };
-		C46D29B0C692D3A677796425 /* MatxitxakoWindView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatxitxakoWindView.swift; sourceTree = "<group>"; };
+		960EEAACB4AE722D61454A2E /* WindStationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindStationViewModel.swift; sourceTree = "<group>"; };
+		C46D29B0C692D3A677796425 /* WindStationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindStationView.swift; sourceTree = "<group>"; };
 		CBB20E4671F0E3CF889EFAB5 /* TolometShared.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = TolometShared.xcframework; path = ../tolometShared/build/XCFrameworks/release/TolometShared.xcframework; sourceTree = "<group>"; };
 		F17A9B3D450CDD75CED32B9E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -76,8 +76,8 @@
 				3135D6097BEE81FDB1F61170 /* AemetViewModel.swift */,
 				F17A9B3D450CDD75CED32B9E /* ContentView.swift */,
 				35A30A6BAC71A8561D574B67 /* Info.plist */,
-				C46D29B0C692D3A677796425 /* MatxitxakoWindView.swift */,
-				960EEAACB4AE722D61454A2E /* MatxitxakoWindViewModel.swift */,
+				C46D29B0C692D3A677796425 /* WindStationView.swift */,
+				960EEAACB4AE722D61454A2E /* WindStationViewModel.swift */,
 				673304188122A606ECEF2032 /* NorometView.swift */,
 				3DFBA2714CCA9CECF2E67862 /* NorometViewModel.swift */,
 				74B5B478B2416F08B74B1E43 /* StationsViewModel.swift */,
@@ -163,8 +163,8 @@
 				707472B9A47C24FF3E8F55F9 /* AemetView.swift in Sources */,
 				E71923101897E39305B10A8E /* AemetViewModel.swift in Sources */,
 				8BE2F47CFCF11553DD307834 /* ContentView.swift in Sources */,
-				452A255D117A0D68D8C08CF6 /* MatxitxakoWindView.swift in Sources */,
-				5298F4DAB65B1ECB3FE8A711 /* MatxitxakoWindViewModel.swift in Sources */,
+				452A255D117A0D68D8C08CF6 /* WindStationView.swift in Sources */,
+				5298F4DAB65B1ECB3FE8A711 /* WindStationViewModel.swift in Sources */,
 				A391CBD7ABBD04B3FCC32094 /* NorometView.swift in Sources */,
 				0A8327F0A54E8DB9EB42AF11 /* NorometViewModel.swift in Sources */,
 				E5A5F5F8C6D7D8D5CD757AC3 /* StationsViewModel.swift in Sources */,

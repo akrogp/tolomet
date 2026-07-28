@@ -1,34 +1,34 @@
 import SwiftUI
 import Charts
 
-struct MatxitxakoWindView: View {
-    @StateObject private var vm = MatxitxakoWindViewModel()
+struct WindStationView: View {
+    @StateObject private var vm: WindStationViewModel
+
+    init(stationTarget: WindStationTarget = .matxitxako) {
+        _vm = StateObject(wrappedValue: WindStationViewModel(stationTarget: stationTarget))
+    }
 
     var body: some View {
         Form {
-            Section("Matxitxako") {
-                Button(action: vm.loadWindSeries) {
-                    if vm.loading {
-                        ProgressView()
-                            .frame(maxWidth: .infinity)
-                    } else {
-                        Text("Load Wind Speed")
-                            .frame(maxWidth: .infinity)
+            Section("Wind Station") {
+                if vm.stationOptions.isEmpty {
+                    Text("Load stations to choose a target")
+                        .foregroundColor(.secondary)
+                } else {
+                    Picker(
+                        "Station",
+                        selection: Binding(
+                            get: { vm.selectedStationCode },
+                            set: { vm.selectStation(code: $0) }
+                        )
+                    ) {
+                        ForEach(vm.stationOptions) { option in
+                            Text("\(option.name) (\(option.code))")
+                                .tag(option.code)
+                        }
                     }
+                    .disabled(vm.loading)
                 }
-                .disabled(vm.loading)
-
-                Text(vm.status)
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-            }
-
-            if let name = vm.stationName, let code = vm.stationCode {
-                Section("Station") {
-                    LabeledContent("Name", value: name)
-                    LabeledContent("Code", value: code)
-                }
-            }
 
             if vm.windSpeedMedPoints.isEmpty && vm.windSpeedMaxPoints.isEmpty {
                 Section("Wind Speed") {
@@ -182,6 +182,31 @@ struct MatxitxakoWindView: View {
                 }
             }
 
+
+            if let name = vm.stationName, let code = vm.stationCode {
+                Section("Station") {
+                    LabeledContent("Name", value: name)
+                    LabeledContent("Code", value: code)
+                }
+            }
+
+                            Button(action: vm.loadWindSeries) {
+                    if vm.loading {
+                        ProgressView()
+                            .frame(maxWidth: .infinity)
+                    } else {
+                        Text("Reload Station Data")
+                            .frame(maxWidth: .infinity)
+                    }
+                }
+                .disabled(vm.loading)
+
+                Text(vm.status)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+
+
             Section("Latest") {
                 LabeledContent("Time", value: vm.latestTimeText)
                 LabeledContent("Temperature", value: vm.latestTemperatureText)
@@ -191,9 +216,9 @@ struct MatxitxakoWindView: View {
                 LabeledContent("Wind (med ~ max)", value: vm.latestSpeedRangeText)
             }
         }
-        .navigationTitle("Matxitxako Wind")
+        .navigationTitle("Wind Station")
         .onAppear {
-            if vm.windSpeedMedPoints.isEmpty && vm.windSpeedMaxPoints.isEmpty && !vm.loading {
+            if vm.stationOptions.isEmpty && !vm.loading {
                 vm.loadWindSeries()
             }
         }

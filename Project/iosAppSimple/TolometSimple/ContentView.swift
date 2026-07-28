@@ -27,9 +27,9 @@ struct ContentView: View {
                 .buttonStyle(.bordered)
 
                 NavigationLink {
-                    MatxitxakoWindView()
+                    WindStationView()
                 } label: {
-                    Text("Open Matxitxako Wind Plot")
+                    Text("Open Wind Station Screen")
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.bordered)
