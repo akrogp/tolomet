@@ -30,13 +30,52 @@ struct MatxitxakoWindView: View {
                 }
             }
 
-            Section("Latest") {
-                LabeledContent("Time", value: vm.latestTimeText)
-                LabeledContent("Temperature", value: vm.latestTemperatureText)
-                LabeledContent("Humidity", value: vm.latestHumidityText)
-                LabeledContent("Irradiance", value: vm.latestIrradianceText)
-                LabeledContent("Direction", value: vm.latestDirectionText)
-                LabeledContent("Wind (med ~ max)", value: vm.latestSpeedRangeText)
+            if vm.windSpeedMedPoints.isEmpty && vm.windSpeedMaxPoints.isEmpty {
+                Section("Wind Speed") {
+                    Text("No chart data yet")
+                        .foregroundColor(.secondary)
+                }
+            } else {
+                Section("Wind Speed (kn)") {
+                    Chart {
+                        ForEach(vm.windSpeedMedPoints) { point in
+                            LineMark(
+                                x: .value("Time", point.date),
+                                y: .value("Wind Speed (kn) med", point.speedKn)
+                            )
+                            .interpolationMethod(.linear)
+                            .foregroundStyle(by: .value("Series", "Wind Speed (kn) med"))
+                        }
+
+                        ForEach(vm.windSpeedMaxPoints) { point in
+                            LineMark(
+                                x: .value("Time", point.date),
+                                y: .value("Wind Speed (kn) max", point.speedKn)
+                            )
+                            .interpolationMethod(.linear)
+                            .foregroundStyle(by: .value("Series", "Wind Speed (kn) max"))
+                        }
+                    }
+                    .frame(height: 240)
+                    .chartForegroundStyleScale([
+                        "Wind Speed (kn) med": .green,
+                        "Wind Speed (kn) max": .red,
+                    ])
+                    .chartXAxis {
+                        AxisMarks(values: .automatic) {
+                            AxisGridLine()
+                            AxisValueLabel(format: .dateTime.hour().minute())
+                        }
+                    }
+
+                    HStack(spacing: 14) {
+                        Label("Wind Speed (kn) med", systemImage: "line.diagonal")
+                            .foregroundStyle(.green)
+                        Label("Wind Speed (kn) max", systemImage: "line.diagonal")
+                            .foregroundStyle(.red)
+                    }
+                    .font(.caption)
+                }
             }
 
             if vm.directionPoints.isEmpty && vm.humidityPoints.isEmpty {
@@ -143,52 +182,13 @@ struct MatxitxakoWindView: View {
                 }
             }
 
-            if vm.windSpeedMedPoints.isEmpty && vm.windSpeedMaxPoints.isEmpty {
-                Section("Wind Speed") {
-                    Text("No chart data yet")
-                        .foregroundColor(.secondary)
-                }
-            } else {
-                Section("Wind Speed (kn)") {
-                    Chart {
-                        ForEach(vm.windSpeedMedPoints) { point in
-                            LineMark(
-                                x: .value("Time", point.date),
-                                y: .value("Wind Speed (kn) med", point.speedKn)
-                            )
-                            .interpolationMethod(.linear)
-                            .foregroundStyle(by: .value("Series", "Wind Speed (kn) med"))
-                        }
-
-                        ForEach(vm.windSpeedMaxPoints) { point in
-                            LineMark(
-                                x: .value("Time", point.date),
-                                y: .value("Wind Speed (kn) max", point.speedKn)
-                            )
-                            .interpolationMethod(.linear)
-                            .foregroundStyle(by: .value("Series", "Wind Speed (kn) max"))
-                        }
-                    }
-                    .frame(height: 240)
-                    .chartForegroundStyleScale([
-                        "Wind Speed (kn) med": .green,
-                        "Wind Speed (kn) max": .red,
-                    ])
-                    .chartXAxis {
-                        AxisMarks(values: .automatic) {
-                            AxisGridLine()
-                            AxisValueLabel(format: .dateTime.hour().minute())
-                        }
-                    }
-
-                    HStack(spacing: 14) {
-                        Label("Wind Speed (kn) med", systemImage: "line.diagonal")
-                            .foregroundStyle(.green)
-                        Label("Wind Speed (kn) max", systemImage: "line.diagonal")
-                            .foregroundStyle(.red)
-                    }
-                    .font(.caption)
-                }
+            Section("Latest") {
+                LabeledContent("Time", value: vm.latestTimeText)
+                LabeledContent("Temperature", value: vm.latestTemperatureText)
+                LabeledContent("Humidity", value: vm.latestHumidityText)
+                LabeledContent("Irradiance", value: vm.latestIrradianceText)
+                LabeledContent("Direction", value: vm.latestDirectionText)
+                LabeledContent("Wind (med ~ max)", value: vm.latestSpeedRangeText)
             }
         }
         .navigationTitle("Matxitxako Wind")
