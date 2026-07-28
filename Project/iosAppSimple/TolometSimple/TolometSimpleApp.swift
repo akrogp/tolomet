@@ -4,7 +4,9 @@ import SwiftUI
 struct TolometApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationStack {
+                WindStationView()
+            }
         }
     }
 }
