@@ -1,4 +1,4 @@
-# TolometSimple iOS App
+# Tolomet iOS App
 
 This is a minimal SwiftUI app that consumes the Kotlin Multiplatform shared module (`tolometShared`) via `TolometShared.xcframework`.
 
@@ -33,7 +33,7 @@ xcodegen generate
 ## 3. Open and run
 
 ```bash
-open TolometSimple.xcodeproj
+open Tolomet.xcodeproj
 ```
 
 Select an iOS simulator and run.

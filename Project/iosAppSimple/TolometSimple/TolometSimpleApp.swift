@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct TolometSimpleApp: App {
+struct TolometApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()

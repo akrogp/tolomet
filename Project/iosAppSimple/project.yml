@@ -1,11 +1,11 @@
-name: TolometSimple
+name: Tolomet
 options:
   bundleIdPrefix: com.akrog
 settings:
   base:
     SWIFT_VERSION: 5.9
 targets:
-  TolometSimple:
+  Tolomet:
     type: application
     platform: iOS
     deploymentTarget: "16.0"
@@ -13,7 +13,7 @@ targets:
       - path: TolometSimple
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.akrog.tolometsimple
+        PRODUCT_BUNDLE_IDENTIFIER: com.akrog.tolomet
         INFOPLIST_FILE: TolometSimple/Info.plist
     dependencies:
       - framework: ../tolometShared/build/XCFrameworks/release/TolometShared.xcframework
