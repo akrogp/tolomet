@@ -2,3 +2,11 @@ keys.txt
 projectFilesBackup*
 google_maps_api.xml
 BiscayApp
+Docs/Euskalmet/compute_euskalmet_sea.py
+.gitignore
+Docs/Euskalmet/euskalmet_stations_with_sea_distance.json
+Docs/Euskalmet/euskalmet_stations_lt1km_from_sea.json
+.DS_Store
+simulator_screenshot.png
+android_screenshot.png
+Project/tolometCore/bin/**

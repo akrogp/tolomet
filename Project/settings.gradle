@@ -1,2 +1,2 @@
 //include ':tolometGui', ':tolometCore', ':tolometUtils'
-include ':tolometGui', ':tolometCore'
+include ':tolometGui', ':tolometCore', ':tolometShared'
