@@ -16,7 +16,7 @@ import java.util.Date;
 
 @Database(version = DbTolomet.VERSION, entities = {StationEntity.class, SpotEntity.class})
 public abstract class DbTolomet extends RoomDatabase {
-    public static final int VERSION = 37;
+    public static final int VERSION = 38;
     public static final String NAME = "Tolomet.db";
     public static final String ASSET = "databases/Tolomet.db";
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -30,7 +30,7 @@ public abstract class DbTolomet extends RoomDatabase {
 
     synchronized public static DbTolomet getInstance() {
         if( instance == null ) {
-            //updVersion();
+            deleteIfOutdated();
             instance = Room
                 .databaseBuilder(Tolomet.getAppContext(), DbTolomet.class, NAME)
                 .createFromAsset(ASSET)
@@ -41,14 +41,18 @@ public abstract class DbTolomet extends RoomDatabase {
         return instance;
     }
 
-    private static void updVersion() {
+    private static void deleteIfOutdated() {
         File file = Tolomet.getAppContext().getDatabasePath(NAME);
-        try(SQLiteDatabase db = SQLiteDatabase.openDatabase(file.getAbsolutePath(), null, SQLiteDatabase.OPEN_READWRITE)) {
-            db.setVersion(VERSION);
-            db.getVersion();
+        if( !file.exists() )
+            return;
+        int onDiskVersion = 0;
+        try(SQLiteDatabase db = SQLiteDatabase.openDatabase(file.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY)) {
+            onDiskVersion = db.getVersion();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        if( onDiskVersion != VERSION )
+            Tolomet.getAppContext().deleteDatabase(NAME);
     }
 
     public static class ProviderInfo {

@@ -7,13 +7,28 @@ import com.akrog.tolomet.io.Downloader;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 /**
  * Created by gorka on 1/09/17.
  */
 
 public class WeatherUndergroundProvider extends BaseProvider {
+    private static String key;
+
     public WeatherUndergroundProvider() {
         super(REFRESH);
+    }
+
+    private static String getKey() {
+        if( key == null )
+            try(BufferedReader br = new BufferedReader(new InputStreamReader(WeatherUndergroundProvider.class.getResourceAsStream("/keys/wunderground.txt")))) {
+                key = br.readLine();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        return key;
     }
 
     @Override
@@ -29,7 +44,7 @@ public class WeatherUndergroundProvider extends BaseProvider {
     @Override
     public void configureDownload(Downloader downloader, Station station) {
         downloader.setUrl("https://api.weather.com/v2/pws/observations/all/1day");
-        downloader.addParam("apiKey", "e1f10a1e78da46f5b10a1e78da96f525");
+        downloader.addParam("apiKey", getKey());
         downloader.addParam("stationId", station.getCode());
         downloader.addParam("numericPrecision", "decimal");
         downloader.addParam("format", "json");

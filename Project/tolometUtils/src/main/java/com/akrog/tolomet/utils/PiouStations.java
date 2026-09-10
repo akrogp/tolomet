@@ -12,6 +12,8 @@ import com.google.maps.model.LatLng;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -20,6 +22,8 @@ import java.util.Scanner;
  * Created by gorka on 8/04/16.
  */
 public class PiouStations {
+    private static String key;
+
     public static void main( String[] args ) throws Exception {
         for( Station station : getStations() ) {
             ResourceManager.showStation(station);
@@ -27,8 +31,18 @@ public class PiouStations {
         }
     }
 
+    private static String getKey() {
+        if( key == null )
+            try(BufferedReader br = new BufferedReader(new InputStreamReader(PiouStations.class.getResourceAsStream("/keys/geocoding.txt")))) {
+                key = br.readLine();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        return key;
+    }
+
     public static List<Station> getStations() throws Exception {
-        GeoApiContext context = new GeoApiContext().setApiKey("AIzaSyBeNcmTrrdsKHX45-QQVpn1eGehSaLrG3k");
+        GeoApiContext context = new GeoApiContext().setApiKey(getKey());
         List<Station> result = new ArrayList<>();
         JSONObject json = new JSONObject(loadJson());
         JSONArray array = json.getJSONArray("data");
