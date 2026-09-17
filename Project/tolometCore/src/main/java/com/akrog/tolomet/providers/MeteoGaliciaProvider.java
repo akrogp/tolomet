@@ -8,6 +8,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -79,9 +81,13 @@ public class MeteoGaliciaProvider implements WindProvider {
 	}
 
 	private void download(Station station, String dataIni, String dataFin) throws Exception {
+		if( key == null )
+			try(BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/keys/meteogalicia.txt")))) {
+				key = br.readLine();
+			}
 		dw = new Downloader();
 		dw.setUrl(String.format("https://servizos.meteogalicia.gal/%s/observacion/datos10min.action", altProvider ? "rss" : "mgrss"));
-		dw.addParam("cod", "ToloMet6");
+		dw.addParam("cod", key);
 		dw.addParam("idEstacion", station.getCode());
 		dw.addParam("dataIni", dataIni);
 		dw.addParam("dataFin", dataFin);
@@ -140,4 +146,5 @@ public class MeteoGaliciaProvider implements WindProvider {
 	}
 	private Downloader dw;
 	private boolean altProvider;
+	private String key;
 }
